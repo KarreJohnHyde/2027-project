@@ -1,0 +1,211 @@
+# JavaScript build and dependency output
+node_modules/
+dist/
+build/
+.cache/
+.vite/
+vite.config.*.timestamp-*
+*.tsbuildinfo
+*-debug.log*
+logs/
+*.log
+
+# Python environments, caches, and generated reports
+.venv/
+.venv-*/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Local secrets. Keep the documented, placeholder-only template.
+.env
+.env.*
+!.env.example
+
+# Editor and agent-local state
+.vscode/
+.claude-replay.*
+.tmp-*
+/.figma/design-context/
+
+# Platform-managed agentplat state, not project source. In the
+# client-initiated single-repo workspace layout (make's `Path: "."` spec) the
+# repo root IS the workspace root, so these land inside this repo rather than
+# beside it.
+/.plugins/
+/.opencode-skills/
+
+# Local MedTwin service state and generated outputs
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite3
+# Imported archives, derived datasets, training runs and private backups stay local.
+/_imports/
+/_derived/
+/artifacts/
+/backend/storage/
+/backend/uploads/
+/backend/runtime/
+/uploads/
+
+# Model checkpoints and training artifacts are registered externally, not in Git.
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.npy
+*.npz
+/runs/
+/outputs/
+/checkpoints/
+
+# Source archives and downloaded bundles remain local.
+/*.zip
+/*.7z
+/*.rar
+/*.tar
+/*.tar.gz
+/*.tgz
+
+# Downloaded upstream repositories are adapter inputs, not vendored source.
+/scispacy-main/
+/radgraph-master/
+/MONAI-dev/
+/health-assistant-main/
+/metriport-develop/
+/cogstack-nlp-main/
+/MedCAT-main/
+/Foresight-main/
+/TwinWeaver-main/
+/CogStack-SemEHR-master/
+/SIH_26047-main/
+/medical-main/
+/medvault-ai-main/
+/human-atlas-main/
+/anatomy-main/
+/3d-anatomy-atlas-main/
+
+# Local medical datasets. These must never be added by a broad `git add`.
+/2d segmentation dataset/
+/BEHSOF/
+/Brain_Stroke_CT_Dataset/
+/cerebrovascular lesions/
+/data/
+/DATASET/
+/dyed-lifted-polyps/
+/dyed-resection-margins/
+/esophagitis/
+/External_test/
+/Gastrovision/
+/kvasir-dataset-v2/
+/LungcancerDataSet/
+/mri-tumor-detection-dataset(training and testing)/
+/normal-cecum/
+/normal-pylorus/
+/normal-z-line/
+/polyps/
+/segmentations/
+/split_data/
+/ST000001/
+/test/
+/Testing/
+/train/
+/Training/
+/ulcerative-colitis/
+/valid/
+/volume_pt1/
+/volume_pt2/
+/volume_pt3/
+/volume_pt4/
+/volume_pt5/
+
+# Downloaded dataset manifests at the workspace root.
+/Brain_MRI_conditions.csv
+/Brain_MRI_tumor.pdf
+/data.yaml
+/README.dataset.txt
+/README.roboflow.txt
+
+# Raw downloaded anatomy files stay local. Curated application assets live in
+# public/models and are intentionally tracked with Git LFS.
+/*.glb
+/*.gltf
+/*.blend
+/*.fbx
+/*.obj
+/heart blender/
+/source/
+/textures/
+
+# Unattributed local Blender exports (heart blender/*.blend). Preserved on disk,
+# but not versioned until provenance and licensing are resolved.
+/public/models/Untitled*.glb
+
+# Derived anatomy GLBs are regenerated from the immutable originals by
+# tools/asset-pipeline; only their manifest (with source and output hashes)
+# is versioned.
+/public/anatomy/derived/
+/tools/asset-pipeline/.cache/
+
+# Datasets extracted into the workspace root on 2026-10-25. Data stay local; they enter
+# MedTwin only through scripts/dataset_task_audit.py and the dataset registry.
+/bone fracture detection.v4-v4.yolov8/
+/BoneFractureYolo8/
+/C-NMC_Leukemia/
+/CLL/
+/FL/
+/MCL/
+/EchoNet-Dynamic/
+/hypothyroid/
+/Kvasir-SEG/
+/LIDC-XML-only/
+/MURA-v1.1/
+/Otoscopic_Data/
+/ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.1/
+/resized_images/
+/Ultrasound Fetus Dataset/
+/database/
+/tfrecords/
+/starter_code/
+/*.jpg
+/*.xml
+/*.csv
+/*.xls
+/*.xlsx
+/*.tcia
+/dataset_link.txt
+/train.txt
+/val.txt
+
+# TotalSegmentator repository files extracted into the root on the same day (upstream
+# tool source, not MedTwin source). Its README/.gitignore/.dockerignore had replaced
+# MedTwin's; copies are in _imports/overwritten_by_extraction_20261025/.
+/totalsegmentator/
+/bin/
+/resources/
+/tests/
+/.github/workflows/run_tests_and_upload_docker.yml
+/CHANGELOG.md
+/Dockerfile
+/LICENSE
+/requirements.txt
+/run_server.sh
+/server.py
+/setup.py
+/tests.sh
+/test_server.py

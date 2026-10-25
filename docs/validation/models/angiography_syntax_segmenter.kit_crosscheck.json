@@ -1,0 +1,25 @@
+{
+  "trainer": {
+    "vessel_dice": 0.6828798110705859,
+    "vessel_iou": 0.5351903824866634
+  },
+  "kit": {
+    "dataset": "ARCADE coronary X-ray angiography",
+    "dataset_version": "c21bee6dc5bd0a4ef91711802b7a606cec4d6c08b686ed0af0db7f9c959486ba",
+    "evaluation_split": "test",
+    "model_checkpoint": "sha256:3a3882071f72192edaec39a3cfd2449faf6d93f367d11dccf3455ba8824ab0a0",
+    "prediction_source": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/kit_crosscheck/vessel_pairs.csv",
+    "n_rows": 300,
+    "results_kind": "computed_from_supplied_labeled_evidence",
+    "medtw_accuracy_target": ">0.95 is an objective, not an assumed result",
+    "task": "binary_segmentation",
+    "mean_dice": 0.6828798110705859,
+    "mean_iou": 0.5351903824866634,
+    "n_empty_reference_masks": 0,
+    "n_nonempty_reference_masks": 300,
+    "both_empty_convention": "Dice=1,IoU=1; must also report nonempty-only values",
+    "mean_dice_nonempty_reference": 0.6828798110705859,
+    "mean_iou_nonempty_reference": 0.5351903824866634
+  },
+  "generated_by": "python -m ml_training.kit_crosscheck segmentation --model-id angiography_syntax_segmenter"
+}

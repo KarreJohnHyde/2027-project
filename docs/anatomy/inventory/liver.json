@@ -1,0 +1,698 @@
+{
+  "asset_id": "liver",
+  "relative_path": "liver.glb",
+  "source_group": "workspace_root",
+  "bytes": 2178112,
+  "sha256": "bb9d1bf38f4324bef16cf20c9fcc84c311f9ff78ad140cd235e223240a5d0ccc",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 6928
+      },
+      {
+        "type": "BIN",
+        "byteLength": 2171156
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-17.14.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "9darsh2235 (https://sketchfab.com/9darsh2235)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/liver-0da595a298b14fa4bc8f98b1a0e24fed",
+      "title": "Liver"
+    },
+    "extensions_used": [
+      "KHR_materials_specular"
+    ],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 5,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 5
+    },
+    "draw_calls": 5,
+    "validator_triangle_count": 40367,
+    "validator_vertex_count": 52711
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 14,
+    "mesh_nodes": 5,
+    "meshes": 5,
+    "primitives": 5,
+    "materials": 5,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 40367,
+    "rendered_triangles": 40367,
+    "unique_vertices": 52711,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 5,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 7,
+    "closed_measured_primitives": 3,
+    "max_boundary_edge_fraction": 0.0036,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -7.38367,
+        -3.65726,
+        -4.11589
+      ],
+      "max": [
+        7.610981,
+        4.693506,
+        8.401923
+      ],
+      "size": [
+        14.99465,
+        8.350766,
+        12.517813
+      ],
+      "center": [
+        0.113655,
+        0.518123,
+        2.143017
+      ],
+      "diagonal": 21.243128
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 1.796,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 1,
+    "largest_mesh_node": "Object_9",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 1,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 5,
+    "names": [
+      "Blue1",
+      "GallBladder1",
+      "blinn5",
+      "Purple1",
+      "Red1"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Blue_0",
+      "GallBladder_1",
+      "Liver_2",
+      "Purple_3",
+      "Red_4"
+    ],
+    "anatomically_named_mesh_nodes": 2,
+    "anatomical_names_sample": [
+      "GallBladder_1",
+      "Liver_2"
+    ]
+  },
+  "inspection_ms": 91,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root",
+      "name": "root",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode",
+      "name": "GLTF_SceneRootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5",
+      "name": "Liver_With_viens_5",
+      "semantic_name": "Liver_With_viens_5",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 5,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/Blue_0",
+      "name": "Blue_0",
+      "semantic_name": "Blue_0",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/Blue_0/Object_5",
+      "name": "Object_5",
+      "semantic_name": "Blue_0",
+      "depth": 5,
+      "mesh": "Object_0",
+      "material": "Blue1",
+      "triangles": 9966,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -5.668756,
+          -2.883852,
+          -3.803011
+        ],
+        "max": [
+          4.17722,
+          3.393644,
+          6.227437
+        ],
+        "size": [
+          9.845976,
+          6.277496,
+          10.030448
+        ],
+        "center": [
+          -0.745768,
+          0.254896,
+          1.212213
+        ],
+        "diagonal": 15.393508
+      }
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/GallBladder_1",
+      "name": "GallBladder_1",
+      "semantic_name": "GallBladder_1",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/GallBladder_1/Object_7",
+      "name": "Object_7",
+      "semantic_name": "GallBladder_1",
+      "depth": 5,
+      "mesh": "Object_1",
+      "material": "GallBladder1",
+      "triangles": 4176,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -4.522119,
+          -2.277156,
+          -1.201039
+        ],
+        "max": [
+          0.582175,
+          1.524513,
+          2.712425
+        ],
+        "size": [
+          5.104294,
+          3.801669,
+          3.913464
+        ],
+        "center": [
+          -1.969972,
+          -0.376321,
+          0.755693
+        ],
+        "diagonal": 7.471392
+      }
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/Liver_2",
+      "name": "Liver_2",
+      "semantic_name": "Liver_2",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/Liver_2/Object_9",
+      "name": "Object_9",
+      "semantic_name": "Liver_2",
+      "depth": 5,
+      "mesh": "Object_2",
+      "material": "blinn5",
+      "triangles": 10356,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -7.38367,
+          -3.65726,
+          -2.266125
+        ],
+        "max": [
+          6.323433,
+          4.693506,
+          6.410809
+        ],
+        "size": [
+          13.707103,
+          8.350766,
+          8.676934
+        ],
+        "center": [
+          -0.530118,
+          0.518123,
+          2.072342
+        ],
+        "diagonal": 18.245798
+      }
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/Purple_3",
+      "name": "Purple_3",
+      "semantic_name": "Purple_3",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/Purple_3/Object_11",
+      "name": "Object_11",
+      "semantic_name": "Purple_3",
+      "depth": 5,
+      "mesh": "Object_3",
+      "material": "Purple1",
+      "triangles": 5502,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -5.426579,
+          -2.973914,
+          -2.169473
+        ],
+        "max": [
+          7.413284,
+          2.596949,
+          4.820821
+        ],
+        "size": [
+          12.839863,
+          5.570863,
+          6.990294
+        ],
+        "center": [
+          0.993353,
+          -0.188482,
+          1.325674
+        ],
+        "diagonal": 15.644833
+      }
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/Red_4",
+      "name": "Red_4",
+      "semantic_name": "Red_4",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/Liver_With_viens_5/Red_4/Object_13",
+      "name": "Object_13",
+      "semantic_name": "Red_4",
+      "depth": 5,
+      "mesh": "Object_4",
+      "material": "Red1",
+      "triangles": 10367,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -3.80315,
+          -1.723768,
+          -4.11589
+        ],
+        "max": [
+          7.610981,
+          3.146466,
+          8.401923
+        ],
+        "size": [
+          11.41413,
+          4.870233,
+          12.517813
+        ],
+        "center": [
+          1.903915,
+          0.711349,
+          2.143017
+        ],
+        "diagonal": 17.626605
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 13707,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Blue1",
+          "morph_targets": 0,
+          "triangles": 9966,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 4990,
+            "connected_components": 3,
+            "boundary_edge_fraction": 0.00114,
+            "non_manifold_edge_fraction": 0.0004,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 9966,
+      "points": 0,
+      "lines": 0,
+      "vertices": 13707
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 5632,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "GallBladder1",
+          "morph_targets": 0,
+          "triangles": 4176,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 2090,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 4176,
+      "points": 0,
+      "lines": 0,
+      "vertices": 5632
+    },
+    {
+      "name": "Object_2",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 11592,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "blinn5",
+          "morph_targets": 0,
+          "triangles": 10356,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 5180,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 10356,
+      "points": 0,
+      "lines": 0,
+      "vertices": 11592
+    },
+    {
+      "name": "Object_3",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 7983,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Purple1",
+          "morph_targets": 0,
+          "triangles": 5502,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 2753,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 5502,
+      "points": 0,
+      "lines": 0,
+      "vertices": 7983
+    },
+    {
+      "name": "Object_4",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 13797,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Red1",
+          "morph_targets": 0,
+          "triangles": 10367,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 5183,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.0036,
+            "non_manifold_edge_fraction": 0.00438,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 10367,
+      "points": 0,
+      "lines": 0,
+      "vertices": 13797
+    }
+  ],
+  "materials": [
+    {
+      "name": "Blue1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "GallBladder1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "blinn5",
+      "alpha_mode": "BLEND",
+      "alpha_cutoff": null,
+      "base_color_alpha": 0.4,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "Purple1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "Red1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_specular"
+      ]
+    }
+  ],
+  "textures": []
+}

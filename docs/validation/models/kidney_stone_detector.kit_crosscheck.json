@@ -1,0 +1,33 @@
+{
+  "trainer": {
+    "map_50_95": 0.23123737867754052,
+    "ap_50": 0.6286374727151429,
+    "ap_75": 0.0890779068988777,
+    "ap_small": 0.2241348284631348,
+    "ap_medium": 0.5465346534653466,
+    "ap_large": null,
+    "ar_1": 0.18233830845771143,
+    "ar_10": 0.34825870646766177,
+    "ar_100": 0.3599502487562189,
+    "ar_small": 0.35620253164556964,
+    "ar_medium": 0.5714285714285714,
+    "ar_large": null
+  },
+  "kit": {
+    "dataset": "TEZ_ROI_AUG kidney stone detection (Roboflow)",
+    "dataset_version": "5085472ca7ecf856a18fb95240da90e16f81462283b0317295ca9cdedd38a7f6",
+    "evaluation_split": "test",
+    "model_checkpoint": "sha256:e9267f9a6e9fb36cc08fd27a888096209febf023ce2f140c5f7d38f6839b9fcb",
+    "prediction_source": "artifacts/training/kidney_stone_detector-20261024T161540Z/kit_crosscheck/predictions_coco.json",
+    "n_rows": 196,
+    "results_kind": "computed_from_supplied_labeled_evidence",
+    "medtw_accuracy_target": ">0.95 is an objective, not an assumed result",
+    "task": "bbox_detection",
+    "coco_mAP_50_95": 0.23123737867754052,
+    "coco_AP_50": 0.6286374727151429,
+    "coco_AP_75": 0.0890779068988777,
+    "COCO_reference_annotations": "artifacts/training/kidney_stone_detector-20261024T161540Z/kit_crosscheck/reference_publisher_test.json",
+    "evaluation_protocol": "COCOeval bbox default IoU thresholds, area bins and max detections"
+  },
+  "generated_by": "python -m ml_training.kit_crosscheck detection --model-id kidney_stone_detector --category kidney_stone"
+}

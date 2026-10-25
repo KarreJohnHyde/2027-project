@@ -1,0 +1,50 @@
+{
+  "listed_name": "archive (59).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (59).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "e8a34d88c7027ebbe21fc0e8cd2306a4fe44035c385a09be54b434bce97ed067",
+  "size_bytes": 9675853,
+  "entries": 1322,
+  "files": 1322,
+  "directories": 0,
+  "uncompressed_bytes": 174344961,
+  "overall_ratio": 18.51,
+  "max_entry_ratio": 27.6,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (1322 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "structured_annotation": 1319,
+    "tabular": 2,
+    "other": 1
+  },
+  "extensions": {
+    ".xml": 1319,
+    ".tcia": 1,
+    ".xlsx": 1,
+    ".xls": 1
+  },
+  "top_level": {
+    "LIDC-XML-only/": 1319,
+    "TCIA_LIDC-IDRI_20200921.tcia": 1,
+    "lidc-idri nodule counts (6-23-2015).xlsx": 1,
+    "tcia-diagnosis-data-2012-04-20.xls": 1
+  },
+  "second_level": {
+    "LIDC-XML-only/tcia-lidc-xml/": 1318
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_59.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 3.3,
+  "notes": []
+}

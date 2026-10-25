@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-joints-joints-of-vertebral-column-laryngeal-joints",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/joints/joints_of_vertebral_column--laryngeal_joints.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 1298360,
+  "sha256": "9cd366ce605b7c7253270b0394aeeb8a3f5cf9e10edba77230b4957d0d69840f",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2736
+      },
+      {
+        "type": "BIN",
+        "byteLength": 1295596
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 59707,
+    "validator_vertex_count": 51935
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 59707,
+    "rendered_triangles": 59707,
+    "unique_vertices": 51935,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 64,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.0027,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.051715,
+        0.85505,
+        -0.048327
+      ],
+      "max": [
+        0.051715,
+        1.587668,
+        0.088931
+      ],
+      "size": [
+        0.10343,
+        0.732618,
+        0.137258
+      ],
+      "center": [
+        0,
+        1.221359,
+        0.020302
+      ],
+      "diagonal": 0.752507
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 7.083,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "joints.joints_of_vertebral_column--laryngeal_joints",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "joints.joints_of_vertebral_column--laryngeal_joints"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "joints.joints_of_vertebral_column--laryngeal_joints"
+    ]
+  },
+  "inspection_ms": 88,
+  "nodes": [
+    {
+      "path": "joints.joints_of_vertebral_column--laryngeal_joints",
+      "name": "joints.joints_of_vertebral_column--laryngeal_joints",
+      "semantic_name": "joints.joints_of_vertebral_column--laryngeal_joints",
+      "depth": 0,
+      "mesh": "joints.joints_of_vertebral_column--laryngeal_joints",
+      "material": null,
+      "triangles": 59707,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.051715,
+          0.85505,
+          -0.048327
+        ],
+        "max": [
+          0.051715,
+          1.587668,
+          0.088931
+        ],
+        "size": [
+          0.10343,
+          0.732618,
+          0.137258
+        ],
+        "center": [
+          0,
+          1.221359,
+          0.020302
+        ],
+        "diagonal": 0.752507
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "joints.joints_of_vertebral_column--laryngeal_joints",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 51935,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 59707,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 30011,
+            "connected_components": 64,
+            "boundary_edge_fraction": 0.0027,
+            "non_manifold_edge_fraction": 0.00185,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 59707,
+      "points": 0,
+      "lines": 0,
+      "vertices": 51935
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

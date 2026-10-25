@@ -1,0 +1,2949 @@
+{
+  "asset_id": "male-skeleton-1",
+  "relative_path": "male_skeleton (1).glb",
+  "source_group": "workspace_root",
+  "bytes": 13380028,
+  "sha256": "5d3a2a19d69bd9b35fd526039e12cb776fabbb029e2121552f62f922e6ed6fbc",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 43356
+      },
+      {
+        "type": "BIN",
+        "byteLength": 13336644
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-16.21.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "projectkaizen (https://sketchfab.com/project_kaizen)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/male-skeleton-11b57ebfcf6c4e3b88d0cbe618ee70a7",
+      "title": "Male Skeleton"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 185,
+    "infos": 15,
+    "hints": 0,
+    "truncated": true,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 14,
+      "INFO:NODE_EMPTY": 1,
+      "WARNING:NODE_SKINNED_MESH_NON_ROOT": 14,
+      "WARNING:ACCESSOR_JOINTS_USED_ZERO_WEIGHT": 171
+    },
+    "draw_calls": 14,
+    "validator_triangle_count": 67540,
+    "validator_vertex_count": 39511
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 139,
+    "mesh_nodes": 14,
+    "meshes": 14,
+    "primitives": 14,
+    "materials": 14,
+    "textures": 5,
+    "animations": 0,
+    "skins": 1,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 67540,
+    "rendered_triangles": 67540,
+    "unique_vertices": 39511,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 14,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 245,
+    "closed_measured_primitives": 11,
+    "max_boundary_edge_fraction": 0.02688,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -5.858418,
+        -0.081729,
+        -1.477422
+      ],
+      "max": [
+        6.137446,
+        18.419332,
+        1.846533
+      ],
+      "size": [
+        11.995864,
+        18.501061,
+        3.323954
+      ],
+      "center": [
+        0.139514,
+        9.168801,
+        0.184556
+      ],
+      "diagonal": 22.298849
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 5.566,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 2,
+    "largest_mesh_node": "Object_6",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 14,
+    "names": [
+      "ArmsHands",
+      "HipsLegs",
+      "Sacrum",
+      "HipCartilage",
+      "Discs",
+      "Ribs",
+      "Sternum",
+      "RibCartilage",
+      "Spine",
+      "Hyoid",
+      "Cranium",
+      "UpperTeeth",
+      "Mandible",
+      "LowerTeeth"
+    ]
+  },
+  "textures_summary": {
+    "count": 5,
+    "total_bytes": 10305868,
+    "max_edge_px": 2048,
+    "mime_types": [
+      "image/jpeg"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "ArmsHands",
+      "HipsLegs",
+      "Sacrum",
+      "HipCartilage",
+      "Discs",
+      "Ribs",
+      "Sternum",
+      "RibCartilage",
+      "Spine",
+      "Hyoid",
+      "Cranium",
+      "UpperTeeth",
+      "Mandible",
+      "LowerTeeth"
+    ],
+    "anatomically_named_mesh_nodes": 6,
+    "anatomical_names_sample": [
+      "Ribs",
+      "Sternum",
+      "RibCartilage",
+      "Spine",
+      "Cranium",
+      "Mandible"
+    ]
+  },
+  "inspection_ms": 179,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx",
+      "name": "257a16c631aa4a00bfb60ea2410293fd.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3",
+      "name": "Object_3",
+      "semantic_name": null,
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 16,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint",
+      "name": "_rootJoint",
+      "semantic_name": "_rootJoint",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01",
+      "name": "blSkeleton_m4_35244_01",
+      "semantic_name": "blSkeleton_m4_35244_01",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02",
+      "name": "hip_02",
+      "semantic_name": "hip_02",
+      "depth": 6,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 5,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03",
+      "name": "abdomen_03",
+      "semantic_name": "abdomen_03",
+      "depth": 7,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04",
+      "name": "chest_04",
+      "semantic_name": "chest_04",
+      "depth": 8,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 7,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05",
+      "name": "neck_05",
+      "semantic_name": "neck_05",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06",
+      "name": "head_06",
+      "semantic_name": "head_06",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 4,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/rEye_00",
+      "name": "rEye_00",
+      "semantic_name": "rEye_00",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/lEye_07",
+      "name": "lEye_07",
+      "semantic_name": "lEye_07",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/upperJaw_08",
+      "name": "upperJaw_08",
+      "semantic_name": "upperJaw_08",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/lowerJaw_09",
+      "name": "lowerJaw_09",
+      "semantic_name": "lowerJaw_09",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/lowerJaw_09/tongueBase_010",
+      "name": "tongueBase_010",
+      "semantic_name": "tongueBase_010",
+      "depth": 12,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/lowerJaw_09/tongueBase_010/tongue01_011",
+      "name": "tongue01_011",
+      "semantic_name": "tongue01_011",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/lowerJaw_09/tongueBase_010/tongue01_011/tongue02_012",
+      "name": "tongue02_012",
+      "semantic_name": "tongue02_012",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/lowerJaw_09/tongueBase_010/tongue01_011/tongue02_012/tongue03_013",
+      "name": "tongue03_013",
+      "semantic_name": "tongue03_013",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/lowerJaw_09/tongueBase_010/tongue01_011/tongue02_012/tongue03_013/tongue04_014",
+      "name": "tongue04_014",
+      "semantic_name": "tongue04_014",
+      "depth": 16,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/lowerJaw_09/tongueBase_010/tongue01_011/tongue02_012/tongue03_013/tongue04_014/tongue05_015",
+      "name": "tongue05_015",
+      "semantic_name": "tongue05_015",
+      "depth": 17,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/neck_05/head_06/lowerJaw_09/tongueBase_010/tongue01_011/tongue02_012/tongue03_013/tongue04_014/tongue05_015/tongueTip_016",
+      "name": "tongueTip_016",
+      "semantic_name": "tongueTip_016",
+      "depth": 18,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017",
+      "name": "rCollar_017",
+      "semantic_name": "rCollar_017",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018",
+      "name": "rShldr_018",
+      "semantic_name": "rShldr_018",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019",
+      "name": "rForeArm_019",
+      "semantic_name": "rForeArm_019",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 3,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020",
+      "name": "rHand_020",
+      "semantic_name": "rHand_020",
+      "depth": 12,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 5,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rThumb1_021",
+      "name": "rThumb1_021",
+      "semantic_name": "rThumb1_021",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rThumb1_021/rThumb2_022",
+      "name": "rThumb2_022",
+      "semantic_name": "rThumb2_022",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rThumb1_021/rThumb2_022/rThumb3_023",
+      "name": "rThumb3_023",
+      "semantic_name": "rThumb3_023",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rThumb1_021/rThumbMC1_024",
+      "name": "rThumbMC1_024",
+      "semantic_name": "rThumbMC1_024",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rIndex1_025",
+      "name": "rIndex1_025",
+      "semantic_name": "rIndex1_025",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rIndex1_025/rIndex2_026",
+      "name": "rIndex2_026",
+      "semantic_name": "rIndex2_026",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rIndex1_025/rIndex2_026/rIndex3_027",
+      "name": "rIndex3_027",
+      "semantic_name": "rIndex3_027",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rMid1_028",
+      "name": "rMid1_028",
+      "semantic_name": "rMid1_028",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rMid1_028/rMid2_029",
+      "name": "rMid2_029",
+      "semantic_name": "rMid2_029",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rMid1_028/rMid2_029/rMid3_030",
+      "name": "rMid3_030",
+      "semantic_name": "rMid3_030",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rRing1_031",
+      "name": "rRing1_031",
+      "semantic_name": "rRing1_031",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rRing1_031/rRing2_032",
+      "name": "rRing2_032",
+      "semantic_name": "rRing2_032",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rRing1_031/rRing2_032/rRing3_033",
+      "name": "rRing3_033",
+      "semantic_name": "rRing3_033",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rPinky1_034",
+      "name": "rPinky1_034",
+      "semantic_name": "rPinky1_034",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rPinky1_034/rPinky2_035",
+      "name": "rPinky2_035",
+      "semantic_name": "rPinky2_035",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rHand_020/rPinky1_034/rPinky2_035/rPinky3_036",
+      "name": "rPinky3_036",
+      "semantic_name": "rPinky3_036",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rRadius_037",
+      "name": "rRadius_037",
+      "semantic_name": "rRadius_037",
+      "depth": 12,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rForeArm_019/rUlna_038",
+      "name": "rUlna_038",
+      "semantic_name": "rUlna_038",
+      "depth": 12,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rShldr_018/rHumerus_039",
+      "name": "rHumerus_039",
+      "semantic_name": "rHumerus_039",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rCollar_017/rScapula_040",
+      "name": "rScapula_040",
+      "semantic_name": "rScapula_040",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041",
+      "name": "lCollar_041",
+      "semantic_name": "lCollar_041",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042",
+      "name": "lShldr_042",
+      "semantic_name": "lShldr_042",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043",
+      "name": "lForeArm_043",
+      "semantic_name": "lForeArm_043",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 3,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044",
+      "name": "lHand_044",
+      "semantic_name": "lHand_044",
+      "depth": 12,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 5,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lThumb1_045",
+      "name": "lThumb1_045",
+      "semantic_name": "lThumb1_045",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lThumb1_045/lThumb2_046",
+      "name": "lThumb2_046",
+      "semantic_name": "lThumb2_046",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lThumb1_045/lThumb2_046/lThumb3_047",
+      "name": "lThumb3_047",
+      "semantic_name": "lThumb3_047",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lThumb1_045/lThumbMC1_048",
+      "name": "lThumbMC1_048",
+      "semantic_name": "lThumbMC1_048",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lIndex1_049",
+      "name": "lIndex1_049",
+      "semantic_name": "lIndex1_049",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lIndex1_049/lIndex2_050",
+      "name": "lIndex2_050",
+      "semantic_name": "lIndex2_050",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lIndex1_049/lIndex2_050/lIndex3_051",
+      "name": "lIndex3_051",
+      "semantic_name": "lIndex3_051",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lMid1_052",
+      "name": "lMid1_052",
+      "semantic_name": "lMid1_052",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lMid1_052/lMid2_053",
+      "name": "lMid2_053",
+      "semantic_name": "lMid2_053",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lMid1_052/lMid2_053/lMid3_054",
+      "name": "lMid3_054",
+      "semantic_name": "lMid3_054",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lRing1_055",
+      "name": "lRing1_055",
+      "semantic_name": "lRing1_055",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lRing1_055/lRing2_056",
+      "name": "lRing2_056",
+      "semantic_name": "lRing2_056",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lRing1_055/lRing2_056/lRing3_057",
+      "name": "lRing3_057",
+      "semantic_name": "lRing3_057",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lPinky1_058",
+      "name": "lPinky1_058",
+      "semantic_name": "lPinky1_058",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lPinky1_058/lPinky2_059",
+      "name": "lPinky2_059",
+      "semantic_name": "lPinky2_059",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lHand_044/lPinky1_058/lPinky2_059/lPinky3_060",
+      "name": "lPinky3_060",
+      "semantic_name": "lPinky3_060",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lRadius_061",
+      "name": "lRadius_061",
+      "semantic_name": "lRadius_061",
+      "depth": 12,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lForeArm_043/lUlna_062",
+      "name": "lUlna_062",
+      "semantic_name": "lUlna_062",
+      "depth": 12,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lShldr_042/lHumerus_063",
+      "name": "lHumerus_063",
+      "semantic_name": "lHumerus_063",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lCollar_041/lScapula_064",
+      "name": "lScapula_064",
+      "semantic_name": "lScapula_064",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t10_065",
+      "name": "t10_065",
+      "semantic_name": "t10_065",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t10_065/t11_066",
+      "name": "t11_066",
+      "semantic_name": "t11_066",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t10_065/t11_066/t12_067",
+      "name": "t12_067",
+      "semantic_name": "t12_067",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/lClavicle_068",
+      "name": "lClavicle_068",
+      "semantic_name": "lClavicle_068",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/rClavicle_069",
+      "name": "rClavicle_069",
+      "semantic_name": "rClavicle_069",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t1_070",
+      "name": "t1_070",
+      "semantic_name": "t1_070",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t1_070/c7_071",
+      "name": "c7_071",
+      "semantic_name": "c7_071",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t1_070/c7_071/c6_072",
+      "name": "c6_072",
+      "semantic_name": "c6_072",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t1_070/c7_071/c6_072/c5_073",
+      "name": "c5_073",
+      "semantic_name": "c5_073",
+      "depth": 12,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t1_070/c7_071/c6_072/c5_073/c4_074",
+      "name": "c4_074",
+      "semantic_name": "c4_074",
+      "depth": 13,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t1_070/c7_071/c6_072/c5_073/c4_074/c3_075",
+      "name": "c3_075",
+      "semantic_name": "c3_075",
+      "depth": 14,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t1_070/c7_071/c6_072/c5_073/c4_074/c3_075/c2_076",
+      "name": "c2_076",
+      "semantic_name": "c2_076",
+      "depth": 15,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/abdomen_03/chest_04/t1_070/c7_071/c6_072/c5_073/c4_074/c3_075/c2_076/c1_077",
+      "name": "c1_077",
+      "semantic_name": "c1_077",
+      "depth": 16,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/l5_078",
+      "name": "l5_078",
+      "semantic_name": "l5_078",
+      "depth": 7,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/l5_078/l4_079",
+      "name": "l4_079",
+      "semantic_name": "l4_079",
+      "depth": 8,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/l5_078/l4_079/l3_080",
+      "name": "l3_080",
+      "semantic_name": "l3_080",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/l5_078/l4_079/l3_080/l2_081",
+      "name": "l2_081",
+      "semantic_name": "l2_081",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/l5_078/l4_079/l3_080/l2_081/l1_082",
+      "name": "l1_082",
+      "semantic_name": "l1_082",
+      "depth": 11,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083",
+      "name": "rThigh_083",
+      "semantic_name": "rThigh_083",
+      "depth": 7,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084",
+      "name": "rShin_084",
+      "semantic_name": "rShin_084",
+      "depth": 8,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 4,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085",
+      "name": "rFoot_085",
+      "semantic_name": "rFoot_085",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 10,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rToe_086",
+      "name": "rToe_086",
+      "semantic_name": "rToe_086",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rMT1_087",
+      "name": "rMT1_087",
+      "semantic_name": "rMT1_087",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rMT2_088",
+      "name": "rMT2_088",
+      "semantic_name": "rMT2_088",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rMT3_089",
+      "name": "rMT3_089",
+      "semantic_name": "rMT3_089",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rMT4_090",
+      "name": "rMT4_090",
+      "semantic_name": "rMT4_090",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rMT5_091",
+      "name": "rMT5_091",
+      "semantic_name": "rMT5_091",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rIndexToe_092",
+      "name": "rIndexToe_092",
+      "semantic_name": "rIndexToe_092",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rMidToe_093",
+      "name": "rMidToe_093",
+      "semantic_name": "rMidToe_093",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rRingToe_094",
+      "name": "rRingToe_094",
+      "semantic_name": "rRingToe_094",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFoot_085/rPinkyToe_095",
+      "name": "rPinkyToe_095",
+      "semantic_name": "rPinkyToe_095",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rPatella_096",
+      "name": "rPatella_096",
+      "semantic_name": "rPatella_096",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rTibia_097",
+      "name": "rTibia_097",
+      "semantic_name": "rTibia_097",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rShin_084/rFibula_098",
+      "name": "rFibula_098",
+      "semantic_name": "rFibula_098",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/rThigh_083/rFemur_099",
+      "name": "rFemur_099",
+      "semantic_name": "rFemur_099",
+      "depth": 8,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100",
+      "name": "lThigh_0100",
+      "semantic_name": "lThigh_0100",
+      "depth": 7,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101",
+      "name": "lShin_0101",
+      "semantic_name": "lShin_0101",
+      "depth": 8,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 4,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102",
+      "name": "lFoot_0102",
+      "semantic_name": "lFoot_0102",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 10,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lToe_0103",
+      "name": "lToe_0103",
+      "semantic_name": "lToe_0103",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lMT1_0104",
+      "name": "lMT1_0104",
+      "semantic_name": "lMT1_0104",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lMT2_0105",
+      "name": "lMT2_0105",
+      "semantic_name": "lMT2_0105",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lMT3_0106",
+      "name": "lMT3_0106",
+      "semantic_name": "lMT3_0106",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lMT4_0107",
+      "name": "lMT4_0107",
+      "semantic_name": "lMT4_0107",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lMT5_0108",
+      "name": "lMT5_0108",
+      "semantic_name": "lMT5_0108",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lIndexToe_0109",
+      "name": "lIndexToe_0109",
+      "semantic_name": "lIndexToe_0109",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lMidToe_0110",
+      "name": "lMidToe_0110",
+      "semantic_name": "lMidToe_0110",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lRingToe_0111",
+      "name": "lRingToe_0111",
+      "semantic_name": "lRingToe_0111",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFoot_0102/lPinkyToe_0112",
+      "name": "lPinkyToe_0112",
+      "semantic_name": "lPinkyToe_0112",
+      "depth": 10,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lPatella_0113",
+      "name": "lPatella_0113",
+      "semantic_name": "lPatella_0113",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lTibia_0114",
+      "name": "lTibia_0114",
+      "semantic_name": "lTibia_0114",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lShin_0101/lFibula_0115",
+      "name": "lFibula_0115",
+      "semantic_name": "lFibula_0115",
+      "depth": 9,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/lThigh_0100/lFemur_0116",
+      "name": "lFemur_0116",
+      "semantic_name": "lFemur_0116",
+      "depth": 8,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/hip_02/bodyMorphs_0117",
+      "name": "bodyMorphs_0117",
+      "semantic_name": "bodyMorphs_0117",
+      "depth": 7,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/_rootJoint/blSkeleton_m4_35244_01/blSkeleton_m4_35244.Shape_0118",
+      "name": "blSkeleton_m4_35244.Shape_0118",
+      "semantic_name": "blSkeleton_m4_35244.Shape_0118",
+      "depth": 6,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_6",
+      "name": "Object_6",
+      "semantic_name": "ArmsHands",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_ArmsHands_0",
+      "material": "ArmsHands",
+      "triangles": 7844,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -5.858418,
+          9.122534,
+          -1.477422
+        ],
+        "max": [
+          6.137446,
+          15.429415,
+          1.799254
+        ],
+        "size": [
+          11.995864,
+          6.306881,
+          3.276676
+        ],
+        "center": [
+          0.139514,
+          12.275974,
+          0.160916
+        ],
+        "diagonal": 13.943246
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_7",
+      "name": "Object_7",
+      "semantic_name": "HipsLegs",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_HipsLegs_0",
+      "material": "HipsLegs",
+      "triangles": 6072,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -2.027854,
+          -0.081729,
+          -0.684334
+        ],
+        "max": [
+          2.027854,
+          11.117495,
+          1.846533
+        ],
+        "size": [
+          4.055709,
+          11.199224,
+          2.530867
+        ],
+        "center": [
+          0,
+          5.517883,
+          0.581099
+        ],
+        "diagonal": 12.176891
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_8",
+      "name": "Object_8",
+      "semantic_name": "Sacrum",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_Sacrum_0",
+      "material": "Sacrum",
+      "triangles": 950,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.588401,
+          9.184038,
+          -0.833908
+        ],
+        "max": [
+          0.588401,
+          10.628157,
+          0.050028
+        ],
+        "size": [
+          1.176801,
+          1.444118,
+          0.883936
+        ],
+        "center": [
+          0,
+          9.906097,
+          -0.39194
+        ],
+        "diagonal": 2.06196
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_9",
+      "name": "Object_9",
+      "semantic_name": "HipCartilage",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_HipCartilage_0",
+      "material": "HipCartilage",
+      "triangles": 80,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.055577,
+          9.003378,
+          0.475203
+        ],
+        "max": [
+          0.055577,
+          9.246705,
+          0.843269
+        ],
+        "size": [
+          0.111155,
+          0.243327,
+          0.368067
+        ],
+        "center": [
+          0,
+          9.125042,
+          0.659236
+        ],
+        "diagonal": 0.455013
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_10",
+      "name": "Object_10",
+      "semantic_name": "Discs",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_Discs_0",
+      "material": "Discs",
+      "triangles": 1664,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.27739,
+          10.133453,
+          -1.076668
+        ],
+        "max": [
+          0.27739,
+          16.502338,
+          0.246549
+        ],
+        "size": [
+          0.55478,
+          6.368885,
+          1.323217
+        ],
+        "center": [
+          0,
+          13.317896,
+          -0.41506
+        ],
+        "diagonal": 6.528506
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_11",
+      "name": "Object_11",
+      "semantic_name": "Ribs",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_Ribs_0",
+      "material": "Ribs",
+      "triangles": 3400,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -1.498565,
+          11.798004,
+          -1.286992
+        ],
+        "max": [
+          1.498565,
+          15.633706,
+          0.702971
+        ],
+        "size": [
+          2.99713,
+          3.835702,
+          1.989964
+        ],
+        "center": [
+          0,
+          13.715855,
+          -0.292011
+        ],
+        "diagonal": 5.258836
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_12",
+      "name": "Object_12",
+      "semantic_name": "Sternum",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_Sternum_0",
+      "material": "Sternum",
+      "triangles": 290,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.283032,
+          13.169262,
+          0.2179
+        ],
+        "max": [
+          0.283032,
+          15.019788,
+          0.96566
+        ],
+        "size": [
+          0.566065,
+          1.850526,
+          0.74776
+        ],
+        "center": [
+          0,
+          14.094525,
+          0.59178
+        ],
+        "diagonal": 2.074613
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_13",
+      "name": "Object_13",
+      "semantic_name": "RibCartilage",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_RibCartilage_0",
+      "material": "RibCartilage",
+      "triangles": 976,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -1.088831,
+          11.954428,
+          0.151593
+        ],
+        "max": [
+          1.088831,
+          15.033614,
+          1.010561
+        ],
+        "size": [
+          2.177662,
+          3.079186,
+          0.858968
+        ],
+        "center": [
+          0,
+          13.494021,
+          0.581077
+        ],
+        "diagonal": 3.868
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_14",
+      "name": "Object_14",
+      "semantic_name": "Spine",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_Spine_0",
+      "material": "Spine",
+      "triangles": 14222,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.472338,
+          10.172419,
+          -1.383039
+        ],
+        "max": [
+          0.472338,
+          16.871486,
+          0.259221
+        ],
+        "size": [
+          0.944675,
+          6.699068,
+          1.64226
+        ],
+        "center": [
+          0,
+          13.521953,
+          -0.561909
+        ],
+        "diagonal": 6.96182
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_15",
+      "name": "Object_15",
+      "semantic_name": "Hyoid",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_Hyoid_0",
+      "material": "Hyoid",
+      "triangles": 274,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.213176,
+          16.202607,
+          -0.144836
+        ],
+        "max": [
+          0.213176,
+          16.439644,
+          0.238217
+        ],
+        "size": [
+          0.426352,
+          0.237037,
+          0.383053
+        ],
+        "center": [
+          0,
+          16.321126,
+          0.04669
+        ],
+        "diagonal": 0.620236
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_16",
+      "name": "Object_16",
+      "semantic_name": "Cranium",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_Cranium_0",
+      "material": "Cranium",
+      "triangles": 11286,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.768201,
+          16.673562,
+          -1.236345
+        ],
+        "max": [
+          0.768201,
+          18.419332,
+          0.8562
+        ],
+        "size": [
+          1.536402,
+          1.74577,
+          2.092545
+        ],
+        "center": [
+          0,
+          17.546447,
+          -0.190072
+        ],
+        "diagonal": 3.128416
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_17",
+      "name": "Object_17",
+      "semantic_name": "UpperTeeth",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_UpperTeeth_0",
+      "material": "UpperTeeth",
+      "triangles": 8318,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.285322,
+          16.592874,
+          0.322912
+        ],
+        "max": [
+          0.285322,
+          16.741689,
+          0.810609
+        ],
+        "size": [
+          0.570644,
+          0.148815,
+          0.487697
+        ],
+        "center": [
+          0,
+          16.667282,
+          0.566761
+        ],
+        "diagonal": 0.765264
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_18",
+      "name": "Object_18",
+      "semantic_name": "Mandible",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_Mandible_0",
+      "material": "Mandible",
+      "triangles": 3744,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.709696,
+          16.182494,
+          -0.115537
+        ],
+        "max": [
+          0.709696,
+          17.055514,
+          0.768069
+        ],
+        "size": [
+          1.419393,
+          0.87302,
+          0.883606
+        ],
+        "center": [
+          0,
+          16.619004,
+          0.326266
+        ],
+        "diagonal": 1.88616
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_19",
+      "name": "Object_19",
+      "semantic_name": "LowerTeeth",
+      "depth": 4,
+      "mesh": "blSkeleton_m4_35244.Shape_LowerTeeth_0",
+      "material": "LowerTeeth",
+      "triangles": 8420,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.280518,
+          16.506042,
+          0.328396
+        ],
+        "max": [
+          0.280504,
+          16.673048,
+          0.782007
+        ],
+        "size": [
+          0.561022,
+          0.167006,
+          0.453611
+        ],
+        "center": [
+          -0.000007,
+          16.589545,
+          0.555202
+        ],
+        "diagonal": 0.74054
+      }
+    },
+    {
+      "path": "Sketchfab_model/257a16c631aa4a00bfb60ea2410293fd.fbx/RootNode/Object_3/Object_5",
+      "name": "Object_5",
+      "semantic_name": null,
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    }
+  ],
+  "meshes": [
+    {
+      "name": "blSkeleton_m4_35244.Shape_ArmsHands_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 4654,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "ArmsHands",
+          "morph_targets": 0,
+          "triangles": 7844,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 4050,
+            "connected_components": 64,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 7844,
+      "points": 0,
+      "lines": 0,
+      "vertices": 4654
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_HipsLegs_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 3664,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "HipsLegs",
+          "morph_targets": 0,
+          "triangles": 6072,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 3156,
+            "connected_components": 62,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 6072,
+      "points": 0,
+      "lines": 0,
+      "vertices": 3664
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_Sacrum_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 585,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Sacrum",
+          "morph_targets": 0,
+          "triangles": 950,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 462,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 950,
+      "points": 0,
+      "lines": 0,
+      "vertices": 585
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_HipCartilage_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 59,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "HipCartilage",
+          "morph_targets": 0,
+          "triangles": 80,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 42,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 80,
+      "points": 0,
+      "lines": 0,
+      "vertices": 59
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_Discs_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 1739,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Discs",
+          "morph_targets": 0,
+          "triangles": 1664,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 878,
+            "connected_components": 23,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 1664,
+      "points": 0,
+      "lines": 0,
+      "vertices": 1739
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_Ribs_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 2114,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Ribs",
+          "morph_targets": 0,
+          "triangles": 3400,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1748,
+            "connected_components": 24,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 3400,
+      "points": 0,
+      "lines": 0,
+      "vertices": 2114
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_Sternum_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 195,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Sternum",
+          "morph_targets": 0,
+          "triangles": 290,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 147,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 290,
+      "points": 0,
+      "lines": 0,
+      "vertices": 195
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_RibCartilage_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 714,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "RibCartilage",
+          "morph_targets": 0,
+          "triangles": 976,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 508,
+            "connected_components": 12,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 976,
+      "points": 0,
+      "lines": 0,
+      "vertices": 714
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_Spine_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 8011,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Spine",
+          "morph_targets": 0,
+          "triangles": 14222,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 7083,
+            "connected_components": 24,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 14222,
+      "points": 0,
+      "lines": 0,
+      "vertices": 8011
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_Hyoid_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 160,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Hyoid",
+          "morph_targets": 0,
+          "triangles": 274,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 139,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 274,
+      "points": 0,
+      "lines": 0,
+      "vertices": 160
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_Cranium_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 6090,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Cranium",
+          "morph_targets": 0,
+          "triangles": 11286,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 5646,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.00165,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 11286,
+      "points": 0,
+      "lines": 0,
+      "vertices": 6090
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_UpperTeeth_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 4736,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "UpperTeeth",
+          "morph_targets": 0,
+          "triangles": 8318,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 4332,
+            "connected_components": 15,
+            "boundary_edge_fraction": 0.02548,
+            "non_manifold_edge_fraction": 0.00024,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 8318,
+      "points": 0,
+      "lines": 0,
+      "vertices": 4736
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_Mandible_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 2023,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Mandible",
+          "morph_targets": 0,
+          "triangles": 3744,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1874,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 3744,
+      "points": 0,
+      "lines": 0,
+      "vertices": 2023
+    },
+    {
+      "name": "blSkeleton_m4_35244.Shape_LowerTeeth_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 4767,
+          "indexed": true,
+          "attributes": [
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "LowerTeeth",
+          "morph_targets": 0,
+          "triangles": 8420,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 4395,
+            "connected_components": 15,
+            "boundary_edge_fraction": 0.02688,
+            "non_manifold_edge_fraction": 0.00016,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 8420,
+      "points": 0,
+      "lines": 0,
+      "vertices": 4767
+    }
+  ],
+  "materials": [
+    {
+      "name": "ArmsHands",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "HipsLegs",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Sacrum",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "HipCartilage",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Discs",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Ribs",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Sternum",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "RibCartilage",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Spine",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Hyoid",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Cranium",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "UpperTeeth",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Mandible",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "LowerTeeth",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 2565941,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 2385801,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 2786780,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 1940068,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 627278,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    }
+  ]
+}

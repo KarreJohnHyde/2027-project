@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-muscular-muscles-of-abdomen-2",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/muscular/muscles_of_abdomen.2.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 844744,
+  "sha256": "bf66ccc668cb276291506593c31a84b8bc6f946819fde6605635530233f40b4e",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2668
+      },
+      {
+        "type": "BIN",
+        "byteLength": 842048
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 49509,
+    "validator_vertex_count": 27091
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 49509,
+    "rendered_triangles": 49509,
+    "unique_vertices": 27091,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 8,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.00007,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.127422,
+        0.841514,
+        -0.020119
+      ],
+      "max": [
+        0.08168,
+        1.258635,
+        0.175858
+      ],
+      "size": [
+        0.209102,
+        0.417122,
+        0.195977
+      ],
+      "center": [
+        -0.022871,
+        1.050074,
+        0.077869
+      ],
+      "diagonal": 0.506084
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 2.128,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "muscular.muscles_of_abdomen.2",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "muscular.muscles_of_abdomen.2"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "muscular.muscles_of_abdomen.2"
+    ]
+  },
+  "inspection_ms": 68,
+  "nodes": [
+    {
+      "path": "muscular.muscles_of_abdomen.2",
+      "name": "muscular.muscles_of_abdomen.2",
+      "semantic_name": "muscular.muscles_of_abdomen.2",
+      "depth": 0,
+      "mesh": "muscular.muscles_of_abdomen.2",
+      "material": null,
+      "triangles": 49509,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.127422,
+          0.841514,
+          -0.020119
+        ],
+        "max": [
+          0.08168,
+          1.258635,
+          0.175858
+        ],
+        "size": [
+          0.209102,
+          0.417122,
+          0.195977
+        ],
+        "center": [
+          -0.022871,
+          1.050074,
+          0.077869
+        ],
+        "diagonal": 0.506084
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "muscular.muscles_of_abdomen.2",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 27091,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 49509,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 24757,
+            "connected_components": 8,
+            "boundary_edge_fraction": 0.00007,
+            "non_manifold_edge_fraction": 0.00032,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 49509,
+      "points": 0,
+      "lines": 0,
+      "vertices": 27091
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

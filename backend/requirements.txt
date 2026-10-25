@@ -1,0 +1,27 @@
+# Runtime dependencies imported by backend/app. Keep ML wheels in the separate
+# CPU/GPU-specific requirements file so the deployment target is explicit.
+fastapi==0.159.1
+uvicorn[standard]==0.54.0
+python-multipart==0.0.32
+SQLAlchemy==2.1.6
+python-jose[cryptography]==3.5.0
+bcrypt==5.0.0
+numpy==2.5.2
+scipy==1.18.1
+Pillow==12.3.0
+pypdf==5.5.0
+python-docx==1.1.2
+openpyxl==3.1.5
+psutil==7.2.2
+# Medical image containers (DICOM, NIfTI, NRRD/MetaImage)
+pydicom==3.0.2
+nibabel==5.4.2
+SimpleITK==2.5.6
+# COCO bbox mAP for the Validation Center (same evaluator as MedTwin_2_Validation_Kit)
+pycocotools==2.0.11
+# Scanned-page OCR (ONNX models bundled in the wheel; runs locally, nothing leaves the host)
+onnxruntime==1.31.0
+rapidocr-onnxruntime==1.4.4
+pypdfium2==5.14.0
+# Encryption at rest for stored uploads (AES-256-GCM)
+cryptography==50.0.2

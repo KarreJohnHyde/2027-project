@@ -1,0 +1,49 @@
+{
+  "listed_name": "archive (1).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (1).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "45836be9b73a339b37b044afef7695a8e24d9e8f40fe7764b8eb4a20692e0072",
+  "size_bytes": 1512187814,
+  "entries": 16324,
+  "files": 16324,
+  "directories": 0,
+  "uncompressed_bytes": 1530251813,
+  "overall_ratio": 1.01,
+  "max_entry_ratio": 8.3,
+  "project_copy": "D:\\project\\archive (1).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (16324 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 9473,
+    "dicom": 6850,
+    "tabular": 1
+  },
+  "extensions": {
+    ".png": 9473,
+    ".dcm": 6850,
+    ".csv": 1
+  },
+  "top_level": {
+    "Brain_Stroke_CT_Dataset/": 16324
+  },
+  "second_level": {
+    "Brain_Stroke_CT_Dataset/Normal/": 8854,
+    "Brain_Stroke_CT_Dataset/Ischemia/": 3390,
+    "Brain_Stroke_CT_Dataset/Bleeding/": 3279,
+    "Brain_Stroke_CT_Dataset/External_Test/": 801
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_01.entries.csv",
+  "mask_like_files": 200,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 42.1,
+  "notes": []
+}

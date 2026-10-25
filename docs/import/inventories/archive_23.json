@@ -1,0 +1,47 @@
+{
+  "listed_name": "archive (23).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (23).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "e9263a41019981cf117d1a21962a96fdcb10506a8a944f778d2379dc04dc6977",
+  "size_bytes": 2263831564,
+  "entries": 1053,
+  "files": 1053,
+  "directories": 0,
+  "uncompressed_bytes": 7805292667,
+  "overall_ratio": 3.45,
+  "max_entry_ratio": 330.1,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (1053 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "volume": 750,
+    "document": 153,
+    "other": 150
+  },
+  "extensions": {
+    ".nii": 750,
+    ".md": 153,
+    ".cfg": 150
+  },
+  "top_level": {
+    "database/": 1053
+  },
+  "second_level": {
+    "database/training/": 701,
+    "database/testing/": 351
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_23.entries.csv",
+  "mask_like_files": 300,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 9.6,
+  "notes": []
+}

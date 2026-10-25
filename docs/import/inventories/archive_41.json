@@ -1,0 +1,42 @@
+{
+  "listed_name": "archive (41).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (41).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "380ce7ff504cb8aa89349a251c64841a09aadbfe410627df94e6a62e67a23891",
+  "size_bytes": 122546,
+  "entries": 2,
+  "files": 2,
+  "directories": 0,
+  "uncompressed_bytes": 140652,
+  "overall_ratio": 1.15,
+  "max_entry_ratio": 2.8,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (2 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "tabular": 2
+  },
+  "extensions": {
+    ".xlsx": 1,
+    ".csv": 1
+  },
+  "top_level": {
+    "PCOS_data_without_infertility.xlsx": 1,
+    "PCOS_infertility.csv": 1
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_41.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.0,
+  "notes": []
+}

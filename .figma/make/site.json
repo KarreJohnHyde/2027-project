@@ -1,0 +1,11 @@
+{
+  "title": "MedTwin Research Workspace",
+  "description": "Multimodal digital twin and longitudinal clinical research analytics workspace.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

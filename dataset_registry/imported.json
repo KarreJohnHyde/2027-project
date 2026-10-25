@@ -1,0 +1,1358 @@
+{
+  "generated_at": "2026-10-25T07:34:21+00:00",
+  "tool": "scripts/archive_audit_and_extract.py",
+  "archives": [
+    {
+      "archive_id": "anatomy-of-the-airways",
+      "source_archive": "anatomy-of-the-airways.zip",
+      "source_sha256": "000c6781ce805a8893ff1f8bd633e7a7e96e762aa7ece4feb27193a9df9f2857",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 6561840,
+      "content_categories": {
+        "anatomy_3d": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_00",
+      "source_archive": "archive.zip",
+      "source_sha256": "cdabc840ff7cd8781344189efeaa12fe77359b5e1818f126c2804fadd8cf9c95",
+      "batch": "NAMED_24",
+      "status": "EXTRACTED_VERIFIED",
+      "location": "D:\\project\\_imports\\archives\\archive_00",
+      "duplicate_of": null,
+      "files": 6795,
+      "uncompressed_bytes": 150987529,
+      "content_categories": {
+        "raster_image": 6795
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_01",
+      "source_archive": "archive (1).zip",
+      "source_sha256": "45836be9b73a339b37b044afef7695a8e24d9e8f40fe7764b8eb4a20692e0072",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 16324,
+      "uncompressed_bytes": 1530251813,
+      "content_categories": {
+        "raster_image": 9473,
+        "dicom": 6850,
+        "tabular": 1
+      },
+      "mask_like_files": 200,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_02",
+      "source_archive": "archive (2).zip",
+      "source_sha256": "882817250048c78ef7a759cf23e540d7b581f2327b16663c9d3db12f5d2ffdb4",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 7200,
+      "uncompressed_bytes": 167848957,
+      "content_categories": {
+        "raster_image": 7200
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_03",
+      "source_archive": "archive (3).zip",
+      "source_sha256": "a48c05894b0f161d642a14cf5b2d678ce562bfe90e3d6d136a0537ae420b7cdc",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 7153,
+      "uncompressed_bytes": 161507006,
+      "content_categories": {
+        "raster_image": 7153
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_04",
+      "source_archive": "archive (4).zip",
+      "source_sha256": "74760fa45836117b6cc34d434290bf11d14845d8100ded2aca15a4a1e826a2eb",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 113,
+      "uncompressed_bytes": 3613560,
+      "content_categories": {
+        "raster_image": 113
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_05",
+      "source_archive": "archive (5).zip",
+      "source_sha256": "33d53f64af3014325aa6c754cec146296b2e3bfeb65ebb24830b2522f25167b4",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 702,
+      "uncompressed_bytes": 323084808,
+      "content_categories": {
+        "dicom": 350,
+        "raster_image": 350,
+        "tabular": 1,
+        "document": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_06",
+      "source_archive": "archive (6).zip",
+      "source_sha256": "3eb4be5cb16f19b1c6111e8ae51487251c253b48ae48f4e90c1a81f9270679e3",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 3007,
+      "uncompressed_bytes": 492340475,
+      "content_categories": {
+        "raster_image": 3000,
+        "structured_annotation": 6,
+        "text": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 3,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_07",
+      "source_archive": "archive (7).zip",
+      "source_sha256": "cc646fa9d61ee03baecef51019bccce07a3edfae6af8e841690a91fd51419e27",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 2274,
+      "uncompressed_bytes": 332045761,
+      "content_categories": {
+        "raster_image": 2274
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_08",
+      "source_archive": "archive (8).zip",
+      "source_sha256": "ced74262eaf6ec06679930e881988de842cfa7f1a66735d0d7ea6ecf996c9bfa",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 182,
+      "uncompressed_bytes": 30938299984,
+      "content_categories": {
+        "volume": 182
+      },
+      "mask_like_files": 131,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_09",
+      "source_archive": "archive (9).zip",
+      "source_sha256": "1c3a2cfaf51ced1b63df34a990744152c58332800b5f8c2d32217483e02570c4",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1411,
+      "uncompressed_bytes": 73525292,
+      "content_categories": {
+        "raster_image": 1411
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_10",
+      "source_archive": "archive (10).zip",
+      "source_sha256": "3ab718053bc08472075923ff6b0a146e08b7d1abf025f05f6af1257d89188ba7",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 7360,
+      "uncompressed_bytes": 961115981,
+      "content_categories": {
+        "raster_image": 7360
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_11",
+      "source_archive": "archive (11).zip",
+      "source_sha256": "587e2fd3195aebc8a186b64d4643bbb8559f5d4fa06a7ac4b6177dabb2efc687",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 2603,
+      "uncompressed_bytes": 21675527,
+      "content_categories": {
+        "text": 1302,
+        "raster_image": 1300,
+        "structured_annotation": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 1300,
+      "license_evidence": [
+        "CC-BY-4.0 in README.dataset.txt"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_12",
+      "source_archive": "archive (12).zip",
+      "source_sha256": "3940064617feabd45e4a94cbfdf2c148ac76d23a37eaa2f85914d9ac8372333e",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 15569,
+      "uncompressed_bytes": 2230858685,
+      "content_categories": {
+        "raster_image": 15569
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_13",
+      "source_archive": "archive (13).zip",
+      "source_sha256": "2e6a2839916ea32749b4a49cfa01f4a6a495b0f9261700b611cdbd781a11038d",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 4054,
+      "uncompressed_bytes": 67851981,
+      "content_categories": {
+        "raster_image": 4054
+      },
+      "mask_like_files": 4054,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_14",
+      "source_archive": "archive (14).zip",
+      "source_sha256": "70fee851f151f5c360a78f674599465adba725efb5948c7d0d0c83003915e2b9",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 6323,
+      "uncompressed_bytes": 1889401511,
+      "content_categories": {
+        "raster_image": 6323
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_15",
+      "source_archive": "archive (15).zip",
+      "source_sha256": "d96eb622bfc9fbc9a8cdb0940eb9c8dccc276a0e2e738da3acec9fcfe15352c5",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1669,
+      "uncompressed_bytes": 345271984,
+      "content_categories": {
+        "raster_image": 1669
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_16",
+      "source_archive": "archive (16).zip",
+      "source_sha256": "ceafcc3b2209ce5fb4e395f7e823159818c03c8af50d7f450ec7a4550ee0c6b4",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 8000,
+      "uncompressed_bytes": 2522481791,
+      "content_categories": {
+        "raster_image": 8000
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_17",
+      "source_archive": "archive (17).zip",
+      "source_sha256": "6083798374901a690ea9c83ceb07b83c869a76ef28b1bad3708004304cb301c2",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 8000,
+      "uncompressed_bytes": 1808006478,
+      "content_categories": {
+        "raster_image": 8000
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_18",
+      "source_archive": "archive (18).zip",
+      "source_sha256": "8f31ea6fe506e4562e9695dcd41fa1f9e58d9c4775733a7a5f3f0390807e8878",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 8000,
+      "uncompressed_bytes": 2522481791,
+      "content_categories": {
+        "raster_image": 8000
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_19",
+      "source_archive": "archive (19).zip",
+      "source_sha256": "442512c3671f9c9c1f528223be9a9244c2ec51ce4e1cd89f402d01c9fcf7f9d3",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 11955,
+      "uncompressed_bytes": 371389541,
+      "content_categories": {
+        "raster_image": 11955
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_20",
+      "source_archive": "archive (20).zip",
+      "source_sha256": "1a2f1df5f4661ae560fb5dd63b7ddda31f045b2e49dbfa288e605b4143dc7fa3",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 9620,
+      "uncompressed_bytes": 394666547,
+      "content_categories": {
+        "raster_image": 9618,
+        "text": 2
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_21",
+      "source_archive": "archive (21).zip",
+      "source_sha256": "69b3b7c272285c70a95bf16ef421c8b91f692bd551a454384522ea23d9882421",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 10865,
+      "uncompressed_bytes": 1352871663,
+      "content_categories": {
+        "raster_image": 10865
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_22",
+      "source_archive": "archive (22).zip",
+      "source_sha256": "5f743b0ecd296cc762a6851f290d9a99f1ce152281f9ce2b4a79d2fc75181333",
+      "batch": "NAMED_24",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 15639,
+      "uncompressed_bytes": 794885459,
+      "content_categories": {
+        "raster_image": 15639
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_23",
+      "source_archive": "archive (23).zip",
+      "source_sha256": "e9263a41019981cf117d1a21962a96fdcb10506a8a944f778d2379dc04dc6977",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1053,
+      "uncompressed_bytes": 7805292667,
+      "content_categories": {
+        "volume": 750,
+        "document": 153,
+        "other": 150
+      },
+      "mask_like_files": 300,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_24",
+      "source_archive": "archive (24).zip",
+      "source_sha256": "afc03e03cc38b677c4fa2d83afe44b8c89b7dbf306268b7cb034c0b75b12b26a",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "PARTIALLY_PRESENT",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 223,
+      "uncompressed_bytes": 12421988686,
+      "content_categories": {
+        "volume": 210,
+        "code": 6,
+        "no_extension": 3,
+        "document": 2,
+        "structured_annotation": 1,
+        "text": 1
+      },
+      "mask_like_files": 210,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "CC-BY-NC in LICENSE",
+        "CC-BY-SA in LICENSE",
+        "CITATION_REQUIRED in README.md",
+        "MIT in LICENSE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_25",
+      "source_archive": "archive (25).zip",
+      "source_sha256": "3f5223b5e2be7c90d03861f940a7cc7b72ff35d66ef7e59823ae0e0545a20b88",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "PARTIALLY_PRESENT",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 4004,
+      "uncompressed_bytes": 159736020,
+      "content_categories": {
+        "raster_image": 3000,
+        "tabular": 1000,
+        "document": 2,
+        "text": 2
+      },
+      "mask_like_files": 3000,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_26",
+      "source_archive": "archive (26).zip",
+      "source_sha256": "9686563dff5cf7ebaf97fc618d9fc367f24ebee98a38ef67cd2e48122d2e1889",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "PARTIALLY_PRESENT",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 157,
+      "uncompressed_bytes": 151844307,
+      "content_categories": {
+        "volume": 105,
+        "code": 24,
+        "no_extension": 10,
+        "structured_annotation": 6,
+        "document": 4,
+        "other": 3,
+        "raster_image": 3,
+        "tabular": 1,
+        "text": 1
+      },
+      "mask_like_files": 104,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "Apache-2.0 in LICENSE",
+        "CITATION_REQUIRED in README.md"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_27",
+      "source_archive": "archive (27).zip",
+      "source_sha256": "6bce9a89158f5d54b5fead1665ed9b29a009002a7dd2915cdbde6a4452363761",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 4,
+      "uncompressed_bytes": 7925149903,
+      "content_categories": {
+        "other": 4
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_28",
+      "source_archive": "archive (28).zip",
+      "source_sha256": "f8035fab1351224b62bb40fa4082bc1abe2c442d2c62787886960d6b9d4e99fc",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 12239,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_29",
+      "source_archive": "archive (29).zip",
+      "source_sha256": "44c9dee9d3072915a677a2d1f15ad6269ca0a1a9258ca9b100789f2e377e4974",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 38114,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_30",
+      "source_archive": "archive (30).zip",
+      "source_sha256": "2430fe41f8469463734dff5d9b9b500d1d985d113000f269cd8f5ad999313a75",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 87354,
+      "uncompressed_bytes": 3187052877,
+      "content_categories": {
+        "waveform": 87348,
+        "text": 2,
+        "tabular": 2,
+        "no_extension": 1,
+        "code": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "CC-BY-4.0 in LICENSE.txt"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_31",
+      "source_archive": "archive (31).zip",
+      "source_sha256": "83c150178a7a10439862a66b2703869aadc11f201c359436ae1df77d2b5e7485",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 316971,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_32",
+      "source_archive": "archive (32).zip",
+      "source_sha256": "0e85d1b46534464a7d36903a0a22a057501cd3de0938aeaa99004b6645a8ac1a",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 7623837,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_33",
+      "source_archive": "archive (33).zip",
+      "source_sha256": "ae3ff2d86f811bf422e4994e082e8b8fe1f71171a106273df1f09a082431512a",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 23930,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_34",
+      "source_archive": "archive (34).zip",
+      "source_sha256": "8feb2b162941756dc0bb18c2e02a0dad229b5cc28033b4419f6ad4891f5eb430",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 46183,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_35",
+      "source_archive": "archive (35).zip",
+      "source_sha256": "96e57dd91632c10d71ffc97736dd21bbb642125c8710bfb0e7092d93cfc943b8",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 31860,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_36",
+      "source_archive": "archive (36).zip",
+      "source_sha256": "8de74aa69dd0af5aa672615f094fbab9926c24c513bf88c2e59126c7dc5f227e",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 48551,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_37",
+      "source_archive": "archive (37).zip",
+      "source_sha256": "7a0c879f303c49c3778639558c214cdce885a69c528eb08d98c9d065d14c79d9",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 3810356,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_38",
+      "source_archive": "archive (38).zip",
+      "source_sha256": "74edbb082915d1f43daed5e7f1c777dc8eca6cd2a6cbf10eb3805b45f07a1068",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 2,
+      "uncompressed_bytes": 569850,
+      "content_categories": {
+        "tabular": 2
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_39",
+      "source_archive": "archive (39).zip",
+      "source_sha256": "7ada48c54e7ca93b6755eadc8da8828ad8a9a6695917ad723e6f36a2011b5396",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 34627,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_40",
+      "source_archive": "archive (40).zip",
+      "source_sha256": "f1ee175765fd5e65183a07a5d66d6029ec6b9746680c74eba7a2730b1467bc32",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 125204,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_41",
+      "source_archive": "archive (41).zip",
+      "source_sha256": "380ce7ff504cb8aa89349a251c64841a09aadbfe410627df94e6a62e67a23891",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 2,
+      "uncompressed_bytes": 140652,
+      "content_categories": {
+        "tabular": 2
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_42",
+      "source_archive": "archive (42).zip",
+      "source_sha256": "27d9079b324b4971649240e1f5a39dfd1ef51eda986ae8a165548048864e8405",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 228715,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_43",
+      "source_archive": "archive (43).zip",
+      "source_sha256": "f48dda69e79d78285f08e59798c720df99f75f3d1b9e2dafb28b81b1804a9bd5",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 3141732,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_44",
+      "source_archive": "archive (44).zip",
+      "source_sha256": "c6bc36f4b555008073333f0aa4888ddc5f51fc90e23ee1a8a0512e770a5ea7d3",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 870,
+      "uncompressed_bytes": 18746349,
+      "content_categories": {
+        "raster_image": 480,
+        "structured_annotation": 390
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_45",
+      "source_archive": "archive (45).zip",
+      "source_sha256": "730913166eb4cccdf5ad38d35e948706aaea963eb276171a9c2d9e4972ddc817",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 7052,
+      "uncompressed_bytes": 160190965,
+      "content_categories": {
+        "raster_image": 3526,
+        "text": 3526
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 3526,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_46",
+      "source_archive": "archive (46).zip",
+      "source_sha256": "edb036207c35bda609571900ddb73b7d5815bea9327b8984239c01507e20b029",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 6038,
+      "uncompressed_bytes": 643649319,
+      "content_categories": {
+        "raster_image": 6033,
+        "other": 2,
+        "tabular": 2,
+        "checkpoint": 1
+      },
+      "mask_like_files": 2446,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_47",
+      "source_archive": "archive (47).zip",
+      "source_sha256": "19e237f8064d502c46e0b0b3ba5c29596c336f61bee5d38dbe58192299ec2412",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 15115,
+      "uncompressed_bytes": 10415946876,
+      "content_categories": {
+        "raster_image": 15114,
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_48",
+      "source_archive": "archive (48).zip",
+      "source_sha256": "5cbd0c51b429eab0b85dcff0b050e4aee4040469d325b4b58c0308fbbf2e2f80",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 374,
+      "uncompressed_bytes": 1622850328,
+      "content_categories": {
+        "raster_image": 374
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_49",
+      "source_archive": "archive (49).zip",
+      "source_sha256": "76b0b466a805147a1f13f599f034c2915a9e468f30241ded00882d5c1ccc420e",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 3000,
+      "uncompressed_bytes": 91021236,
+      "content_categories": {
+        "raster_image": 3000
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_50",
+      "source_archive": "archive (50).zip",
+      "source_sha256": "7b6ad5f8a2991361e0be336906173938f489b7586217b7cf51176e74fa4eb1a1",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 17007236,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_51",
+      "source_archive": "archive (51).zip",
+      "source_sha256": "515d0fa3e66fb61c4a899784dd2e2ea9e5edb244041c6f1b39e40def9f0721a3",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 6270282,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_52",
+      "source_archive": "archive (52).zip",
+      "source_sha256": "fe139852fd5d86ef00257ee96f1bf7e113c7d0e2704592d1f28ebcd4bc1786ea",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 29061,
+      "uncompressed_bytes": 2226810020,
+      "content_categories": {
+        "raster_image": 29060,
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_53",
+      "source_archive": "archive (53).zip",
+      "source_sha256": "c910de6566bf0acd089d117e8052edaf8d4798422a2ef261e115a0a278f82f5f",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 12889756,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_54",
+      "source_archive": "archive (54).zip",
+      "source_sha256": "7e379a010fa061b8a1e50c64772cc5c77e38a5aaba8503c6a7d8fc966f4eead3",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 22835609,
+      "content_categories": {
+        "tabular": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_55",
+      "source_archive": "archive (55).zip",
+      "source_sha256": "38f6f6a8f8f72c303cb70e7f3bf99e8c0648c6c039bbf1b7eb8193ef523124ae",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1,
+      "uncompressed_bytes": 145,
+      "content_categories": {
+        "text": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_56",
+      "source_archive": "archive (56).zip",
+      "source_sha256": "b7d7d7ddf011c1ea8daed0ce9a53a27910b2be413c2a3dff86a412872f2eb673",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 10033,
+      "uncompressed_bytes": 1039452401,
+      "content_categories": {
+        "other": 10030,
+        "tabular": 2,
+        "text": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_57",
+      "source_archive": "archive (57).zip",
+      "source_sha256": "8827db3d2312a4fec029dabfb27381d09c5ffaed440b38df03a7d806676cbc3b",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 16520,
+      "uncompressed_bytes": 836929018,
+      "content_categories": {
+        "raster_image": 16520
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_58",
+      "source_archive": "archive (58).zip",
+      "source_sha256": "df9e34b2fcfe1d96573d126fcf0d37da49631b8f999016e872e83679e7ca3dd0",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 16596,
+      "uncompressed_bytes": 92633117,
+      "content_categories": {
+        "text": 8298,
+        "raster_image": 8296,
+        "structured_annotation": 2
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 8296,
+      "license_evidence": [
+        "CC-BY-4.0 in README.dataset.txt"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_59",
+      "source_archive": "archive (59).zip",
+      "source_sha256": "e8a34d88c7027ebbe21fc0e8cd2306a4fe44035c385a09be54b434bce97ed067",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 1322,
+      "uncompressed_bytes": 174344961,
+      "content_categories": {
+        "structured_annotation": 1319,
+        "tabular": 2,
+        "other": 1
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    },
+    {
+      "archive_id": "archive_60",
+      "source_archive": "archive (60).zip",
+      "source_sha256": "d95a96e1e8a4d035ae8f326d1e7498ff69fefa15c1bb072521cf596d542f2588",
+      "batch": "SUPPLEMENTARY_2026_10_25_USER_EXTRACTED",
+      "status": "ALREADY_PRESENT_VERIFIED",
+      "location": "D:/project",
+      "duplicate_of": null,
+      "files": 40013,
+      "uncompressed_bytes": 3371262938,
+      "content_categories": {
+        "raster_image": 40009,
+        "tabular": 4
+      },
+      "mask_like_files": 0,
+      "coco_like_json": 0,
+      "yolo_like_label_files": 0,
+      "license_evidence": [
+        "NO_LICENSE_FILE_IN_ARCHIVE"
+      ],
+      "training_eligibility": "NOT_DETERMINED_SEE_TASK_REGISTRY"
+    }
+  ]
+}

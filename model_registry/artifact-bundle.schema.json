@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://medtwin.local/schemas/model-artifact-bundle-v1.json",
+  "title": "MedTwin reproducible model artifact bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dataset_version",
+    "dataset_license",
+    "split_manifest_path",
+    "task_definition",
+    "label_definition",
+    "preprocessing_version",
+    "checkpoint_path",
+    "checkpoint_sha256",
+    "calibration",
+    "decision_thresholds",
+    "abstention_thresholds",
+    "held_out_predictions_path",
+    "evaluation_report_path",
+    "model_card_path"
+  ],
+  "properties": {
+    "dataset_version": { "type": ["string", "null"] },
+    "dataset_license": { "type": ["string", "null"] },
+    "split_manifest_path": { "type": ["string", "null"] },
+    "task_definition": { "type": ["string", "null"] },
+    "label_definition": { "type": ["object", "null"] },
+    "preprocessing_version": { "type": ["string", "null"] },
+    "checkpoint_path": { "type": ["string", "null"] },
+    "checkpoint_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[a-fA-F0-9]{64}$"
+    },
+    "calibration": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["method", "parameters"],
+          "properties": {
+            "method": { "type": "string" },
+            "parameters": { "type": "object" }
+          }
+        }
+      ]
+    },
+    "decision_thresholds": { "type": ["object", "null"] },
+    "abstention_thresholds": { "type": ["object", "null"] },
+    "held_out_predictions_path": { "type": ["string", "null"] },
+    "evaluation_report_path": { "type": ["string", "null"] },
+    "model_card_path": { "type": ["string", "null"] }
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "asset_id": "anatomy-main-public-models-liver",
+  "relative_path": "anatomy-main/public/models/liver.glb",
+  "source_group": "anatomy_main_repository",
+  "bytes": 2660384,
+  "sha256": "e4f11a9c0762eb9dc4309dcd0d5c3e3958ccacab915267da4e7775894b674990",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2604
+      },
+      {
+        "type": "BIN",
+        "byteLength": 2657752
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "glTF-Transform v4.4.2",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "EXT_texture_webp",
+      "KHR_materials_volume",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "EXT_texture_webp",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 1,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 345526,
+    "validator_vertex_count": 214401
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 1,
+    "textures": 1,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 345526,
+    "rendered_triangles": 345526,
+    "unique_vertices": 214401,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 36,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.00001,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.496613,
+        0.000061,
+        -0.256156
+      ],
+      "max": [
+        0.496552,
+        0.999939,
+        0.256187
+      ],
+      "size": [
+        0.993165,
+        0.999878,
+        0.512343
+      ],
+      "center": [
+        -0.000031,
+        0.5,
+        0.000015
+      ],
+      "diagonal": 1.499542
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 1.952,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "tripo_node_1c7e641c-603f-41bd-b81d-f90f99063845",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": [
+      "tripo_material_1c7e641c-603f-41bd-b81d-f90f99063845"
+    ]
+  },
+  "textures_summary": {
+    "count": 1,
+    "total_bytes": 419392,
+    "max_edge_px": 2048,
+    "mime_types": [
+      "image/webp"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "tripo_node_1c7e641c-603f-41bd-b81d-f90f99063845"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 541,
+  "nodes": [
+    {
+      "path": "tripo_node_1c7e641c-603f-41bd-b81d-f90f99063845",
+      "name": "tripo_node_1c7e641c-603f-41bd-b81d-f90f99063845",
+      "semantic_name": "tripo_node_1c7e641c-603f-41bd-b81d-f90f99063845",
+      "depth": 0,
+      "mesh": "meshes[0]",
+      "material": "tripo_material_1c7e641c-603f-41bd-b81d-f90f99063845",
+      "triangles": 345526,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.496613,
+          0.000061,
+          -0.256156
+        ],
+        "max": [
+          0.496552,
+          0.999939,
+          0.256187
+        ],
+        "size": [
+          0.993165,
+          0.999878,
+          0.512343
+        ],
+        "center": [
+          -0.000031,
+          0.5,
+          0.000015
+        ],
+        "diagonal": 1.499542
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "meshes[0]",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 214401,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "tripo_material_1c7e641c-603f-41bd-b81d-f90f99063845",
+          "morph_targets": 0,
+          "triangles": 345526,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 172386,
+            "connected_components": 36,
+            "boundary_edge_fraction": 0.00001,
+            "non_manifold_edge_fraction": 0.00011,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 345526,
+      "points": 0,
+      "lines": 0,
+      "vertices": 214401
+    }
+  ],
+  "materials": [
+    {
+      "name": "tripo_material_1c7e641c-603f-41bd-b81d-f90f99063845",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": false,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": [
+    {
+      "name": "liver+anatomy+3d+model_basecolor.jpg",
+      "mime_type": "image/webp",
+      "bytes": 419392,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+# Local GPU workstation lock (RTX 5060, NVIDIA driver 617.14, CUDA 13.0 runtime).
+# Installed into .venv by scripts/setup_ml_stack.ps1 on top of requirements.txt.
+# torch/torchvision come from the PyTorch cu130 index and are already present;
+# they are listed so the lock is complete, not to force a reinstall.
+--extra-index-url https://download.pytorch.org/whl/cu130
+torch==2.14.1+cu130
+torchvision==0.29.1+cu130
+monai==1.6.1

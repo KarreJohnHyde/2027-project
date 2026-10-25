@@ -1,0 +1,40 @@
+{
+  "listed_name": "archive (55).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (55).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "38f6f6a8f8f72c303cb70e7f3bf99e8c0648c6c039bbf1b7eb8193ef523124ae",
+  "size_bytes": 291,
+  "entries": 1,
+  "files": 1,
+  "directories": 0,
+  "uncompressed_bytes": 145,
+  "overall_ratio": 1.2,
+  "max_entry_ratio": 1.2,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (1 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "text": 1
+  },
+  "extensions": {
+    ".txt": 1
+  },
+  "top_level": {
+    "dataset_link.txt": 1
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_55.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.0,
+  "notes": []
+}

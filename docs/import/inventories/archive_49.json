@@ -1,0 +1,46 @@
+{
+  "listed_name": "archive (49).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (49).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "76b0b466a805147a1f13f599f034c2915a9e468f30241ded00882d5c1ccc420e",
+  "size_bytes": 90784996,
+  "entries": 3000,
+  "files": 3000,
+  "directories": 0,
+  "uncompressed_bytes": 91021236,
+  "overall_ratio": 1.01,
+  "max_entry_ratio": 1.1,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (3000 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 3000
+  },
+  "extensions": {
+    ".jpg": 3000
+  },
+  "top_level": {
+    "Otoscopic_Data/": 3000
+  },
+  "second_level": {
+    "Otoscopic_Data/Acute Otitis Media/": 600,
+    "Otoscopic_Data/Cerumen Impaction/": 600,
+    "Otoscopic_Data/Chronic Otitis Media/": 600,
+    "Otoscopic_Data/Myringosclerosis/": 600,
+    "Otoscopic_Data/Normal/": 600
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_49.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 7.1,
+  "notes": []
+}

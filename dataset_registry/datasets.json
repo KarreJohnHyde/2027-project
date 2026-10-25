@@ -1,0 +1,3252 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-23T16:52:10.373728+00:00",
+  "workspace": "D:\\project",
+  "safety": {
+    "read_only_source_scan": true,
+    "symlinks_followed": false,
+    "dicom_tags_emitted": false,
+    "folder_names_treated_as_verified_labels": false
+  },
+  "scan_policy": {
+    "max_files_per_path": 200000,
+    "max_directories_per_path": 50000,
+    "format_probe_limit_per_path": 12,
+    "duplicate_hash_file_budget": 256,
+    "duplicate_hash_byte_budget": 1073741824
+  },
+  "root_metadata_evidence": [
+    "README.dataset.txt",
+    "README.roboflow.txt",
+    "data.yaml",
+    "Brain_MRI_conditions.csv"
+  ],
+  "datasets": [
+    {
+      "dataset_id": "2d-segmentation-dataset",
+      "source_path": "D:\\project\\2d segmentation dataset",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "IMAGE_MASK_FILENAME_PAIRS",
+      "classes": [],
+      "sample_count": 4054,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "2d segmentation dataset"
+      ],
+      "file_inventory": {
+        "files_scanned": 4054,
+        "directories_scanned": 4,
+        "total_bytes": 67851981,
+        "extension_counts": {
+          ".png": 4054
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": {
+          "image_files": 2027,
+          "mask_files": 2027,
+          "matching_stems": 2027,
+          "image_stems_without_mask": 0,
+          "mask_stems_without_image": 0,
+          "bounded_content_probe": {
+            "pairs_checked": 12,
+            "pairs_with_matching_dimensions": 12,
+            "unreadable_pairs": 0,
+            "mask_grayscale_color_cardinalities": [
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5
+            ]
+          },
+          "semantics": "filename pairing only; mask content and subject identity not validated"
+        }
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "behsof",
+      "source_path": "D:\\project\\BEHSOF",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1669,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "NAFLD",
+        "Non-NAFLD"
+      ],
+      "file_inventory": {
+        "files_scanned": 1669,
+        "directories_scanned": 3,
+        "total_bytes": 345271984,
+        "extension_counts": {
+          ".jpg": 1669
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "benchmarks",
+      "source_path": "D:\\project\\benchmarks",
+      "path_exists": true,
+      "registry_kind": "engineering_artifact_not_medical_dataset",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 0,
+      "sample_count_semantics": "no medical media files detected",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "NOT_A_MEDICAL_DATASET",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "Contains software benchmark code/results, not source medical data.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "__pycache__",
+        "results"
+      ],
+      "file_inventory": {
+        "files_scanned": 5,
+        "directories_scanned": 3,
+        "total_bytes": 499263,
+        "extension_counts": {
+          ".json": 1,
+          ".md": 1,
+          ".py": 1,
+          ".pyc": 1,
+          ".txt": 1
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [
+        "README.md",
+        "results\\http-benchmark-20261023-171927.json"
+      ],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {}
+    },
+    {
+      "dataset_id": "brain-stroke-ct-dataset",
+      "source_path": "D:\\project\\Brain_Stroke_CT_Dataset",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "CSV_UNVERIFIED_SCHEMA",
+      "classes": [],
+      "sample_count": 16323,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "DICOM tags were not read or emitted; PHI/de-identification status is unverified.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "Bleeding",
+        "External_Test",
+        "Ischemia",
+        "Normal"
+      ],
+      "file_inventory": {
+        "files_scanned": 16324,
+        "directories_scanned": 17,
+        "total_bytes": 1530251813,
+        "extension_counts": {
+          ".png": 9473,
+          ".dcm": 6850,
+          ".csv": 1
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [
+        "External_Test\\labels.csv"
+      ],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [
+          {
+            "path": "External_Test\\labels.csv",
+            "format": "CSV",
+            "columns": [
+              "image_id",
+              "Stroke"
+            ],
+            "data_rows": 200,
+            "semantics": "unverified"
+          }
+        ],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        },
+        "dicom": {
+          "preamble_valid": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "cerebrovascular-lesions",
+      "source_path": "D:\\project\\cerebrovascular lesions",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 10865,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "Acute ischemic infarction",
+        "Chronic ischemic infarction",
+        "Epidural hemorrhage",
+        "Healthy Control",
+        "Mixed cerebrovascular disease",
+        "Parenchymal hemorrhage",
+        "Subarachnoid arachnoid hemorrhage",
+        "Subdural effusion",
+        "Subdural hemorrhage",
+        "Ventricular hemorrhage"
+      ],
+      "file_inventory": {
+        "files_scanned": 10865,
+        "directories_scanned": 11,
+        "total_bytes": 1352871663,
+        "extension_counts": {
+          ".png": 10865
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "data",
+      "source_path": "D:\\project\\data",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "COCO_JSON",
+      "classes": [
+        "1",
+        "10",
+        "10a",
+        "11",
+        "12",
+        "12a",
+        "12b",
+        "13",
+        "14",
+        "14a",
+        "14b",
+        "15",
+        "16",
+        "16a",
+        "16b",
+        "16c",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "9a",
+        "stenosis"
+      ],
+      "sample_count": 9795,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "Hemorrhagic",
+        "NORMAL",
+        "stenosis",
+        "syntax"
+      ],
+      "file_inventory": {
+        "files_scanned": 9801,
+        "directories_scanned": 69,
+        "total_bytes": 643326955,
+        "extension_counts": {
+          ".jpg": 6795,
+          ".png": 3000,
+          ".json": 6
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [
+        "stenosis\\test\\annotations\\test.json",
+        "stenosis\\train\\annotations\\train.json",
+        "stenosis\\val\\annotations\\val.json",
+        "syntax\\test\\annotations\\test.json",
+        "syntax\\train\\annotations\\train.json",
+        "syntax\\val\\annotations\\val.json"
+      ],
+      "annotation_evidence": {
+        "coco": [
+          {
+            "path": "stenosis\\test\\annotations\\test.json",
+            "format": "COCO_JSON",
+            "images": 300,
+            "annotations": 386,
+            "categories": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "9a",
+              "10",
+              "10a",
+              "11",
+              "12",
+              "12a",
+              "13",
+              "14",
+              "14a",
+              "15",
+              "16",
+              "16a",
+              "16b",
+              "16c",
+              "12b",
+              "14b",
+              "stenosis"
+            ],
+            "duplicate_image_ids": 0,
+            "duplicate_annotation_ids": 0,
+            "orphan_annotations": 0,
+            "orphan_category_references": 0,
+            "invalid_bboxes": 0,
+            "missing_referenced_image_files": 0
+          },
+          {
+            "path": "stenosis\\train\\annotations\\train.json",
+            "format": "COCO_JSON",
+            "images": 1000,
+            "annotations": 1625,
+            "categories": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "9a",
+              "10",
+              "10a",
+              "11",
+              "12",
+              "12a",
+              "13",
+              "14",
+              "14a",
+              "15",
+              "16",
+              "16a",
+              "16b",
+              "16c",
+              "12b",
+              "14b",
+              "stenosis"
+            ],
+            "duplicate_image_ids": 0,
+            "duplicate_annotation_ids": 560,
+            "orphan_annotations": 0,
+            "orphan_category_references": 0,
+            "invalid_bboxes": 0,
+            "missing_referenced_image_files": 0
+          },
+          {
+            "path": "stenosis\\val\\annotations\\val.json",
+            "format": "COCO_JSON",
+            "images": 200,
+            "annotations": 406,
+            "categories": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "9a",
+              "10",
+              "10a",
+              "11",
+              "12",
+              "12a",
+              "13",
+              "14",
+              "14a",
+              "15",
+              "16",
+              "16a",
+              "16b",
+              "16c",
+              "12b",
+              "14b",
+              "stenosis"
+            ],
+            "duplicate_image_ids": 0,
+            "duplicate_annotation_ids": 0,
+            "orphan_annotations": 0,
+            "orphan_category_references": 0,
+            "invalid_bboxes": 0,
+            "missing_referenced_image_files": 0
+          },
+          {
+            "path": "syntax\\test\\annotations\\test.json",
+            "format": "COCO_JSON",
+            "images": 300,
+            "annotations": 1672,
+            "categories": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "9a",
+              "10",
+              "10a",
+              "11",
+              "12",
+              "12a",
+              "13",
+              "14",
+              "14a",
+              "15",
+              "16",
+              "16a",
+              "16b",
+              "16c",
+              "12b",
+              "14b",
+              "stenosis"
+            ],
+            "duplicate_image_ids": 0,
+            "duplicate_annotation_ids": 0,
+            "orphan_annotations": 0,
+            "orphan_category_references": 0,
+            "invalid_bboxes": 0,
+            "missing_referenced_image_files": 0
+          },
+          {
+            "path": "syntax\\train\\annotations\\train.json",
+            "format": "COCO_JSON",
+            "images": 1000,
+            "annotations": 4976,
+            "categories": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "9a",
+              "10",
+              "10a",
+              "11",
+              "12",
+              "12a",
+              "13",
+              "14",
+              "14a",
+              "15",
+              "16",
+              "16a",
+              "16b",
+              "16c",
+              "12b",
+              "14b",
+              "stenosis"
+            ],
+            "duplicate_image_ids": 0,
+            "duplicate_annotation_ids": 1348,
+            "orphan_annotations": 0,
+            "orphan_category_references": 0,
+            "invalid_bboxes": 0,
+            "missing_referenced_image_files": 0
+          },
+          {
+            "path": "syntax\\val\\annotations\\val.json",
+            "format": "COCO_JSON",
+            "images": 200,
+            "annotations": 1168,
+            "categories": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "9a",
+              "10",
+              "10a",
+              "11",
+              "12",
+              "12a",
+              "13",
+              "14",
+              "14a",
+              "15",
+              "16",
+              "16a",
+              "16b",
+              "16c",
+              "12b",
+              "14b",
+              "stenosis"
+            ],
+            "duplicate_image_ids": 0,
+            "duplicate_annotation_ids": 0,
+            "orphan_annotations": 0,
+            "orphan_category_references": 0,
+            "invalid_bboxes": 0,
+            "missing_referenced_image_files": 0
+          }
+        ],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "class_semantics": "declared COCO category names; clinical meaning not independently verified",
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "dataset",
+      "source_path": "D:\\project\\DATASET",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 24712,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "directory_splits_observed_not_patient_verified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Directory split names do not prove patient/study-disjoint partitioning.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "Brain Tumor CT scan Images",
+        "Brain Tumor MRI images",
+        "Dataset",
+        "test",
+        "train",
+        "val"
+      ],
+      "file_inventory": {
+        "files_scanned": 24714,
+        "directories_scanned": 26,
+        "total_bytes": 3318709331,
+        "extension_counts": {
+          ".jpg": 23021,
+          ".png": 1671,
+          ".jpeg": 20,
+          ".txt": 2
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [
+        "Brain Tumor CT scan Images\\CT image source.txt",
+        "Brain Tumor MRI images\\MRI image source.txt"
+      ],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "observed_split_directory_names": [
+        "test",
+        "train",
+        "val"
+      ],
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "dyed-lifted-polyps",
+      "source_path": "D:\\project\\dyed-lifted-polyps",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "dyed-lifted-polyps"
+      ],
+      "file_inventory": {
+        "files_scanned": 1000,
+        "directories_scanned": 2,
+        "total_bytes": 172156683,
+        "extension_counts": {
+          ".jpg": 1000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "dyed-resection-margins",
+      "source_path": "D:\\project\\dyed-resection-margins",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "dyed-resection-margins"
+      ],
+      "file_inventory": {
+        "files_scanned": 1000,
+        "directories_scanned": 2,
+        "total_bytes": 174649289,
+        "extension_counts": {
+          ".jpg": 1000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "esophagitis",
+      "source_path": "D:\\project\\esophagitis",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "esophagitis"
+      ],
+      "file_inventory": {
+        "files_scanned": 1000,
+        "directories_scanned": 2,
+        "total_bytes": 529507131,
+        "extension_counts": {
+          ".jpg": 1000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "external-test",
+      "source_path": "D:\\project\\External_test",
+      "path_exists": true,
+      "registry_kind": "possible_split_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 639,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "split_fragment_name_observed_not_verified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Directory split names do not prove patient/study-disjoint partitioning.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "Hemorrhage",
+        "Ischemia",
+        "Normal"
+      ],
+      "file_inventory": {
+        "files_scanned": 639,
+        "directories_scanned": 4,
+        "total_bytes": 37530532,
+        "extension_counts": {
+          ".jpg": 639
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "gastrovision",
+      "source_path": "D:\\project\\Gastrovision",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 8000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "Accessory tools",
+        "Angiectasia",
+        "Barretts esophagus",
+        "Blood in lumen",
+        "Cecum",
+        "Colon diverticula",
+        "Colon polyps",
+        "Colorectal cancer",
+        "Duodenal bulb",
+        "Dyed-lifted-polyps",
+        "Dyed-resection-margins",
+        "Erythema",
+        "Esophageal varices",
+        "Esophagitis",
+        "Gastric polyps",
+        "Gastroesophageal_junction_normal z-line",
+        "Ileocecal valve",
+        "Mucosal inflammation large bowel",
+        "Normal esophagus",
+        "Normal mucosa and vascular pattern in the large bowel",
+        "Normal stomach",
+        "Pylorus",
+        "Resected polyps",
+        "Resection margins",
+        "Retroflex rectum",
+        "Small bowel_terminal ileum",
+        "Ulcer"
+      ],
+      "file_inventory": {
+        "files_scanned": 8000,
+        "directories_scanned": 28,
+        "total_bytes": 1808006478,
+        "extension_counts": {
+          ".jpg": 8000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "kvasir-dataset-v2",
+      "source_path": "D:\\project\\kvasir-dataset-v2",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 8000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "dyed-lifted-polyps",
+        "dyed-resection-margins",
+        "esophagitis",
+        "normal-cecum",
+        "normal-pylorus",
+        "normal-z-line",
+        "polyps",
+        "ulcerative-colitis"
+      ],
+      "file_inventory": {
+        "files_scanned": 8000,
+        "directories_scanned": 9,
+        "total_bytes": 2522481791,
+        "extension_counts": {
+          ".jpg": 8000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "lungcancerdataset",
+      "source_path": "D:\\project\\LungcancerDataSet",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 2274,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "Data",
+        "Test cases"
+      ],
+      "file_inventory": {
+        "files_scanned": 2274,
+        "directories_scanned": 24,
+        "total_bytes": 332045761,
+        "extension_counts": {
+          ".png": 1185,
+          ".jpg": 1089
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "mri-tumor-detection-dataset-training-and-testing",
+      "source_path": "D:\\project\\mri-tumor-detection-dataset(training and testing)",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 113,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "directory_splits_observed_not_patient_verified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Directory split names do not prove patient/study-disjoint partitioning.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "Testing",
+        "Training"
+      ],
+      "file_inventory": {
+        "files_scanned": 113,
+        "directories_scanned": 11,
+        "total_bytes": 3613560,
+        "extension_counts": {
+          ".jpg": 113
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "observed_split_directory_names": [
+        "testing",
+        "training"
+      ],
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "normal-cecum",
+      "source_path": "D:\\project\\normal-cecum",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "normal-cecum"
+      ],
+      "file_inventory": {
+        "files_scanned": 1000,
+        "directories_scanned": 2,
+        "total_bytes": 181192540,
+        "extension_counts": {
+          ".jpg": 1000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "normal-pylorus",
+      "source_path": "D:\\project\\normal-pylorus",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "normal-pylorus"
+      ],
+      "file_inventory": {
+        "files_scanned": 1000,
+        "directories_scanned": 2,
+        "total_bytes": 593761389,
+        "extension_counts": {
+          ".jpg": 1000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "normal-z-line",
+      "source_path": "D:\\project\\normal-z-line",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "normal-z-line"
+      ],
+      "file_inventory": {
+        "files_scanned": 1000,
+        "directories_scanned": 2,
+        "total_bytes": 515145025,
+        "extension_counts": {
+          ".jpg": 1000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "polyps",
+      "source_path": "D:\\project\\polyps",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "polyps"
+      ],
+      "file_inventory": {
+        "files_scanned": 1000,
+        "directories_scanned": 2,
+        "total_bytes": 176815830,
+        "extension_counts": {
+          ".jpg": 1000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "segmentations",
+      "source_path": "D:\\project\\segmentations",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_component",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 131,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [],
+      "file_inventory": {
+        "files_scanned": 131,
+        "directories_scanned": 1,
+        "total_bytes": 21249963040,
+        "extension_counts": {
+          ".nii": 131
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "nifti": {
+          "header_valid": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "split-data",
+      "source_path": "D:\\project\\split_data",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 15569,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "directory_splits_observed_not_patient_verified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Directory split names do not prove patient/study-disjoint partitioning.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "test",
+        "train",
+        "val"
+      ],
+      "file_inventory": {
+        "files_scanned": 15569,
+        "directories_scanned": 16,
+        "total_bytes": 2230858685,
+        "extension_counts": {
+          ".jpg": 14788,
+          ".png": 781
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "observed_split_directory_names": [
+        "test",
+        "train",
+        "val"
+      ],
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "st000001",
+      "source_path": "D:\\project\\ST000001",
+      "path_exists": true,
+      "registry_kind": "dataset_candidate",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 700,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "DICOM tags were not read or emitted; PHI/de-identification status is unverified.",
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "SE000001",
+        "SE000002",
+        "SE000003",
+        "SE000004",
+        "SE000005",
+        "SE000006",
+        "SE000007",
+        "SE000008",
+        "SE000009",
+        "SE000010"
+      ],
+      "file_inventory": {
+        "files_scanned": 700,
+        "directories_scanned": 11,
+        "total_bytes": 322975410,
+        "extension_counts": {
+          ".dcm": 350,
+          ".jpg": 350
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": {
+          "dicom_files": 350,
+          "jpeg_files": 350,
+          "matching_relative_stems": 350,
+          "dicom_stems_without_jpeg": 0,
+          "jpeg_stems_without_dicom": 0,
+          "semantics": "filename pairing only; pixel equivalence and derivation history not validated"
+        }
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        },
+        "dicom": {
+          "preamble_valid": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "test",
+      "source_path": "D:\\project\\test",
+      "path_exists": true,
+      "registry_kind": "mixed_collection_or_split",
+      "medical_domain": "mixed_or_unknown; kidney-stone declared only for images/labels subset",
+      "modality": "unknown",
+      "task": "mixed_root; object_detection declared only for images/labels subset",
+      "annotation_format": "YOLO_NORMALIZED_TEXT_CANDIDATE",
+      "classes": [
+        "Tas_Var"
+      ],
+      "sample_count": 6944,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "split_fragment_name_observed_not_verified",
+      "license_status": "DECLARED_CC_BY_4_0_FOR_SCOPED_ROBOFLOW_SUBSET",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "Directory split names do not prove patient/study-disjoint partitioning.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "AD_MildDemented",
+        "AD_ModerateDemented",
+        "AD_VeryMildDemented",
+        "BT_glioma",
+        "BT_meningioma",
+        "BT_pituitary",
+        "Hemorrhage",
+        "Ischemia",
+        "MS",
+        "Normal",
+        "glioma",
+        "images",
+        "labels",
+        "meningioma",
+        "notumor",
+        "pituitary"
+      ],
+      "file_inventory": {
+        "files_scanned": 7067,
+        "directories_scanned": 17,
+        "total_bytes": 287772024,
+        "extension_counts": {
+          ".jpg": 6432,
+          ".png": 512,
+          ".txt": 123
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": {
+          "format": "YOLO_NORMALIZED_TEXT_CANDIDATE",
+          "files_checked": 60,
+          "nonempty_lines_checked": 122,
+          "invalid_lines": 0,
+          "observed_class_ids": [
+            0
+          ],
+          "scope": "bounded sample; directory context only"
+        },
+        "yolo_image_label_pairing": [
+          {
+            "relative_group": "test",
+            "image_files": 123,
+            "label_files": 123,
+            "matching_stems": 123,
+            "images_without_label_file": 0,
+            "labels_without_image": 0,
+            "semantics": "filename pairing only; empty label files may represent negative images"
+          }
+        ],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      },
+      "scoped_declared_subset": {
+        "configuration": "data.yaml",
+        "documentation": [
+          "README.dataset.txt",
+          "README.roboflow.txt"
+        ],
+        "declared_classes": [
+          "Tas_Var"
+        ],
+        "declared_license": "CC BY 4.0",
+        "declared_task": "object_detection",
+        "declared_subject": "Kidney-stones",
+        "scope": "Only the train/images, train/labels, valid/images, valid/labels, test/images, and test/labels paths referenced by data.yaml."
+      },
+      "class_semantics": "declared by root data.yaml for the images/labels subset only"
+    },
+    {
+      "dataset_id": "testing",
+      "source_path": "D:\\project\\Testing",
+      "path_exists": true,
+      "registry_kind": "possible_split_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1600,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "split_fragment_name_observed_not_verified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Directory split names do not prove patient/study-disjoint partitioning.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "glioma",
+        "meningioma",
+        "notumor",
+        "pituitary"
+      ],
+      "file_inventory": {
+        "files_scanned": 1600,
+        "directories_scanned": 5,
+        "total_bytes": 33785458,
+        "extension_counts": {
+          ".jpg": 1600
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "train",
+      "source_path": "D:\\project\\train",
+      "path_exists": true,
+      "registry_kind": "mixed_collection_or_split",
+      "medical_domain": "mixed_or_unknown; kidney-stone declared only for images/labels subset",
+      "modality": "unknown",
+      "task": "mixed_root; object_detection declared only for images/labels subset",
+      "annotation_format": "YOLO_NORMALIZED_TEXT_CANDIDATE",
+      "classes": [
+        "Tas_Var"
+      ],
+      "sample_count": 28341,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "split_fragment_name_observed_not_verified",
+      "license_status": "DECLARED_CC_BY_4_0_FOR_SCOPED_ROBOFLOW_SUBSET",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "Directory split names do not prove patient/study-disjoint partitioning.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "AD_MildDemented",
+        "AD_ModerateDemented",
+        "AD_VeryMildDemented",
+        "BT_glioma",
+        "BT_meningioma",
+        "BT_pituitary",
+        "Hemorrhage",
+        "Ischemia",
+        "MS",
+        "Normal",
+        "glioma",
+        "images",
+        "labels",
+        "meningioma",
+        "notumor",
+        "pituitary"
+      ],
+      "file_inventory": {
+        "files_scanned": 29395,
+        "directories_scanned": 17,
+        "total_bytes": 1021980020,
+        "extension_counts": {
+          ".jpg": 26289,
+          ".png": 2052,
+          ".txt": 1054
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": {
+          "format": "YOLO_NORMALIZED_TEXT_CANDIDATE",
+          "files_checked": 60,
+          "nonempty_lines_checked": 195,
+          "invalid_lines": 0,
+          "observed_class_ids": [
+            0
+          ],
+          "scope": "bounded sample; directory context only"
+        },
+        "yolo_image_label_pairing": [
+          {
+            "relative_group": "train",
+            "image_files": 1054,
+            "label_files": 1054,
+            "matching_stems": 1054,
+            "images_without_label_file": 0,
+            "labels_without_image": 0,
+            "semantics": "filename pairing only; empty label files may represent negative images"
+          }
+        ],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      },
+      "scoped_declared_subset": {
+        "configuration": "data.yaml",
+        "documentation": [
+          "README.dataset.txt",
+          "README.roboflow.txt"
+        ],
+        "declared_classes": [
+          "Tas_Var"
+        ],
+        "declared_license": "CC BY 4.0",
+        "declared_task": "object_detection",
+        "declared_subject": "Kidney-stones",
+        "scope": "Only the train/images, train/labels, valid/images, valid/labels, test/images, and test/labels paths referenced by data.yaml."
+      },
+      "class_semantics": "declared by root data.yaml for the images/labels subset only"
+    },
+    {
+      "dataset_id": "training",
+      "source_path": "D:\\project\\Training",
+      "path_exists": true,
+      "registry_kind": "possible_split_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 5600,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "split_fragment_name_observed_not_verified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Directory split names do not prove patient/study-disjoint partitioning.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "glioma",
+        "meningioma",
+        "notumor",
+        "pituitary"
+      ],
+      "file_inventory": {
+        "files_scanned": 5600,
+        "directories_scanned": 5,
+        "total_bytes": 134063499,
+        "extension_counts": {
+          ".jpg": 5600
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "ulcerative-colitis",
+      "source_path": "D:\\project\\ulcerative-colitis",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_fragment",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 1000,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "ulcerative-colitis"
+      ],
+      "file_inventory": {
+        "files_scanned": 1000,
+        "directories_scanned": 2,
+        "total_bytes": 179253904,
+        "extension_counts": {
+          ".jpg": 1000
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      }
+    },
+    {
+      "dataset_id": "valid",
+      "source_path": "D:\\project\\valid",
+      "path_exists": true,
+      "registry_kind": "mixed_collection_or_split",
+      "medical_domain": "mixed_or_unknown; kidney-stone declared only for images/labels subset",
+      "modality": "unknown",
+      "task": "mixed_root; object_detection declared only for images/labels subset",
+      "annotation_format": "YOLO_NORMALIZED_TEXT_CANDIDATE",
+      "classes": [
+        "Tas_Var"
+      ],
+      "sample_count": 123,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "split_fragment_name_observed_not_verified",
+      "license_status": "DECLARED_CC_BY_4_0_FOR_SCOPED_ROBOFLOW_SUBSET",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "Directory split names do not prove patient/study-disjoint partitioning.",
+        "This path may overlap another registered root; deduplicate before counting or splitting.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [
+        "images",
+        "labels"
+      ],
+      "file_inventory": {
+        "files_scanned": 246,
+        "directories_scanned": 3,
+        "total_bytes": 2173552,
+        "extension_counts": {
+          ".jpg": 123,
+          ".txt": 123
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": {
+          "format": "YOLO_NORMALIZED_TEXT_CANDIDATE",
+          "files_checked": 60,
+          "nonempty_lines_checked": 153,
+          "invalid_lines": 0,
+          "observed_class_ids": [
+            0
+          ],
+          "scope": "bounded sample; directory context only"
+        },
+        "yolo_image_label_pairing": [
+          {
+            "relative_group": "valid",
+            "image_files": 123,
+            "label_files": 123,
+            "matching_stems": 123,
+            "images_without_label_file": 0,
+            "labels_without_image": 0,
+            "semantics": "filename pairing only; empty label files may represent negative images"
+          }
+        ],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "images": {
+          "readable": 12,
+          "checked": 12
+        }
+      },
+      "scoped_declared_subset": {
+        "configuration": "data.yaml",
+        "documentation": [
+          "README.dataset.txt",
+          "README.roboflow.txt"
+        ],
+        "declared_classes": [
+          "Tas_Var"
+        ],
+        "declared_license": "CC BY 4.0",
+        "declared_task": "object_detection",
+        "declared_subject": "Kidney-stones",
+        "scope": "Only the train/images, train/labels, valid/images, valid/labels, test/images, and test/labels paths referenced by data.yaml."
+      },
+      "class_semantics": "declared by root data.yaml for the images/labels subset only"
+    },
+    {
+      "dataset_id": "volume-pt1",
+      "source_path": "D:\\project\\volume_pt1",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_component",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 11,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [],
+      "file_inventory": {
+        "files_scanned": 11,
+        "directories_scanned": 1,
+        "total_bytes": 2766671648,
+        "extension_counts": {
+          ".nii": 11
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "nifti": {
+          "header_valid": 11,
+          "checked": 11
+        }
+      }
+    },
+    {
+      "dataset_id": "volume-pt2",
+      "source_path": "D:\\project\\volume_pt2",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_component",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 10,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [],
+      "file_inventory": {
+        "files_scanned": 10,
+        "directories_scanned": 1,
+        "total_bytes": 3229617600,
+        "extension_counts": {
+          ".nii": 10
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "nifti": {
+          "header_valid": 10,
+          "checked": 10
+        }
+      }
+    },
+    {
+      "dataset_id": "volume-pt3",
+      "source_path": "D:\\project\\volume_pt3",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_component",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 10,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [],
+      "file_inventory": {
+        "files_scanned": 10,
+        "directories_scanned": 1,
+        "total_bytes": 2087718336,
+        "extension_counts": {
+          ".nii": 10
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "nifti": {
+          "header_valid": 10,
+          "checked": 10
+        }
+      }
+    },
+    {
+      "dataset_id": "volume-pt4",
+      "source_path": "D:\\project\\volume_pt4",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_component",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 10,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [],
+      "file_inventory": {
+        "files_scanned": 10,
+        "directories_scanned": 1,
+        "total_bytes": 727190976,
+        "extension_counts": {
+          ".nii": 10
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "nifti": {
+          "header_valid": 10,
+          "checked": 10
+        }
+      }
+    },
+    {
+      "dataset_id": "volume-pt5",
+      "source_path": "D:\\project\\volume_pt5",
+      "path_exists": true,
+      "registry_kind": "possible_dataset_component",
+      "medical_domain": "unknown",
+      "modality": "unknown",
+      "task": "unknown",
+      "annotation_format": "unknown",
+      "classes": [],
+      "sample_count": 10,
+      "sample_count_semantics": "exact media-file count; not a patient, study, independent-sample, or deduplicated count",
+      "split_status": "unverified",
+      "license_status": "unknown",
+      "supported_models": [],
+      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "training_eligible": false,
+      "validation_eligible": false,
+      "limitations": [
+        "No local README, license, or dataset configuration was found in this path.",
+        "License is unknown; do not redistribute or use for training until verified.",
+        "Folder names were not promoted to ground-truth class labels."
+      ],
+      "observed_top_level_directories": [],
+      "file_inventory": {
+        "files_scanned": 10,
+        "directories_scanned": 1,
+        "total_bytes": 877138384,
+        "extension_counts": {
+          ".nii": 10
+        },
+        "scan_truncated": false,
+        "scan_errors": [],
+        "stat_errors": 0
+      },
+      "metadata_evidence_files": [],
+      "annotation_evidence": {
+        "coco": [],
+        "csv": [],
+        "yolo": null,
+        "yolo_image_label_pairing": [],
+        "image_mask_pairing": null
+      },
+      "file_relationship_evidence": {
+        "dicom_jpeg_filename_pairing": null
+      },
+      "bounded_readability_probes": {
+        "nifti": {
+          "header_valid": 10,
+          "checked": 10
+        }
+      }
+    }
+  ],
+  "cross_root_duplicate_indicators": {
+    "method": "Candidate files were matched by case-normalized filename and byte size, then full SHA-256 hashed within fixed budgets.",
+    "candidate_name_size_groups": 14610,
+    "files_hashed": 100,
+    "bytes_hashed": 26891922,
+    "hash_file_budget": 256,
+    "hash_byte_budget": 1073741824,
+    "budget_exhausted": true,
+    "reported_group_limit": 50,
+    "exact_cross_root_duplicate_groups": [
+      {
+        "sha256": "8c46d020f452e242200b7dd90e0ff8e405ca62a4dc1ffa3178e5f24d42788923",
+        "size_bytes": 192154,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\polyps\\00072d5f-7cd8-434c-8a5a-1a0bb2c9711d.jpg"
+          },
+          {
+            "dataset_id": "polyps",
+            "path": "polyps\\polyps\\00072d5f-7cd8-434c-8a5a-1a0bb2c9711d.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "b9b5e12ec936e337f6bf0cf62944a3bc677869ab8a70d59f59d7efdf293c8789",
+        "size_bytes": 193169,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\ulcerative-colitis\\000eeefc-9035-4d42-92a1-2f97a3200ee0.jpg"
+          },
+          {
+            "dataset_id": "ulcerative-colitis",
+            "path": "ulcerative-colitis\\ulcerative-colitis\\000eeefc-9035-4d42-92a1-2f97a3200ee0.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "e38ad4e58f13a837286345f23eb611d59a6eed194d79d544af2c4587b8d0ddbd",
+        "size_bytes": 132460,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\polyps\\0014d89e-5afa-4186-99f9-4400c8c58a18.jpg"
+          },
+          {
+            "dataset_id": "polyps",
+            "path": "polyps\\polyps\\0014d89e-5afa-4186-99f9-4400c8c58a18.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "c3311c53eef6ef0833c480a053e7053c6e056667ce343b1a971e826c7a9cba7b",
+        "size_bytes": 179307,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\polyps\\001696c2-c627-4193-ad14-dda8945ad13f.jpg"
+          },
+          {
+            "dataset_id": "polyps",
+            "path": "polyps\\polyps\\001696c2-c627-4193-ad14-dda8945ad13f.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "97e978196a359ce935615041da94bc6df3da419086f3aa5996acd5806d227dd2",
+        "size_bytes": 497033,
+        "occurrences": [
+          {
+            "dataset_id": "esophagitis",
+            "path": "esophagitis\\esophagitis\\001fb927-4814-4ba5-851d-189db99291d8.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\esophagitis\\001fb927-4814-4ba5-851d-189db99291d8.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "d6b82f47ec91a5803a8ea642464640c6c2e2b4ff2706758a943d18fc75a0853d",
+        "size_bytes": 174617,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-resection-margins",
+            "path": "dyed-resection-margins\\dyed-resection-margins\\003808ff-c349-481a-9c91-e9acf1c181b7.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-resection-margins\\003808ff-c349-481a-9c91-e9acf1c181b7.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "08c1255dd64b4bf2bd1f7f14673c91a4e676878310797759408fa08ef61c64a5",
+        "size_bytes": 160044,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\ulcerative-colitis\\0046dd24-a4c0-4923-a07a-15be898182e2.jpg"
+          },
+          {
+            "dataset_id": "ulcerative-colitis",
+            "path": "ulcerative-colitis\\ulcerative-colitis\\0046dd24-a4c0-4923-a07a-15be898182e2.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "5ce5ae4ec6a5a91097ba2b900015cfa251f3aee2aab2f1e1720c10310e00a5a8",
+        "size_bytes": 158539,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-lifted-polyps",
+            "path": "dyed-lifted-polyps\\dyed-lifted-polyps\\0053d7cd-549c-48cd-b370-b4ad64a8098a.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-lifted-polyps\\0053d7cd-549c-48cd-b370-b4ad64a8098a.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "9bff50a054f49ba81f6801be6743625cf7781946632179bc55fdc8bf4ac95070",
+        "size_bytes": 642392,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-pylorus\\005959d0-b75b-41ed-8da1-2a5d0666d612.jpg"
+          },
+          {
+            "dataset_id": "normal-pylorus",
+            "path": "normal-pylorus\\normal-pylorus\\005959d0-b75b-41ed-8da1-2a5d0666d612.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "3764fa0540ddbc52091d37055b4dcd368fcbb9137995b4c7480d4fb9a2ceaa47",
+        "size_bytes": 161259,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\ulcerative-colitis\\005b9962-41ed-4ae4-8aae-395bbab93fd7.jpg"
+          },
+          {
+            "dataset_id": "ulcerative-colitis",
+            "path": "ulcerative-colitis\\ulcerative-colitis\\005b9962-41ed-4ae4-8aae-395bbab93fd7.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "b78e424771a549c261d38ed3e26a2a3c98741e15a870ccbefc5073a320b30ad3",
+        "size_bytes": 161280,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-resection-margins",
+            "path": "dyed-resection-margins\\dyed-resection-margins\\0062bbf3-58d7-435d-b0ca-381703c39911.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-resection-margins\\0062bbf3-58d7-435d-b0ca-381703c39911.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "7d51b5ed5bbd8061f6d83659242eebf0c9a78b5ce1ce1441da9a6c030e5222cb",
+        "size_bytes": 207017,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\polyps\\006338df-e61e-4725-bb6c-dd0620f11cdc.jpg"
+          },
+          {
+            "dataset_id": "polyps",
+            "path": "polyps\\polyps\\006338df-e61e-4725-bb6c-dd0620f11cdc.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "923ab7d56ff01d63f5e61d4b4d833914990448159e3ea946b8b5666967738790",
+        "size_bytes": 539408,
+        "occurrences": [
+          {
+            "dataset_id": "esophagitis",
+            "path": "esophagitis\\esophagitis\\00687a70-bbad-4bf9-864f-9f7b3c27a2c8.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\esophagitis\\00687a70-bbad-4bf9-864f-9f7b3c27a2c8.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "b4002748045f3c4b5dd35787109e29e7b2bf89628c116bb62b2ce87e67680be8",
+        "size_bytes": 172003,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-lifted-polyps",
+            "path": "dyed-lifted-polyps\\dyed-lifted-polyps\\007d5aa7-7289-4bad-aa4a-5c3a259e9b19.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-lifted-polyps\\007d5aa7-7289-4bad-aa4a-5c3a259e9b19.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "ab5a0d98d30ce545521cc9f3c06952adcac37db57f415b40e345f82a16b7eebc",
+        "size_bytes": 205560,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\ulcerative-colitis\\007dcc7c-1f16-49ee-a8a1-5e752596abd5.jpg"
+          },
+          {
+            "dataset_id": "ulcerative-colitis",
+            "path": "ulcerative-colitis\\ulcerative-colitis\\007dcc7c-1f16-49ee-a8a1-5e752596abd5.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "56b6791d04cf2a9b1e8dd3973ef9210d637429c4d288b02425b6e9ebe5d4bf77",
+        "size_bytes": 443957,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\polyps\\007e4d46-c617-418f-8a04-d34716adcb65.jpg"
+          },
+          {
+            "dataset_id": "polyps",
+            "path": "polyps\\polyps\\007e4d46-c617-418f-8a04-d34716adcb65.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "a0570643d0cc0f7841b75fee32f887e18e8f401cc496f188207e47dd9c40c6e7",
+        "size_bytes": 144933,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-lifted-polyps",
+            "path": "dyed-lifted-polyps\\dyed-lifted-polyps\\008aa3ed-1812-4854-954c-120ae85bb6bd.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-lifted-polyps\\008aa3ed-1812-4854-954c-120ae85bb6bd.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "95317576aef083188b6cfcea3597c5ca7a5c4cffa202276c40bce08342fb73ca",
+        "size_bytes": 143603,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-lifted-polyps",
+            "path": "dyed-lifted-polyps\\dyed-lifted-polyps\\009171b0-52ed-4410-a1e3-410c6e746402.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-lifted-polyps\\009171b0-52ed-4410-a1e3-410c6e746402.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "621276529d80a5b19c2478e4c54075f8146a1678ed15e57ee146d21374e3ae19",
+        "size_bytes": 193256,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-resection-margins",
+            "path": "dyed-resection-margins\\dyed-resection-margins\\009bd044-4a5a-4c81-b481-d20fb223cd81.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-resection-margins\\009bd044-4a5a-4c81-b481-d20fb223cd81.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "7602dbf0e8dc4b42dd7ea8392dd86ce8d6f9cb51fec7326887197acf0e7b4655",
+        "size_bytes": 153416,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\ulcerative-colitis\\00a436bc-67ee-4a43-b1a7-25130a2d4e72.jpg"
+          },
+          {
+            "dataset_id": "ulcerative-colitis",
+            "path": "ulcerative-colitis\\ulcerative-colitis\\00a436bc-67ee-4a43-b1a7-25130a2d4e72.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "a535e267fcbe086351b603c75245c3639800682ef8dc71ca79cacaca77107808",
+        "size_bytes": 210566,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\polyps\\00a98927-bbfc-405a-9060-b5e7ccf6b811.jpg"
+          },
+          {
+            "dataset_id": "polyps",
+            "path": "polyps\\polyps\\00a98927-bbfc-405a-9060-b5e7ccf6b811.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "509e4d9ca69e5e272a7a6e376b410231f866c6393bdb9ed14d63ca9f2db0d3ab",
+        "size_bytes": 155811,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-resection-margins",
+            "path": "dyed-resection-margins\\dyed-resection-margins\\00adb051-3e76-4482-b0e5-5207a028470b.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-resection-margins\\00adb051-3e76-4482-b0e5-5207a028470b.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "9c60a49eec56e573377b5646f6b9f6d64a3f616f152d58cf6ef04cec27beca14",
+        "size_bytes": 156612,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-cecum\\00b1b20b-ce2b-449c-93fc-6df854e3ab33.jpg"
+          },
+          {
+            "dataset_id": "normal-cecum",
+            "path": "normal-cecum\\normal-cecum\\00b1b20b-ce2b-449c-93fc-6df854e3ab33.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "3c043975469f515b6b44b181be8c7428e97b6698a795bbaa6c6b6bb21500f5ed",
+        "size_bytes": 193251,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-cecum\\00b99f19-2c31-4c7c-931a-4c3b38d70d1a.jpg"
+          },
+          {
+            "dataset_id": "normal-cecum",
+            "path": "normal-cecum\\normal-cecum\\00b99f19-2c31-4c7c-931a-4c3b38d70d1a.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "e4b3bb1e6e98b93e11fdf79e5ec2773d61b3beaee64a8d501046b703c20a3fb0",
+        "size_bytes": 640332,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-z-line\\00bee375-36d2-4ba9-89e5-bd6132d79c0c.jpg"
+          },
+          {
+            "dataset_id": "normal-z-line",
+            "path": "normal-z-line\\normal-z-line\\00bee375-36d2-4ba9-89e5-bd6132d79c0c.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "0c6a4ac78134076ad38fa39bc4b54e3a44d57f41c4c1aaae2e28c065d87db09e",
+        "size_bytes": 175987,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-lifted-polyps",
+            "path": "dyed-lifted-polyps\\dyed-lifted-polyps\\00cf9508-6ad1-4db9-840a-519c1d515c30.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-lifted-polyps\\00cf9508-6ad1-4db9-840a-519c1d515c30.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "0c551adb04b2941e964a078592b845d545af596646b814826b6f99a9efb5f4f3",
+        "size_bytes": 144324,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-z-line\\00db2b25-bb71-4218-a076-9d2449a23f2e.jpg"
+          },
+          {
+            "dataset_id": "normal-z-line",
+            "path": "normal-z-line\\normal-z-line\\00db2b25-bb71-4218-a076-9d2449a23f2e.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "19c6ff79ed584030d49b8ae35e7c951f6a661eba294c37fd08913fd58c65d95d",
+        "size_bytes": 247524,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\ulcerative-colitis\\00e241d0-6679-4da7-bd9e-d1cfb56a33e5.jpg"
+          },
+          {
+            "dataset_id": "ulcerative-colitis",
+            "path": "ulcerative-colitis\\ulcerative-colitis\\00e241d0-6679-4da7-bd9e-d1cfb56a33e5.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "8879b0467504dc552317f8eb88b8cc60ca3f72e8dadd59cc49c660296f634b66",
+        "size_bytes": 482917,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\polyps\\00e301cd-5438-4ed7-846b-7d8eaa7cf4b8.jpg"
+          },
+          {
+            "dataset_id": "polyps",
+            "path": "polyps\\polyps\\00e301cd-5438-4ed7-846b-7d8eaa7cf4b8.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "42cdb93c7e159c593cb6d22645e7d17bb829f11693ea67d8f06b4bbf0772c446",
+        "size_bytes": 199659,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-cecum\\00f3d2cc-93ea-40f0-9b88-b159b07a49cb.jpg"
+          },
+          {
+            "dataset_id": "normal-cecum",
+            "path": "normal-cecum\\normal-cecum\\00f3d2cc-93ea-40f0-9b88-b159b07a49cb.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "ca148eabb7605cd20527ae358f36e50f637190a57f06af19d0594209d0f7d504",
+        "size_bytes": 554904,
+        "occurrences": [
+          {
+            "dataset_id": "esophagitis",
+            "path": "esophagitis\\esophagitis\\00fb1871-41c0-4619-be56-29690d145b1d.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\esophagitis\\00fb1871-41c0-4619-be56-29690d145b1d.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "5d10ccb727bd29fc13ef819f02a8626bbce1b1d6a0ee0adf7a32b7fed5e442b3",
+        "size_bytes": 135482,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\polyps\\00ffa659-7474-47fb-aeb1-3ef1ac88f6b3.jpg"
+          },
+          {
+            "dataset_id": "polyps",
+            "path": "polyps\\polyps\\00ffa659-7474-47fb-aeb1-3ef1ac88f6b3.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "2ef78870cc4f015167a1cdd5913967ba6ccf418f933e8fbbe666a13bfac9c76f",
+        "size_bytes": 168047,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-resection-margins",
+            "path": "dyed-resection-margins\\dyed-resection-margins\\01086b46-817d-4f20-8aba-4a7b9347ab1c.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-resection-margins\\01086b46-817d-4f20-8aba-4a7b9347ab1c.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "d9787e9265fc2b80a022d971c23e7e94a78b3b46d70088c460d4a54dd336b224",
+        "size_bytes": 156611,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-cecum\\0111fb06-3113-4abf-9050-7bfb8d4688f5.jpg"
+          },
+          {
+            "dataset_id": "normal-cecum",
+            "path": "normal-cecum\\normal-cecum\\0111fb06-3113-4abf-9050-7bfb8d4688f5.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "df7f56d34287459dafdfbe2003f9942e7bb94771ec7b0f95223f7927208e20bf",
+        "size_bytes": 494889,
+        "occurrences": [
+          {
+            "dataset_id": "esophagitis",
+            "path": "esophagitis\\esophagitis\\011b08eb-9305-4306-9d58-7623ddc54097.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\esophagitis\\011b08eb-9305-4306-9d58-7623ddc54097.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "886e1e221ee964430bb6c95f0b7186908ce62b08f3a29f5bac6fb69b29de2df9",
+        "size_bytes": 700605,
+        "occurrences": [
+          {
+            "dataset_id": "esophagitis",
+            "path": "esophagitis\\esophagitis\\0134d93d-0922-4063-9acd-a4177f2b0c07.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\esophagitis\\0134d93d-0922-4063-9acd-a4177f2b0c07.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "53f6c91155d3be398825555524f9027566bbfe5fa835b11548e8fe5bc764ea35",
+        "size_bytes": 213332,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\ulcerative-colitis\\013f51fa-caf3-4c31-adc5-af00eacf55c7.jpg"
+          },
+          {
+            "dataset_id": "ulcerative-colitis",
+            "path": "ulcerative-colitis\\ulcerative-colitis\\013f51fa-caf3-4c31-adc5-af00eacf55c7.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "3c4f3e2c850e91510bfdbed47ff556d0cea42b13c9a4c6ad1dd4f691ccf19db4",
+        "size_bytes": 156277,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-lifted-polyps",
+            "path": "dyed-lifted-polyps\\dyed-lifted-polyps\\01507fbd-4d38-4525-9768-7754710f507c.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-lifted-polyps\\01507fbd-4d38-4525-9768-7754710f507c.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "200825a0389d11d117d69ee7c606982cfabbc8d81b53bfc4de49313a587ec23f",
+        "size_bytes": 183210,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-cecum\\0163b3a2-9aa1-4b23-a9a8-aff07a738f16.jpg"
+          },
+          {
+            "dataset_id": "normal-cecum",
+            "path": "normal-cecum\\normal-cecum\\0163b3a2-9aa1-4b23-a9a8-aff07a738f16.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "469cd491c918faad7f743ed1576a4ad773ee1bf882cfefde9bec2386b5c25a00",
+        "size_bytes": 506818,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-z-line\\016858b4-36f8-47d7-97ca-1570bcaba413.jpg"
+          },
+          {
+            "dataset_id": "normal-z-line",
+            "path": "normal-z-line\\normal-z-line\\016858b4-36f8-47d7-97ca-1570bcaba413.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "5ccb2f5a91c1f7bf957168df215d52831980fb1715adcbfcd655a2fba2424217",
+        "size_bytes": 212105,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-resection-margins",
+            "path": "dyed-resection-margins\\dyed-resection-margins\\016cc0c1-2a9e-464c-884f-0997561f7dde.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-resection-margins\\016cc0c1-2a9e-464c-884f-0997561f7dde.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "6dbfaa632c94597d87c17bab8eab5d0290682ade3ac3e74b724eb5551e9ce91a",
+        "size_bytes": 182675,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\ulcerative-colitis\\018962bd-e536-404b-854e-6836abd8b5c8.jpg"
+          },
+          {
+            "dataset_id": "ulcerative-colitis",
+            "path": "ulcerative-colitis\\ulcerative-colitis\\018962bd-e536-404b-854e-6836abd8b5c8.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "0f35afd8a87b890e60975611630d434b1470d4390fb8303ce44d8864799f46e6",
+        "size_bytes": 159041,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-lifted-polyps",
+            "path": "dyed-lifted-polyps\\dyed-lifted-polyps\\018ed8ed-e489-4bbb-8a99-3346db9ec160.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-lifted-polyps\\018ed8ed-e489-4bbb-8a99-3346db9ec160.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "5696b60a182ad8491c591c13f4559859902012c724e972ae52ac554255f8e31d",
+        "size_bytes": 196290,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-cecum\\0191eafd-0367-4772-9181-296b80dbf917.jpg"
+          },
+          {
+            "dataset_id": "normal-cecum",
+            "path": "normal-cecum\\normal-cecum\\0191eafd-0367-4772-9181-296b80dbf917.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "95c7d54804e8a5aa4604dd103a004de86052665e82eefa3042d6e235638a3361",
+        "size_bytes": 133240,
+        "occurrences": [
+          {
+            "dataset_id": "dyed-lifted-polyps",
+            "path": "dyed-lifted-polyps\\dyed-lifted-polyps\\0195c5a6-5ddf-471c-9868-2ea66b81f440.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\dyed-lifted-polyps\\0195c5a6-5ddf-471c-9868-2ea66b81f440.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "8d3ade91c22a34ebe83d86d04fe0f30ce400d759bf71ac03dbe0404f61d2aee4",
+        "size_bytes": 712473,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-z-line\\01a146ce-c9a3-42af-9f53-573e90975abe.jpg"
+          },
+          {
+            "dataset_id": "normal-z-line",
+            "path": "normal-z-line\\normal-z-line\\01a146ce-c9a3-42af-9f53-573e90975abe.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "54cd1c09d6425791f10e1be6cfeceee8e8310c2eed53f3f5e4e49fda931b16fa",
+        "size_bytes": 542302,
+        "occurrences": [
+          {
+            "dataset_id": "esophagitis",
+            "path": "esophagitis\\esophagitis\\01a57b1a-780f-4e52-9f94-291c2982154d.jpg"
+          },
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\esophagitis\\01a57b1a-780f-4e52-9f94-291c2982154d.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "4385205837212bc6278bd38e58a749b682eb3d079bceee4a69c7da2143bef4e4",
+        "size_bytes": 179453,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\polyps\\01a72489-11c2-4891-a2b8-7a0fb1181b7c.jpg"
+          },
+          {
+            "dataset_id": "polyps",
+            "path": "polyps\\polyps\\01a72489-11c2-4891-a2b8-7a0fb1181b7c.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "4db2087f2c4fc934f6659b61640e491e8ec6ff481f476ce26bc24069135e9cf9",
+        "size_bytes": 209986,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-cecum\\01af3454-037f-4708-b73c-6ec4423b6a61.jpg"
+          },
+          {
+            "dataset_id": "normal-cecum",
+            "path": "normal-cecum\\normal-cecum\\01af3454-037f-4708-b73c-6ec4423b6a61.jpg"
+          }
+        ]
+      },
+      {
+        "sha256": "348a85a2c31b6ffefa2f615fda7afb82d28a51561502eb10cbabca27ca069047",
+        "size_bytes": 185831,
+        "occurrences": [
+          {
+            "dataset_id": "kvasir-dataset-v2",
+            "path": "kvasir-dataset-v2\\normal-cecum\\01b9de1c-1481-4056-b27a-4d8fa09da06f.jpg"
+          },
+          {
+            "dataset_id": "normal-cecum",
+            "path": "normal-cecum\\normal-cecum\\01b9de1c-1481-4056-b27a-4d8fa09da06f.jpg"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Indicators only. Nested/split roots may intentionally contain the same files; no files were changed."
+  },
+  "cross_component_checks": {
+    "nifti_volume_segmentation_pairing": {
+      "check": "NIfTI filename-index pairing across volume_pt1..volume_pt5 and segmentations",
+      "volume_files": 51,
+      "unique_volume_indices": 51,
+      "segmentation_files": 131,
+      "unique_segmentation_indices": 131,
+      "paired_indices": 51,
+      "volume_indices_without_segmentation": [],
+      "segmentation_indices_without_volume": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130
+      ],
+      "bounded_geometry_probe": {
+        "pair_limit": 12,
+        "pairs_checked": 12,
+        "pairs_with_matching_dimensions_pixel_spacing_and_transforms": 12,
+        "pairs_with_matching_qform_sform_codes": 0,
+        "probe_failures": 0,
+        "interpretation": "Different qform/sform codes can change which transform a loader selects even when sampled numeric transforms match; normalize only after source-specific review."
+      },
+      "semantics": "Filename-index evidence only; volume/mask geometry, anatomy, provenance, and label meaning were not validated."
+    }
+  },
+  "named_core_evaluation_dataset_presence": {
+    "MURA": true,
+    "PTB-XL": true,
+    "interpretation": "Reconciled on 2026-10-25 against the supplementary archive inventory and task registry. Presence does not establish permission, training eligibility, clinical validity, or current model availability: MURA remains permission-blocked and PTB-XL remains research-only."
+  },
+  "global_readiness": "CATALOG_ONLY_NOT_TRAINING_READY",
+  "global_blockers": [
+    "Most paths lack a locally verifiable license.",
+    "No patient/study identity manifest was found to prove leakage-safe splits.",
+    "Several roots appear to be fragments or mixed collections and may overlap.",
+    "Folder names alone were not accepted as label definitions.",
+    "No dataset-to-checkpoint validation bundle was established by this scan."
+  ]
+}

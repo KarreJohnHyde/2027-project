@@ -1,0 +1,46 @@
+{
+  "listed_name": "archive (56).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (56).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "b7d7d7ddf011c1ea8daed0ce9a53a27910b2be413c2a3dff86a412872f2eb673",
+  "size_bytes": 997329079,
+  "entries": 10033,
+  "files": 10033,
+  "directories": 0,
+  "uncompressed_bytes": 1039452401,
+  "overall_ratio": 1.04,
+  "max_entry_ratio": 3.0,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (10033 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "other": 10030,
+    "tabular": 2,
+    "text": 1
+  },
+  "extensions": {
+    ".mp4": 10030,
+    ".csv": 2,
+    ".txt": 1
+  },
+  "top_level": {
+    "EchoNet-Dynamic/": 10033
+  },
+  "second_level": {
+    "EchoNet-Dynamic/Videos/": 10031
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_56.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 24.9,
+  "notes": []
+}

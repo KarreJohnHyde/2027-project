@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-muscular-cervical-part-of-muscular-system",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/muscular/cervical_part_of_muscular_system.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 1028328,
+  "sha256": "738e934f6527cd5b88f5d1d9b58a059e5ac0f5dc1b44a3070eabefaac4eaf7ef",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2704
+      },
+      {
+        "type": "BIN",
+        "byteLength": 1025596
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 63072,
+    "validator_vertex_count": 32056
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 63072,
+    "rendered_triangles": 63072,
+    "unique_vertices": 32056,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 64,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.0004,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.141203,
+        1.381667,
+        -0.006008
+      ],
+      "max": [
+        0.141203,
+        1.575819,
+        0.137371
+      ],
+      "size": [
+        0.282406,
+        0.194152,
+        0.143379
+      ],
+      "center": [
+        0,
+        1.478743,
+        0.065682
+      ],
+      "diagonal": 0.371491
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 1.97,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "muscular.cervical_part_of_muscular_system",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "muscular.cervical_part_of_muscular_system"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "muscular.cervical_part_of_muscular_system"
+    ]
+  },
+  "inspection_ms": 85,
+  "nodes": [
+    {
+      "path": "muscular.cervical_part_of_muscular_system",
+      "name": "muscular.cervical_part_of_muscular_system",
+      "semantic_name": "muscular.cervical_part_of_muscular_system",
+      "depth": 0,
+      "mesh": "muscular.cervical_part_of_muscular_system",
+      "material": null,
+      "triangles": 63072,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.141203,
+          1.381667,
+          -0.006008
+        ],
+        "max": [
+          0.141203,
+          1.575819,
+          0.137371
+        ],
+        "size": [
+          0.282406,
+          0.194152,
+          0.143379
+        ],
+        "center": [
+          0,
+          1.478743,
+          0.065682
+        ],
+        "diagonal": 0.371491
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "muscular.cervical_part_of_muscular_system",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 32056,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 63072,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 29686,
+            "connected_components": 64,
+            "boundary_edge_fraction": 0.0004,
+            "non_manifold_edge_fraction": 0.06446,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 63072,
+      "points": 0,
+      "lines": 0,
+      "vertices": 32056
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

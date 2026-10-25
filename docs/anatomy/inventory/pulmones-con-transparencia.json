@@ -1,0 +1,1008 @@
+{
+  "asset_id": "pulmones-con-transparencia",
+  "relative_path": "pulmones_con_transparencia.glb",
+  "source_group": "workspace_root",
+  "bytes": 25916772,
+  "sha256": "c063cd50c4715deef2b537e9dbb63196fa12862ef0880bf0006be2046a22366c",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 9536
+      },
+      {
+        "type": "BIN",
+        "byteLength": 25907208
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.68.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "alebogino (https://sketchfab.com/alebogino)",
+      "license": "CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)",
+      "source": "https://sketchfab.com/3d-models/pulmones-con-transparencia-16542b3053fe493f9e41e6c6968b30fe",
+      "title": "Pulmones (con transparencia)"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "INVALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 1,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "ERROR:ANIMATION_SAMPLER_ACCESSOR_WITH_BYTESTRIDE": 1
+    },
+    "draw_calls": 11,
+    "validator_triangle_count": 856298,
+    "validator_vertex_count": 651162
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 17,
+    "mesh_nodes": 11,
+    "meshes": 11,
+    "primitives": 11,
+    "materials": 2,
+    "textures": 0,
+    "animations": 1,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 856298,
+    "rendered_triangles": 856298,
+    "unique_vertices": 651162,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 11,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 11,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 26269,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.63304,
+    "degenerate_triangles_measured": 25692,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -4415.722966,
+        -356.845989,
+        -4346.465904
+      ],
+      "max": [
+        4910.964171,
+        8830.060887,
+        2180.340699
+      ],
+      "size": [
+        9326.687137,
+        9186.906877,
+        6526.806603
+      ],
+      "center": [
+        247.620603,
+        4236.607449,
+        -1083.062602
+      ],
+      "diagonal": 14628.245122
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 1.429,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Pulmones RAW.001_mtl1.002_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 2,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 2,
+    "names": [
+      "mtl1.002",
+      "mtl1.003"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Pulmones RAW.001_mtl1.002_0",
+      "Pulmones RAW.001_mtl1.002_0",
+      "Pulmones RAW.001_mtl1.002_0",
+      "Pulmones RAW.001_mtl1.002_0",
+      "Pulmones RAW.001_mtl1.002_0",
+      "Pulmones RAW.002_mtl1.003_0",
+      "Pulmones RAW.002_mtl1.003_0",
+      "Pulmones RAW.002_mtl1.003_0",
+      "Pulmones RAW.002_mtl1.003_0",
+      "Pulmones RAW.002_mtl1.003_0",
+      "Pulmones RAW.002_mtl1.003_0"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 1427,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx",
+      "name": "9344d3fda0e2430aa5008dbb222db7e7.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2",
+      "name": "Object_2",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.001",
+      "name": "Pulmones RAW.001",
+      "semantic_name": "Pulmones RAW.001",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 5,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.001/Pulmones RAW.001_mtl1.002_0",
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "semantic_name": "Pulmones RAW.001_mtl1.002_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.001_mtl1.002_0",
+      "material": "mtl1.002",
+      "triangles": 98398,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -227.914901,
+          -329.119632,
+          -4266.156166
+        ],
+        "max": [
+          4531.035004,
+          8331.48838,
+          1574.932162
+        ],
+        "size": [
+          4758.949905,
+          8660.608012,
+          5841.088328
+        ],
+        "center": [
+          2151.560051,
+          4001.184374,
+          -1345.612002
+        ],
+        "diagonal": 11479.200677
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.001/Pulmones RAW.001_mtl1.002_0",
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "semantic_name": "Pulmones RAW.001_mtl1.002_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.001_mtl1.002_0",
+      "material": "mtl1.002",
+      "triangles": 85008,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -2898.357959,
+          849.68462,
+          -4129.643396
+        ],
+        "max": [
+          4548.744867,
+          8066.029486,
+          1435.1557
+        ],
+        "size": [
+          7447.102826,
+          7216.344866,
+          5564.799096
+        ],
+        "center": [
+          825.193454,
+          4457.857053,
+          -1347.243848
+        ],
+        "diagonal": 11768.685683
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.001/Pulmones RAW.001_mtl1.002_0",
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "semantic_name": "Pulmones RAW.001_mtl1.002_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.001_mtl1.002_0",
+      "material": "mtl1.002",
+      "triangles": 91081,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -57.465256,
+          2005.955113,
+          -3904.168258
+        ],
+        "max": [
+          4169.412582,
+          7283.169001,
+          2128.987525
+        ],
+        "size": [
+          4226.877837,
+          5277.213888,
+          6033.155783
+        ],
+        "center": [
+          2055.973663,
+          4644.562057,
+          -887.590367
+        ],
+        "diagonal": 9061.702454
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.001/Pulmones RAW.001_mtl1.002_0",
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "semantic_name": "Pulmones RAW.001_mtl1.002_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.001_mtl1.002_0",
+      "material": "mtl1.002",
+      "triangles": 80066,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -2109.728402,
+          891.623449,
+          -3376.068146
+        ],
+        "max": [
+          4910.964171,
+          8750.867818,
+          1827.072001
+        ],
+        "size": [
+          7020.692574,
+          7859.244368,
+          5203.140147
+        ],
+        "center": [
+          1400.617885,
+          4821.245633,
+          -774.498073
+        ],
+        "diagonal": 11752.893841
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.001/Pulmones RAW.001_mtl1.002_0",
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "semantic_name": "Pulmones RAW.001_mtl1.002_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.001_mtl1.002_0",
+      "material": "mtl1.002",
+      "triangles": 64688,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -202.94634,
+          1402.170934,
+          -3752.102604
+        ],
+        "max": [
+          4835.392613,
+          7562.284978,
+          2180.340699
+        ],
+        "size": [
+          5038.338953,
+          6160.114044,
+          5932.443303
+        ],
+        "center": [
+          2316.223137,
+          4482.227956,
+          -785.880953
+        ],
+        "diagonal": 9926.013701
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.002",
+      "name": "Pulmones RAW.002",
+      "semantic_name": "Pulmones RAW.002",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 6,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.002/Pulmones RAW.002_mtl1.003_0",
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "semantic_name": "Pulmones RAW.002_mtl1.003_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.002_mtl1.003_0",
+      "material": "mtl1.003",
+      "triangles": 110768,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -4176.947554,
+          -80.099419,
+          -3860.471975
+        ],
+        "max": [
+          505.971301,
+          8830.060887,
+          1275.638259
+        ],
+        "size": [
+          4682.918854,
+          8910.160307,
+          5136.110234
+        ],
+        "center": [
+          -1835.488126,
+          4374.980734,
+          -1292.416858
+        ],
+        "diagonal": 11300.456363
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.002/Pulmones RAW.002_mtl1.003_0",
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "semantic_name": "Pulmones RAW.002_mtl1.003_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.002_mtl1.003_0",
+      "material": "mtl1.003",
+      "triangles": 92622,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -4002.322352,
+          889.370063,
+          -3711.421031
+        ],
+        "max": [
+          505.971301,
+          8089.950607,
+          1801.182938
+        ],
+        "size": [
+          4508.293653,
+          7200.580544,
+          5512.60397
+        ],
+        "center": [
+          -1748.175526,
+          4489.660335,
+          -955.119046
+        ],
+        "diagonal": 10127.283661
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.002/Pulmones RAW.002_mtl1.003_0",
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "semantic_name": "Pulmones RAW.002_mtl1.003_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.002_mtl1.003_0",
+      "material": "mtl1.003",
+      "triangles": 84814,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -4136.213894,
+          1198.352921,
+          -4173.64236
+        ],
+        "max": [
+          496.705072,
+          6225.662734,
+          1618.034265
+        ],
+        "size": [
+          4632.918966,
+          5027.309813,
+          5791.676625
+        ],
+        "center": [
+          -1819.754411,
+          3712.007828,
+          -1277.804047
+        ],
+        "diagonal": 8959.983272
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.002/Pulmones RAW.002_mtl1.003_0",
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "semantic_name": "Pulmones RAW.002_mtl1.003_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.002_mtl1.003_0",
+      "material": "mtl1.003",
+      "triangles": 79397,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -4381.521358,
+          -356.845989,
+          -4313.651679
+        ],
+        "max": [
+          236.217465,
+          5771.610068,
+          1478.05138
+        ],
+        "size": [
+          4617.738823,
+          6128.456057,
+          5791.703059
+        ],
+        "center": [
+          -2072.651946,
+          2707.382039,
+          -1417.80015
+        ],
+        "diagonal": 9613.808288
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.002/Pulmones RAW.002_mtl1.003_0",
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "semantic_name": "Pulmones RAW.002_mtl1.003_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.002_mtl1.003_0",
+      "material": "mtl1.003",
+      "triangles": 69115,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -4415.722966,
+          561.232316,
+          -4346.465904
+        ],
+        "max": [
+          316.078781,
+          5675.514368,
+          2101.717634
+        ],
+        "size": [
+          4731.801747,
+          5114.282052,
+          6448.183538
+        ],
+        "center": [
+          -2049.822092,
+          3118.373342,
+          -1122.374135
+        ],
+        "diagonal": 9493.413486
+      }
+    },
+    {
+      "path": "Sketchfab_model/9344d3fda0e2430aa5008dbb222db7e7.fbx/Object_2/RootNode/Pulmones RAW.002/Pulmones RAW.002_mtl1.003_0",
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "semantic_name": "Pulmones RAW.002_mtl1.003_0",
+      "depth": 5,
+      "mesh": "Pulmones RAW.002_mtl1.003_0",
+      "material": "mtl1.003",
+      "triangles": 341,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -4076.320232,
+          3443.56918,
+          -3713.95889
+        ],
+        "max": [
+          -3.366954,
+          4781.860996,
+          1183.541433
+        ],
+        "size": [
+          4072.953278,
+          1338.291816,
+          4897.500323
+        ],
+        "center": [
+          -2039.843593,
+          4112.715088,
+          -1265.208729
+        ],
+        "diagonal": 6508.87723
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.002",
+          "morph_targets": 0,
+          "triangles": 98398,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 57310,
+            "connected_components": 1628,
+            "boundary_edge_fraction": 0.11733,
+            "non_manifold_edge_fraction": 0.00008,
+            "degenerate_triangles": 2290,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 98398,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.002",
+          "morph_targets": 0,
+          "triangles": 85008,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 51626,
+            "connected_components": 2528,
+            "boundary_edge_fraction": 0.13766,
+            "non_manifold_edge_fraction": 0.00125,
+            "degenerate_triangles": 3482,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 85008,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65534,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.002",
+          "morph_targets": 0,
+          "triangles": 91081,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 55308,
+            "connected_components": 1767,
+            "boundary_edge_fraction": 0.13639,
+            "non_manifold_edge_fraction": 0.00059,
+            "degenerate_triangles": 1916,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 91081,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65534
+    },
+    {
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.002",
+          "morph_targets": 0,
+          "triangles": 80066,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 49186,
+            "connected_components": 3419,
+            "boundary_edge_fraction": 0.11898,
+            "non_manifold_edge_fraction": 0.00045,
+            "degenerate_triangles": 3237,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 80066,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Pulmones RAW.001_mtl1.002_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 60700,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.002",
+          "morph_targets": 0,
+          "triangles": 64688,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 42713,
+            "connected_components": 4261,
+            "boundary_edge_fraction": 0.1523,
+            "non_manifold_edge_fraction": 0.00095,
+            "degenerate_triangles": 3688,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 64688,
+      "points": 0,
+      "lines": 0,
+      "vertices": 60700
+    },
+    {
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.003",
+          "morph_targets": 0,
+          "triangles": 110768,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 62913,
+            "connected_components": 180,
+            "boundary_edge_fraction": 0.10985,
+            "non_manifold_edge_fraction": 0.00007,
+            "degenerate_triangles": 199,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 110768,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.003",
+          "morph_targets": 0,
+          "triangles": 92622,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 55246,
+            "connected_components": 2169,
+            "boundary_edge_fraction": 0.11837,
+            "non_manifold_edge_fraction": 0.00001,
+            "degenerate_triangles": 2279,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 92622,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.003",
+          "morph_targets": 0,
+          "triangles": 84814,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 52496,
+            "connected_components": 2372,
+            "boundary_edge_fraction": 0.13798,
+            "non_manifold_edge_fraction": 0.00016,
+            "degenerate_triangles": 2029,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 84814,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.003",
+          "morph_targets": 0,
+          "triangles": 79397,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 48345,
+            "connected_components": 3184,
+            "boundary_edge_fraction": 0.11864,
+            "non_manifold_edge_fraction": 0.00033,
+            "degenerate_triangles": 3002,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 79397,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65534,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.003",
+          "morph_targets": 0,
+          "triangles": 69115,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 45993,
+            "connected_components": 4587,
+            "boundary_edge_fraction": 0.15138,
+            "non_manifold_edge_fraction": 0.00031,
+            "degenerate_triangles": 3491,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 69115,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65534
+    },
+    {
+      "name": "Pulmones RAW.002_mtl1.003_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 670,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1.003",
+          "morph_targets": 0,
+          "triangles": 341,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 492,
+            "connected_components": 174,
+            "boundary_edge_fraction": 0.63304,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 79,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 341,
+      "points": 0,
+      "lines": 0,
+      "vertices": 670
+    }
+  ],
+  "materials": [
+    {
+      "name": "mtl1.002",
+      "alpha_mode": "BLEND",
+      "alpha_cutoff": null,
+      "base_color_alpha": 0.45,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "mtl1.003",
+      "alpha_mode": "BLEND",
+      "alpha_cutoff": null,
+      "base_color_alpha": 0.45,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": []
+}

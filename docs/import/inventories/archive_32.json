@@ -1,0 +1,40 @@
+{
+  "listed_name": "archive (32).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (32).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "0e85d1b46534464a7d36903a0a22a057501cd3de0938aeaa99004b6645a8ac1a",
+  "size_bytes": 2905621,
+  "entries": 1,
+  "files": 1,
+  "directories": 0,
+  "uncompressed_bytes": 7623837,
+  "overall_ratio": 2.62,
+  "max_entry_ratio": 2.6,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (1 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "tabular": 1
+  },
+  "extensions": {
+    ".csv": 1
+  },
+  "top_level": {
+    "Epileptic Seizure Recognition.csv": 1
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_32.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.0,
+  "notes": []
+}

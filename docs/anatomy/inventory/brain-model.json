@@ -1,0 +1,392 @@
+{
+  "asset_id": "brain-model",
+  "relative_path": "brain_model.glb",
+  "source_group": "workspace_root",
+  "bytes": 7555248,
+  "sha256": "42276122843bb8113c409c31dc661e3e7d8a1e6fd8cfdb2e524aed8265818ce0",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2996
+      },
+      {
+        "type": "BIN",
+        "byteLength": 7552224
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-14.27.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "kalitkap (https://sketchfab.com/kalitkap)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/brain-model-a71d97bddda64b30899cb25651523e38",
+      "title": "Brain Model"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 3,
+    "validator_triangle_count": 271362,
+    "validator_vertex_count": 178995
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 5,
+    "mesh_nodes": 3,
+    "meshes": 3,
+    "primitives": 3,
+    "materials": 1,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 271362,
+    "rendered_triangles": 271362,
+    "unique_vertices": 178995,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 3,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 3,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 2239,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.12382,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -111.42614,
+        -5.291101,
+        -63.311817
+      ],
+      "max": [
+        65.741585,
+        102.678795,
+        7.804742
+      ],
+      "size": [
+        177.167725,
+        107.969896,
+        71.116559
+      ],
+      "center": [
+        -22.842278,
+        48.693847,
+        -27.753538
+      ],
+      "diagonal": 219.325024
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 2.491,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Object_2",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 1,
+    "names": [
+      "Scene_-_Root"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Brain Model.stl.cleaner.materialmerger.gles",
+      "Brain Model.stl.cleaner.materialmerger.gles",
+      "Brain Model.stl.cleaner.materialmerger.gles"
+    ],
+    "anatomically_named_mesh_nodes": 3,
+    "anatomical_names_sample": [
+      "Brain Model.stl.cleaner.materialmerger.gles"
+    ]
+  },
+  "inspection_ms": 580,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Brain Model.stl.cleaner.materialmerger.gles",
+      "name": "Brain Model.stl.cleaner.materialmerger.gles",
+      "semantic_name": "Brain Model.stl.cleaner.materialmerger.gles",
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 3,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Brain Model.stl.cleaner.materialmerger.gles/Object_2",
+      "name": "Object_2",
+      "semantic_name": "Brain Model.stl.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_0",
+      "material": "Scene_-_Root",
+      "triangles": 109592,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -111.42614,
+          1.282433,
+          -57.375061
+        ],
+        "max": [
+          65.741585,
+          102.10891,
+          7.804742
+        ],
+        "size": [
+          177.167725,
+          100.826477,
+          65.179803
+        ],
+        "center": [
+          -22.842278,
+          51.695671,
+          -24.78516
+        ],
+        "diagonal": 214.015859
+      }
+    },
+    {
+      "path": "Sketchfab_model/Brain Model.stl.cleaner.materialmerger.gles/Object_3",
+      "name": "Object_3",
+      "semantic_name": "Brain Model.stl.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_1",
+      "material": "Scene_-_Root",
+      "triangles": 97492,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -111.300362,
+          -0.707298,
+          -62.577232
+        ],
+        "max": [
+          60.908405,
+          101.652206,
+          7.627787
+        ],
+        "size": [
+          172.208767,
+          102.359504,
+          70.205019
+        ],
+        "center": [
+          -25.195978,
+          50.472454,
+          -27.474723
+        ],
+        "diagonal": 212.278289
+      }
+    },
+    {
+      "path": "Sketchfab_model/Brain Model.stl.cleaner.materialmerger.gles/Object_4",
+      "name": "Object_4",
+      "semantic_name": "Brain Model.stl.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_2",
+      "material": "Scene_-_Root",
+      "triangles": 64278,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -76.534927,
+          -5.291101,
+          -63.311817
+        ],
+        "max": [
+          45.099842,
+          102.678795,
+          2.682818
+        ],
+        "size": [
+          121.634769,
+          107.969896,
+          65.994635
+        ],
+        "center": [
+          -15.717543,
+          48.693847,
+          -30.314499
+        ],
+        "diagonal": 175.52153
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 109592,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 62705,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0.11448,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 109592,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65534,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 97492,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 57115,
+            "connected_components": 1020,
+            "boundary_edge_fraction": 0.10159,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 97492,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65534
+    },
+    {
+      "name": "Object_2",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 47929,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 64278,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 39718,
+            "connected_components": 1217,
+            "boundary_edge_fraction": 0.12382,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 64278,
+      "points": 0,
+      "lines": 0,
+      "vertices": 47929
+    }
+  ],
+  "materials": [
+    {
+      "name": "Scene_-_Root",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": []
+}

@@ -1,0 +1,43 @@
+{
+  "listed_name": "archive.zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive.zip",
+  "role": "NAMED",
+  "status": "EXTRACTED_VERIFIED",
+  "sha256": "cdabc840ff7cd8781344189efeaa12fe77359b5e1818f126c2804fadd8cf9c95",
+  "size_bytes": 135162150,
+  "entries": 6795,
+  "files": 6795,
+  "directories": 0,
+  "uncompressed_bytes": 150987529,
+  "overall_ratio": 1.13,
+  "max_entry_ratio": 3.9,
+  "project_copy": "D:\\project\\archive.zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [],
+  "extracted_to": "D:\\project\\_imports\\archives\\archive_00",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 6795
+  },
+  "extensions": {
+    ".jpg": 6795
+  },
+  "top_level": {
+    "Data/": 6795
+  },
+  "second_level": {
+    "Data/NORMAL/": 4105,
+    "Data/Hemorrhagic/": 2690
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_00.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.4,
+  "notes": [
+    "Existing extraction re-verified in audit mode: 6795 of 6795 files present."
+  ]
+}

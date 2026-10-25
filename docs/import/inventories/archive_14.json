@@ -1,0 +1,43 @@
+{
+  "listed_name": "archive (14).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (14).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "70fee851f151f5c360a78f674599465adba725efb5948c7d0d0c83003915e2b9",
+  "size_bytes": 214566503,
+  "entries": 6323,
+  "files": 6323,
+  "directories": 0,
+  "uncompressed_bytes": 1889401511,
+  "overall_ratio": 8.85,
+  "max_entry_ratio": 30.7,
+  "project_copy": "D:\\project\\archive (14).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (6323 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 6323
+  },
+  "extensions": {
+    ".jpg": 5397,
+    ".png": 926
+  },
+  "top_level": {
+    "Dataset/": 6323
+  },
+  "second_level": {
+    "Dataset/Dataset/": 6323
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_14.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 18.5,
+  "notes": []
+}

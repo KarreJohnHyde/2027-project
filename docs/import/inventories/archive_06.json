@@ -1,0 +1,48 @@
+{
+  "listed_name": "archive (6).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (6).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "3eb4be5cb16f19b1c6111e8ae51487251c253b48ae48f4e90c1a81f9270679e3",
+  "size_bytes": 452150761,
+  "entries": 3007,
+  "files": 3007,
+  "directories": 0,
+  "uncompressed_bytes": 492340475,
+  "overall_ratio": 1.09,
+  "max_entry_ratio": 11.7,
+  "project_copy": "D:\\project\\archive (6).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (3007 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 3000,
+    "structured_annotation": 6,
+    "text": 1
+  },
+  "extensions": {
+    ".png": 3000,
+    ".json": 6,
+    ".txt": 1
+  },
+  "top_level": {
+    "data/": 3006,
+    "decription.txt": 1
+  },
+  "second_level": {
+    "data/stenosis/": 1503,
+    "data/syntax/": 1503
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_06.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 3,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 8.2,
+  "notes": []
+}

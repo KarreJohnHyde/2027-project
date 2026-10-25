@@ -1,0 +1,124 @@
+{
+  "model_id": "kidney_stone_detector",
+  "run_id": "kidney_stone_detector-20261024T161540Z",
+  "task_id": "tez-kidney-stone-detection",
+  "dataset": "TEZ_ROI_AUG kidney stone detection (Roboflow)",
+  "dataset_id": "tez-roi-aug-kidney-stone",
+  "dataset_version": "5085472ca7ecf856a18fb95240da90e16f81462283b0317295ca9cdedd38a7f6",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "CC BY 4.0",
+    "source": "in-archive README.dataset.txt and data.yaml (Roboflow Universe tez-nwkf5/tez_roi_aug v3)",
+    "verified_on": "2026-10-24",
+    "citation": "Roboflow Universe project tez_roi_aug (workspace tez-nwkf5), version 3."
+  },
+  "split_method": "re-split by acquisition session joined with pixel near-duplicate groups; stratified by stone present, seed 20261024, fractions {'train': 0.7, 'val': 0.15, 'test': 0.15} (publisher split kept as publisher_split)",
+  "split_counts": {
+    "train": 909,
+    "val": 195,
+    "test": 196
+  },
+  "leakage_check": {
+    "near_duplicate_groups_crossing_splits": 0,
+    "images_in_crossing_groups": 0,
+    "test_images_with_cross_split_duplicate": 0,
+    "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95"
+  },
+  "selection": {
+    "criterion": "validation AP50 (COCOeval)",
+    "best_epoch": 1,
+    "val_ap50": 0.7787952453306094
+  },
+  "operating_point": {
+    "chosen_on": "validation",
+    "criterion": "maximum F1 at IoU 0.5",
+    "validation": {
+      "threshold": 0.85,
+      "tp": 263,
+      "fp": 69,
+      "fn": 98,
+      "precision": 0.7921686746987951,
+      "recall": 0.7285318559556787,
+      "f1": 0.759018759018759
+    },
+    "test": {
+      "threshold": 0.85,
+      "tp": 221,
+      "fp": 77,
+      "fn": 181,
+      "precision": 0.7416107382550335,
+      "recall": 0.5497512437810945,
+      "f1": 0.6314285714285715
+    }
+  },
+  "test": {
+    "n_images": 196,
+    "reference_boxes": 402,
+    "metrics": {
+      "map_50_95": 0.23123737867754052,
+      "ap_50": 0.6286374727151429,
+      "ap_75": 0.0890779068988777,
+      "ap_small": 0.2241348284631348,
+      "ap_medium": 0.5465346534653466,
+      "ap_large": null,
+      "ar_1": 0.18233830845771143,
+      "ar_10": 0.34825870646766177,
+      "ar_100": 0.3599502487562189,
+      "ar_small": 0.35620253164556964,
+      "ar_medium": 0.5714285714285714,
+      "ar_large": null
+    }
+  },
+  "test_without_cross_split_duplicates": {
+    "n_images": 196,
+    "metrics": {
+      "map_50_95": 0.23123737867754052,
+      "ap_50": 0.6286374727151429,
+      "ap_75": 0.0890779068988777,
+      "ap_small": 0.2241348284631348,
+      "ap_medium": 0.5465346534653466,
+      "ap_large": null,
+      "ar_1": 0.18233830845771143,
+      "ar_10": 0.34825870646766177,
+      "ar_100": 0.3599502487562189,
+      "ar_small": 0.35620253164556964,
+      "ar_medium": 0.5714285714285714,
+      "ar_large": null
+    }
+  },
+  "evaluation_protocol": "pycocotools COCOeval bbox: IoU 0.50:0.05:0.95, 101-point interpolated precision, area ranges all/small/medium/large, max 1/10/100 detections. -1 (undefined) is reported as null.",
+  "checkpoint": {
+    "path": "artifacts/training/kidney_stone_detector-20261024T161540Z/model.pt",
+    "sha256": "e9267f9a6e9fb36cc08fd27a888096209febf023ce2f140c5f7d38f6839b9fcb"
+  },
+  "held_out_predictions": "artifacts/training/kidney_stone_detector-20261024T161540Z/predictions_test.json",
+  "training_seconds": 2952.9,
+  "config": {
+    "task_id": "tez-kidney-stone-detection",
+    "model_id": "kidney_stone_detector",
+    "display_name": "TEZ kidney stone detector on CT slices (research)",
+    "modality": "CT",
+    "anatomy": "kidneys",
+    "category": "kidney_stone",
+    "allow_flip": false,
+    "epochs": 20,
+    "batch_size": 4,
+    "lr": 0.01,
+    "min_size": 512,
+    "max_size": 1024,
+    "workers": 4,
+    "seed": 20261024
+  },
+  "reporting_context": {
+    "dataset": "TEZ_ROI_AUG kidney stone detection (Roboflow)",
+    "dataset_version": "5085472ca7ecf856",
+    "split": "test",
+    "checkpoint": "sha256:e9267f9a6e9fb36cc08fd27a888096209febf023ce2f140c5f7d38f6839b9fcb"
+  },
+  "limitations": [
+    "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+    "Internal test split from the same source; no external validation.",
+    "Detection scores are not probabilities and are not calibrated.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

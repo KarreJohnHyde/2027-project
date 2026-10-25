@@ -1,0 +1,275 @@
+{
+  "asset_id": "source-rotten-brain",
+  "relative_path": "source/Rotten Brain.glb",
+  "source_group": "source_folder",
+  "bytes": 4666464,
+  "sha256": "a2272d48bd49ae7de876ba11c5062685ec8c3bd8290fb05264cc3a8a64909e3c",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2064
+      },
+      {
+        "type": "BIN",
+        "byteLength": 4664372
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Microsoft GLTF Exporter 2.8.3.32",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "KHR_materials_pbrSpecularGlossiness"
+    ],
+    "extensions_required": [
+      "KHR_materials_pbrSpecularGlossiness"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 1,
+    "validator_triangle_count": 4850,
+    "validator_vertex_count": 2605
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 2,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 1,
+    "textures": 3,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 4850,
+    "rendered_triangles": 4850,
+    "unique_vertices": 2605,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 1,
+    "closed_measured_primitives": 1,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.378573,
+        -0.221907,
+        -0.438496
+      ],
+      "max": [
+        0.382286,
+        0.632736,
+        0.552538
+      ],
+      "size": [
+        0.760859,
+        0.854643,
+        0.991034
+      ],
+      "center": [
+        0.001857,
+        0.205414,
+        0.057021
+      ],
+      "diagonal": 1.51376
+    },
+    "bounds_finite": true,
+    "tallest_axis": "z",
+    "aspect_ratio": 1.303,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "brain.1",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 1,
+    "names": [
+      null
+    ]
+  },
+  "textures_summary": {
+    "count": 3,
+    "total_bytes": 4510229,
+    "max_edge_px": 1024,
+    "mime_types": [
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "brain.1"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "brain.1"
+    ]
+  },
+  "inspection_ms": 65,
+  "nodes": [
+    {
+      "path": "RootNode.0",
+      "name": "RootNode.0",
+      "semantic_name": "RootNode.0",
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "RootNode.0/brain.1",
+      "name": "brain.1",
+      "semantic_name": "brain.1",
+      "depth": 1,
+      "mesh": "(unnamed mesh)",
+      "material": null,
+      "triangles": 4850,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.378573,
+          -0.221907,
+          -0.438496
+        ],
+        "max": [
+          0.382286,
+          0.632736,
+          0.552538
+        ],
+        "size": [
+          0.760859,
+          0.854643,
+          0.991034
+        ],
+        "center": [
+          0.001857,
+          0.205414,
+          0.057021
+        ],
+        "diagonal": 1.51376
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": null,
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 2605,
+          "indexed": true,
+          "attributes": [
+            "TANGENT",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 4850,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 2427,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 4850,
+      "points": 0,
+      "lines": 0,
+      "vertices": 2605
+    }
+  ],
+  "materials": [
+    {
+      "name": null,
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": true,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1890195,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 268829,
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 2351205,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    }
+  ]
+}

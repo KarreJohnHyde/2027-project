@@ -1,0 +1,58 @@
+{
+  "listed_name": "archive (11).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (11).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "587e2fd3195aebc8a186b64d4643bbb8559f5d4fa06a7ac4b6177dabb2efc687",
+  "size_bytes": 22100991,
+  "entries": 2603,
+  "files": 2603,
+  "directories": 0,
+  "uncompressed_bytes": 21675527,
+  "overall_ratio": 1.02,
+  "max_entry_ratio": 2.9,
+  "project_copy": "D:\\project\\archive (11).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (2603 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "text": 1302,
+    "raster_image": 1300,
+    "structured_annotation": 1
+  },
+  "extensions": {
+    ".txt": 1302,
+    ".jpg": 1300,
+    ".yaml": 1
+  },
+  "top_level": {
+    "train/": 2108,
+    "test/": 246,
+    "valid/": 246,
+    "README.dataset.txt": 1,
+    "README.roboflow.txt": 1,
+    "data.yaml": 1
+  },
+  "second_level": {
+    "train/images/": 1054,
+    "train/labels/": 1054,
+    "test/images/": 123,
+    "test/labels/": 123,
+    "valid/images/": 123,
+    "valid/labels/": 123
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_11.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 1300,
+  "license_evidence": [
+    "CC-BY-4.0 in README.dataset.txt"
+  ],
+  "duration_seconds": 5.6,
+  "notes": []
+}

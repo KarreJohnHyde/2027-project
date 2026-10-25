@@ -1,0 +1,49 @@
+{
+  "listed_name": "archive (16).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (16).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "ceafcc3b2209ce5fb4e395f7e823159818c03c8af50d7f450ec7a4550ee0c6b4",
+  "size_bytes": 2493213587,
+  "entries": 8000,
+  "files": 8000,
+  "directories": 0,
+  "uncompressed_bytes": 2522481791,
+  "overall_ratio": 1.01,
+  "max_entry_ratio": 1.1,
+  "project_copy": "D:\\project\\archive (16).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (8000 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 8000
+  },
+  "extensions": {
+    ".jpg": 8000
+  },
+  "top_level": {
+    "kvasir-dataset-v2/": 8000
+  },
+  "second_level": {
+    "kvasir-dataset-v2/dyed-lifted-polyps/": 1000,
+    "kvasir-dataset-v2/dyed-resection-margins/": 1000,
+    "kvasir-dataset-v2/esophagitis/": 1000,
+    "kvasir-dataset-v2/normal-cecum/": 1000,
+    "kvasir-dataset-v2/normal-pylorus/": 1000,
+    "kvasir-dataset-v2/normal-z-line/": 1000,
+    "kvasir-dataset-v2/polyps/": 1000,
+    "kvasir-dataset-v2/ulcerative-colitis/": 1000
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_16.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 26.0,
+  "notes": []
+}

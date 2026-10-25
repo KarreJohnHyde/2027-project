@@ -1,0 +1,52 @@
+{
+  "schema_version": "medtwin-test-evidence-1.0.0",
+  "recorded_at": "2026-10-24T09:48:13+00:00",
+  "git_commit": "3aee888d862a61b12a28bbea326a265304cc4647",
+  "git_branch": "feature/medtwin-2-integration",
+  "working_tree_clean": true,
+  "platform": "win32",
+  "python": "3.12.15",
+  "scope": "Software tests only. Fixtures are synthetic; no result here measures clinical or model performance.",
+  "suites": [
+    {
+      "name": "Backend (pytest)",
+      "command": "python.exe -m pytest backend/tests -q -p no:cacheprovider",
+      "result": "PASSED",
+      "passed": 107,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 85.39,
+      "detail": "107 passed in 73.35s (0:01:13)"
+    },
+    {
+      "name": "Frontend typecheck",
+      "command": "npx.CMD tsc --noEmit -p .",
+      "result": "PASSED",
+      "passed": null,
+      "failed": 0,
+      "skipped": null,
+      "duration_seconds": 5.85,
+      "detail": "0 type error(s)"
+    },
+    {
+      "name": "Frontend lint",
+      "command": "npx.CMD oxlint src vite.config.ts",
+      "result": "PASSED",
+      "passed": null,
+      "failed": 0,
+      "skipped": null,
+      "duration_seconds": 1.01,
+      "detail": "12 warning(s), 0 error(s)"
+    },
+    {
+      "name": "Frontend production build",
+      "command": "npx.CMD vite build",
+      "result": "PASSED",
+      "passed": null,
+      "failed": null,
+      "skipped": null,
+      "duration_seconds": 11.83,
+      "detail": "built in 10.35s"
+    }
+  ]
+}

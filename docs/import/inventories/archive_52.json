@@ -1,0 +1,48 @@
+{
+  "listed_name": "archive (52).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (52).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "fe139852fd5d86ef00257ee96f1bf7e113c7d0e2704592d1f28ebcd4bc1786ea",
+  "size_bytes": 2229797283,
+  "entries": 29061,
+  "files": 29061,
+  "directories": 0,
+  "uncompressed_bytes": 2226810020,
+  "overall_ratio": 1.0,
+  "max_entry_ratio": 7.9,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (29061 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 29060,
+    "tabular": 1
+  },
+  "extensions": {
+    ".png": 29060,
+    ".csv": 1
+  },
+  "top_level": {
+    "resized_images/": 29060,
+    "cleaned_dataset.csv": 1
+  },
+  "second_level": {
+    "resized_images/256/": 7265,
+    "resized_images/299/": 7265,
+    "resized_images/320/": 7265,
+    "resized_images/512/": 7265
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_52.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 71.7,
+  "notes": []
+}

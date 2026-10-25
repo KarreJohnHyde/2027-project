@@ -1,0 +1,49 @@
+{
+  "listed_name": "archive (46).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (46).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "edb036207c35bda609571900ddb73b7d5815bea9327b8984239c01507e20b029",
+  "size_bytes": 632918233,
+  "entries": 6038,
+  "files": 6038,
+  "directories": 0,
+  "uncompressed_bytes": 643649319,
+  "overall_ratio": 1.02,
+  "max_entry_ratio": 16.2,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (6038 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 6033,
+    "other": 2,
+    "tabular": 2,
+    "checkpoint": 1
+  },
+  "extensions": {
+    ".png": 6033,
+    ".db": 2,
+    ".csv": 2,
+    ".pth": 1
+  },
+  "top_level": {
+    "Ultrasound Fetus Dataset/": 6037,
+    "ultrasound_fetus.csv": 1
+  },
+  "second_level": {
+    "Ultrasound Fetus Dataset/Ultrasound Fetus Dataset/": 6037
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_46.entries.csv",
+  "mask_like_files": 2446,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 15.0,
+  "notes": []
+}

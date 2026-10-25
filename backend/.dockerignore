@@ -1,0 +1,8 @@
+**
+
+!Dockerfile
+!requirements.txt
+!requirements-ml.txt
+!requirements-dev.txt
+!app/
+!app/**

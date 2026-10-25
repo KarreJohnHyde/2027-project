@@ -1,0 +1,41 @@
+{
+  "listed_name": "archive (38).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (38).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "74edbb082915d1f43daed5e7f1c777dc8eca6cd2a6cbf10eb3805b45f07a1068",
+  "size_bytes": 96193,
+  "entries": 2,
+  "files": 2,
+  "directories": 0,
+  "uncompressed_bytes": 569850,
+  "overall_ratio": 5.95,
+  "max_entry_ratio": 6.4,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (2 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "tabular": 2
+  },
+  "extensions": {
+    ".csv": 2
+  },
+  "top_level": {
+    "cleaned_dataset_Thyroid1.csv": 1,
+    "hypothyroid/": 1
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_38.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.0,
+  "notes": []
+}

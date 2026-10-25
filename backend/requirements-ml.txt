@@ -1,0 +1,7 @@
+# Reproducible CPU inference stack for CI and the default Docker image.
+# CUDA builds must use a separately validated lock matching the host driver.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.1+cpu
+torchvision==0.29.1+cpu
+# Pure-Python medical-imaging transforms/networks; shared by 2-D and 3-D trainers.
+monai==1.6.1

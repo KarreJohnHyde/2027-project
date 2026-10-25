@@ -1,0 +1,52 @@
+{
+  "listed_name": "archive (22).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (22).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "5f743b0ecd296cc762a6851f290d9a99f1ce152281f9ce2b4a79d2fc75181333",
+  "size_bytes": 776620616,
+  "entries": 15639,
+  "files": 15639,
+  "directories": 0,
+  "uncompressed_bytes": 794885459,
+  "overall_ratio": 1.03,
+  "max_entry_ratio": 5.2,
+  "project_copy": "D:\\project\\archive (22).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (15639 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 15639
+  },
+  "extensions": {
+    ".jpg": 15639
+  },
+  "top_level": {
+    "Train/": 12000,
+    "Test/": 3000,
+    "External_test/": 639
+  },
+  "second_level": {
+    "Train/Hemorrhage/": 4000,
+    "Train/Ischemia/": 4000,
+    "Train/Normal/": 4000,
+    "Test/Hemorrhage/": 1000,
+    "Test/Ischemia/": 1000,
+    "Test/Normal/": 1000,
+    "External_test/Hemorrhage/": 250,
+    "External_test/Normal/": 232,
+    "External_test/Ischemia/": 157
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_22.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 39.6,
+  "notes": []
+}

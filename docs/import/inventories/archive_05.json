@@ -1,0 +1,59 @@
+{
+  "listed_name": "archive (5).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (5).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "33d53f64af3014325aa6c754cec146296b2e3bfeb65ebb24830b2522f25167b4",
+  "size_bytes": 125145775,
+  "entries": 702,
+  "files": 702,
+  "directories": 0,
+  "uncompressed_bytes": 323084808,
+  "overall_ratio": 2.58,
+  "max_entry_ratio": 3.9,
+  "project_copy": "D:\\project\\archive (5).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (702 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "dicom": 350,
+    "raster_image": 350,
+    "tabular": 1,
+    "document": 1
+  },
+  "extensions": {
+    ".dcm": 350,
+    ".jpg": 350,
+    ".csv": 1,
+    ".pdf": 1
+  },
+  "top_level": {
+    "ST000001/": 700,
+    "Brain_MRI_conditions.csv": 1,
+    "Brain_MRI_tumor.pdf": 1
+  },
+  "second_level": {
+    "ST000001/SE000005/": 250,
+    "ST000001/SE000003/": 68,
+    "ST000001/SE000010/": 56,
+    "ST000001/SE000001/": 54,
+    "ST000001/SE000002/": 54,
+    "ST000001/SE000008/": 54,
+    "ST000001/SE000009/": 50,
+    "ST000001/SE000004/": 48,
+    "ST000001/SE000007/": 48,
+    "ST000001/SE000006/": 18
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_05.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 2.2,
+  "notes": []
+}

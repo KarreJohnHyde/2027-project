@@ -1,0 +1,1384 @@
+{
+  "asset_id": "brain-point-cloud",
+  "relative_path": "brain_point_cloud.glb",
+  "source_group": "workspace_root",
+  "bytes": 33405696,
+  "sha256": "86fb8cfcb35d116ffe9e76c8d2016233d2da9018db288ecd4d10ce76c6538e8f",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 10824
+      },
+      {
+        "type": "BIN",
+        "byteLength": 33394844
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-15.70.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "Terrie (https://sketchfab.com/terrielsimmons)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/brain-point-cloud-c427ea0aee214141a78eba37bf9b76bb",
+      "title": "Brain Point Cloud"
+    },
+    "extensions_used": [
+      "KHR_materials_unlit"
+    ],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 19,
+    "validator_triangle_count": 0,
+    "validator_vertex_count": 1192673
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 21,
+    "mesh_nodes": 19,
+    "meshes": 19,
+    "primitives": 19,
+    "materials": 1,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 0,
+    "rendered_triangles": 0,
+    "unique_vertices": 1192673,
+    "points": 1192673,
+    "primitive_modes": [
+      "POINTS"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 19,
+    "unindexed_primitives": 19,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 0,
+    "topology_skipped_primitives": 19,
+    "connected_components_measured": 0,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        0.221994,
+        -0.077036,
+        -0.448563
+      ],
+      "max": [
+        0.513306,
+        0.148812,
+        -0.212405
+      ],
+      "size": [
+        0.291312,
+        0.225848,
+        0.236158
+      ],
+      "center": [
+        0.36765,
+        0.035888,
+        -0.330484
+      ],
+      "diagonal": 0.437768
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 1.29,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 3,
+    "largest_mesh_node": "Object_2",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 1,
+    "double_sided": 1,
+    "names": [
+      "Scene_-_Root"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root",
+      "Scene_-_Root"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 770,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Geode",
+      "name": "Geode",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 19,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_2",
+      "name": "Object_2",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_0",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.222929,
+          -0.074464,
+          -0.448563
+        ],
+        "max": [
+          0.512371,
+          0.147877,
+          -0.213469
+        ],
+        "size": [
+          0.289441,
+          0.222342,
+          0.235094
+        ],
+        "center": [
+          0.36765,
+          0.036706,
+          -0.331016
+        ],
+        "diagonal": 0.434144
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_3",
+      "name": "Object_3",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_1",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.241633,
+          -0.062307,
+          -0.418777
+        ],
+        "max": [
+          0.482211,
+          0.122627,
+          -0.403885
+        ],
+        "size": [
+          0.240578,
+          0.184934,
+          0.014893
+        ],
+        "center": [
+          0.361922,
+          0.03016,
+          -0.411331
+        ],
+        "diagonal": 0.303809
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_4",
+      "name": "Object_4",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_2",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.221994,
+          -0.073763,
+          -0.403885
+        ],
+        "max": [
+          0.511669,
+          0.143902,
+          -0.3124
+        ],
+        "size": [
+          0.289675,
+          0.217666,
+          0.091485
+        ],
+        "center": [
+          0.366832,
+          0.03507,
+          -0.358142
+        ],
+        "diagonal": 0.37371
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_5",
+      "name": "Object_5",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_3",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.221994,
+          -0.072127,
+          -0.3124
+        ],
+        "max": [
+          0.513306,
+          0.145539,
+          -0.301762
+        ],
+        "size": [
+          0.291312,
+          0.217666,
+          0.010638
+        ],
+        "center": [
+          0.36765,
+          0.036706,
+          -0.307081
+        ],
+        "diagonal": 0.363805
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_6",
+      "name": "Object_6",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_4",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.225267,
+          -0.072127,
+          -0.301762
+        ],
+        "max": [
+          0.513306,
+          0.145539,
+          -0.293252
+        ],
+        "size": [
+          0.288039,
+          0.217666,
+          0.00851
+        ],
+        "center": [
+          0.369287,
+          0.036706,
+          -0.297507
+        ],
+        "diagonal": 0.361133
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_7",
+      "name": "Object_7",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_5",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.231814,
+          -0.072127,
+          -0.293252
+        ],
+        "max": [
+          0.511669,
+          0.140629,
+          -0.284742
+        ],
+        "size": [
+          0.279856,
+          0.212756,
+          0.00851
+        ],
+        "center": [
+          0.371742,
+          0.034251,
+          -0.288997
+        ],
+        "diagonal": 0.351649
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_8",
+      "name": "Object_8",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_6",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.231814,
+          -0.072127,
+          -0.284742
+        ],
+        "max": [
+          0.505123,
+          0.138993,
+          -0.248573
+        ],
+        "size": [
+          0.273309,
+          0.211119,
+          0.036168
+        ],
+        "center": [
+          0.368468,
+          0.033433,
+          -0.266658
+        ],
+        "diagonal": 0.347243
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_9",
+      "name": "Object_9",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_7",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.254726,
+          -0.041031,
+          -0.248573
+        ],
+        "max": [
+          0.475665,
+          0.116081,
+          -0.212405
+        ],
+        "size": [
+          0.220939,
+          0.157112,
+          0.036168
+        ],
+        "center": [
+          0.365195,
+          0.037525,
+          -0.230489
+        ],
+        "diagonal": 0.273507
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_10",
+      "name": "Object_10",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_8",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.235087,
+          -0.068853,
+          -0.271976
+        ],
+        "max": [
+          0.495304,
+          0.132446,
+          -0.246446
+        ],
+        "size": [
+          0.260217,
+          0.2013,
+          0.025531
+        ],
+        "center": [
+          0.365195,
+          0.031797,
+          -0.259211
+        ],
+        "diagonal": 0.329979
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_11",
+      "name": "Object_11",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_9",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.231814,
+          -0.072127,
+          -0.282614
+        ],
+        "max": [
+          0.505123,
+          0.13572,
+          -0.271976
+        ],
+        "size": [
+          0.273309,
+          0.207846,
+          0.010638
+        ],
+        "center": [
+          0.368468,
+          0.031797,
+          -0.277295
+        ],
+        "diagonal": 0.343528
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_12",
+      "name": "Object_12",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_10",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.221994,
+          -0.073763,
+          -0.32942
+        ],
+        "max": [
+          0.508396,
+          0.142266,
+          -0.282614
+        ],
+        "size": [
+          0.286402,
+          0.216029,
+          0.046806
+        ],
+        "center": [
+          0.365195,
+          0.034251,
+          -0.306017
+        ],
+        "diagonal": 0.361781
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_13",
+      "name": "Object_13",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_11",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.221994,
+          -0.077036,
+          -0.340058
+        ],
+        "max": [
+          0.500213,
+          0.148812,
+          -0.32942
+        ],
+        "size": [
+          0.278219,
+          0.225848,
+          0.010638
+        ],
+        "center": [
+          0.361104,
+          0.035888,
+          -0.334739
+        ],
+        "diagonal": 0.358506
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_14",
+      "name": "Object_14",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_12",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.221994,
+          -0.0754,
+          -0.348568
+        ],
+        "max": [
+          0.511669,
+          0.148812,
+          -0.340058
+        ],
+        "size": [
+          0.289675,
+          0.224212,
+          0.00851
+        ],
+        "center": [
+          0.366832,
+          0.036706,
+          -0.344313
+        ],
+        "diagonal": 0.366408
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_15",
+      "name": "Object_15",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_13",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.225267,
+          -0.0754,
+          -0.359206
+        ],
+        "max": [
+          0.511669,
+          0.145539,
+          -0.348568
+        ],
+        "size": [
+          0.286402,
+          0.220939,
+          0.010638
+        ],
+        "center": [
+          0.368468,
+          0.03507,
+          -0.353887
+        ],
+        "diagonal": 0.361875
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_16",
+      "name": "Object_16",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_14",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.225267,
+          -0.072127,
+          -0.367716
+        ],
+        "max": [
+          0.511669,
+          0.142266,
+          -0.359206
+        ],
+        "size": [
+          0.286402,
+          0.214392,
+          0.00851
+        ],
+        "center": [
+          0.368468,
+          0.03507,
+          -0.363461
+        ],
+        "diagonal": 0.357858
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_17",
+      "name": "Object_17",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_15",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.22854,
+          -0.073763,
+          -0.378354
+        ],
+        "max": [
+          0.508396,
+          0.140629,
+          -0.367716
+        ],
+        "size": [
+          0.279856,
+          0.214392,
+          0.010638
+        ],
+        "center": [
+          0.368468,
+          0.033433,
+          -0.373035
+        ],
+        "diagonal": 0.352699
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_18",
+      "name": "Object_18",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_16",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.230177,
+          -0.073763,
+          -0.388992
+        ],
+        "max": [
+          0.505123,
+          0.137356,
+          -0.378354
+        ],
+        "size": [
+          0.274946,
+          0.211119,
+          0.010638
+        ],
+        "center": [
+          0.36765,
+          0.031797,
+          -0.383673
+        ],
+        "diagonal": 0.346814
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_19",
+      "name": "Object_19",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_17",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.231814,
+          -0.07049,
+          -0.399629
+        ],
+        "max": [
+          0.498577,
+          0.132446,
+          -0.388992
+        ],
+        "size": [
+          0.266763,
+          0.202936,
+          0.010638
+        ],
+        "center": [
+          0.365195,
+          0.030978,
+          -0.394311
+        ],
+        "diagonal": 0.335349
+      }
+    },
+    {
+      "path": "Sketchfab_model/Geode/Object_20",
+      "name": "Object_20",
+      "semantic_name": "Scene_-_Root",
+      "depth": 2,
+      "mesh": "Object_18",
+      "material": "Scene_-_Root",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.241633,
+          -0.06558,
+          -0.401757
+        ],
+        "max": [
+          0.485484,
+          0.1259,
+          -0.399629
+        ],
+        "size": [
+          0.243851,
+          0.19148,
+          0.002128
+        ],
+        "center": [
+          0.363559,
+          0.03016,
+          -0.400693
+        ],
+        "diagonal": 0.310052
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_2",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_3",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_4",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_5",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_6",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_7",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_8",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_9",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_10",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_11",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_12",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_13",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_14",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_15",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_16",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_17",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 65535,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 65535,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 65535,
+      "lines": 0,
+      "vertices": 65535
+    },
+    {
+      "name": "Object_18",
+      "primitives": [
+        {
+          "mode": "POINTS",
+          "vertex_count": 13043,
+          "indexed": false,
+          "attributes": [
+            "COLOR_0",
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "Scene_-_Root",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 13043,
+          "lines": 0,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 13043,
+      "lines": 0,
+      "vertices": 13043
+    }
+  ],
+  "materials": [
+    {
+      "name": "Scene_-_Root",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_unlit"
+      ]
+    }
+  ],
+  "textures": []
+}

@@ -1,0 +1,59 @@
+{
+  "listed_name": "archive (19).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (19).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "442512c3671f9c9c1f528223be9a9244c2ec51ce4e1cd89f402d01c9fcf7f9d3",
+  "size_bytes": 331858041,
+  "entries": 11955,
+  "files": 11955,
+  "directories": 0,
+  "uncompressed_bytes": 371389541,
+  "overall_ratio": 1.13,
+  "max_entry_ratio": 1.3,
+  "project_copy": "D:\\project\\archive (19).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (11955 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 11955
+  },
+  "extensions": {
+    ".jpg": 9391,
+    ".png": 2564
+  },
+  "top_level": {
+    "train/": 9564,
+    "test/": 2391
+  },
+  "second_level": {
+    "train/BT_pituitary/": 1392,
+    "train/BT_glioma/": 1296,
+    "train/BT_meningioma/": 1224,
+    "train/AD_MildDemented/": 1200,
+    "train/AD_ModerateDemented/": 1200,
+    "train/AD_VeryMildDemented/": 1200,
+    "train/MS/": 1124,
+    "train/Normal/": 928,
+    "test/BT_pituitary/": 348,
+    "test/BT_glioma/": 324,
+    "test/BT_meningioma/": 307,
+    "test/AD_MildDemented/": 300,
+    "test/AD_ModerateDemented/": 300,
+    "test/AD_VeryMildDemented/": 300,
+    "test/MS/": 281,
+    "test/Normal/": 231
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_19.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 28.8,
+  "notes": []
+}

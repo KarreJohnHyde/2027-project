@@ -1,0 +1,333 @@
+{
+  "asset_id": "human-brain",
+  "relative_path": "human_brain.glb",
+  "source_group": "workspace_root",
+  "bytes": 3851744,
+  "sha256": "5cb8665dd5d7c02ccc8fbb9369a7b1c1248d4c1e00316fd69c6c118d102af443",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 3972
+      },
+      {
+        "type": "BIN",
+        "byteLength": 3847744
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.65.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "3DRT STUDIOS (https://sketchfab.com/Hanako.com)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/human-brain-7a27c17fd6c0488bb31ab093236a47fb",
+      "title": "Human Brain"
+    },
+    "extensions_used": [
+      "KHR_materials_pbrSpecularGlossiness"
+    ],
+    "extensions_required": [
+      "KHR_materials_pbrSpecularGlossiness"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 3,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 4850,
+    "validator_vertex_count": 2605
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 6,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 1,
+    "textures": 3,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 4850,
+    "rendered_triangles": 4850,
+    "unique_vertices": 2605,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 1,
+    "closed_measured_primitives": 1,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.378573,
+        -0.221907,
+        -0.438496
+      ],
+      "max": [
+        0.382286,
+        0.632736,
+        0.552538
+      ],
+      "size": [
+        0.760859,
+        0.854643,
+        0.991034
+      ],
+      "center": [
+        0.001857,
+        0.205414,
+        0.057021
+      ],
+      "diagonal": 1.51376
+    },
+    "bounds_finite": true,
+    "tallest_axis": "z",
+    "aspect_ratio": 1.303,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Object_5",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 1,
+    "names": [
+      "material_0"
+    ]
+  },
+  "textures_summary": {
+    "count": 3,
+    "total_bytes": 3601983,
+    "max_edge_px": 1024,
+    "mime_types": [
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "brain.1_1"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "brain.1_1"
+    ]
+  },
+  "inspection_ms": 101,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root",
+      "name": "root",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode",
+      "name": "GLTF_SceneRootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/RootNode.0_0",
+      "name": "RootNode.0_0",
+      "semantic_name": "RootNode.0_0",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/RootNode.0_0/brain.1_1",
+      "name": "brain.1_1",
+      "semantic_name": "brain.1_1",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/root/GLTF_SceneRootNode/RootNode.0_0/brain.1_1/Object_5",
+      "name": "Object_5",
+      "semantic_name": "brain.1_1",
+      "depth": 5,
+      "mesh": "Object_0",
+      "material": "material_0",
+      "triangles": 4850,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.378573,
+          -0.221907,
+          -0.438496
+        ],
+        "max": [
+          0.382286,
+          0.632736,
+          0.552538
+        ],
+        "size": [
+          0.760859,
+          0.854643,
+          0.991034
+        ],
+        "center": [
+          0.001857,
+          0.205414,
+          0.057021
+        ],
+        "diagonal": 1.51376
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 2605,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "TEXCOORD_2",
+            "TEXCOORD_3"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "material_0",
+          "morph_targets": 0,
+          "triangles": 4850,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 2427,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 4850,
+      "points": 0,
+      "lines": 0,
+      "vertices": 2605
+    }
+  ],
+  "materials": [
+    {
+      "name": "material_0",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": true,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1604491,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 201154,
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1796338,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    }
+  ]
+}

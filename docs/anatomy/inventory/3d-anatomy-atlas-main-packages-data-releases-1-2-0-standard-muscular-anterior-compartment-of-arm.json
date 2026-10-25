@@ -1,0 +1,215 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-muscular-anterior-compartment-of-arm",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/muscular/anterior_compartment_of_arm.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 288576,
+  "sha256": "ea40318d76c30f0692c3aa96be6dfe2779bab56295a33bcf65d432e526655c5c",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2672
+      },
+      {
+        "type": "BIN",
+        "byteLength": 285876
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 17036,
+    "validator_vertex_count": 9092
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 17036,
+    "rendered_triangles": 17036,
+    "unique_vertices": 9092,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 8,
+    "closed_measured_primitives": 1,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.242889,
+        1.051192,
+        0.011463
+      ],
+      "max": [
+        0.242889,
+        1.408316,
+        0.062121
+      ],
+      "size": [
+        0.485778,
+        0.357124,
+        0.050658
+      ],
+      "center": [
+        0,
+        1.229754,
+        0.036792
+      ],
+      "diagonal": 0.605049
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 9.589,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "muscular.anterior_compartment_of_arm",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "muscular.anterior_compartment_of_arm"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 22,
+  "nodes": [
+    {
+      "path": "muscular.anterior_compartment_of_arm",
+      "name": "muscular.anterior_compartment_of_arm",
+      "semantic_name": "muscular.anterior_compartment_of_arm",
+      "depth": 0,
+      "mesh": "muscular.anterior_compartment_of_arm",
+      "material": null,
+      "triangles": 17036,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.242889,
+          1.051192,
+          0.011463
+        ],
+        "max": [
+          0.242889,
+          1.408316,
+          0.062121
+        ],
+        "size": [
+          0.485778,
+          0.357124,
+          0.050658
+        ],
+        "center": [
+          0,
+          1.229754,
+          0.036792
+        ],
+        "diagonal": 0.605049
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "muscular.anterior_compartment_of_arm",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 9092,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 17036,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 8528,
+            "connected_components": 8,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0.00039,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 17036,
+      "points": 0,
+      "lines": 0,
+      "vertices": 9092
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

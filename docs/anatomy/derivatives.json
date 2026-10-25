@@ -1,0 +1,3927 @@
+{
+  "variants": {
+    "heart-interior-dundee": {
+      "variant_id": "heart-interior-dundee",
+      "source": "interior_heart_-_high_detail.glb",
+      "source_sha256": "f8c21bf731c6f794823e4dc8bfb5a1cff95e4842ad37489696a41de7bcf93dd3",
+      "source_bytes": 122343600,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/heart-interior-dundee/standard.glb",
+          "bytes": 82577932,
+          "sha256": "0dbd6bbcc68a9ea56211fc0e843ef432bb8925182841948f02cb422ac77f73da",
+          "compression_ratio": 1.48,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 2313889,
+            "rendered_triangles": 2313889,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 2313889,
+            "rendered_triangles": 2313889,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000501,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 350662,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 281370,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 3454314,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 24069
+        },
+        "preview": {
+          "url": "/anatomy/derived/heart-interior-dundee/preview.glb",
+          "bytes": 42572756,
+          "sha256": "456d101940984577ededd7f250379f52c177ae2f4234a1819e790eb21df0f8cf",
+          "compression_ratio": 2.87,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "weld(exact)",
+            "simplify(meshoptimizer, target_ratio=0.25, max_error=0.002 of mesh radius, lockBorder)",
+            "textureCompress(webp, max 1024px, colour/data quality 80)",
+            "textureCompress(webp, max 1024px, normal maps quality 92)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": true,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 2313889,
+            "rendered_triangles": 2313889,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 834125,
+            "rendered_triangles": 834125,
+            "points": 0
+          },
+          "triangle_ratio": 0.3605,
+          "checks": {
+            "triangles_identical": false,
+            "bounds_relative_deviation": 0.00003855,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 67832,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 37406,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 136438,
+              "size": [
+                1024,
+                1024
+              ]
+            }
+          ],
+          "build_ms": 13387
+        }
+      },
+      "system_id": "heart"
+    },
+    "heart-exterior-dundee": {
+      "variant_id": "heart-exterior-dundee",
+      "source": "exterior_heart_-_high_detail.glb",
+      "source_sha256": "4068d2748905315c658efaa9424c56a81326b59c883c65856c062df6c45a8733",
+      "source_bytes": 145069260,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/heart-exterior-dundee/standard.glb",
+          "bytes": 98925280,
+          "sha256": "8a5232c7487e2249e1228ae446f2b68ca9254f7f360e4c2d3f066a8e6c321479",
+          "compression_ratio": 1.47,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 3093700,
+            "rendered_triangles": 3093700,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 3093700,
+            "rendered_triangles": 3093700,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000344,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 270832,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 1183990,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 287124,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 375006,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 3592434,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 260800,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 1187414,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 25383
+        },
+        "preview": {
+          "url": "/anatomy/derived/heart-exterior-dundee/preview.glb",
+          "bytes": 38233568,
+          "sha256": "2300825ff9e049d8ee02b2aa657191c4b9c38606291816f5385f6d6e6c03a997",
+          "compression_ratio": 3.79,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "weld(exact)",
+            "simplify(meshoptimizer, target_ratio=0.25, max_error=0.002 of mesh radius, lockBorder)",
+            "textureCompress(webp, max 1024px, colour/data quality 80)",
+            "textureCompress(webp, max 1024px, normal maps quality 92)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": true,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 3093700,
+            "rendered_triangles": 3093700,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 829744,
+            "rendered_triangles": 829744,
+            "points": 0
+          },
+          "triangle_ratio": 0.2682,
+          "checks": {
+            "triangles_identical": false,
+            "bounds_relative_deviation": 0.00034503,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 77998,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 4428,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 50078,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 65884,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 133572,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 73046,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 5220,
+              "size": [
+                1024,
+                1024
+              ]
+            }
+          ],
+          "build_ms": 14944
+        }
+      },
+      "system_id": "heart"
+    },
+    "heart-external-newey": {
+      "variant_id": "heart-external-newey",
+      "source": "cardiac_anatomy_external_view_of_human_heart.glb",
+      "source_sha256": "223f2bcb992bca9f36c5ae1093a5c5eb854ba9b14e243886fb3ae21827ed0556",
+      "source_bytes": 121530008,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/heart-external-newey/standard.glb",
+          "bytes": 71843540,
+          "sha256": "b3f73a7adfaaeb492b985cb87df38d6fb15dff8b27ddc07eb72905798d3b8b33",
+          "compression_ratio": 1.69,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 3003484,
+            "rendered_triangles": 3003484,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 3003484,
+            "rendered_triangles": 3003484,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000464,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 13510
+        },
+        "preview": {
+          "url": "/anatomy/derived/heart-external-newey/preview.glb",
+          "bytes": 27955044,
+          "sha256": "393efe0bddfd0cd41ead2c4ec31357da00acbe83dab9aa33f717119b38b7dac9",
+          "compression_ratio": 4.35,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "weld(exact)",
+            "simplify(meshoptimizer, target_ratio=0.25, max_error=0.002 of mesh radius, lockBorder)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": true,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 3003484,
+            "rendered_triangles": 3003484,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 778602,
+            "rendered_triangles": 778602,
+            "points": 0
+          },
+          "triangle_ratio": 0.2592,
+          "checks": {
+            "triangles_identical": false,
+            "bounds_relative_deviation": 0.00009493,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 11285
+        }
+      },
+      "system_id": "heart"
+    },
+    "lungs-airways-umcg": {
+      "variant_id": "lungs-airways-umcg",
+      "source": "anatomy_of_the_airways.glb",
+      "source_sha256": "9741c32977663f75f4d3f91f56ee6a44a237322a2abb74ab210ea7b580b77324",
+      "source_bytes": 8799152,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/lungs-airways-umcg/standard.glb",
+          "bytes": 4724460,
+          "sha256": "34639a9923e788f6ad9c4e785ce424a455a50d7500fd7b7bbec454dd658f8cb9",
+          "compression_ratio": 1.86,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "metalRough(): KHR_materials_pbrSpecularGlossiness converted to metallic-roughness (three.js dropped spec-gloss support)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 237105,
+            "rendered_triangles": 237105,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 237105,
+            "rendered_triangles": 237105,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000428,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 1079
+        }
+      },
+      "system_id": "lungs"
+    },
+    "lungs-normal-valchanov": {
+      "variant_id": "lungs-normal-valchanov",
+      "source": "lungs_-_normal_study.glb",
+      "source_sha256": "4e328b98ac8e8ac62ab6de2397765c8fa69d2470731c13971d362ac85251f265",
+      "source_bytes": 25740600,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/lungs-normal-valchanov/standard.glb",
+          "bytes": 17654656,
+          "sha256": "160fdcec695df537ceda61c43420d9a7094e0ad0f64cfc4dbd5fa1858882ced9",
+          "compression_ratio": 1.46,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 905468,
+            "rendered_triangles": 905468,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 905468,
+            "rendered_triangles": 905468,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000468,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 3891
+        },
+        "preview": {
+          "url": "/anatomy/derived/lungs-normal-valchanov/preview.glb",
+          "bytes": 8694624,
+          "sha256": "12533ff5e8908a03c30a44a3ca65888c175e5ed63d41ee76df8377d85d6987ed",
+          "compression_ratio": 2.96,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "weld(exact)",
+            "simplify(meshoptimizer, target_ratio=0.25, max_error=0.002 of mesh radius, lockBorder)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": true,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 905468,
+            "rendered_triangles": 905468,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 292078,
+            "rendered_triangles": 292078,
+            "points": 0
+          },
+          "triangle_ratio": 0.3226,
+          "checks": {
+            "triangles_identical": false,
+            "bounds_relative_deviation": 0.00054027,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 3529
+        }
+      },
+      "system_id": "lungs"
+    },
+    "lungs-realistic-neshallads": {
+      "variant_id": "lungs-realistic-neshallads",
+      "source": "realistic_human_lungs.glb",
+      "source_sha256": "66ed0f50b8ac6cc7fe648642e7b090dbc42b6beae9d0faee44bf8556e601a22e",
+      "source_bytes": 17147352,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/lungs-realistic-neshallads/standard.glb",
+          "bytes": 11776416,
+          "sha256": "600866aa3aa20121d04e8ec4c3e140040027a08b2ad230d2620b3295e918cee9",
+          "compression_ratio": 1.46,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 63974,
+            "rendered_triangles": 63974,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 63974,
+            "rendered_triangles": 63974,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000321,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 235726,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 112056,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 2916124,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 752520,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 242018,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 94784,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 4561450,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 876062,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 10893
+        }
+      },
+      "system_id": "lungs"
+    },
+    "lungs-transparent-alebogino": {
+      "variant_id": "lungs-transparent-alebogino",
+      "source": "pulmones_con_transparencia.glb",
+      "source_sha256": "c063cd50c4715deef2b537e9dbb63196fa12862ef0880bf0006be2046a22366c",
+      "source_bytes": 25916772,
+      "source_validation": {
+        "errors": 1,
+        "warnings": 0,
+        "error_codes": [
+          "ANIMATION_SAMPLER_ACCESSOR_WITH_BYTESTRIDE"
+        ]
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/lungs-transparent-alebogino/standard.glb",
+          "bytes": 18551248,
+          "sha256": "ab451a72d11da342c18a90801a11485d9ab3028acbf7e8d138ad69c994844500",
+          "compression_ratio": 1.4,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 856298,
+            "rendered_triangles": 856298,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 856298,
+            "rendered_triangles": 856298,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000277,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 3534
+        },
+        "preview": {
+          "url": "/anatomy/derived/lungs-transparent-alebogino/preview.glb",
+          "bytes": 6954284,
+          "sha256": "1fda51b1d860a8323f6f7dbad00df509665fdf82faf7df78959bd09c041be1ce",
+          "compression_ratio": 3.73,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "weld(exact)",
+            "simplify(meshoptimizer, target_ratio=0.25, max_error=0.002 of mesh radius, lockBorder)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": true,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": false,
+          "before": {
+            "unique_triangles": 856298,
+            "rendered_triangles": 856298,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 221836,
+            "rendered_triangles": 221836,
+            "points": 0
+          },
+          "triangle_ratio": 0.2591,
+          "checks": {
+            "triangles_identical": false,
+            "bounds_relative_deviation": 0.02885363,
+            "bounds_within_tolerance": false,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 3047
+        }
+      },
+      "system_id": "lungs"
+    },
+    "lungs-right-prasanth": {
+      "variant_id": "lungs-right-prasanth",
+      "source": "source/lung_right.glb",
+      "source_sha256": "ad26a4a88bed6b0a343c0701767216b184c89919de1c9127c0fc98e1f3afa028",
+      "source_bytes": 4695796,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/lungs-right-prasanth/standard.glb",
+          "bytes": 2511016,
+          "sha256": "54dfd96f0761af76b39344293f015f02a50d1d8f525c130fdda396bddee55a6d",
+          "compression_ratio": 1.87,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 110316,
+            "rendered_triangles": 110316,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 110316,
+            "rendered_triangles": 110316,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000381,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 19008,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 92868,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 72280,
+              "size": [
+                1024,
+                1024
+              ]
+            }
+          ],
+          "build_ms": 688
+        }
+      },
+      "system_id": "lungs"
+    },
+    "lungs-carcinoma-holt": {
+      "variant_id": "lungs-carcinoma-holt",
+      "source": "lung_carcinoma.glb",
+      "source_sha256": "fa43f86c3c6ce080f422426e07c88f239be4d3e4ef95c49c14e5f1be91bb290a",
+      "source_bytes": 6524460,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/lungs-carcinoma-holt/standard.glb",
+          "bytes": 4600596,
+          "sha256": "a302e604f7e30f8119f0f4f9fa4cdfba546ab20aaac04826431624118cb7572c",
+          "compression_ratio": 1.42,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 233992,
+            "rendered_triangles": 233992,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 233992,
+            "rendered_triangles": 233992,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000314,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 895
+        }
+      },
+      "system_id": "lungs"
+    },
+    "brain-lobes-versal": {
+      "variant_id": "brain-lobes-versal",
+      "source": "human_brain (1).glb",
+      "source_sha256": "4dd2e2f0e6c00ac467bdeeecf2dbf72cbb236de407eebc027e4ca6d9c1b8948a",
+      "source_bytes": 3978124,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/brain-lobes-versal/standard.glb",
+          "bytes": 3421952,
+          "sha256": "8f430bfc530280057f7fc1b42d70ece851cad7e069228e0212dbe987748ec256",
+          "compression_ratio": 1.16,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 36708,
+            "rendered_triangles": 36708,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 36708,
+            "rendered_triangles": 36708,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000249,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 313
+        }
+      },
+      "system_id": "brain"
+    },
+    "brain-budi": {
+      "variant_id": "brain-budi",
+      "source": "brain.glb",
+      "source_sha256": "55b0717074d5ebd5e3b5fdff35665f9049f1c1607bd435bf112d364218f93c9e",
+      "source_bytes": 3081280,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/brain-budi/standard.glb",
+          "bytes": 667708,
+          "sha256": "49e54505eb7a97ecdf7dbd768ac09082c06008cbb167021eebd3c5e843bf9f1e",
+          "compression_ratio": 4.61,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "metalRough(): KHR_materials_pbrSpecularGlossiness converted to metallic-roughness (three.js dropped spec-gloss support)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 19045,
+            "rendered_triangles": 19045,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 19045,
+            "rendered_triangles": 19045,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000366,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 178456,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 2840,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 6094,
+              "size": [
+                1024,
+                1024
+              ]
+            }
+          ],
+          "build_ms": 1123
+        }
+      },
+      "system_id": "brain"
+    },
+    "brain-model-kalitkap": {
+      "variant_id": "brain-model-kalitkap",
+      "source": "brain_model.glb",
+      "source_sha256": "42276122843bb8113c409c31dc661e3e7d8a1e6fd8cfdb2e524aed8265818ce0",
+      "source_bytes": 7555248,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/brain-model-kalitkap/standard.glb",
+          "bytes": 5450744,
+          "sha256": "3d8905b01647f11eb7f35ced597398e77390e9b25857162277944c7e9ce5e01a",
+          "compression_ratio": 1.39,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 271362,
+            "rendered_triangles": 271362,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 271362,
+            "rendered_triangles": 271362,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000162,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 953
+        }
+      },
+      "system_id": "brain"
+    },
+    "brain-3drt": {
+      "variant_id": "brain-3drt",
+      "source": "human_brain.glb",
+      "source_sha256": "5cb8665dd5d7c02ccc8fbb9369a7b1c1248d4c1e00316fd69c6c118d102af443",
+      "source_bytes": 3851744,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/brain-3drt/standard.glb",
+          "bytes": 2146800,
+          "sha256": "eb97ea279ec2aaf058f4eead01e3e17a7c262c7ad78287f78d1f44b82e27c43c",
+          "compression_ratio": 1.79,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "metalRough(): KHR_materials_pbrSpecularGlossiness converted to metallic-roughness (three.js dropped spec-gloss support)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 4850,
+            "rendered_triangles": 4850,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 4850,
+            "rendered_triangles": 4850,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000457,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 250916,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 1645566,
+              "size": [
+                1024,
+                1024
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 672,
+              "size": [
+                512,
+                512
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 67670,
+              "size": [
+                512,
+                512
+              ]
+            }
+          ],
+          "build_ms": 2710
+        }
+      },
+      "system_id": "brain"
+    },
+    "brain-point-cloud-terrie": {
+      "variant_id": "brain-point-cloud-terrie",
+      "source": "brain_point_cloud.glb",
+      "source_sha256": "86fb8cfcb35d116ffe9e76c8d2016233d2da9018db288ecd4d10ce76c6538e8f",
+      "source_bytes": 33405696,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/brain-point-cloud-terrie/standard.glb",
+          "bytes": 18630116,
+          "sha256": "07eb330c7a9b913a04848038537e6b70b0f5e2a49495a4f6c9b054b2f2edd0c0",
+          "compression_ratio": 1.79,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 0,
+            "rendered_triangles": 0,
+            "points": 1192673
+          },
+          "after": {
+            "unique_triangles": 0,
+            "rendered_triangles": 0,
+            "points": 1192673
+          },
+          "triangle_ratio": null,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000497,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 2590
+        }
+      },
+      "system_id": "brain"
+    },
+    "brain-hologram-oxterium": {
+      "variant_id": "brain-hologram-oxterium",
+      "source": "brain_hologram.glb",
+      "source_sha256": "c47864415c919ac0e8c5ac994652d60f04c60f75ee1cef432fd9a6785b7f41e9",
+      "source_bytes": 16978020,
+      "source_validation": {
+        "errors": 1,
+        "warnings": 0,
+        "error_codes": [
+          "ANIMATION_SAMPLER_ACCESSOR_WITH_BYTESTRIDE"
+        ]
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/brain-hologram-oxterium/standard.glb",
+          "bytes": 14171600,
+          "sha256": "80326fd3d2ef0951fdd0cfcd80b27e353bd0476a19c4b9d54e12bcf300622115",
+          "compression_ratio": 1.2,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 400000,
+            "rendered_triangles": 400000,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 400000,
+            "rendered_triangles": 400000,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000583,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 1735
+        }
+      },
+      "system_id": "brain"
+    },
+    "liver-3graft-chloroplast": {
+      "variant_id": "liver-3graft-chloroplast",
+      "source": "3graft_whole_liver.glb",
+      "source_sha256": "3383685015a5b5d83b5243e059e7bd7344d4a14c989f894ba72b487ff4a1139d",
+      "source_bytes": 21645980,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/liver-3graft-chloroplast/standard.glb",
+          "bytes": 16783644,
+          "sha256": "6a3940b9ba1e17fe61fc92c2482b7b53da898cbaadc80e9be48f733e02223ff1",
+          "compression_ratio": 1.29,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 257702,
+            "rendered_triangles": 257702,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 257702,
+            "rendered_triangles": 257702,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000285,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 2262
+        }
+      },
+      "system_id": "liver"
+    },
+    "liver-9darsh": {
+      "variant_id": "liver-9darsh",
+      "source": "liver.glb",
+      "source_sha256": "bb9d1bf38f4324bef16cf20c9fcc84c311f9ff78ad140cd235e223240a5d0ccc",
+      "source_bytes": 2178112,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/liver-9darsh/standard.glb",
+          "bytes": 2049856,
+          "sha256": "4a8361911880c23173c886d3969070527ec30cf46b481d58cfc50505dbae61f9",
+          "compression_ratio": 1.06,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 40367,
+            "rendered_triangles": 40367,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 40367,
+            "rendered_triangles": 40367,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000384,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 251
+        }
+      },
+      "system_id": "liver"
+    },
+    "liver-scan-errinroy": {
+      "variant_id": "liver-scan-errinroy",
+      "source": "liver (1).glb",
+      "source_sha256": "c6593c94f688a6dff2e93944ba99896e3f0f7cd8477ee1660dfc01aeac49de1c",
+      "source_bytes": 4191540,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/liver-scan-errinroy/standard.glb",
+          "bytes": 2584588,
+          "sha256": "e84e6f6d6a422ac2c74d673b6e1b484770d6eb7a8dad19d3b8a1f53bd88723bf",
+          "compression_ratio": 1.62,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 126872,
+            "rendered_triangles": 126872,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 126872,
+            "rendered_triangles": 126872,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000492,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 86956,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 1132
+        }
+      },
+      "system_id": "liver"
+    },
+    "pancreas-captaainro": {
+      "variant_id": "pancreas-captaainro",
+      "source": "pancreas.glb",
+      "source_sha256": "ad47608b139fd7aed2232686c1390606f8a31fdfdc84084bd2b2126099125d5d",
+      "source_bytes": 13460880,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/pancreas-captaainro/standard.glb",
+          "bytes": 6755492,
+          "sha256": "f4f73fced3c394dff15b80dbab8de2ece6f7ba0b08a5576fac161b4cfecd854a",
+          "compression_ratio": 1.99,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 280466,
+            "rendered_triangles": 280466,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 280466,
+            "rendered_triangles": 280466,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.0000037,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 462318,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 2237
+        }
+      },
+      "system_id": "pancreas"
+    },
+    "pancreas-cross-section-arloopa": {
+      "variant_id": "pancreas-cross-section-arloopa",
+      "source": "human_pancreas_cross_section.glb",
+      "source_sha256": "12a3c9ffc88afb4a9a87563e3fb5fc751160a45a692f92f89df650748d161c86",
+      "source_bytes": 5653164,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/pancreas-cross-section-arloopa/standard.glb",
+          "bytes": 3256772,
+          "sha256": "b81aeb27ad607afadae9d103812f318fc8c82ebfef9548929a724a6edef72790",
+          "compression_ratio": 1.74,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 55808,
+            "rendered_triangles": 55808,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 55808,
+            "rendered_triangles": 55808,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000446,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 279998,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 109162,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 1282880,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 4762
+        }
+      },
+      "system_id": "pancreas"
+    },
+    "intestines-sundberg": {
+      "variant_id": "intestines-sundberg",
+      "source": "small_and_large_intestine.glb",
+      "source_sha256": "54e5549536a166b6f0eb7e006f001c79e09175c71e852406156c4e63bc2faa79",
+      "source_bytes": 15629192,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/intestines-sundberg/standard.glb",
+          "bytes": 8327872,
+          "sha256": "650c56474af807826b31eaed660f0af6c590624a7bdc592ca1afebb1b0e2a2c3",
+          "compression_ratio": 1.88,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 254208,
+            "rendered_triangles": 254208,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 254208,
+            "rendered_triangles": 254208,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000433,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 68464,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 371834,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 138398,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 334310,
+              "size": [
+                1024,
+                1024
+              ]
+            }
+          ],
+          "build_ms": 5095
+        }
+      },
+      "system_id": "intestines"
+    },
+    "nervous-zanatomy-neurology": {
+      "variant_id": "nervous-zanatomy-neurology",
+      "source": "neurology.glb",
+      "source_sha256": "06e93cca3dea7026c65aece1c0be6ca42ad7a09826b5a59faf78271bfc45aaf2",
+      "source_bytes": 87442240,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/nervous-zanatomy-neurology/standard.glb",
+          "bytes": 53023904,
+          "sha256": "a8ae4ef90ac45cc735ae24af42ac1b6197d23bd3768090529ff653265408b7af",
+          "compression_ratio": 1.65,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "metalRough(): KHR_materials_pbrSpecularGlossiness converted to metallic-roughness (three.js dropped spec-gloss support)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 3260911,
+            "rendered_triangles": 3260911,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 3260911,
+            "rendered_triangles": 3260911,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000542,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 12831
+        },
+        "preview": {
+          "url": "/anatomy/derived/nervous-zanatomy-neurology/preview.glb",
+          "bytes": 18229608,
+          "sha256": "4d9f9b18adc3634215fed6879c3c5639d78e3f8e1cd2543fdd2a2e4ea32ce332",
+          "compression_ratio": 4.8,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "metalRough(): KHR_materials_pbrSpecularGlossiness converted to metallic-roughness (three.js dropped spec-gloss support)",
+            "weld(exact)",
+            "simplify(meshoptimizer, target_ratio=0.25, max_error=0.002 of mesh radius, lockBorder)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": true,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 3260911,
+            "rendered_triangles": 3260911,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 876609,
+            "rendered_triangles": 876609,
+            "points": 0
+          },
+          "triangle_ratio": 0.2688,
+          "checks": {
+            "triangles_identical": false,
+            "bounds_relative_deviation": 0.00000819,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 9678
+        }
+      },
+      "system_id": "nervous"
+    },
+    "skeleton-projectkaizen": {
+      "variant_id": "skeleton-projectkaizen",
+      "source": "male_skeleton (1).glb",
+      "source_sha256": "5d3a2a19d69bd9b35fd526039e12cb776fabbb029e2121552f62f922e6ed6fbc",
+      "source_bytes": 13380028,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 85,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/skeleton-projectkaizen/standard.glb",
+          "bytes": 4190268,
+          "sha256": "c4afde65a030112a35213171494512f0e79b489f093213b5e524baad164c0c19",
+          "compression_ratio": 3.19,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(texcoord 14 bit only; skinned mesh positions/normals kept in float)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 14,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 67540,
+            "rendered_triangles": 67540,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 67540,
+            "rendered_triangles": 67540,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 690128,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 700802,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 801658,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 539012,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 106196,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 2198
+        }
+      },
+      "system_id": "skeletal"
+    },
+    "ecorche-santamaria": {
+      "variant_id": "ecorche-santamaria",
+      "source": "ecorche_-_anatomy_study.glb",
+      "source_sha256": "137e2e80bdcf9c87ff49ab32cb5de70f8de542870c78a7d5170e8743d241a73a",
+      "source_bytes": 16350740,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/ecorche-santamaria/standard.glb",
+          "bytes": 10716612,
+          "sha256": "871ecb5b0a4d312ce48199bf7825a83053bfdf384688c75fd7d5773b6c10faa3",
+          "compression_ratio": 1.53,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 418978,
+            "rendered_triangles": 418978,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 418978,
+            "rendered_triangles": 418978,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000244,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 2065
+        }
+      },
+      "system_id": "skeletal"
+    },
+    "hybrid-angiology-zanatomy": {
+      "variant_id": "hybrid-angiology-zanatomy",
+      "source": "angiology.glb",
+      "source_sha256": "3451a4fbee4c938e3fcb60302781d66969b603202358fdb43f299aacc239fb48",
+      "source_bytes": 119187400,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/hybrid-angiology-zanatomy/standard.glb",
+          "bytes": 74763092,
+          "sha256": "e53acfd71d03fa8ea98e2adb255566df858bbe0fdb629b5ea91fecf4c69f56f4",
+          "compression_ratio": 1.59,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 4065841,
+            "rendered_triangles": 4065841,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 4065841,
+            "rendered_triangles": 4065841,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 7.4e-7,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 15747
+        },
+        "preview": {
+          "url": "/anatomy/derived/hybrid-angiology-zanatomy/preview.glb",
+          "bytes": 23330504,
+          "sha256": "1e87eba2533c06c4b137f999d2d06cdc1af0bd85ac85eadf68d2914a41a66687",
+          "compression_ratio": 5.11,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "weld(exact)",
+            "simplify(meshoptimizer, target_ratio=0.25, max_error=0.002 of mesh radius, lockBorder)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": true,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 4065841,
+            "rendered_triangles": 4065841,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 1023039,
+            "rendered_triangles": 1023039,
+            "points": 0
+          },
+          "triangle_ratio": 0.2516,
+          "checks": {
+            "triangles_identical": false,
+            "bounds_relative_deviation": 7.9e-7,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 11580
+        }
+      },
+      "system_id": "hybrid"
+    },
+    "kidney-cgmac": {
+      "variant_id": "kidney-cgmac",
+      "source": "kidney (1).glb",
+      "source_sha256": "16aac1db2c7bf2163dcc159ef338a70157b91faba06eac00142db2161b3cb4f3",
+      "source_bytes": 53362764,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/kidney-cgmac/standard.glb",
+          "bytes": 11696340,
+          "sha256": "ea1781530bc756c0f043a32c980b3a5d603938f04012f63ba0e1940bcde22df7",
+          "compression_ratio": 4.56,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 84443,
+            "rendered_triangles": 84443,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 84443,
+            "rendered_triangles": 84443,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000497,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 342860,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 2171012,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 229406,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 4315564,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 382314,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 2427342,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 52740,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 9591
+        }
+      },
+      "system_id": "kidneys"
+    },
+    "kidney-payoman": {
+      "variant_id": "kidney-payoman",
+      "source": "kidney.glb",
+      "source_sha256": "c46fcff1ee95d779690c14da0237b67e79427687e8d1c795af79f0912daa5fca",
+      "source_bytes": 5328172,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/kidney-payoman/standard.glb",
+          "bytes": 3492884,
+          "sha256": "02aeeb6b54b6c3924e5c8c5d707bc05863535a1933a09ee60b9cce11a18c943f",
+          "compression_ratio": 1.53,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 216788,
+            "rendered_triangles": 216788,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 216788,
+            "rendered_triangles": 216788,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000645,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 799
+        }
+      },
+      "system_id": "kidneys"
+    },
+    "kidney-neshallads": {
+      "variant_id": "kidney-neshallads",
+      "source": "human_kidney.glb",
+      "source_sha256": "a1b74386cbaa946c29ee5e0f33c2f900e2f42431b272fba8c3c6eb1476d372df",
+      "source_bytes": 6440748,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/kidney-neshallads/standard.glb",
+          "bytes": 4248904,
+          "sha256": "6ad32cf3fb35f12c57ba6e5451486f8c9556169be252c60811afd58e1d1b6f03",
+          "compression_ratio": 1.52,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 48936,
+            "rendered_triangles": 48936,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 48936,
+            "rendered_triangles": 48936,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.0000045,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 100266,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 2720288,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 4491
+        }
+      },
+      "system_id": "kidneys"
+    },
+    "kidney-safiya": {
+      "variant_id": "kidney-safiya",
+      "source": "medicine_organ_-_the_human_kidney.glb",
+      "source_sha256": "b1e039ea17c4fe99a04baf7814f4e6b99408d83d36fc09ad7617657d5a1ebc83",
+      "source_bytes": 27217072,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/kidney-safiya/standard.glb",
+          "bytes": 5225824,
+          "sha256": "6438110e561b2aa073662466f1eee098738ad94fd4f0d6e1f251dff940b1f1bd",
+          "compression_ratio": 5.21,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 7413,
+            "rendered_triangles": 7413,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 7413,
+            "rendered_triangles": 7413,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000174,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 184492,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 906502,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 3871150,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 12232
+        }
+      },
+      "system_id": "kidneys"
+    },
+    "kidney-cowley": {
+      "variant_id": "kidney-cowley",
+      "source": "kidney (2).glb",
+      "source_sha256": "2a4ce03f800d8b356096c8a67dddc026ddf176432a1cd4dd5188d786a4e52302",
+      "source_bytes": 8078492,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/kidney-cowley/standard.glb",
+          "bytes": 4566040,
+          "sha256": "1ea0b45e35838441ab515fc1c8300895bda4b30760d98416b96d165a3291a317",
+          "compression_ratio": 1.77,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 245668,
+            "rendered_triangles": 245668,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 245668,
+            "rendered_triangles": 245668,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000207,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [],
+          "build_ms": 903
+        }
+      },
+      "system_id": "kidneys"
+    },
+    "nephron-iqcenter": {
+      "variant_id": "nephron-iqcenter",
+      "source": "nephron.glb",
+      "source_sha256": "3862b40d83e0e23ae797e3eabd3ab7f65224b2155d1456973ecb4f697f47b695",
+      "source_bytes": 53434192,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/nephron-iqcenter/standard.glb",
+          "bytes": 31622072,
+          "sha256": "fa4957f38a805d63aa6482f88955ea86ea658da2cf29b936d78a673a76aab2ee",
+          "compression_ratio": 1.69,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 1692293,
+            "rendered_triangles": 1692293,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 1692293,
+            "rendered_triangles": 1692293,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000345,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 56252,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 7021
+        },
+        "preview": {
+          "url": "/anatomy/derived/nephron-iqcenter/preview.glb",
+          "bytes": 13604280,
+          "sha256": "1d6192294f08a728f5f9e9a3c1a0e93a12858af9f06676c6a0bf52cb33b7dcca",
+          "compression_ratio": 3.93,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "weld(exact)",
+            "simplify(meshoptimizer, target_ratio=0.25, max_error=0.002 of mesh radius, lockBorder)",
+            "textureCompress(webp, max 1024px, colour/data quality 80)",
+            "textureCompress(webp, max 1024px, normal maps quality 92)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": true,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 1692293,
+            "rendered_triangles": 1692293,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 505835,
+            "rendered_triangles": 505835,
+            "points": 0
+          },
+          "triangle_ratio": 0.2989,
+          "checks": {
+            "triangles_identical": false,
+            "bounds_relative_deviation": 0.00129897,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 17860,
+              "size": [
+                1024,
+                1024
+              ]
+            }
+          ],
+          "build_ms": 6624
+        }
+      },
+      "system_id": "kidneys"
+    },
+    "nephron-aymanba": {
+      "variant_id": "nephron-aymanba",
+      "source": "nephron (1).glb",
+      "source_sha256": "404269e85994b4fd2e298e13ca128a462e36c76956d7391f7be1f7aab8d6e606",
+      "source_bytes": 12281356,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/nephron-aymanba/standard.glb",
+          "bytes": 6923892,
+          "sha256": "fb0588ae1ad25b17e73f6648810bc55023f11aa72591cc9dad6eb365e179699f",
+          "compression_ratio": 1.77,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 76094,
+            "rendered_triangles": 76094,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 76094,
+            "rendered_triangles": 76094,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000561,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 190492,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 901602,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 138772,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 35810,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 3311898,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 10619
+        }
+      },
+      "system_id": "kidneys"
+    },
+    "nephron-temirbekova": {
+      "variant_id": "nephron-temirbekova",
+      "source": "4c183daa67a34efca2480a5862d7ceb0.glb",
+      "source_sha256": "4632d81ae71c45ca8934e2aa3d6c3e402f7e7a3987d16ce5ed628b71516836a5",
+      "source_bytes": 30007772,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/nephron-temirbekova/standard.glb",
+          "bytes": 20271232,
+          "sha256": "6f77682eca631f281597d006f0f731c343fc4259b7d9bdf7165047c6822cd559",
+          "compression_ratio": 1.48,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 343273,
+            "rendered_triangles": 343273,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 343273,
+            "rendered_triangles": 343273,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000282,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 716626,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 319256,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 6512716,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 10552
+        }
+      },
+      "system_id": "kidneys"
+    },
+    "nephron-structure-arloopa": {
+      "variant_id": "nephron-structure-arloopa",
+      "source": "structure_of_nephron.glb",
+      "source_sha256": "33ea1023a2aa690a7b871f7cc8d956d13de8e133c8820c4acf3c80d0d28a87d4",
+      "source_bytes": 2036616,
+      "source_validation": {
+        "errors": 0,
+        "warnings": 0,
+        "error_codes": []
+      },
+      "tiers": {
+        "standard": {
+          "url": "/anatomy/derived/nephron-structure-arloopa/standard.glb",
+          "bytes": 657244,
+          "sha256": "554c090a5393180e568ac0d9cb3d7a5e010942052230481a7d7065d1ee26f8b7",
+          "compression_ratio": 3.1,
+          "transforms": [
+            "dedup(accessors, textures)",
+            "prune(unused resources; empty hierarchy nodes kept)",
+            "textureCompress(webp, max 2048px, colour/data quality 90)",
+            "textureCompress(webp, max 2048px, normal maps lossless)",
+            "reorder(meshopt vertex/index order; triangles unchanged)",
+            "quantize(position 16 bit, normal 12 bit, texcoord 14 bit, per-mesh volume)",
+            "EXT_meshopt_compression(buffer compression, lossless over quantised data)"
+          ],
+          "geometry_changed": false,
+          "validation": {
+            "errors": 0,
+            "warnings": 0,
+            "error_codes": []
+          },
+          "passed": true,
+          "before": {
+            "unique_triangles": 21324,
+            "rendered_triangles": 21324,
+            "points": 0
+          },
+          "after": {
+            "unique_triangles": 21324,
+            "rendered_triangles": 21324,
+            "points": 0
+          },
+          "triangle_ratio": 1,
+          "checks": {
+            "triangles_identical": true,
+            "bounds_relative_deviation": 0.00000583,
+            "bounds_within_tolerance": true,
+            "mesh_node_names_preserved": true,
+            "missing_mesh_node_names": []
+          },
+          "textures": [
+            {
+              "mime_type": "image/webp",
+              "bytes": 71460,
+              "size": [
+                2048,
+                2048
+              ]
+            },
+            {
+              "mime_type": "image/webp",
+              "bytes": 113758,
+              "size": [
+                2048,
+                2048
+              ]
+            }
+          ],
+          "build_ms": 681
+        }
+      },
+      "system_id": "kidneys"
+    }
+  },
+  "schema_version": "medtwin-anatomy-derivatives-1.0.0",
+  "generated_at_utc": "2026-10-23T18:56:56.818Z",
+  "generator": "tools/asset-pipeline/optimize.mjs",
+  "policy": {
+    "originals": "Read-only. Derivatives never replace or modify source files.",
+    "standard": "Triangle count identical to source; bounds deviation <= 1e-4 of the diagonal; mesh node names preserved.",
+    "preview": "Generated only above 600,000 triangles; simplified with a bounded error and labelled reduced-detail."
+  },
+  "atlas": {
+    "release": "1.2.0",
+    "channel": "preview",
+    "content_hash": "2e741c8eec5921ffb650b8e038728c7e9f1a57bc655fd2eea8d01edd62d3d4fc",
+    "files": [
+      {
+        "chunk": "regions.root",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/regions/root.glb",
+        "bytes": 2249460,
+        "sha256": "8be80c9432cbaeffe2920e2a928d5b2a5a9bd7a50bea2548de6d63c7b002bcc1",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "regions.root",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/regions/root.glb",
+        "bytes": 1290296,
+        "sha256": "24f68dbe2645d4fa856b6e77abb3e762acc759c53c4a0d451a8efe40a714b2c1",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.external_abdominal_oblique_muscle_l",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/external_abdominal_oblique_muscle_l.glb",
+        "bytes": 2031272,
+        "sha256": "000ba3351ecc3069e5fa184800683d62dc0cb3d376c7e4ef25bd9678053be117",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.external_abdominal_oblique_muscle_l",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/external_abdominal_oblique_muscle_l.glb",
+        "bytes": 2024088,
+        "sha256": "25b535f421787ec65e8a9b08578325520fade6d6f772324acc447a2cb403f16c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_abdomen",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_abdomen.glb",
+        "bytes": 2326404,
+        "sha256": "b88cf61aa5e3ab1e2e0d1d9d72e6bca03d8cb8d74c3d6c0d69de8f210b6cfdbc",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_abdomen",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_abdomen.glb",
+        "bytes": 2082708,
+        "sha256": "874cc158e59c200cc5a357c7ec0bee8b2a89de213de32c4d57b9790903cb1830",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_abdomen.2",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_abdomen.2.glb",
+        "bytes": 844744,
+        "sha256": "bf66ccc668cb276291506593c31a84b8bc6f946819fde6605635530233f40b4e",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_abdomen.2",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_abdomen.2.glb",
+        "bytes": 208840,
+        "sha256": "f567f9ffcfe977f65d298cdaf79891e0fa84851447ae81dfd629c37c089eaef3",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_abdomen.3",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_abdomen.3.glb",
+        "bytes": 692932,
+        "sha256": "3d9920df8ee534133ce3f0a936e1563898a7a4b4d8dc39d368336eb15bf2756b",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_abdomen.3",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_abdomen.3.glb",
+        "bytes": 145304,
+        "sha256": "ba1ab00d0344b701dc12273360b8c928b6b1a4d20fb8e7eff73bd00fa4954027",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.cervical_part_of_muscular_system",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/cervical_part_of_muscular_system.glb",
+        "bytes": 1028328,
+        "sha256": "738e934f6527cd5b88f5d1d9b58a059e5ac0f5dc1b44a3070eabefaac4eaf7ef",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.cervical_part_of_muscular_system",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/cervical_part_of_muscular_system.glb",
+        "bytes": 294852,
+        "sha256": "518277c20c36eecf287b05e74e8b3a5f6f0e6e60067d44705e00d07ae0e6006a",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.cranial_part_of_muscular_system",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/cranial_part_of_muscular_system.glb",
+        "bytes": 1254388,
+        "sha256": "ccbc35ac071dbcf9495eb2dacfa45c557ffe01c5c970dc75e9b4442e22acbb7c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.cranial_part_of_muscular_system",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/cranial_part_of_muscular_system.glb",
+        "bytes": 267060,
+        "sha256": "0cdc12ee2f1d4c941200a8f3a72807c3ba79288675fdd05aee898ddce45eb6f0",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.epaxial_muscles",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/epaxial_muscles.glb",
+        "bytes": 2116812,
+        "sha256": "faf77ba76a4be384c24b223a296b9fadc13045a16dce61c04f3072cef65d9f00",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.epaxial_muscles",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/epaxial_muscles.glb",
+        "bytes": 922692,
+        "sha256": "4d62caa729503fe1107adf13ab698ddfcb7d7e09b3a3ebf1e6d7b4a23dc75c9c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.hypaxial_muscles_of_back",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/hypaxial_muscles_of_back.glb",
+        "bytes": 1655192,
+        "sha256": "f4f60d1055b71a36af01f5298fa25aeabbc6370bc2d822da5a689864bb26f80c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.hypaxial_muscles_of_back",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/hypaxial_muscles_of_back.glb",
+        "bytes": 495296,
+        "sha256": "68ab5a494d2d9c32dd0f87286d53b235f19470b4d646bca268427e891f56fe05",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.fasciae",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/fasciae.glb",
+        "bytes": 1327048,
+        "sha256": "e5f5a6325c13a9e0d2058166a8d8b5c07b7aae2217c350c0d5b48ceaea0e0ac2",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.fasciae",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/fasciae.glb",
+        "bytes": 615384,
+        "sha256": "69bec8a137baa4b3d1a4d55a46c68db65cef093b18e04eb97fd8919781bea850",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscular_system_of_lower_limb",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscular_system_of_lower_limb.glb",
+        "bytes": 614424,
+        "sha256": "701a26fa63a33241c0e4a5436a1b602015321797ecd4d2fb96960d192488e9c9",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscular_system_of_lower_limb",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscular_system_of_lower_limb.glb",
+        "bytes": 129332,
+        "sha256": "f69c87f97d54fbdf2b941066f764a6e707692d1cb21f364ff53b8e46fcdf3cc2",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.anterior_compartment_of_thigh",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/anterior_compartment_of_thigh.glb",
+        "bytes": 953980,
+        "sha256": "9e280c0ae90803499a06d33688ef6ed97e63a1699eb7195f03dbabf810cc3147",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.anterior_compartment_of_thigh",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/anterior_compartment_of_thigh.glb",
+        "bytes": 277048,
+        "sha256": "115183cca3a9903da3fc1bcc454275ea0d73e7f0c874f823c6b47080bb86578d",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_lower_limb",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_lower_limb.glb",
+        "bytes": 586168,
+        "sha256": "7783c86c84f57a2fd7a1fa894a9811d7ec1436e305499ab480765c4c117ba95b",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_lower_limb",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_lower_limb.glb",
+        "bytes": 155544,
+        "sha256": "96b97c2f87dd215034d8a0cf1729e0d46e7543e0a12768b6a67ec1962b845078",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.medial_compartment_of_thigh",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/medial_compartment_of_thigh.glb",
+        "bytes": 603152,
+        "sha256": "dbfeb2ce8a2067edf81604b4b3471617cf62c8ee178270fbe6f36d6f189f6653",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.medial_compartment_of_thigh",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/medial_compartment_of_thigh.glb",
+        "bytes": 170284,
+        "sha256": "7408f8de0baf2d7a38d6264e3d9beaf3d59a4f76005631883d12b9a80d3c3c19",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_foot",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_foot.glb",
+        "bytes": 454276,
+        "sha256": "4ae3aeb550444671515edfd58f65384c275bff0886bff4f60c84d17568e0b51a",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_foot",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_foot.glb",
+        "bytes": 118376,
+        "sha256": "3a8c5e95f63c40b1ce5eb318b606482c7d1e023c6f775e627e8c2129661454ba",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.posterior_compartment_of_leg",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/posterior_compartment_of_leg.glb",
+        "bytes": 987180,
+        "sha256": "8345aa3f20bab56874da54933528170492200bab4a473aab3dff8a42a4fe64ba",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.posterior_compartment_of_leg",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/posterior_compartment_of_leg.glb",
+        "bytes": 229676,
+        "sha256": "64e82e73b9dc64d896ac02525409c4863faeaa789a9aa361fec9460a205672a3",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.posterior_compartment_of_thigh",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/posterior_compartment_of_thigh.glb",
+        "bytes": 556656,
+        "sha256": "b5aacee84538ac93232cdff30cb242ba79f47b790e6de3adb138a238827a266c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.posterior_compartment_of_thigh",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/posterior_compartment_of_thigh.glb",
+        "bytes": 150524,
+        "sha256": "a99afb479186607bb02118fc49e8b03ebfa0a1eafaadf969fc614debb552251c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.superficial_gluteal_muscles--bursae_of_upper_limb",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/superficial_gluteal_muscles--bursae_of_upper_limb.glb",
+        "bytes": 847864,
+        "sha256": "ea849b85089bdb9a622e00af1d04ae9bb0fc6632cbe38b48ae83ed5a316f6686",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.superficial_gluteal_muscles--bursae_of_upper_limb",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/superficial_gluteal_muscles--bursae_of_upper_limb.glb",
+        "bytes": 197900,
+        "sha256": "af23e173ee4c60e7734dc1077a1d069bba0d6346bf2702e1054c2521a128315e",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.anterior_compartment_of_arm",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/anterior_compartment_of_arm.glb",
+        "bytes": 288576,
+        "sha256": "ea40318d76c30f0692c3aa96be6dfe2779bab56295a33bcf65d432e526655c5c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.anterior_compartment_of_arm",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/anterior_compartment_of_arm.glb",
+        "bytes": 84836,
+        "sha256": "eac21a6621babc3a8200b6f64f5f6c4d805695caff51646c8ed19f4bfabc7e2b",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_upper_limb",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_upper_limb.glb",
+        "bytes": 935452,
+        "sha256": "fa047aa1aef1db36d71052da403cce8cee4f3a02a5dacfb3135a3387d36f0dab",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_upper_limb",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_upper_limb.glb",
+        "bytes": 237240,
+        "sha256": "f2be78f334e17eb1965347e43f6174b54ca8cf204a9b780be905934d99c52f86",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_upper_limb.2",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_upper_limb.2.glb",
+        "bytes": 937696,
+        "sha256": "5d9902d5ac72ac3525d0ccbeed902b7a22d9adf7b9a1f441218474e3084e0722",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_upper_limb.2",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_upper_limb.2.glb",
+        "bytes": 231280,
+        "sha256": "05bd3df3afa2579ede82d016023b4e1827f5ea114139946d6dbe4edf13e409aa",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.scapulohumeral_muscles--diaphragm",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/scapulohumeral_muscles--diaphragm.glb",
+        "bytes": 942416,
+        "sha256": "16a1bcb2e8be2dc72bfd801c3f2dcc279244825642d8a7fb840b355eb827c4fd",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.scapulohumeral_muscles--diaphragm",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/scapulohumeral_muscles--diaphragm.glb",
+        "bytes": 258304,
+        "sha256": "3494e807f336b81c09d4082c577899639e4dc0be212f38a75c7370047004fe60",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.external_intercostal_muscles_l",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/external_intercostal_muscles_l.glb",
+        "bytes": 491696,
+        "sha256": "eae3d280915f87131458397acee48780f36996d04acd36e8075b4b4a1dbbec66",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.external_intercostal_muscles_l",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/external_intercostal_muscles_l.glb",
+        "bytes": 114732,
+        "sha256": "9a944abd113dfb137218def01c79a37c34a8cc7fa9dd4b6df16b54d1f4130993",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_thorax",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_thorax.glb",
+        "bytes": 925884,
+        "sha256": "d1dc8408a177f2b7be61d17229208840d773c2fea8c798774871ef299daec669",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_thorax",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_thorax.glb",
+        "bytes": 210848,
+        "sha256": "a21a745e6cbd4fb37499a1dc0a041eace0ddd79b218c47ce25420b81458e0c87",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_thorax.2",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_thorax.2.glb",
+        "bytes": 906308,
+        "sha256": "5ab8c11f08c6be1b3c1f3a53eb922bdaa75f6e9e40455d8bf3548cad43cf8384",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_thorax.2",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_thorax.2.glb",
+        "bytes": 207132,
+        "sha256": "080ff1b6c2524d611f732927abf177f3da3f4c2ce8466f64463eccf6905f8ed9",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_thorax.3",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_thorax.3.glb",
+        "bytes": 908316,
+        "sha256": "6ad5d4113350da539a9fa8a5791775709844620ec3258151fba93d0c9e23142b",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_thorax.3",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_thorax.3.glb",
+        "bytes": 248928,
+        "sha256": "1d2fefe59858ed51e498def9e996533e3e4f56b3c30f74128573983b932748b0",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_thorax.4",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/muscular/muscles_of_thorax.4.glb",
+        "bytes": 550948,
+        "sha256": "87d8671ee9d18d680dc1aa89afcc373ac9b5028cb954c5d0ba894a1778de2ebe",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "muscular.muscles_of_thorax.4",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/muscular/muscles_of_thorax.4.glb",
+        "bytes": 128468,
+        "sha256": "d5a0c79591a864c1305cfff6301ecea32356a74061e2f8c71661daa3c6845aec",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.auditory_ossicles--bones_of_lower_limb",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/skeletal/auditory_ossicles--bones_of_lower_limb.glb",
+        "bytes": 747164,
+        "sha256": "68052842dd78089e23e6901ce3f67d708ad06b5c0f42feefcb840c26c8624cb6",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.auditory_ossicles--bones_of_lower_limb",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/skeletal/auditory_ossicles--bones_of_lower_limb.glb",
+        "bytes": 330660,
+        "sha256": "e0fd1f883634c22f9534b67a26213436bf7912d77f60b122a27a76e710ba0528",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.bones_of_upper_limb",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/skeletal/bones_of_upper_limb.glb",
+        "bytes": 616820,
+        "sha256": "97b17dab77618022bda0b63232619f23d38440e0effa8ab03945fe538016dab2",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.bones_of_upper_limb",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/skeletal/bones_of_upper_limb.glb",
+        "bytes": 237560,
+        "sha256": "b5acd9a5def08fec7eebc030127fd114bae6d8300c4da98411a0d55667ac4e4e",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.cranium--extracranial_bones_of_head",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/skeletal/cranium--extracranial_bones_of_head.glb",
+        "bytes": 1111880,
+        "sha256": "99a29c9755eca3e0ed480a3bb14d7b2a1f5658c346eef32eb1c847500329db63",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.cranium--extracranial_bones_of_head",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/skeletal/cranium--extracranial_bones_of_head.glb",
+        "bytes": 381160,
+        "sha256": "b2543a4a38380a359635a685ee66f108f8681732d7ec57506e70aa2280afff50",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.laryngeal_cartilages--teeth",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/skeletal/laryngeal_cartilages--teeth.glb",
+        "bytes": 390880,
+        "sha256": "7655006043ca3abadc223b6537da5da5106cc85dd448b2af9433bd8d6bb0c123",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.laryngeal_cartilages--teeth",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/skeletal/laryngeal_cartilages--teeth.glb",
+        "bytes": 83040,
+        "sha256": "6fe5bb0ec2225641312de7dce4371a00afe81e11d1436cd857db4d3925ca1f18",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.thoracic_skeleton",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/skeletal/thoracic_skeleton.glb",
+        "bytes": 746460,
+        "sha256": "4d1000c313fc484786ae3d693897c18c85942c570e07b68d70b00f4e6e72c9fe",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.thoracic_skeleton",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/skeletal/thoracic_skeleton.glb",
+        "bytes": 200668,
+        "sha256": "fa6ce343d32e53a56a34be7741daea867b3b3585f6b2f976fbcf2383dfedeb71",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.vertebral_column",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/skeletal/vertebral_column.glb",
+        "bytes": 856328,
+        "sha256": "5f66a9105cbcb11a0d0d029911d518aa0e44f8c94ec6fe06a03c95b497e37a67",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "skeletal.vertebral_column",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/skeletal/vertebral_column.glb",
+        "bytes": 324828,
+        "sha256": "73c7f556d11a8f37baaa3c623c34b56c627b2c53274f15422a7b18498da21038",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "joints.joints_of_lower_limb",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/joints/joints_of_lower_limb.glb",
+        "bytes": 1237356,
+        "sha256": "0b4bb6fc1b2e1ec12e28799839b56fc2dc4a1d8e7fbca57ff3a1c923a2139985",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "joints.joints_of_lower_limb",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/joints/joints_of_lower_limb.glb",
+        "bytes": 673260,
+        "sha256": "8472245ba59ad2c72d339f93f9aea8ffe66e4eeb9fc710ef6d929333f6b04653",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "joints.joints_of_skull--joints_of_upper_limb",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/joints/joints_of_skull--joints_of_upper_limb.glb",
+        "bytes": 555856,
+        "sha256": "d14a796459703b2eec93986ca84c814ecec2558bccae4e79e792492cca3abbcf",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "joints.joints_of_skull--joints_of_upper_limb",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/joints/joints_of_skull--joints_of_upper_limb.glb",
+        "bytes": 229828,
+        "sha256": "02b60570bd2c1f2ed0aea318067b13a22ffdf9ad163f9bad3800295c7531ee9f",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "joints.joints_of_vertebral_column--laryngeal_joints",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/joints/joints_of_vertebral_column--laryngeal_joints.glb",
+        "bytes": 1298360,
+        "sha256": "9cd366ce605b7c7253270b0394aeeb8a3f5cf9e10edba77230b4957d0d69840f",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "joints.joints_of_vertebral_column--laryngeal_joints",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/joints/joints_of_vertebral_column--laryngeal_joints.glb",
+        "bytes": 768328,
+        "sha256": "e2a777b1b89aa98e2f75ee9560ae10fbc1ff8181cacf9d2de73cf47c00ac726a",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "joints.thoracic_joints",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/joints/thoracic_joints.glb",
+        "bytes": 141408,
+        "sha256": "042f870aa22c1fe39fe39f7b44fe11685446d25bded535cab17612c840cb4951",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "joints.thoracic_joints",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/joints/thoracic_joints.glb",
+        "bytes": 66180,
+        "sha256": "41c4bac8a01418df931c52ef51d53423114497aeae43637cfe5c3f4078a9bdc1",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.arterial_system",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/arterial_system.glb",
+        "bytes": 750752,
+        "sha256": "cf9b5878019230ee27019f2e903f316ea9a2fcd60d331fe3924bae02db7f4332",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.arterial_system",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/arterial_system.glb",
+        "bytes": 279576,
+        "sha256": "fb04110e11ae21cb8cdb8e65bc17811a25002a87f9e690cf23b5c812daa475bd",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.systemic_arteries",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/systemic_arteries.glb",
+        "bytes": 890712,
+        "sha256": "239a9790c8e86be8ddf3dd651b67f39489012925289ab80a1e7a14135dad9e57",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.systemic_arteries",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/systemic_arteries.glb",
+        "bytes": 317456,
+        "sha256": "63eb2426e0003125f17d32cf85526253e3080b184e94984df2d91dda373c1e1f",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.systemic_arteries.2",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/systemic_arteries.2.glb",
+        "bytes": 599688,
+        "sha256": "b892ccf1a59b7381665b9110dabe344e239d8a815c33655bedc2df10322e5a03",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.systemic_arteries.2",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/systemic_arteries.2.glb",
+        "bytes": 227532,
+        "sha256": "5297ebba44b6c1affa3e67aea30ef4595c30e7ca5f28cd1acb87a44e4760895c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.left_common_carotid_artery",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/left_common_carotid_artery.glb",
+        "bytes": 898952,
+        "sha256": "fd2b156a12d0c66497816f371573604bb6f23f1da58fe06dc7db4b0d071da8fb",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.left_common_carotid_artery",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/left_common_carotid_artery.glb",
+        "bytes": 257248,
+        "sha256": "a3291bee7f28ee8579d8cba102840848b7d0341ce15ec4cd2fcdd6921867cb6a",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.left_subclavian_artery",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/left_subclavian_artery.glb",
+        "bytes": 386784,
+        "sha256": "8726981ee83a15a674dd63b8af6213340a914030050c7123b07bdd0f35d74aca",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.left_subclavian_artery",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/left_subclavian_artery.glb",
+        "bytes": 118220,
+        "sha256": "c050db94f173308df26c70673712d5c76455e7525c584ff30308f39a31144cbd",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.right_common_carotid_artery",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/right_common_carotid_artery.glb",
+        "bytes": 1098628,
+        "sha256": "19ef1d677104f6fc6bb334ef46142f04e1f30f3b8b5216860d882d673e2b360c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.right_common_carotid_artery",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/right_common_carotid_artery.glb",
+        "bytes": 300540,
+        "sha256": "15df7124283b57ca2f1e16f272b9d222a3f0f604b05d0f532850416171399b10",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.right_subclavian_artery--pulmonary_veins",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/right_subclavian_artery--pulmonary_veins.glb",
+        "bytes": 1005432,
+        "sha256": "ce7f38031000754b1f2527521cd864709914cf81f668691e9b41b36ea72da0d1",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.right_subclavian_artery--pulmonary_veins",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/right_subclavian_artery--pulmonary_veins.glb",
+        "bytes": 312680,
+        "sha256": "94190ba1d9f42ecd32ab2665e497b7746f0cbaeb6b1c5d85676087a1015a9966",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.systemic_veins",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/systemic_veins.glb",
+        "bytes": 794860,
+        "sha256": "9c2ff128e5f1a0f3e5c5f61da12a7f7ad7061e511491fb2f1034bdf9d3cf63b6",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.systemic_veins",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/systemic_veins.glb",
+        "bytes": 284312,
+        "sha256": "6909c8a8bbba750bc2b2586e13bd44bbebee0f8cb4000e01ede1eea66db51400",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.systemic_veins.2",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/systemic_veins.2.glb",
+        "bytes": 907980,
+        "sha256": "97a07019bbf42d148eda0918ec53e3f3dd03870bb554fc180ad6b1cd87bbd726",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.systemic_veins.2",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/systemic_veins.2.glb",
+        "bytes": 300976,
+        "sha256": "51bafb5a823ea88bb6d2ca4f42fb71c9c91f2b0b065ba56c4f720f45ede28209",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.superior_vena_cava",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/cardiovascular/superior_vena_cava.glb",
+        "bytes": 375152,
+        "sha256": "2775647534cc8646639f50cc267afaf3fe3d169fc90d2f0d94ca3e832245ad3d",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "cardiovascular.superior_vena_cava",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/cardiovascular/superior_vena_cava.glb",
+        "bytes": 121152,
+        "sha256": "292ea0fe4f07496b223269f05ee7e31a89684355fc1097039eccb51c0ad517d6",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.abdominopelvic_cavity",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/visceral/abdominopelvic_cavity.glb",
+        "bytes": 76992,
+        "sha256": "fc200fa98664e7fc17e9af6cce4aad8c51279dc4a79d7833937445ecd7c39947",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.abdominopelvic_cavity",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/visceral/abdominopelvic_cavity.glb",
+        "bytes": 22020,
+        "sha256": "0f6cf849e13c421711aae29e8a3b20c73652a1541a2aa4617da228dc41c4cb3b",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.digestive_system",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/visceral/digestive_system.glb",
+        "bytes": 1202536,
+        "sha256": "17a01e401ae6a1d391d472843b6868ef9185fcb65e212dba626cac7cc5da20e9",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.digestive_system",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/visceral/digestive_system.glb",
+        "bytes": 402456,
+        "sha256": "8d05455e05377241e0315e45c7483242cca5271b8d3a65f3432ef76e8a09cb4b",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.endocrine_glands--respiratory_system",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/visceral/endocrine_glands--respiratory_system.glb",
+        "bytes": 757904,
+        "sha256": "c3f80b0cf3ee2ffd10e4d0273780e7f0762544206e99d1fffdfed122c5fe7929",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.endocrine_glands--respiratory_system",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/visceral/endocrine_glands--respiratory_system.glb",
+        "bytes": 276040,
+        "sha256": "b9629707a3fc5fa30ba74e5298acfbcc24fe429e7de65199f367c4c001cca15d",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.thoracic_cavity",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/visceral/thoracic_cavity.glb",
+        "bytes": 672940,
+        "sha256": "c97e2bbb02c940ff8be55bb785eb9937396f2a5c919c343e44199bd1f43b8d2f",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.thoracic_cavity",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/visceral/thoracic_cavity.glb",
+        "bytes": 187628,
+        "sha256": "61a9190ddb67af0f1f34bc61ad626753efeff97a4bf0fe9b7868a8f6c6440660",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.urinary_system",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/visceral/urinary_system.glb",
+        "bytes": 612332,
+        "sha256": "8c0d72446d4fac7ea075b6b37dcc5fa0987fc8002234b3e67f93cf3187b558a6",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "visceral.urinary_system",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/visceral/urinary_system.glb",
+        "bytes": 234492,
+        "sha256": "70ef4a22a4f3f34a28b599d9541965f5e653879039001d3d069df9d6a9fdec75",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.brain",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/nervous/brain.glb",
+        "bytes": 902204,
+        "sha256": "dfee94303b55a22bbd7b367b237b45ad1fcc90fe5bce95e1eca32a876f813dd8",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.brain",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/nervous/brain.glb",
+        "bytes": 228360,
+        "sha256": "b210f11737239cb7b631a7a11654695df1ad9d6fc2339c8d791c8891479196c7",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.telencephalon",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/nervous/telencephalon.glb",
+        "bytes": 1129960,
+        "sha256": "588c1002e3425aeb2beb7d9401c45f71aa3f4a74e3d4f4a1a51514ac89ec587c",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.telencephalon",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/nervous/telencephalon.glb",
+        "bytes": 610268,
+        "sha256": "8a0c7257781e84a404ec6cf05977e7d268c2514db02b84eebcf0cb225119b95d",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.telencephalon.2",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/nervous/telencephalon.2.glb",
+        "bytes": 1034080,
+        "sha256": "1ab1b25287979d1cc326ea6f44daa49bd2847dc86a078bf0962df567504e29d4",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.telencephalon.2",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/nervous/telencephalon.2.glb",
+        "bytes": 562712,
+        "sha256": "59d7d6e8ccba4422218dc5043b8fc3930650088f076aa2b07ab75ea7193a428f",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.white_matter_of_telencephalon_l",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/nervous/white_matter_of_telencephalon_l.glb",
+        "bytes": 564724,
+        "sha256": "d3212b5eb63d8c445ac46d4171fa92ae5945389e5770b5ec47a8234a802b0e6a",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.white_matter_of_telencephalon_l",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/nervous/white_matter_of_telencephalon_l.glb",
+        "bytes": 160528,
+        "sha256": "bdc974d189c89088212fc3c69e85fad94ee08d637ac62acb7cebcdd620e8bb80",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.central_nervous_system",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/nervous/central_nervous_system.glb",
+        "bytes": 1109992,
+        "sha256": "668fd33fad3814f38f67055fe9d856039c25a90d76737a3b882dbc12a799bca0",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.central_nervous_system",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/nervous/central_nervous_system.glb",
+        "bytes": 678916,
+        "sha256": "93fdf4ddaa15f2567e269402a91209b2c9fcac9fbc2156f9950813596edb32b7",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.spinal_cord--autonomic_division_of_peripheral_nervous",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/nervous/spinal_cord--autonomic_division_of_peripheral_nervous.glb",
+        "bytes": 610724,
+        "sha256": "c8ee78e56e741767ad465fa457ee71ec7de82121890cfa25ebc1b7076c6da257",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.spinal_cord--autonomic_division_of_peripheral_nervous",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/nervous/spinal_cord--autonomic_division_of_peripheral_nervous.glb",
+        "bytes": 161240,
+        "sha256": "a5505207a29a4be4f68fc2cdb42810de0382b607bd3aec9e6212a3be0a78c5d9",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.peripheral_nervous_system",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/nervous/peripheral_nervous_system.glb",
+        "bytes": 822552,
+        "sha256": "6652c2606b30a5913c19a3a045d472f4c82e3c666d466cc4628ee822424e0e53",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.peripheral_nervous_system",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/nervous/peripheral_nervous_system.glb",
+        "bytes": 135576,
+        "sha256": "d41cd43b73f04949f86dea282d5819bb000647365577409b6450afa40b69a61a",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.spinal_nerves",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/nervous/spinal_nerves.glb",
+        "bytes": 1440512,
+        "sha256": "533bf2f7b52a72a4f36a151a5d8fac1508ee39934c14a1110e69bb85c4b76710",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.spinal_nerves",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/nervous/spinal_nerves.glb",
+        "bytes": 546944,
+        "sha256": "9ee653a28eec193d6a5b42e87e80d59ac82fea21b8490281235739cea08e08af",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.sense_organs",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/nervous/sense_organs.glb",
+        "bytes": 706740,
+        "sha256": "e5aef21b56882ab02b5940a10fe55f2e1a77723b80e29495569a963d97910c7d",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "nervous.sense_organs",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/nervous/sense_organs.glb",
+        "bytes": 186420,
+        "sha256": "d71da82b90ecbc460cfec6b437b01a122c9d14dd71535abddbc3837e8dbadc13",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "lymphoid.root",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/lymphoid/root.glb",
+        "bytes": 989380,
+        "sha256": "8623ba3accfc103e29f5b5c4f6fef60b582060508a756063243f6d3925b2cc1a",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "lymphoid.root",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/lymphoid/root.glb",
+        "bytes": 278116,
+        "sha256": "9a0c478c3e3c04d3c45cbc8f5b08f4f09e35a141f2c125e5e86aa8a58adb036a",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "insertions.abdominal_part_of_pectoralis_major_muscl--flexor_digitorum_brevis",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/insertions/abdominal_part_of_pectoralis_major_muscl--flexor_digitorum_brevis.glb",
+        "bytes": 978832,
+        "sha256": "fd884d1ec017ee9620f3759e89baa6da26f41f3daeb5f1afb15706ecd706aa9f",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "insertions.abdominal_part_of_pectoralis_major_muscl--flexor_digitorum_brevis",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/insertions/abdominal_part_of_pectoralis_major_muscl--flexor_digitorum_brevis.glb",
+        "bytes": 278924,
+        "sha256": "e607276ed0599996e23480fa4d4810359af17ae4724649fa6ec91216d19f884d",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "insertions.flexor_digitorum_longus--masseter",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/insertions/flexor_digitorum_longus--masseter.glb",
+        "bytes": 944768,
+        "sha256": "fd5ecf25e8ef6841405d053ce68f618063a76bb0bd856ed80d528f1f724835a8",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "insertions.flexor_digitorum_longus--masseter",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/insertions/flexor_digitorum_longus--masseter.glb",
+        "bytes": 214360,
+        "sha256": "59a3362d3e51e267a7383c32aeb1fb6e48d81406baa946555c0cf8a201298d4d",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/insertions/medial_head_of_flexor_hallucis_brevis--subclavius_muscle.glb",
+        "bytes": 906284,
+        "sha256": "75bc7a8ff24b2cfa9db7454166c32bb3b6ac5e2a15f81602ffef7bee76bc4ce8",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/insertions/medial_head_of_flexor_hallucis_brevis--subclavius_muscle.glb",
+        "bytes": 153200,
+        "sha256": "333aab15b0d50af8b5a0cbf8c9014dbf100c8336614568e459cd7178bc9f3ae8",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "insertions.subscapularis_muscle--zygomaticus_minor_muscle",
+        "quality": "standard",
+        "url": "/anatomy/derived/atlas/standard/insertions/subscapularis_muscle--zygomaticus_minor_muscle.glb",
+        "bytes": 581512,
+        "sha256": "9045eba60a356aadd06bc8dc50b9bcce75cf70da43d198608075ae43b20c4f0d",
+        "sha256_matches_release": true
+      },
+      {
+        "chunk": "insertions.subscapularis_muscle--zygomaticus_minor_muscle",
+        "quality": "economy",
+        "url": "/anatomy/derived/atlas/economy/insertions/subscapularis_muscle--zygomaticus_minor_muscle.glb",
+        "bytes": 201604,
+        "sha256": "a2f1bae7a984b070f0461ac47d43eb73eca645313a2cf7a58941b95311ed98c7",
+        "sha256_matches_release": true
+      }
+    ]
+  }
+}

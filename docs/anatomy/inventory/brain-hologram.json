@@ -1,0 +1,664 @@
+{
+  "asset_id": "brain-hologram",
+  "relative_path": "brain_hologram.glb",
+  "source_group": "workspace_root",
+  "bytes": 16978020,
+  "sha256": "c47864415c919ac0e8c5ac994652d60f04c60f75ee1cef432fd9a6785b7f41e9",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 7728
+      },
+      {
+        "type": "BIN",
+        "byteLength": 16970264
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-16.62.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "oxterium (https://sketchfab.com/oxterium)",
+      "license": "SKETCHFAB Standard (https://sketchfab.com/licenses)",
+      "source": "https://sketchfab.com/3d-models/brain-hologram-09d686a1a1f745cba6b2385d0c831214",
+      "title": "Brain hologram"
+    },
+    "extensions_used": [
+      "KHR_materials_emissive_strength"
+    ],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "INVALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 1,
+    "warnings": 0,
+    "infos": 6,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 6,
+      "ERROR:ANIMATION_SAMPLER_ACCESSOR_WITH_BYTESTRIDE": 1
+    },
+    "draw_calls": 6,
+    "validator_triangle_count": 400000,
+    "validator_vertex_count": 380022
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 11,
+    "mesh_nodes": 6,
+    "meshes": 6,
+    "primitives": 6,
+    "materials": 2,
+    "textures": 0,
+    "animations": 1,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 400000,
+    "rendered_triangles": 400000,
+    "unique_vertices": 380022,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 6,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 10003,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.00022,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.514643,
+        -0.479353,
+        -0.634737
+      ],
+      "max": [
+        0.571229,
+        0.620393,
+        0.663581
+      ],
+      "size": [
+        1.085872,
+        1.099745,
+        1.298318
+      ],
+      "center": [
+        0.028293,
+        0.07052,
+        0.014422
+      ],
+      "diagonal": 2.018462
+    },
+    "bounds_finite": true,
+    "tallest_axis": "z",
+    "aspect_ratio": 1.196,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Icosphere.001_Particle_2_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 2,
+    "names": [
+      "Particle_2",
+      "Particle_1"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Icosphere.001_Particle_2_0",
+      "Icosphere.001_Particle_2_0",
+      "Icosphere.001_Particle_2_0",
+      "Icosphere.001_Particle_1_0",
+      "Icosphere.001_Particle_1_0",
+      "Icosphere.001_Particle_1_0"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 821,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx",
+      "name": "07e8ba9162674e488df6dd56fc54b2e3.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx/Object_2",
+      "name": "Object_2",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx/Object_2/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx/Object_2/RootNode/Icosphere.001",
+      "name": "Icosphere.001",
+      "semantic_name": "Icosphere.001",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 6,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx/Object_2/RootNode/Icosphere.001/Icosphere.001_Particle_2_0",
+      "name": "Icosphere.001_Particle_2_0",
+      "semantic_name": "Icosphere.001_Particle_2_0",
+      "depth": 5,
+      "mesh": "Icosphere.001_Particle_2_0",
+      "material": "Particle_2",
+      "triangles": 68979,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.508115,
+          -0.479353,
+          -0.634737
+        ],
+        "max": [
+          0.565668,
+          0.620393,
+          0.661939
+        ],
+        "size": [
+          1.073782,
+          1.099745,
+          1.296675
+        ],
+        "center": [
+          0.028776,
+          0.07052,
+          0.013601
+        ],
+        "diagonal": 2.010924
+      }
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx/Object_2/RootNode/Icosphere.001/Icosphere.001_Particle_2_0",
+      "name": "Icosphere.001_Particle_2_0",
+      "semantic_name": "Icosphere.001_Particle_2_0",
+      "depth": 5,
+      "mesh": "Icosphere.001_Particle_2_0",
+      "material": "Particle_2",
+      "triangles": 68977,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.510088,
+          -0.46731,
+          -0.633833
+        ],
+        "max": [
+          0.569262,
+          0.618501,
+          0.663581
+        ],
+        "size": [
+          1.07935,
+          1.085811,
+          1.297414
+        ],
+        "center": [
+          0.029587,
+          0.075596,
+          0.014874
+        ],
+        "diagonal": 2.006805
+      }
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx/Object_2/RootNode/Icosphere.001/Icosphere.001_Particle_2_0",
+      "name": "Icosphere.001_Particle_2_0",
+      "semantic_name": "Icosphere.001_Particle_2_0",
+      "depth": 5,
+      "mesh": "Icosphere.001_Particle_2_0",
+      "material": "Particle_2",
+      "triangles": 62044,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.509449,
+          -0.450044,
+          -0.63284
+        ],
+        "max": [
+          0.571229,
+          0.619111,
+          0.660052
+        ],
+        "size": [
+          1.080678,
+          1.069154,
+          1.292892
+        ],
+        "center": [
+          0.03089,
+          0.084534,
+          0.013606
+        ],
+        "diagonal": 1.995627
+      }
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx/Object_2/RootNode/Icosphere.001/Icosphere.001_Particle_1_0",
+      "name": "Icosphere.001_Particle_1_0",
+      "semantic_name": "Icosphere.001_Particle_1_0",
+      "depth": 5,
+      "mesh": "Icosphere.001_Particle_1_0",
+      "material": "Particle_1",
+      "triangles": 68979,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.511202,
+          -0.478598,
+          -0.633906
+        ],
+        "max": [
+          0.569997,
+          0.615766,
+          0.650204
+        ],
+        "size": [
+          1.081199,
+          1.094364,
+          1.284109
+        ],
+        "center": [
+          0.029397,
+          0.068584,
+          0.008149
+        ],
+        "diagonal": 2.003886
+      }
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx/Object_2/RootNode/Icosphere.001/Icosphere.001_Particle_1_0",
+      "name": "Icosphere.001_Particle_1_0",
+      "semantic_name": "Icosphere.001_Particle_1_0",
+      "depth": 5,
+      "mesh": "Icosphere.001_Particle_1_0",
+      "material": "Particle_1",
+      "triangles": 68977,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.514643,
+          -0.434346,
+          -0.615493
+        ],
+        "max": [
+          0.567685,
+          0.614493,
+          0.652057
+        ],
+        "size": [
+          1.082328,
+          1.048839,
+          1.26755
+        ],
+        "center": [
+          0.026521,
+          0.090074,
+          0.018282
+        ],
+        "diagonal": 1.96931
+      }
+    },
+    {
+      "path": "Sketchfab_model/07e8ba9162674e488df6dd56fc54b2e3.fbx/Object_2/RootNode/Icosphere.001/Icosphere.001_Particle_1_0",
+      "name": "Icosphere.001_Particle_1_0",
+      "semantic_name": "Icosphere.001_Particle_1_0",
+      "depth": 5,
+      "mesh": "Icosphere.001_Particle_1_0",
+      "material": "Particle_1",
+      "triangles": 62044,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.513013,
+          -0.478539,
+          -0.633271
+        ],
+        "max": [
+          0.56311,
+          0.618343,
+          0.650741
+        ],
+        "size": [
+          1.076123,
+          1.096882,
+          1.284011
+        ],
+        "center": [
+          0.025049,
+          0.069902,
+          0.008735
+        ],
+        "diagonal": 2.002467
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Icosphere.001_Particle_2_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Particle_2",
+          "morph_targets": 0,
+          "triangles": 68979,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 37946,
+            "connected_components": 1725,
+            "boundary_edge_fraction": 0.00016,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 68979,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Icosphere.001_Particle_2_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Particle_2",
+          "morph_targets": 0,
+          "triangles": 68977,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 37939,
+            "connected_components": 1724,
+            "boundary_edge_fraction": 0.00022,
+            "non_manifold_edge_fraction": 0.00013,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 68977,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Icosphere.001_Particle_2_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 58947,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Particle_2",
+          "morph_targets": 0,
+          "triangles": 62044,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 34128,
+            "connected_components": 1552,
+            "boundary_edge_fraction": 0.00006,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 62044,
+      "points": 0,
+      "lines": 0,
+      "vertices": 58947
+    },
+    {
+      "name": "Icosphere.001_Particle_1_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Particle_1",
+          "morph_targets": 0,
+          "triangles": 68979,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 37946,
+            "connected_components": 1725,
+            "boundary_edge_fraction": 0.00016,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 68979,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Icosphere.001_Particle_1_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Particle_1",
+          "morph_targets": 0,
+          "triangles": 68977,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 37948,
+            "connected_components": 1725,
+            "boundary_edge_fraction": 0.00022,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 68977,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Icosphere.001_Particle_1_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 58947,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Particle_1",
+          "morph_targets": 0,
+          "triangles": 62044,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 34128,
+            "connected_components": 1552,
+            "boundary_edge_fraction": 0.00006,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 62044,
+      "points": 0,
+      "lines": 0,
+      "vertices": 58947
+    }
+  ],
+  "materials": [
+    {
+      "name": "Particle_2",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_emissive_strength"
+      ]
+    },
+    {
+      "name": "Particle_1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_emissive_strength"
+      ]
+    }
+  ],
+  "textures": []
+}

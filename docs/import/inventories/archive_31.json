@@ -1,0 +1,40 @@
+{
+  "listed_name": "archive (31).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (31).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "83c150178a7a10439862a66b2703869aadc11f201c359436ae1df77d2b5e7485",
+  "size_bytes": 69007,
+  "entries": 1,
+  "files": 1,
+  "directories": 0,
+  "uncompressed_bytes": 316971,
+  "overall_ratio": 4.61,
+  "max_entry_ratio": 4.6,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (1 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "tabular": 1
+  },
+  "extensions": {
+    ".csv": 1
+  },
+  "top_level": {
+    "healthcare-dataset-stroke-data.csv": 1
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_31.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.0,
+  "notes": []
+}

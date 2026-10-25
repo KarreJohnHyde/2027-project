@@ -1,0 +1,40 @@
+{
+  "listed_name": "archive (36).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (36).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "8de74aa69dd0af5aa672615f094fbab9926c24c513bf88c2e59126c7dc5f227e",
+  "size_bytes": 9741,
+  "entries": 1,
+  "files": 1,
+  "directories": 0,
+  "uncompressed_bytes": 48551,
+  "overall_ratio": 5.07,
+  "max_entry_ratio": 5.1,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (1 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "tabular": 1
+  },
+  "extensions": {
+    ".csv": 1
+  },
+  "top_level": {
+    "kidney_disease.csv": 1
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_36.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.0,
+  "notes": []
+}

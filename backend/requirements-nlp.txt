@@ -1,0 +1,11 @@
+# Isolated biomedical NLP environment (.venv-nlp, Python 3.12).
+# scispaCy 0.5.5 needs spaCy 3.7 / thinc 8.2, whose wheels are built against
+# NumPy 1.x, so this stack cannot share the main .venv (NumPy 2.5).
+# The backend calls it as a subprocess adapter (backend/app/services/nlp_adapter.py).
+numpy==1.26.4
+spacy==3.7.5
+thinc==8.2.4
+scispacy==0.5.5
+# spaCy 3.7's CLI imports click directly; newer typer releases no longer pull it in.
+typer==0.12.5
+click==8.1.8

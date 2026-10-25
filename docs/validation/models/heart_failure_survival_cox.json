@@ -1,0 +1,213 @@
+{
+  "model_id": "heart_failure_survival_cox",
+  "run_id": "heart_failure_survival_cox-20261025T072515Z",
+  "task_id": "heart-failure-survival",
+  "task_type": "survival",
+  "dataset": "Heart failure clinical records (UCI id 519)",
+  "dataset_id": "uci-heart-failure-clinical-records",
+  "dataset_version": "9c73cea7468ff5d517801ec050fe9993da5912fce4b56f296f8df3b38dd75912",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "CC BY 4.0",
+    "source": "https://archive.ics.uci.edu/dataset/519/heart+failure+clinical+records",
+    "verified_on": "2026-10-25",
+    "citation": "Chicco D, Jurman G. Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone. BMC Med Inform Decis Mak 20, 16 (2020)."
+  },
+  "split_method": "stratified by death event, 70/30, seed 20261024",
+  "split_counts": {
+    "train": 209,
+    "test": 90
+  },
+  "events": {
+    "train": 67,
+    "test": 29
+  },
+  "preparation": {
+    "rows": 299,
+    "excluded": 0,
+    "split_method": "stratified by death event, 70/30, seed 20261024"
+  },
+  "features": [
+    "age",
+    "anaemia",
+    "log_creatinine_phosphokinase",
+    "diabetes",
+    "ejection_fraction",
+    "high_blood_pressure",
+    "log_platelets",
+    "log_serum_creatinine",
+    "serum_sodium",
+    "sex",
+    "smoking"
+  ],
+  "penalty": {
+    "l2": 0.1,
+    "selection": "5-fold cross-validated C-index within the development cohort",
+    "cv_scores": {
+      "0.0": 0.7220173505848037,
+      "0.01": 0.7220173505848037,
+      "0.1": 0.7220173505848037,
+      "1.0": 0.7199782711497458,
+      "10.0": 0.7126775569028638
+    }
+  },
+  "hazard_ratios": {
+    "age": {
+      "hr_per_sd": 1.8693833017019994,
+      "coefficient_standardised": 0.6256085912893056,
+      "sd": 12.362113998991083
+    },
+    "anaemia": {
+      "hr_per_sd": 1.1519479734021327,
+      "coefficient_standardised": 0.14145439927655137,
+      "sd": 0.49121771359757777
+    },
+    "log_creatinine_phosphokinase": {
+      "hr_per_sd": 1.0678597306260782,
+      "coefficient_standardised": 0.06565639354726947,
+      "sd": 1.1745198011438143
+    },
+    "diabetes": {
+      "hr_per_sd": 1.0040274055751273,
+      "coefficient_standardised": 0.004019317286566722,
+      "sd": 0.49516330078550724
+    },
+    "ejection_fraction": {
+      "hr_per_sd": 0.4833537007033274,
+      "coefficient_standardised": -0.7270065937372711,
+      "sd": 11.902696471109962
+    },
+    "high_blood_pressure": {
+      "hr_per_sd": 1.372890224131656,
+      "coefficient_standardised": 0.31691817029854424,
+      "sd": 0.4836560927400333
+    },
+    "log_platelets": {
+      "hr_per_sd": 0.9718494318052618,
+      "coefficient_standardised": -0.028554392070944033,
+      "sd": 0.37730007336840016
+    },
+    "log_serum_creatinine": {
+      "hr_per_sd": 1.8140495558497989,
+      "coefficient_standardised": 0.5955616698698546,
+      "sd": 0.46587158191398154
+    },
+    "serum_sodium": {
+      "hr_per_sd": 0.9164805433625437,
+      "coefficient_standardised": -0.08721444121027093,
+      "sd": 4.481969147017898
+    },
+    "sex": {
+      "hr_per_sd": 0.8462236968565154,
+      "coefficient_standardised": -0.1669715372398712,
+      "sd": 0.4823763889437196
+    },
+    "smoking": {
+      "hr_per_sd": 1.136289943883162,
+      "coefficient_standardised": 0.12776852002425537,
+      "sd": 0.45239987190809383
+    }
+  },
+  "test_n": 90,
+  "horizons_days": [
+    90,
+    180
+  ],
+  "metrics": {
+    "harrell_c": 0.6708791208791208,
+    "brier": {
+      "90": {
+        "model": 0.1738469924072928,
+        "kaplan_meier_reference": 0.18100356519345806
+      },
+      "180": {
+        "model": 0.2648182820385849,
+        "kaplan_meier_reference": 0.24078619166986573
+      }
+    },
+    "integrated_brier_model": 0.16815082103719606,
+    "integrated_brier_kaplan_meier": 0.1578490642736095,
+    "integrated_brier_skill": -0.06526333754966007
+  },
+  "confidence_intervals_95": {
+    "harrell_c": {
+      "status": "COMPUTED",
+      "low": 0.5688369298400173,
+      "high": 0.7736113497962022,
+      "resamples": 1000,
+      "unit": "patient"
+    }
+  },
+  "calibration": {
+    "90": [
+      {
+        "group": 1,
+        "n": 30,
+        "events": 4,
+        "mean_predicted_risk": 0.05202368433201376,
+        "observed_risk_kaplan_meier": 0.07536231884057965
+      },
+      {
+        "group": 2,
+        "n": 30,
+        "events": 9,
+        "mean_predicted_risk": 0.15290733518092026,
+        "observed_risk_kaplan_meier": 0.2765217391304349
+      },
+      {
+        "group": 3,
+        "n": 30,
+        "events": 16,
+        "mean_predicted_risk": 0.4400941013664342,
+        "observed_risk_kaplan_meier": 0.3426086956521739
+      }
+    ],
+    "180": [
+      {
+        "group": 1,
+        "n": 30,
+        "events": 4,
+        "mean_predicted_risk": 0.08697279687528012,
+        "observed_risk_kaplan_meier": 0.19506987577639745
+      },
+      {
+        "group": 2,
+        "n": 30,
+        "events": 9,
+        "mean_predicted_risk": 0.24582297941458614,
+        "observed_risk_kaplan_meier": 0.3422924901185772
+      },
+      {
+        "group": 3,
+        "n": 30,
+        "events": 16,
+        "mean_predicted_risk": 0.5926933444921204,
+        "observed_risk_kaplan_meier": 0.5138618925831202
+      }
+    ]
+  },
+  "integrated_brier_grid_days": [
+    13.8,
+    173.6
+  ],
+  "checkpoint": {
+    "path": "artifacts/training/heart_failure_survival_cox-20261025T072515Z/model.pt",
+    "sha256": "0073a7eba793269e70640a4b52f469ad3e61235b21b1c2a895a81b5b26b162ed"
+  },
+  "held_out_predictions": "artifacts/training/heart_failure_survival_cox-20261025T072515Z/predictions_test.csv",
+  "training_seconds": 0.2,
+  "config": {
+    "cohort": "heart-failure"
+  },
+  "reporting_context": {
+    "dataset": "Heart failure clinical records (UCI id 519)",
+    "dataset_version": "9c73cea7468ff5d5",
+    "split": "held-out",
+    "checkpoint": "sha256:0073a7eba793269e70640a4b52f469ad3e61235b21b1c2a895a81b5b26b162ed"
+  },
+  "limitations": [
+    "Population: 299 heart-failure patients with LVEF <= 45% (NYHA III-IV), Faisalabad Institute of Cardiology and Allied Hospital, Pakistan, April-December 2015 (Ahmad et al., PLoS ONE 2017). Predictions do not transfer to other populations without external validation.",
+    "Cox proportional-hazards assumption not formally tested; small held-out cohort, so confidence intervals are wide.",
+    "Research-only survival estimates; not validated for clinical decision-making."
+  ]
+}

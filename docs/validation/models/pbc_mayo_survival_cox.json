@@ -1,0 +1,204 @@
+{
+  "model_id": "pbc_mayo_survival_cox",
+  "run_id": "pbc_mayo_survival_cox-20261025T072517Z",
+  "task_id": "pbc-survival",
+  "task_type": "survival",
+  "dataset": "Cirrhosis patient survival, Mayo Clinic PBC (UCI id 878)",
+  "dataset_id": "uci-cirrhosis-mayo-pbc",
+  "dataset_version": "24ae2d5bedbc59898e536b98b152da35bbbb0ed70a2afef0adac8b7c5c8c6d54",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "CC BY 4.0",
+    "source": "https://archive.ics.uci.edu/dataset/878/cirrhosis+patient+survival+prediction+dataset-1",
+    "verified_on": "2026-10-25",
+    "citation": "Dickson ER, Grambsch PM, Fleming TR, Fisher LD, Langworthy A. Prognosis in primary biliary cirrhosis: model for decision making. Hepatology 10(1):1-7 (1989)."
+  },
+  "split_method": "development = randomized trial patients (Drug recorded); hold-out = non-randomized patients (as in Dickson et al. 1989)",
+  "split_counts": {
+    "train": 312,
+    "test": 104
+  },
+  "events": {
+    "train": 125,
+    "test": 35
+  },
+  "preparation": {
+    "rows": 418,
+    "excluded": 2,
+    "excluded_reason": "missing bilirubin, albumin or prothrombin",
+    "transplants_censored": 25,
+    "split_method": "development = randomized trial patients (Drug recorded); hold-out = non-randomized patients (as in Dickson et al. 1989)"
+  },
+  "features": [
+    "age_years",
+    "log_bilirubin",
+    "log_albumin",
+    "log_prothrombin",
+    "edema"
+  ],
+  "penalty": {
+    "l2": 0.0,
+    "selection": "fixed",
+    "cv_scores": {
+      "note": "unpenalised: the five-covariate Mayo specification is fixed in advance"
+    }
+  },
+  "hazard_ratios": {
+    "age_years": {
+      "hr_per_sd": 1.421103756716621,
+      "coefficient_standardised": 0.3514338631394669,
+      "sd": 10.564289767652317
+    },
+    "log_bilirubin": {
+      "hr_per_sd": 2.474500600953061,
+      "coefficient_standardised": 0.906038598268154,
+      "sd": 1.0305170583140142
+    },
+    "log_albumin": {
+      "hr_per_sd": 0.6792634422947622,
+      "coefficient_standardised": -0.3867462409638609,
+      "sd": 0.12666638536764235
+    },
+    "log_prothrombin": {
+      "hr_per_sd": 1.3044122989013824,
+      "coefficient_standardised": 0.2657525936691517,
+      "sd": 0.08812364676403331
+    },
+    "edema": {
+      "hr_per_sd": 1.2399316982113247,
+      "coefficient_standardised": 0.21505629601223022,
+      "sd": 0.27406657525705785
+    }
+  },
+  "test_n": 104,
+  "horizons_days": [
+    365,
+    1095,
+    1826
+  ],
+  "metrics": {
+    "harrell_c": 0.7859437751004016,
+    "brier": {
+      "365": {
+        "model": 0.05849857879079013,
+        "kaplan_meier_reference": 0.06278763971071681
+      },
+      "1095": {
+        "model": 0.11084957207697207,
+        "kaplan_meier_reference": 0.1657069436056324
+      },
+      "1826": {
+        "model": 0.1231829223913916,
+        "kaplan_meier_reference": 0.18988716711188003
+      }
+    },
+    "integrated_brier_model": 0.10497801793539387,
+    "integrated_brier_kaplan_meier": 0.14592446774557913,
+    "integrated_brier_skill": 0.28060030262762947
+  },
+  "confidence_intervals_95": {
+    "harrell_c": {
+      "status": "COMPUTED",
+      "low": 0.7091928780145406,
+      "high": 0.8538615591307922,
+      "resamples": 1000,
+      "unit": "patient"
+    }
+  },
+  "calibration": {
+    "365": [
+      {
+        "group": 1,
+        "n": 35,
+        "events": 2,
+        "mean_predicted_risk": 0.009442099853692557,
+        "observed_risk_kaplan_meier": 0.0
+      },
+      {
+        "group": 2,
+        "n": 34,
+        "events": 13,
+        "mean_predicted_risk": 0.024543752436291873,
+        "observed_risk_kaplan_meier": 0.05882352941176472
+      },
+      {
+        "group": 3,
+        "n": 35,
+        "events": 20,
+        "mean_predicted_risk": 0.13021107782313182,
+        "observed_risk_kaplan_meier": 0.1428571428571429
+      }
+    ],
+    "1095": [
+      {
+        "group": 1,
+        "n": 35,
+        "events": 2,
+        "mean_predicted_risk": 0.038669332048566415,
+        "observed_risk_kaplan_meier": 0.02857142857142858
+      },
+      {
+        "group": 2,
+        "n": 34,
+        "events": 13,
+        "mean_predicted_risk": 0.09800037508393596,
+        "observed_risk_kaplan_meier": 0.11862745098039218
+      },
+      {
+        "group": 3,
+        "n": 35,
+        "events": 20,
+        "mean_predicted_risk": 0.40702201754457956,
+        "observed_risk_kaplan_meier": 0.4973497091144151
+      }
+    ],
+    "1826": [
+      {
+        "group": 1,
+        "n": 35,
+        "events": 2,
+        "mean_predicted_risk": 0.0830623350355229,
+        "observed_risk_kaplan_meier": 0.07080745341614902
+      },
+      {
+        "group": 2,
+        "n": 34,
+        "events": 13,
+        "mean_predicted_risk": 0.20249021422932625,
+        "observed_risk_kaplan_meier": 0.29809244964954296
+      },
+      {
+        "group": 3,
+        "n": 35,
+        "events": 20,
+        "mean_predicted_risk": 0.6372976479063748,
+        "observed_risk_kaplan_meier": 0.5978797672915321
+      }
+    ]
+  },
+  "integrated_brier_grid_days": [
+    204.20000000000002,
+    2095.0
+  ],
+  "checkpoint": {
+    "path": "artifacts/training/pbc_mayo_survival_cox-20261025T072517Z/model.pt",
+    "sha256": "3d86d29f24382b8d1cac71361eebbbf66ee90237d8b0261fc95077bfcc281af9"
+  },
+  "held_out_predictions": "artifacts/training/pbc_mayo_survival_cox-20261025T072517Z/predictions_test.csv",
+  "training_seconds": 0.2,
+  "config": {
+    "cohort": "pbc"
+  },
+  "reporting_context": {
+    "dataset": "Cirrhosis patient survival, Mayo Clinic PBC (UCI id 878)",
+    "dataset_version": "24ae2d5bedbc5989",
+    "split": "held-out",
+    "checkpoint": "sha256:3d86d29f24382b8d1cac71361eebbbf66ee90237d8b0261fc95077bfcc281af9"
+  },
+  "limitations": [
+    "Population: Mayo Clinic primary biliary cirrhosis patients 1974-1984: 312 randomized trial patients (development) and 106 consenting non-randomized patients (hold-out). Predictions do not transfer to other populations without external validation.",
+    "Liver transplantation is a competing risk censored at transplant; mortality risk may be underestimated.",
+    "Cox proportional-hazards assumption not formally tested; small held-out cohort, so confidence intervals are wide.",
+    "Research-only survival estimates; not validated for clinical decision-making."
+  ]
+}

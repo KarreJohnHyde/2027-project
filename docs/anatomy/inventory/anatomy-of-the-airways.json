@@ -1,0 +1,988 @@
+{
+  "asset_id": "anatomy-of-the-airways",
+  "relative_path": "anatomy_of_the_airways.glb",
+  "source_group": "workspace_root",
+  "bytes": 8799152,
+  "sha256": "9741c32977663f75f4d3f91f56ee6a44a237322a2abb74ab210ea7b580b77324",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 10864
+      },
+      {
+        "type": "BIN",
+        "byteLength": 8788260
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.66.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "E-learning UMCG (https://sketchfab.com/eLearningUMCG)",
+      "license": "CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)",
+      "source": "https://sketchfab.com/3d-models/anatomy-of-the-airways-ad7d7e16b98f421db0cda79f265fcc8d",
+      "title": "Anatomy of the airways"
+    },
+    "extensions_used": [
+      "KHR_materials_pbrSpecularGlossiness"
+    ],
+    "extensions_required": [
+      "KHR_materials_pbrSpecularGlossiness"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 8,
+    "validator_triangle_count": 237105,
+    "validator_vertex_count": 148575
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 19,
+    "mesh_nodes": 8,
+    "meshes": 8,
+    "primitives": 8,
+    "materials": 8,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 237105,
+    "rendered_triangles": 237105,
+    "unique_vertices": 148575,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 8,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 8,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 843,
+    "closed_measured_primitives": 5,
+    "max_boundary_edge_fraction": 0.04624,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        0.048166,
+        -497.469075,
+        43.796893
+      ],
+      "max": [
+        0.232655,
+        -497.258732,
+        43.954194
+      ],
+      "size": [
+        0.184488,
+        0.210344,
+        0.157301
+      ],
+      "center": [
+        0.140411,
+        -497.363903,
+        43.875543
+      ],
+      "diagonal": 0.320973
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 1.337,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 2,
+    "largest_mesh_node": "Linkerlong_Linkerlong_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 1,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 8,
+    "names": [
+      "bronchi1_1",
+      "bronchi1",
+      "Linkerlong",
+      "Trachea_kraakbeen",
+      "Tussen_hyoid_en_thyroid",
+      "Hyoid_bone",
+      "Thyroid_gland",
+      "PM3D_Sphere3D2"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "bronchi1_1_bronchi1_1_0",
+      "bronchi1_bronchi1_0",
+      "Linkerlong_Linkerlong_0",
+      "Trachea_kraakbeen_Trachea_kraakbeen_0",
+      "Tussen_hyoid_en_thyroid_Tussen_hyoid_en_thyroid_0",
+      "Hyoid_bone_Hyoid_bone_0",
+      "Thyroid_gland_Thyroid_gland_0",
+      "PM3D_Sphere3D2_PM3D_Sphere3D2_0"
+    ],
+    "anatomically_named_mesh_nodes": 4,
+    "anatomical_names_sample": [
+      "bronchi1_1_bronchi1_1_0",
+      "bronchi1_bronchi1_0",
+      "Trachea_kraakbeen_Trachea_kraakbeen_0",
+      "Hyoid_bone_Hyoid_bone_0"
+    ]
+  },
+  "inspection_ms": 417,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx",
+      "name": "b7e9e93ac62546919df698b27f6bffb8.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 8,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/bronchi1_1",
+      "name": "bronchi1_1",
+      "semantic_name": "bronchi1_1",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/bronchi1_1/bronchi1_1_bronchi1_1_0",
+      "name": "bronchi1_1_bronchi1_1_0",
+      "semantic_name": "bronchi1_1_bronchi1_1_0",
+      "depth": 4,
+      "mesh": "bronchi1_1_bronchi1_1_0",
+      "material": "bronchi1_1",
+      "triangles": 75612,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.178047,
+          -497.3438,
+          43.87581
+        ],
+        "max": [
+          0.188067,
+          -497.323822,
+          43.88579
+        ],
+        "size": [
+          0.01002,
+          0.019977,
+          0.00998
+        ],
+        "center": [
+          0.183057,
+          -497.333811,
+          43.8808
+        ],
+        "diagonal": 0.024476
+      }
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/bronchi1",
+      "name": "bronchi1",
+      "semantic_name": "bronchi1",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/bronchi1/bronchi1_bronchi1_0",
+      "name": "bronchi1_bronchi1_0",
+      "semantic_name": "bronchi1_bronchi1_0",
+      "depth": 4,
+      "mesh": "bronchi1_bronchi1_0",
+      "material": "bronchi1",
+      "triangles": 41890,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.064174,
+          -497.454516,
+          43.818949
+        ],
+        "max": [
+          0.217762,
+          -497.283151,
+          43.930841
+        ],
+        "size": [
+          0.153588,
+          0.171365,
+          0.111892
+        ],
+        "center": [
+          0.140968,
+          -497.368834,
+          43.874895
+        ],
+        "diagonal": 0.255881
+      }
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Linkerlong",
+      "name": "Linkerlong",
+      "semantic_name": "Linkerlong",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Linkerlong/Linkerlong_Linkerlong_0",
+      "name": "Linkerlong_Linkerlong_0",
+      "semantic_name": "Linkerlong_Linkerlong_0",
+      "depth": 4,
+      "mesh": "Linkerlong_Linkerlong_0",
+      "material": "Linkerlong",
+      "triangles": 54096,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.048166,
+          -497.469075,
+          43.796893
+        ],
+        "max": [
+          0.232655,
+          -497.293378,
+          43.954194
+        ],
+        "size": [
+          0.184488,
+          0.175697,
+          0.157301
+        ],
+        "center": [
+          0.140411,
+          -497.381227,
+          43.875543
+        ],
+        "diagonal": 0.299414
+      }
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Trachea_kraakbeen",
+      "name": "Trachea_kraakbeen",
+      "semantic_name": "Trachea_kraakbeen",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Trachea_kraakbeen/Trachea_kraakbeen_Trachea_kraakbeen_0",
+      "name": "Trachea_kraakbeen_Trachea_kraakbeen_0",
+      "semantic_name": "Trachea_kraakbeen_Trachea_kraakbeen_0",
+      "depth": 4,
+      "mesh": "Trachea_kraakbeen_Trachea_kraakbeen_0",
+      "material": "Trachea_kraakbeen",
+      "triangles": 32920,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.073624,
+          -497.448026,
+          43.820773
+        ],
+        "max": [
+          0.216261,
+          -497.287935,
+          43.926785
+        ],
+        "size": [
+          0.142636,
+          0.160091,
+          0.106012
+        ],
+        "center": [
+          0.144943,
+          -497.367981,
+          43.873779
+        ],
+        "diagonal": 0.239192
+      }
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Tussen_hyoid_en_thyroid",
+      "name": "Tussen_hyoid_en_thyroid",
+      "semantic_name": "Tussen_hyoid_en_thyroid",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Tussen_hyoid_en_thyroid/Tussen_hyoid_en_thyroid_Tussen_hyoid_en_thyroid_0",
+      "name": "Tussen_hyoid_en_thyroid_Tussen_hyoid_en_thyroid_0",
+      "semantic_name": "Tussen_hyoid_en_thyroid_Tussen_hyoid_en_thyroid_0",
+      "depth": 4,
+      "mesh": "Tussen_hyoid_en_thyroid_Tussen_hyoid_en_thyroid_0",
+      "material": "Tussen_hyoid_en_thyroid",
+      "triangles": 4494,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.125205,
+          -497.281302,
+          43.856469
+        ],
+        "max": [
+          0.148543,
+          -497.260286,
+          43.878296
+        ],
+        "size": [
+          0.023339,
+          0.021016,
+          0.021828
+        ],
+        "center": [
+          0.136874,
+          -497.270794,
+          43.867382
+        ],
+        "diagonal": 0.038247
+      }
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Hyoid_bone",
+      "name": "Hyoid_bone",
+      "semantic_name": "Hyoid_bone",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Hyoid_bone/Hyoid_bone_Hyoid_bone_0",
+      "name": "Hyoid_bone_Hyoid_bone_0",
+      "semantic_name": "Hyoid_bone_Hyoid_bone_0",
+      "depth": 4,
+      "mesh": "Hyoid_bone_Hyoid_bone_0",
+      "material": "Hyoid_bone",
+      "triangles": 5903,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.124352,
+          -497.292564,
+          43.853889
+        ],
+        "max": [
+          0.149226,
+          -497.258732,
+          43.879514
+        ],
+        "size": [
+          0.024874,
+          0.033833,
+          0.025626
+        ],
+        "center": [
+          0.136789,
+          -497.275648,
+          43.866701
+        ],
+        "diagonal": 0.049194
+      }
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Thyroid_gland",
+      "name": "Thyroid_gland",
+      "semantic_name": "Thyroid_gland",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/Thyroid_gland/Thyroid_gland_Thyroid_gland_0",
+      "name": "Thyroid_gland_Thyroid_gland_0",
+      "semantic_name": "Thyroid_gland_Thyroid_gland_0",
+      "depth": 4,
+      "mesh": "Thyroid_gland_Thyroid_gland_0",
+      "material": "Thyroid_gland",
+      "triangles": 876,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.123498,
+          -497.299237,
+          43.850527
+        ],
+        "max": [
+          0.148948,
+          -497.272482,
+          43.869565
+        ],
+        "size": [
+          0.02545,
+          0.026755,
+          0.019038
+        ],
+        "center": [
+          0.136223,
+          -497.285859,
+          43.860046
+        ],
+        "diagonal": 0.041545
+      }
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/PM3D_Sphere3D2",
+      "name": "PM3D_Sphere3D2",
+      "semantic_name": "PM3D_Sphere3D2",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/b7e9e93ac62546919df698b27f6bffb8.fbx/RootNode/PM3D_Sphere3D2/PM3D_Sphere3D2_PM3D_Sphere3D2_0",
+      "name": "PM3D_Sphere3D2_PM3D_Sphere3D2_0",
+      "semantic_name": "PM3D_Sphere3D2_PM3D_Sphere3D2_0",
+      "depth": 4,
+      "mesh": "PM3D_Sphere3D2_PM3D_Sphere3D2_0",
+      "material": "PM3D_Sphere3D2",
+      "triangles": 21314,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.179597,
+          -497.341749,
+          43.8756
+        ],
+        "max": [
+          0.193827,
+          -497.318526,
+          43.89117
+        ],
+        "size": [
+          0.01423,
+          0.023222,
+          0.015571
+        ],
+        "center": [
+          0.186712,
+          -497.330138,
+          43.883385
+        ],
+        "diagonal": 0.031372
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "bronchi1_1_bronchi1_1_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 37806,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "bronchi1_1",
+          "morph_targets": 0,
+          "triangles": 75612,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 37806,
+            "connected_components": 183,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 75612,
+      "points": 0,
+      "lines": 0,
+      "vertices": 37806
+    },
+    {
+      "name": "bronchi1_bronchi1_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 21656,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "bronchi1",
+          "morph_targets": 0,
+          "triangles": 41890,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 20949,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0.00008,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 41890,
+      "points": 0,
+      "lines": 0,
+      "vertices": 21656
+    },
+    {
+      "name": "Linkerlong_Linkerlong_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 41837,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Linkerlong",
+          "morph_targets": 0,
+          "triangles": 54096,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 27051,
+            "connected_components": 3,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0.00011,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 54096,
+      "points": 0,
+      "lines": 0,
+      "vertices": 41837
+    },
+    {
+      "name": "Trachea_kraakbeen_Trachea_kraakbeen_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 22951,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Trachea_kraakbeen",
+          "morph_targets": 0,
+          "triangles": 32920,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 16962,
+            "connected_components": 266,
+            "boundary_edge_fraction": 0.00194,
+            "non_manifold_edge_fraction": 0.00122,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 32920,
+      "points": 0,
+      "lines": 0,
+      "vertices": 22951
+    },
+    {
+      "name": "Tussen_hyoid_en_thyroid_Tussen_hyoid_en_thyroid_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 2220,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Tussen_hyoid_en_thyroid",
+          "morph_targets": 0,
+          "triangles": 4494,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 2220,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0.00015,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 4494,
+      "points": 0,
+      "lines": 0,
+      "vertices": 2220
+    },
+    {
+      "name": "Hyoid_bone_Hyoid_bone_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 3638,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Hyoid_bone",
+          "morph_targets": 0,
+          "triangles": 5903,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 3197,
+            "connected_components": 27,
+            "boundary_edge_fraction": 0.04624,
+            "non_manifold_edge_fraction": 0.00022,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 5903,
+      "points": 0,
+      "lines": 0,
+      "vertices": 3638
+    },
+    {
+      "name": "Thyroid_gland_Thyroid_gland_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 440,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Thyroid_gland",
+          "morph_targets": 0,
+          "triangles": 876,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 440,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 876,
+      "points": 0,
+      "lines": 0,
+      "vertices": 440
+    },
+    {
+      "name": "PM3D_Sphere3D2_PM3D_Sphere3D2_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 18027,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "PM3D_Sphere3D2",
+          "morph_targets": 0,
+          "triangles": 21314,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 11248,
+            "connected_components": 360,
+            "boundary_edge_fraction": 0.00225,
+            "non_manifold_edge_fraction": 0.00072,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 21314,
+      "points": 0,
+      "lines": 0,
+      "vertices": 18027
+    }
+  ],
+  "materials": [
+    {
+      "name": "bronchi1_1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    },
+    {
+      "name": "bronchi1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    },
+    {
+      "name": "Linkerlong",
+      "alpha_mode": "BLEND",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    },
+    {
+      "name": "Trachea_kraakbeen",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    },
+    {
+      "name": "Tussen_hyoid_en_thyroid",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    },
+    {
+      "name": "Hyoid_bone",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    },
+    {
+      "name": "Thyroid_gland",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    },
+    {
+      "name": "PM3D_Sphere3D2",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_pbrSpecularGlossiness"
+      ]
+    }
+  ],
+  "textures": []
+}

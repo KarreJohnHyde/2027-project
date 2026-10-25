@@ -1,0 +1,42 @@
+{
+  "listed_name": "archive (48).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (48).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "5cbd0c51b429eab0b85dcff0b050e4aee4040469d325b4b58c0308fbbf2e2f80",
+  "size_bytes": 1443808058,
+  "entries": 374,
+  "files": 374,
+  "directories": 0,
+  "uncompressed_bytes": 1622850328,
+  "overall_ratio": 1.12,
+  "max_entry_ratio": 1.2,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (374 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 374
+  },
+  "extensions": {
+    ".tif": 374
+  },
+  "top_level": {
+    "FL/": 139,
+    "MCL/": 122,
+    "CLL/": 113
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_48.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 3.4,
+  "notes": []
+}

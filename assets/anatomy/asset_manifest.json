@@ -1,0 +1,1399 @@
+{
+  "canonical_manifest": "public/anatomy/manifest.json",
+  "note": "Redirect: the anatomy pipeline (tools/asset-pipeline) writes the canonical manifest under public/anatomy; this file summarises it with browser results.",
+  "generated_from_walkthrough": "2026-10-25T14:07:06.801Z",
+  "variants": [
+    {
+      "system": "heart",
+      "variant": "heart-interior-dundee",
+      "role": "INTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "interior_heart_-_high_detail.glb",
+      "source_sha256": "f8c21bf731c6f794823e4dc8bfb5a1cff95e4842ad37489696a41de7bcf93dd3",
+      "license": "CC-BY-SA-4.0",
+      "validator": "VALID",
+      "triangles": 2313889,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/heart-interior-dundee/standard.glb",
+        "bytes": 82577932,
+        "sha256": "0dbd6bbcc68a9ea56211fc0e843ef432bb8925182841948f02cb422ac77f73da",
+        "triangles": 2313889
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 32,
+        "triangles": 2313889,
+        "points": 0,
+        "seconds": 3.373
+      }
+    },
+    {
+      "system": "heart",
+      "variant": "heart-exterior-dundee",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "exterior_heart_-_high_detail.glb",
+      "source_sha256": "4068d2748905315c658efaa9424c56a81326b59c883c65856c062df6c45a8733",
+      "license": "CC-BY-SA-4.0",
+      "validator": "VALID",
+      "triangles": 3093700,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/heart-exterior-dundee/standard.glb",
+        "bytes": 98925280,
+        "sha256": "8a5232c7487e2249e1228ae446f2b68ca9254f7f360e4c2d3f066a8e6c321479",
+        "triangles": 3093700
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 35,
+        "triangles": 3638360,
+        "points": 0,
+        "seconds": 4.302
+      }
+    },
+    {
+      "system": "heart",
+      "variant": "heart-external-newey",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "cardiac_anatomy_external_view_of_human_heart.glb",
+      "source_sha256": "223f2bcb992bca9f36c5ae1093a5c5eb854ba9b14e243886fb3ae21827ed0556",
+      "license": "CC-BY-NC-SA-4.0",
+      "validator": "VALID",
+      "triangles": 3003484,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/heart-external-newey/standard.glb",
+        "bytes": 71843540,
+        "sha256": "b3f73a7adfaaeb492b985cb87df38d6fb15dff8b27ddc07eb72905798d3b8b33",
+        "triangles": 3003484
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 41,
+        "triangles": 3003484,
+        "points": 0,
+        "seconds": 4.132
+      }
+    },
+    {
+      "system": "heart",
+      "variant": "atlas-heart",
+      "role": "ATLAS_IN_BODY_REFERENCE",
+      "kind": "ATLAS_REFERENCE",
+      "source": "3d-anatomy-atlas-main/packages/data/releases/1.2.0",
+      "source_sha256": null,
+      "license": "CC-BY-SA-4.0",
+      "validator": null,
+      "triangles": null,
+      "points": null,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": null,
+        "bytes": null,
+        "sha256": null,
+        "triangles": null
+      },
+      "registration": "SOURCE_FRAME_SHARED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 17,
+        "triangles": 21530,
+        "points": 0,
+        "seconds": 1.867
+      }
+    },
+    {
+      "system": "lungs",
+      "variant": "lungs-airways-umcg",
+      "role": "SUBSTRUCTURE",
+      "kind": "STANDALONE_ASSET",
+      "source": "anatomy_of_the_airways.glb",
+      "source_sha256": "9741c32977663f75f4d3f91f56ee6a44a237322a2abb74ab210ea7b580b77324",
+      "license": "CC-BY-NC-SA-4.0",
+      "validator": "VALID",
+      "triangles": 237105,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/lungs-airways-umcg/standard.glb",
+        "bytes": 4724460,
+        "sha256": "34639a9923e788f6ad9c4e785ce424a455a50d7500fd7b7bbec454dd658f8cb9",
+        "triangles": 237105
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 9,
+        "triangles": 291201,
+        "points": 0,
+        "seconds": 2.129
+      }
+    },
+    {
+      "system": "lungs",
+      "variant": "lungs-normal-valchanov",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "lungs_-_normal_study.glb",
+      "source_sha256": "4e328b98ac8e8ac62ab6de2397765c8fa69d2470731c13971d362ac85251f265",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 905468,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/lungs-normal-valchanov/standard.glb",
+        "bytes": 17654656,
+        "sha256": "160fdcec695df537ceda61c43420d9a7094e0ad0f64cfc4dbd5fa1858882ced9",
+        "triangles": 905468
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 10,
+        "triangles": 905468,
+        "points": 0,
+        "seconds": 2.741
+      }
+    },
+    {
+      "system": "lungs",
+      "variant": "lungs-realistic-neshallads",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "realistic_human_lungs.glb",
+      "source_sha256": "66ed0f50b8ac6cc7fe648642e7b090dbc42b6beae9d0faee44bf8556e601a22e",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 63974,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/lungs-realistic-neshallads/standard.glb",
+        "bytes": 11776416,
+        "sha256": "600866aa3aa20121d04e8ec4c3e140040027a08b2ad230d2620b3295e918cee9",
+        "triangles": 63974
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 2,
+        "triangles": 63974,
+        "points": 0,
+        "seconds": 2.067
+      }
+    },
+    {
+      "system": "lungs",
+      "variant": "lungs-transparent-alebogino",
+      "role": "TRANSPARENT",
+      "kind": "STANDALONE_ASSET",
+      "source": "pulmones_con_transparencia.glb",
+      "source_sha256": "c063cd50c4715deef2b537e9dbb63196fa12862ef0880bf0006be2046a22366c",
+      "license": "CC-BY-NC-4.0",
+      "validator": "INVALID",
+      "triangles": 856298,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/lungs-transparent-alebogino/standard.glb",
+        "bytes": 18551248,
+        "sha256": "ab451a72d11da342c18a90801a11485d9ab3028acbf7e8d138ad69c994844500",
+        "triangles": 856298
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 22,
+        "triangles": 1712596,
+        "points": 0,
+        "seconds": 2.716
+      }
+    },
+    {
+      "system": "lungs",
+      "variant": "lungs-right-prasanth",
+      "role": "SUBSTRUCTURE",
+      "kind": "STANDALONE_ASSET",
+      "source": "source/lung_right.glb",
+      "source_sha256": "ad26a4a88bed6b0a343c0701767216b184c89919de1c9127c0fc98e1f3afa028",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 110316,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/lungs-right-prasanth/standard.glb",
+        "bytes": 2511016,
+        "sha256": "54dfd96f0761af76b39344293f015f02a50d1d8f525c130fdda396bddee55a6d",
+        "triangles": 110316
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 9,
+        "triangles": 110316,
+        "points": 0,
+        "seconds": 1.901
+      }
+    },
+    {
+      "system": "lungs",
+      "variant": "lungs-carcinoma-holt",
+      "role": "PATHOLOGY_DEPICTION",
+      "kind": "STANDALONE_ASSET",
+      "source": "lung_carcinoma.glb",
+      "source_sha256": "fa43f86c3c6ce080f422426e07c88f239be4d3e4ef95c49c14e5f1be91bb290a",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 233992,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/lungs-carcinoma-holt/standard.glb",
+        "bytes": 4600596,
+        "sha256": "a302e604f7e30f8119f0f4f9fa4cdfba546ab20aaac04826431624118cb7572c",
+        "triangles": 233992
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 4,
+        "triangles": 233992,
+        "points": 0,
+        "seconds": 2.076
+      }
+    },
+    {
+      "system": "lungs",
+      "variant": "atlas-lungs",
+      "role": "ATLAS_IN_BODY_REFERENCE",
+      "kind": "ATLAS_REFERENCE",
+      "source": "3d-anatomy-atlas-main/packages/data/releases/1.2.0",
+      "source_sha256": null,
+      "license": "CC-BY-SA-4.0",
+      "validator": null,
+      "triangles": null,
+      "points": null,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": null,
+        "bytes": null,
+        "sha256": null,
+        "triangles": null
+      },
+      "registration": "SOURCE_FRAME_SHARED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 36,
+        "triangles": 30654,
+        "points": 0,
+        "seconds": 1.852
+      }
+    },
+    {
+      "system": "brain",
+      "variant": "brain-lobes-versal",
+      "role": "SUBSTRUCTURE",
+      "kind": "STANDALONE_ASSET",
+      "source": "human_brain (1).glb",
+      "source_sha256": "4dd2e2f0e6c00ac467bdeeecf2dbf72cbb236de407eebc027e4ca6d9c1b8948a",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 36708,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/brain-lobes-versal/standard.glb",
+        "bytes": 3421952,
+        "sha256": "8f430bfc530280057f7fc1b42d70ece851cad7e069228e0212dbe987748ec256",
+        "triangles": 36708
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 16,
+        "triangles": 36708,
+        "points": 0,
+        "seconds": 1.894
+      }
+    },
+    {
+      "system": "brain",
+      "variant": "brain-budi",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "brain.glb",
+      "source_sha256": "55b0717074d5ebd5e3b5fdff35665f9049f1c1607bd435bf112d364218f93c9e",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 19045,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/brain-budi/standard.glb",
+        "bytes": 667708,
+        "sha256": "49e54505eb7a97ecdf7dbd768ac09082c06008cbb167021eebd3c5e843bf9f1e",
+        "triangles": 19045
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 1,
+        "triangles": 19045,
+        "points": 0,
+        "seconds": 1.924
+      }
+    },
+    {
+      "system": "brain",
+      "variant": "brain-model-kalitkap",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "brain_model.glb",
+      "source_sha256": "42276122843bb8113c409c31dc661e3e7d8a1e6fd8cfdb2e524aed8265818ce0",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 271362,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/brain-model-kalitkap/standard.glb",
+        "bytes": 5450744,
+        "sha256": "3d8905b01647f11eb7f35ced597398e77390e9b25857162277944c7e9ce5e01a",
+        "triangles": 271362
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 3,
+        "triangles": 271362,
+        "points": 0,
+        "seconds": 2.291
+      }
+    },
+    {
+      "system": "brain",
+      "variant": "brain-3drt",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "human_brain.glb",
+      "source_sha256": "5cb8665dd5d7c02ccc8fbb9369a7b1c1248d4c1e00316fd69c6c118d102af443",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 4850,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/brain-3drt/standard.glb",
+        "bytes": 2146800,
+        "sha256": "eb97ea279ec2aaf058f4eead01e3e17a7c262c7ad78287f78d1f44b82e27c43c",
+        "triangles": 4850
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 1,
+        "triangles": 4850,
+        "points": 0,
+        "seconds": 1.92
+      }
+    },
+    {
+      "system": "brain",
+      "variant": "brain-point-cloud-terrie",
+      "role": "POINT_CLOUD",
+      "kind": "STANDALONE_ASSET",
+      "source": "brain_point_cloud.glb",
+      "source_sha256": "86fb8cfcb35d116ffe9e76c8d2016233d2da9018db288ecd4d10ce76c6538e8f",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 0,
+      "points": 1192673,
+      "view_types": [
+        "POINTS",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/brain-point-cloud-terrie/standard.glb",
+        "bytes": 18630116,
+        "sha256": "07eb330c7a9b913a04848038537e6b70b0f5e2a49495a4f6c9b054b2f2edd0c0",
+        "triangles": 0
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 19,
+        "triangles": 0,
+        "points": 1192673,
+        "seconds": 1.849
+      }
+    },
+    {
+      "system": "brain",
+      "variant": "brain-hologram-oxterium",
+      "role": "STYLIZED",
+      "kind": "STANDALONE_ASSET",
+      "source": "brain_hologram.glb",
+      "source_sha256": "c47864415c919ac0e8c5ac994652d60f04c60f75ee1cef432fd9a6785b7f41e9",
+      "license": "SKETCHFAB-STANDARD",
+      "validator": "INVALID",
+      "triangles": 400000,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/brain-hologram-oxterium/standard.glb",
+        "bytes": 14171600,
+        "sha256": "80326fd3d2ef0951fdd0cfcd80b27e353bd0476a19c4b9d54e12bcf300622115",
+        "triangles": 400000
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 6,
+        "triangles": 400000,
+        "points": 0,
+        "seconds": 2.369
+      }
+    },
+    {
+      "system": "brain",
+      "variant": "atlas-brain",
+      "role": "ATLAS_IN_BODY_REFERENCE",
+      "kind": "ATLAS_REFERENCE",
+      "source": "3d-anatomy-atlas-main/packages/data/releases/1.2.0",
+      "source_sha256": null,
+      "license": "CC-BY-SA-4.0",
+      "validator": null,
+      "triangles": null,
+      "points": null,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": null,
+        "bytes": null,
+        "sha256": null,
+        "triangles": null
+      },
+      "registration": "SOURCE_FRAME_SHARED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 250,
+        "triangles": 227194,
+        "points": 0,
+        "seconds": 2.007
+      }
+    },
+    {
+      "system": "liver",
+      "variant": "liver-3graft-chloroplast",
+      "role": "SUBSTRUCTURE",
+      "kind": "STANDALONE_ASSET",
+      "source": "3graft_whole_liver.glb",
+      "source_sha256": "3383685015a5b5d83b5243e059e7bd7344d4a14c989f894ba72b487ff4a1139d",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 257702,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/liver-3graft-chloroplast/standard.glb",
+        "bytes": 16783644,
+        "sha256": "6a3940b9ba1e17fe61fc92c2482b7b53da898cbaadc80e9be48f733e02223ff1",
+        "triangles": 257702
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 19,
+        "triangles": 307978,
+        "points": 0,
+        "seconds": 2.363
+      }
+    },
+    {
+      "system": "liver",
+      "variant": "liver-9darsh",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "liver.glb",
+      "source_sha256": "bb9d1bf38f4324bef16cf20c9fcc84c311f9ff78ad140cd235e223240a5d0ccc",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 40367,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/liver-9darsh/standard.glb",
+        "bytes": 2049856,
+        "sha256": "4a8361911880c23173c886d3969070527ec30cf46b481d58cfc50505dbae61f9",
+        "triangles": 40367
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 6,
+        "triangles": 50723,
+        "points": 0,
+        "seconds": 1.931
+      }
+    },
+    {
+      "system": "liver",
+      "variant": "liver-scan-errinroy",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "liver (1).glb",
+      "source_sha256": "c6593c94f688a6dff2e93944ba99896e3f0f7cd8477ee1660dfc01aeac49de1c",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 126872,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/liver-scan-errinroy/standard.glb",
+        "bytes": 2584588,
+        "sha256": "e84e6f6d6a422ac2c74d673b6e1b484770d6eb7a8dad19d3b8a1f53bd88723bf",
+        "triangles": 126872
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 2,
+        "triangles": 126872,
+        "points": 0,
+        "seconds": 2.099
+      }
+    },
+    {
+      "system": "liver",
+      "variant": "atlas-liver",
+      "role": "ATLAS_IN_BODY_REFERENCE",
+      "kind": "ATLAS_REFERENCE",
+      "source": "3d-anatomy-atlas-main/packages/data/releases/1.2.0",
+      "source_sha256": null,
+      "license": "CC-BY-SA-4.0",
+      "validator": null,
+      "triangles": null,
+      "points": null,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": null,
+        "bytes": null,
+        "sha256": null,
+        "triangles": null
+      },
+      "registration": "SOURCE_FRAME_SHARED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 11,
+        "triangles": 13390,
+        "points": 0,
+        "seconds": 1.869
+      }
+    },
+    {
+      "system": "pancreas",
+      "variant": "pancreas-captaainro",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "pancreas.glb",
+      "source_sha256": "ad47608b139fd7aed2232686c1390606f8a31fdfdc84084bd2b2126099125d5d",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 280466,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/pancreas-captaainro/standard.glb",
+        "bytes": 6755492,
+        "sha256": "f4f73fced3c394dff15b80dbab8de2ece6f7ba0b08a5576fac161b4cfecd854a",
+        "triangles": 280466
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 3,
+        "triangles": 280466,
+        "points": 0,
+        "seconds": 2.114
+      }
+    },
+    {
+      "system": "pancreas",
+      "variant": "pancreas-cross-section-arloopa",
+      "role": "CROSS_SECTION",
+      "kind": "STANDALONE_ASSET",
+      "source": "human_pancreas_cross_section.glb",
+      "source_sha256": "12a3c9ffc88afb4a9a87563e3fb5fc751160a45a692f92f89df650748d161c86",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 55808,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED",
+        "AUTHORED_CROSS_SECTION"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/pancreas-cross-section-arloopa/standard.glb",
+        "bytes": 3256772,
+        "sha256": "b81aeb27ad607afadae9d103812f318fc8c82ebfef9548929a724a6edef72790",
+        "triangles": 55808
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 3,
+        "triangles": 55808,
+        "points": 0,
+        "seconds": 1.948
+      }
+    },
+    {
+      "system": "pancreas",
+      "variant": "atlas-pancreas",
+      "role": "ATLAS_IN_BODY_REFERENCE",
+      "kind": "ATLAS_REFERENCE",
+      "source": "3d-anatomy-atlas-main/packages/data/releases/1.2.0",
+      "source_sha256": null,
+      "license": "CC-BY-SA-4.0",
+      "validator": null,
+      "triangles": null,
+      "points": null,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": null,
+        "bytes": null,
+        "sha256": null,
+        "triangles": null
+      },
+      "registration": "SOURCE_FRAME_SHARED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 3,
+        "triangles": 9622,
+        "points": 0,
+        "seconds": 1.848
+      }
+    },
+    {
+      "system": "intestines",
+      "variant": "intestines-sundberg",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "small_and_large_intestine.glb",
+      "source_sha256": "54e5549536a166b6f0eb7e006f001c79e09175c71e852406156c4e63bc2faa79",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 254208,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/intestines-sundberg/standard.glb",
+        "bytes": 8327872,
+        "sha256": "650c56474af807826b31eaed660f0af6c590624a7bdc592ca1afebb1b0e2a2c3",
+        "triangles": 254208
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 3,
+        "triangles": 254208,
+        "points": 0,
+        "seconds": 2.106
+      }
+    },
+    {
+      "system": "intestines",
+      "variant": "atlas-intestines",
+      "role": "ATLAS_IN_BODY_REFERENCE",
+      "kind": "ATLAS_REFERENCE",
+      "source": "3d-anatomy-atlas-main/packages/data/releases/1.2.0",
+      "source_sha256": null,
+      "license": "CC-BY-SA-4.0",
+      "validator": null,
+      "triangles": null,
+      "points": null,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": null,
+        "bytes": null,
+        "sha256": null,
+        "triangles": null
+      },
+      "registration": "SOURCE_FRAME_SHARED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 10,
+        "triangles": 33808,
+        "points": 0,
+        "seconds": 1.845
+      }
+    },
+    {
+      "system": "nervous",
+      "variant": "nervous-zanatomy-neurology",
+      "role": "LAYERED",
+      "kind": "STANDALONE_ASSET",
+      "source": "neurology.glb",
+      "source_sha256": "06e93cca3dea7026c65aece1c0be6ca42ad7a09826b5a59faf78271bfc45aaf2",
+      "license": "CC-BY-SA-4.0",
+      "validator": "VALID",
+      "triangles": 3260911,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/nervous-zanatomy-neurology/standard.glb",
+        "bytes": 53023904,
+        "sha256": "a8ae4ef90ac45cc735ae24af42ac1b6197d23bd3768090529ff653265408b7af",
+        "triangles": 3260911
+      },
+      "registration": "BBOX_TRANSLATION_ALIGNED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 170,
+        "triangles": 3260911,
+        "points": 0,
+        "seconds": 2.646
+      }
+    },
+    {
+      "system": "nervous",
+      "variant": "atlas-nervous",
+      "role": "ATLAS_IN_BODY_REFERENCE",
+      "kind": "ATLAS_REFERENCE",
+      "source": "3d-anatomy-atlas-main/packages/data/releases/1.2.0",
+      "source_sha256": null,
+      "license": "CC-BY-SA-4.0",
+      "validator": null,
+      "triangles": null,
+      "points": null,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": null,
+        "bytes": null,
+        "sha256": null,
+        "triangles": null
+      },
+      "registration": "SOURCE_FRAME_SHARED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 592,
+        "triangles": 448677,
+        "points": 0,
+        "seconds": 1.881
+      }
+    },
+    {
+      "system": "skeletal",
+      "variant": "skeleton-projectkaizen",
+      "role": "LAYERED",
+      "kind": "STANDALONE_ASSET",
+      "source": "male_skeleton (1).glb",
+      "source_sha256": "5d3a2a19d69bd9b35fd526039e12cb776fabbb029e2121552f62f922e6ed6fbc",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 67540,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/skeleton-projectkaizen/standard.glb",
+        "bytes": 4190268,
+        "sha256": "c4afde65a030112a35213171494512f0e79b489f093213b5e524baad164c0c19",
+        "triangles": 67540
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 14,
+        "triangles": 67540,
+        "points": 0,
+        "seconds": 2.027
+      }
+    },
+    {
+      "system": "skeletal",
+      "variant": "ecorche-santamaria",
+      "role": "ARTISTIC_STUDY",
+      "kind": "STANDALONE_ASSET",
+      "source": "ecorche_-_anatomy_study.glb",
+      "source_sha256": "137e2e80bdcf9c87ff49ab32cb5de70f8de542870c78a7d5170e8743d241a73a",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 418978,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/ecorche-santamaria/standard.glb",
+        "bytes": 10716612,
+        "sha256": "871ecb5b0a4d312ce48199bf7825a83053bfdf384688c75fd7d5773b6c10faa3",
+        "triangles": 418978
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 6,
+        "triangles": 418978,
+        "points": 0,
+        "seconds": 2.221
+      }
+    },
+    {
+      "system": "skeletal",
+      "variant": "atlas-skeletal",
+      "role": "ATLAS_IN_BODY_REFERENCE",
+      "kind": "ATLAS_REFERENCE",
+      "source": "3d-anatomy-atlas-main/packages/data/releases/1.2.0",
+      "source_sha256": null,
+      "license": "CC-BY-SA-4.0",
+      "validator": null,
+      "triangles": null,
+      "points": null,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": null,
+        "bytes": null,
+        "sha256": null,
+        "triangles": null
+      },
+      "registration": "SOURCE_FRAME_SHARED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 277,
+        "triangles": 247772,
+        "points": 0,
+        "seconds": 1.867
+      }
+    },
+    {
+      "system": "hybrid",
+      "variant": "hybrid-angiology-zanatomy",
+      "role": "LAYERED",
+      "kind": "STANDALONE_ASSET",
+      "source": "angiology.glb",
+      "source_sha256": "3451a4fbee4c938e3fcb60302781d66969b603202358fdb43f299aacc239fb48",
+      "license": "CC-BY-SA-4.0",
+      "validator": "VALID",
+      "triangles": 4065841,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/hybrid-angiology-zanatomy/standard.glb",
+        "bytes": 74763092,
+        "sha256": "e53acfd71d03fa8ea98e2adb255566df858bbe0fdb629b5ea91fecf4c69f56f4",
+        "triangles": 4065841
+      },
+      "registration": "BBOX_TRANSLATION_ALIGNED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 629,
+        "triangles": 625879,
+        "points": 0,
+        "seconds": 1.907
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "kidney-cgmac",
+      "role": "INTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "kidney (1).glb",
+      "source_sha256": "16aac1db2c7bf2163dcc159ef338a70157b91faba06eac00142db2161b3cb4f3",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 84443,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/kidney-cgmac/standard.glb",
+        "bytes": 11696340,
+        "sha256": "ea1781530bc756c0f043a32c980b3a5d603938f04012f63ba0e1940bcde22df7",
+        "triangles": 84443
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 6,
+        "triangles": 84443,
+        "points": 0,
+        "seconds": 2.41
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "kidney-payoman",
+      "role": "INTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "kidney.glb",
+      "source_sha256": "c46fcff1ee95d779690c14da0237b67e79427687e8d1c795af79f0912daa5fca",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 216788,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/kidney-payoman/standard.glb",
+        "bytes": 3492884,
+        "sha256": "02aeeb6b54b6c3924e5c8c5d707bc05863535a1933a09ee60b9cce11a18c943f",
+        "triangles": 216788
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 6,
+        "triangles": 216788,
+        "points": 0,
+        "seconds": 2.234
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "kidney-neshallads",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "human_kidney.glb",
+      "source_sha256": "a1b74386cbaa946c29ee5e0f33c2f900e2f42431b272fba8c3c6eb1476d372df",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 48936,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/kidney-neshallads/standard.glb",
+        "bytes": 4248904,
+        "sha256": "6ad32cf3fb35f12c57ba6e5451486f8c9556169be252c60811afd58e1d1b6f03",
+        "triangles": 48936
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 2,
+        "triangles": 48936,
+        "points": 0,
+        "seconds": 3.244
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "kidney-safiya",
+      "role": "EXTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "medicine_organ_-_the_human_kidney.glb",
+      "source_sha256": "b1e039ea17c4fe99a04baf7814f4e6b99408d83d36fc09ad7617657d5a1ebc83",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 7413,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/kidney-safiya/standard.glb",
+        "bytes": 5225824,
+        "sha256": "6438110e561b2aa073662466f1eee098738ad94fd4f0d6e1f251dff940b1f1bd",
+        "triangles": 7413
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 1,
+        "triangles": 7413,
+        "points": 0,
+        "seconds": 1.969
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "kidney-cowley",
+      "role": "INTERIOR",
+      "kind": "STANDALONE_ASSET",
+      "source": "kidney (2).glb",
+      "source_sha256": "2a4ce03f800d8b356096c8a67dddc026ddf176432a1cd4dd5188d786a4e52302",
+      "license": "CC-BY-NC-4.0",
+      "validator": "VALID",
+      "triangles": 245668,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/kidney-cowley/standard.glb",
+        "bytes": 4566040,
+        "sha256": "1ea0b45e35838441ab515fc1c8300895bda4b30760d98416b96d165a3291a317",
+        "triangles": 245668
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 12,
+        "triangles": 245668,
+        "points": 0,
+        "seconds": 2.151
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "nephron-iqcenter",
+      "role": "MICROANATOMY",
+      "kind": "STANDALONE_ASSET",
+      "source": "nephron.glb",
+      "source_sha256": "3862b40d83e0e23ae797e3eabd3ab7f65224b2155d1456973ecb4f697f47b695",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 1692293,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/nephron-iqcenter/standard.glb",
+        "bytes": 31622072,
+        "sha256": "fa4957f38a805d63aa6482f88955ea86ea658da2cf29b936d78a673a76aab2ee",
+        "triangles": 1692293
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 39,
+        "triangles": 3015371,
+        "points": 0,
+        "seconds": 2.8
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "nephron-aymanba",
+      "role": "MICROANATOMY",
+      "kind": "STANDALONE_ASSET",
+      "source": "nephron (1).glb",
+      "source_sha256": "404269e85994b4fd2e298e13ca128a462e36c76956d7391f7be1f7aab8d6e606",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 76094,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/nephron-aymanba/standard.glb",
+        "bytes": 6923892,
+        "sha256": "fb0588ae1ad25b17e73f6648810bc55023f11aa72591cc9dad6eb365e179699f",
+        "triangles": 76094
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 2,
+        "triangles": 76094,
+        "points": 0,
+        "seconds": 2.295
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "nephron-temirbekova",
+      "role": "MICROANATOMY",
+      "kind": "STANDALONE_ASSET",
+      "source": "4c183daa67a34efca2480a5862d7ceb0.glb",
+      "source_sha256": "4632d81ae71c45ca8934e2aa3d6c3e402f7e7a3987d16ce5ed628b71516836a5",
+      "license": "CC-BY-4.0",
+      "validator": "VALID",
+      "triangles": 343273,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/nephron-temirbekova/standard.glb",
+        "bytes": 20271232,
+        "sha256": "6f77682eca631f281597d006f0f731c343fc4259b7d9bdf7165047c6822cd559",
+        "triangles": 343273
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 4,
+        "triangles": 343273,
+        "points": 0,
+        "seconds": 2.438
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "nephron-structure-arloopa",
+      "role": "MICROANATOMY",
+      "kind": "STANDALONE_ASSET",
+      "source": "structure_of_nephron.glb",
+      "source_sha256": "33ea1023a2aa690a7b871f7cc8d956d13de8e133c8820c4acf3c80d0d28a87d4",
+      "license": "SKETCHFAB-STANDARD",
+      "validator": "VALID",
+      "triangles": 21324,
+      "points": 0,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION"
+      ],
+      "standard_tier": {
+        "url": "/anatomy/derived/nephron-structure-arloopa/standard.glb",
+        "bytes": 657244,
+        "sha256": "554c090a5393180e568ac0d9cb3d7a5e010942052230481a7d7065d1ee26f8b7",
+        "triangles": 21324
+      },
+      "registration": "NOT_PATIENT_REGISTERED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 1,
+        "triangles": 21324,
+        "points": 0,
+        "seconds": 1.839
+      }
+    },
+    {
+      "system": "kidneys",
+      "variant": "atlas-kidneys",
+      "role": "ATLAS_IN_BODY_REFERENCE",
+      "kind": "ATLAS_REFERENCE",
+      "source": "3d-anatomy-atlas-main/packages/data/releases/1.2.0",
+      "source_sha256": null,
+      "license": "CC-BY-SA-4.0",
+      "validator": null,
+      "triangles": null,
+      "points": null,
+      "view_types": [
+        "EXTERIOR",
+        "TRANSPARENT",
+        "SECTION",
+        "INTERIOR",
+        "LAYERED"
+      ],
+      "standard_tier": {
+        "url": null,
+        "bytes": null,
+        "sha256": null,
+        "triangles": null
+      },
+      "registration": "SOURCE_FRAME_SHARED",
+      "browser": {
+        "rendered": true,
+        "draw_calls": 22,
+        "triangles": 35213,
+        "points": 0,
+        "seconds": 1.841
+      }
+    }
+  ]
+}

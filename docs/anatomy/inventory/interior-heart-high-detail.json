@@ -1,0 +1,3153 @@
+{
+  "asset_id": "interior-heart-high-detail",
+  "relative_path": "interior_heart_-_high_detail.glb",
+  "source_group": "workspace_root",
+  "bytes": 122343600,
+  "sha256": "f8c21bf731c6f794823e4dc8bfb5a1cff95e4842ad37489696a41de7bcf93dd3",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 48636
+      },
+      {
+        "type": "BIN",
+        "byteLength": 122294936
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-16.72.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "University of Dundee, CAHID (https://sketchfab.com/anatomy_dundee)",
+      "license": "CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)",
+      "source": "https://sketchfab.com/3d-models/interior-heart-high-detail-7a592ce3b0514258ad4c4ef9e18b8f8e",
+      "title": "Interior heart - high detail"
+    },
+    "extensions_used": [
+      "KHR_materials_specular"
+    ],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 32,
+    "validator_triangle_count": 2313889,
+    "validator_vertex_count": 1574104
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 45,
+    "mesh_nodes": 32,
+    "meshes": 32,
+    "primitives": 32,
+    "materials": 11,
+    "textures": 44,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 2313889,
+    "rendered_triangles": 2313889,
+    "unique_vertices": 1574104,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 32,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 33292,
+    "closed_measured_primitives": 10,
+    "max_boundary_edge_fraction": 0.85002,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.236824,
+        0.812231,
+        -0.103287
+      ],
+      "max": [
+        0.24099,
+        1.56574,
+        0.372684
+      ],
+      "size": [
+        0.477814,
+        0.753509,
+        0.475971
+      ],
+      "center": [
+        0.002083,
+        1.188985,
+        0.134699
+      ],
+      "diagonal": 1.011252
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 1.583,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "defaultMaterial",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 11,
+    "names": [
+      "med_detail_int",
+      "right_coronary_artery",
+      "right_coronary_artery_3",
+      "right_coronary_artery___posterior_interventricular_artery",
+      "middle_cardiac_vein",
+      "small_cardiac_vein",
+      "cercumflex_branch_of_left_coronary_artery",
+      "posterior_vein_of_left_ventricle",
+      "posterior_vein_of_left_ventricle_2",
+      "coronary_sinus_and_great_cardiac_vein",
+      "new_med_high_res_model"
+    ]
+  },
+  "textures_summary": {
+    "count": 44,
+    "total_bytes": 18971274,
+    "max_edge_px": 2048,
+    "mime_types": [
+      "image/jpeg",
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "new",
+      "coronary",
+      "posterior",
+      "posterior",
+      "cercumflex",
+      "small",
+      "middle",
+      "right",
+      "right",
+      "right",
+      "med"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "coronary"
+    ]
+  },
+  "inspection_ms": 4325,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group",
+      "name": "Collada visual scene group",
+      "semantic_name": "Collada visual scene group",
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 11,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new",
+      "name": "new",
+      "semantic_name": "new",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 22,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 96581,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.236208,
+          0.869427,
+          -0.043684
+        ],
+        "max": [
+          0.233397,
+          1.534032,
+          0.361028
+        ],
+        "size": [
+          0.469605,
+          0.664605,
+          0.404712
+        ],
+        "center": [
+          -0.001405,
+          1.201729,
+          0.158672
+        ],
+        "diagonal": 0.908857
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 100477,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.224095,
+          0.812464,
+          -0.103233
+        ],
+        "max": [
+          0.196214,
+          1.560031,
+          0.372673
+        ],
+        "size": [
+          0.420309,
+          0.747567,
+          0.475906
+        ],
+        "center": [
+          -0.01394,
+          1.186248,
+          0.13472
+        ],
+        "diagonal": 0.980817
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 100255,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.23292,
+          0.823507,
+          -0.04637
+        ],
+        "max": [
+          0.220107,
+          1.557673,
+          0.353636
+        ],
+        "size": [
+          0.453027,
+          0.734166,
+          0.400006
+        ],
+        "center": [
+          -0.006407,
+          1.19059,
+          0.153633
+        ],
+        "diagonal": 0.950914
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 99746,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.227132,
+          0.852179,
+          -0.053076
+        ],
+        "max": [
+          0.240944,
+          1.521852,
+          0.366336
+        ],
+        "size": [
+          0.468076,
+          0.669673,
+          0.419412
+        ],
+        "center": [
+          0.006906,
+          1.187015,
+          0.15663
+        ],
+        "diagonal": 0.918403
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 99894,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.235238,
+          0.823666,
+          -0.10092
+        ],
+        "max": [
+          0.240291,
+          1.533879,
+          0.367959
+        ],
+        "size": [
+          0.475529,
+          0.710213,
+          0.468879
+        ],
+        "center": [
+          0.002526,
+          1.178773,
+          0.13352
+        ],
+        "diagonal": 0.974873
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 100301,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.212386,
+          0.812231,
+          -0.10194
+        ],
+        "max": [
+          0.240764,
+          1.536089,
+          0.355527
+        ],
+        "size": [
+          0.45315,
+          0.723858,
+          0.457467
+        ],
+        "center": [
+          0.014189,
+          1.17416,
+          0.126794
+        ],
+        "diagonal": 0.968809
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 102911,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.236824,
+          0.815094,
+          -0.073299
+        ],
+        "max": [
+          0.220003,
+          1.524144,
+          0.363656
+        ],
+        "size": [
+          0.456827,
+          0.70905,
+          0.436955
+        ],
+        "center": [
+          -0.008411,
+          1.169619,
+          0.145179
+        ],
+        "diagonal": 0.949933
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 102152,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.235958,
+          0.820851,
+          -0.06681
+        ],
+        "max": [
+          0.237876,
+          1.53349,
+          0.366651
+        ],
+        "size": [
+          0.473834,
+          0.712639,
+          0.433461
+        ],
+        "center": [
+          0.000959,
+          1.17717,
+          0.149921
+        ],
+        "diagonal": 0.959303
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 101388,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.218282,
+          0.846183,
+          -0.048786
+        ],
+        "max": [
+          0.23759,
+          1.56553,
+          0.369566
+        ],
+        "size": [
+          0.455872,
+          0.719347,
+          0.418352
+        ],
+        "center": [
+          0.009654,
+          1.205856,
+          0.16039
+        ],
+        "diagonal": 0.94884
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 102016,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.222272,
+          0.819639,
+          -0.091856
+        ],
+        "max": [
+          0.230393,
+          1.565686,
+          0.366474
+        ],
+        "size": [
+          0.452665,
+          0.746047,
+          0.45833
+        ],
+        "center": [
+          0.004061,
+          1.192663,
+          0.137309
+        ],
+        "diagonal": 0.985676
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 101432,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.234442,
+          0.817607,
+          -0.098873
+        ],
+        "max": [
+          0.238072,
+          1.564242,
+          0.371814
+        ],
+        "size": [
+          0.472514,
+          0.746635,
+          0.470687
+        ],
+        "center": [
+          0.001815,
+          1.190924,
+          0.136471
+        ],
+        "diagonal": 1.001139
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 101499,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.229358,
+          0.821508,
+          -0.089099
+        ],
+        "max": [
+          0.237193,
+          1.56574,
+          0.372656
+        ],
+        "size": [
+          0.466551,
+          0.744232,
+          0.461755
+        ],
+        "center": [
+          0.003918,
+          1.193624,
+          0.141779
+        ],
+        "diagonal": 0.992355
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 99982,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.229784,
+          0.812303,
+          -0.101868
+        ],
+        "max": [
+          0.236759,
+          1.565079,
+          0.368491
+        ],
+        "size": [
+          0.466543,
+          0.752776,
+          0.470359
+        ],
+        "center": [
+          0.003488,
+          1.188691,
+          0.133312
+        ],
+        "diagonal": 1.002782
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 100025,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.236481,
+          0.820945,
+          -0.097802
+        ],
+        "max": [
+          0.240819,
+          1.565018,
+          0.365138
+        ],
+        "size": [
+          0.4773,
+          0.744073,
+          0.46294
+        ],
+        "center": [
+          0.002169,
+          1.192982,
+          0.133668
+        ],
+        "diagonal": 0.997884
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 98622,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.235958,
+          0.819109,
+          -0.100349
+        ],
+        "max": [
+          0.240093,
+          1.563842,
+          0.370847
+        ],
+        "size": [
+          0.476051,
+          0.744733,
+          0.471196
+        ],
+        "center": [
+          0.002067,
+          1.191476,
+          0.135249
+        ],
+        "diagonal": 1.001637
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 96255,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.226434,
+          0.812917,
+          -0.087333
+        ],
+        "max": [
+          0.240797,
+          1.563613,
+          0.370476
+        ],
+        "size": [
+          0.467231,
+          0.750696,
+          0.457809
+        ],
+        "center": [
+          0.007181,
+          1.188265,
+          0.141572
+        ],
+        "diagonal": 0.99571
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 92613,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.234678,
+          0.813929,
+          -0.075594
+        ],
+        "max": [
+          0.24099,
+          1.56574,
+          0.372684
+        ],
+        "size": [
+          0.475668,
+          0.751811,
+          0.448278
+        ],
+        "center": [
+          0.003156,
+          1.189834,
+          0.148545
+        ],
+        "diagonal": 0.996209
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 87218,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.236824,
+          0.813078,
+          -0.09734
+        ],
+        "max": [
+          0.234926,
+          1.564765,
+          0.372567
+        ],
+        "size": [
+          0.47175,
+          0.751687,
+          0.469907
+        ],
+        "center": [
+          -0.000949,
+          1.188921,
+          0.137614
+        ],
+        "diagonal": 1.004188
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 75965,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.236807,
+          0.813987,
+          -0.103265
+        ],
+        "max": [
+          0.240478,
+          1.565661,
+          0.371719
+        ],
+        "size": [
+          0.477285,
+          0.751674,
+          0.474984
+        ],
+        "center": [
+          0.001835,
+          1.189824,
+          0.134227
+        ],
+        "diagonal": 1.00917
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 62057,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.236711,
+          0.812769,
+          -0.103287
+        ],
+        "max": [
+          0.240972,
+          1.564796,
+          0.372069
+        ],
+        "size": [
+          0.477683,
+          0.752027,
+          0.475356
+        ],
+        "center": [
+          0.002131,
+          1.188782,
+          0.134391
+        ],
+        "diagonal": 1.009796
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 43783,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.236543,
+          0.81227,
+          -0.103287
+        ],
+        "max": [
+          0.24099,
+          1.565536,
+          0.372684
+        ],
+        "size": [
+          0.477533,
+          0.753266,
+          0.475971
+        ],
+        "center": [
+          0.002223,
+          1.188903,
+          0.134699
+        ],
+        "diagonal": 1.010938
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/new/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "new",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "new_med_high_res_model",
+      "triangles": 6847,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.235341,
+          0.812853,
+          -0.101326
+        ],
+        "max": [
+          0.239089,
+          1.564794,
+          0.371989
+        ],
+        "size": [
+          0.47443,
+          0.751941,
+          0.473315
+        ],
+        "center": [
+          0.001874,
+          1.188823,
+          0.135332
+        ],
+        "diagonal": 1.007237
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/coronary",
+      "name": "coronary",
+      "semantic_name": "coronary",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/coronary/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "coronary",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "coronary_sinus_and_great_cardiac_vein",
+      "triangles": 32706,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.101379,
+          0.962734,
+          0.007617
+        ],
+        "max": [
+          0.118048,
+          1.191151,
+          0.156932
+        ],
+        "size": [
+          0.219427,
+          0.228417,
+          0.149315
+        ],
+        "center": [
+          0.008334,
+          1.076942,
+          0.082275
+        ],
+        "diagonal": 0.350168
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/posterior",
+      "name": "posterior",
+      "semantic_name": "posterior",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/posterior/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "posterior",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "posterior_vein_of_left_ventricle_2",
+      "triangles": 41440,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.008737,
+          0.86927,
+          0.0345
+        ],
+        "max": [
+          0.233067,
+          0.970471,
+          0.262055
+        ],
+        "size": [
+          0.241804,
+          0.101201,
+          0.227555
+        ],
+        "center": [
+          0.112165,
+          0.919871,
+          0.148278
+        ],
+        "diagonal": 0.34712
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/posterior",
+      "name": "posterior",
+      "semantic_name": "posterior",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/posterior/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "posterior",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "posterior_vein_of_left_ventricle",
+      "triangles": 18998,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.083763,
+          0.920756,
+          0.015195
+        ],
+        "max": [
+          0.237852,
+          1.045517,
+          0.248477
+        ],
+        "size": [
+          0.154089,
+          0.124761,
+          0.233282
+        ],
+        "center": [
+          0.160808,
+          0.983136,
+          0.131836
+        ],
+        "diagonal": 0.306152
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/cercumflex",
+      "name": "cercumflex",
+      "semantic_name": "cercumflex",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/cercumflex/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "cercumflex",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "cercumflex_branch_of_left_coronary_artery",
+      "triangles": 36744,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.059093,
+          0.92303,
+          0.032682
+        ],
+        "max": [
+          0.236681,
+          1.207315,
+          0.263691
+        ],
+        "size": [
+          0.177588,
+          0.284285,
+          0.231009
+        ],
+        "center": [
+          0.147887,
+          1.065172,
+          0.148187
+        ],
+        "diagonal": 0.407088
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/small",
+      "name": "small",
+      "semantic_name": "small",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/small/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "small",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "small_cardiac_vein",
+      "triangles": 21402,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.170315,
+          0.884882,
+          0.146324
+        ],
+        "max": [
+          0.143532,
+          1.017564,
+          0.322009
+        ],
+        "size": [
+          0.313847,
+          0.132682,
+          0.175685
+        ],
+        "center": [
+          -0.013392,
+          0.951223,
+          0.234167
+        ],
+        "diagonal": 0.383366
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/middle",
+      "name": "middle",
+      "semantic_name": "middle",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/middle/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "middle",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "middle_cardiac_vein",
+      "triangles": 50510,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.0764,
+          0.867951,
+          0.120006
+        ],
+        "max": [
+          0.209986,
+          1.003851,
+          0.320409
+        ],
+        "size": [
+          0.286386,
+          0.1359,
+          0.200403
+        ],
+        "center": [
+          0.066793,
+          0.935901,
+          0.220208
+        ],
+        "diagonal": 0.37503
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/right",
+      "name": "right",
+      "semantic_name": "right",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/right/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "right",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "right_coronary_artery___posterior_interventricular_artery",
+      "triangles": 42454,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.087325,
+          0.869568,
+          0.159656
+        ],
+        "max": [
+          0.193024,
+          0.937683,
+          0.318016
+        ],
+        "size": [
+          0.280349,
+          0.068115,
+          0.15836
+        ],
+        "center": [
+          0.052849,
+          0.903625,
+          0.238836
+        ],
+        "diagonal": 0.32911
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/right",
+      "name": "right",
+      "semantic_name": "right",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/right/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "right",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "right_coronary_artery_3",
+      "triangles": 23426,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.170493,
+          0.882225,
+          0.283312
+        ],
+        "max": [
+          0.148826,
+          1.012916,
+          0.356092
+        ],
+        "size": [
+          0.319319,
+          0.130691,
+          0.07278
+        ],
+        "center": [
+          -0.010834,
+          0.94757,
+          0.319702
+        ],
+        "diagonal": 0.352621
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/right",
+      "name": "right",
+      "semantic_name": "right",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/right/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "right",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "right_coronary_artery",
+      "triangles": 21200,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.174104,
+          0.923434,
+          0.058754
+        ],
+        "max": [
+          0.00243,
+          1.227234,
+          0.346142
+        ],
+        "size": [
+          0.176534,
+          0.3038,
+          0.287388
+        ],
+        "center": [
+          -0.085837,
+          1.075334,
+          0.202448
+        ],
+        "diagonal": 0.453928
+      }
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/med",
+      "name": "med",
+      "semantic_name": "med",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Collada visual scene group/med/defaultMaterial",
+      "name": "defaultMaterial",
+      "semantic_name": "med",
+      "depth": 3,
+      "mesh": "defaultMaterial",
+      "material": "med_detail_int",
+      "triangles": 52990,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.00262,
+          0.872449,
+          0.040952
+        ],
+        "max": [
+          0.220933,
+          0.951326,
+          0.247946
+        ],
+        "size": [
+          0.223553,
+          0.078877,
+          0.206994
+        ],
+        "center": [
+          0.109157,
+          0.911887,
+          0.144449
+        ],
+        "diagonal": 0.314713
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 96581,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65456,
+            "connected_components": 40,
+            "boundary_edge_fraction": 0.22815,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 96581,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 100477,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65471,
+            "connected_components": 39,
+            "boundary_edge_fraction": 0.19996,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 100477,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 100255,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65466,
+            "connected_components": 55,
+            "boundary_edge_fraction": 0.20113,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 100255,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 99746,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65423,
+            "connected_components": 60,
+            "boundary_edge_fraction": 0.203,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 99746,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 99894,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65484,
+            "connected_components": 72,
+            "boundary_edge_fraction": 0.20202,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 99894,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 100301,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65418,
+            "connected_components": 82,
+            "boundary_edge_fraction": 0.19783,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 100301,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 102911,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65448,
+            "connected_components": 75,
+            "boundary_edge_fraction": 0.18073,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 102911,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 102152,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65428,
+            "connected_components": 90,
+            "boundary_edge_fraction": 0.18524,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 102152,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 101388,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65404,
+            "connected_components": 138,
+            "boundary_edge_fraction": 0.18799,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 101388,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 102016,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65388,
+            "connected_components": 159,
+            "boundary_edge_fraction": 0.18432,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 102016,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 101432,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65458,
+            "connected_components": 176,
+            "boundary_edge_fraction": 0.188,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 101432,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 101499,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65485,
+            "connected_components": 227,
+            "boundary_edge_fraction": 0.18634,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 101499,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 99982,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65389,
+            "connected_components": 326,
+            "boundary_edge_fraction": 0.19359,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 99982,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 100025,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65438,
+            "connected_components": 386,
+            "boundary_edge_fraction": 0.19189,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 100025,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 98622,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65443,
+            "connected_components": 516,
+            "boundary_edge_fraction": 0.1991,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 98622,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 96255,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65431,
+            "connected_components": 777,
+            "boundary_edge_fraction": 0.21193,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 96255,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 92613,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65423,
+            "connected_components": 1225,
+            "boundary_edge_fraction": 0.23254,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 92613,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 87218,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65420,
+            "connected_components": 2010,
+            "boundary_edge_fraction": 0.26497,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 87218,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 75965,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65399,
+            "connected_components": 3790,
+            "boundary_edge_fraction": 0.34412,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 75965,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 62057,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65398,
+            "connected_components": 6784,
+            "boundary_edge_fraction": 0.45724,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 62057,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65533,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 43783,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65411,
+            "connected_components": 12052,
+            "boundary_edge_fraction": 0.64787,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 43783,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65533
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 15242,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "new_med_high_res_model",
+          "morph_targets": 0,
+          "triangles": 6847,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 15221,
+            "connected_components": 4203,
+            "boundary_edge_fraction": 0.85002,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 6847,
+      "points": 0,
+      "lines": 0,
+      "vertices": 15242
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 17326,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "coronary_sinus_and_great_cardiac_vein",
+          "morph_targets": 0,
+          "triangles": 32706,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 16355,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0.00004,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 32706,
+      "points": 0,
+      "lines": 0,
+      "vertices": 17326
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 22168,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "posterior_vein_of_left_ventricle_2",
+          "morph_targets": 0,
+          "triangles": 41440,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 20722,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 41440,
+      "points": 0,
+      "lines": 0,
+      "vertices": 22168
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 10293,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "posterior_vein_of_left_ventricle",
+          "morph_targets": 0,
+          "triangles": 18998,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 9501,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 18998,
+      "points": 0,
+      "lines": 0,
+      "vertices": 10293
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 19544,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "cercumflex_branch_of_left_coronary_artery",
+          "morph_targets": 0,
+          "triangles": 36744,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 18372,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 36744,
+      "points": 0,
+      "lines": 0,
+      "vertices": 19544
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 11355,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "small_cardiac_vein",
+          "morph_targets": 0,
+          "triangles": 21402,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 10703,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 21402,
+      "points": 0,
+      "lines": 0,
+      "vertices": 11355
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 27050,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "middle_cardiac_vein",
+          "morph_targets": 0,
+          "triangles": 50510,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 25257,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 50510,
+      "points": 0,
+      "lines": 0,
+      "vertices": 27050
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 22851,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "right_coronary_artery___posterior_interventricular_artery",
+          "morph_targets": 0,
+          "triangles": 42454,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 21229,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 42454,
+      "points": 0,
+      "lines": 0,
+      "vertices": 22851
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 12516,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "right_coronary_artery_3",
+          "morph_targets": 0,
+          "triangles": 23426,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 11715,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 23426,
+      "points": 0,
+      "lines": 0,
+      "vertices": 12516
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 11295,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "right_coronary_artery",
+          "morph_targets": 0,
+          "triangles": 21200,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 10602,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 21200,
+      "points": 0,
+      "lines": 0,
+      "vertices": 11295
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 28291,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "med_detail_int",
+          "morph_targets": 0,
+          "triangles": 52990,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 26497,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 52990,
+      "points": 0,
+      "lines": 0,
+      "vertices": 28291
+    }
+  ],
+  "materials": [
+    {
+      "name": "med_detail_int",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "right_coronary_artery",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "right_coronary_artery_3",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "right_coronary_artery___posterior_interventricular_artery",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "middle_cardiac_vein",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "small_cardiac_vein",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "cercumflex_branch_of_left_coronary_artery",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "posterior_vein_of_left_ventricle",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "posterior_vein_of_left_ventricle_2",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "coronary_sinus_and_great_cardiac_vein",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": []
+    },
+    {
+      "name": "new_med_high_res_model",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": true
+      },
+      "extensions": [
+        "KHR_materials_specular"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49440,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1051036,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 1167321,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1808623,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 49436,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 4440724,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    }
+  ]
+}

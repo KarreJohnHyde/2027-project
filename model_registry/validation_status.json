@@ -1,0 +1,562 @@
+{
+  "generated_at": "2026-10-25T14:02:05+00:00",
+  "generator": "scripts/write_validation_status.py",
+  "summary": {
+    "models": 21,
+    "clinically_activatable": 0,
+    "research_runnable": 11
+  },
+  "definitions": {
+    "clinical_activation": "Requires status VALIDATED, validated=true, a complete artifact bundle, verified licence and matching checkpoint hash.",
+    "research_inference": "Requires research_inference=true, READY_UNVALIDATED or VALIDATED, verified licence, evaluation report and matching checkpoint hash. Outputs are research-only."
+  },
+  "models": [
+    {
+      "model_id": "clinical_rules_v1",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "DOCUMENT"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "PROCESSOR_ONLY_NOT_ACTIVATABLE_AS_MODEL",
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "mura_study_baseline",
+      "status": "WEIGHTS_MISSING",
+      "registry_state": "CHECKPOINT_MISSING",
+      "validated": false,
+      "supported_modalities": [
+        "XRAY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "monai_runtime",
+      "status": "DISCOVERED",
+      "registry_state": "DISCOVERED",
+      "validated": false,
+      "supported_modalities": [],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "PROCESSOR_ONLY_NOT_ACTIVATABLE_AS_MODEL",
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "medcat_adapter",
+      "status": "DEPENDENCY_MISSING",
+      "registry_state": "DEPENDENCY_MISSING",
+      "validated": false,
+      "supported_modalities": [
+        "DOCUMENT"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "scispacy_adapter",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "DOCUMENT"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "radgraph_adapter",
+      "status": "DEPENDENCY_MISSING",
+      "registry_state": "DEPENDENCY_MISSING",
+      "validated": false,
+      "supported_modalities": [
+        "DOCUMENT"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "brain_imaging_adapter",
+      "status": "WEIGHTS_MISSING",
+      "registry_state": "CHECKPOINT_MISSING",
+      "validated": false,
+      "supported_modalities": [
+        "MRI",
+        "CT"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "lung_imaging_adapter",
+      "status": "WEIGHTS_MISSING",
+      "registry_state": "CHECKPOINT_MISSING",
+      "validated": false,
+      "supported_modalities": [
+        "CT",
+        "XRAY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "gi_endoscopy_adapter",
+      "status": "WEIGHTS_MISSING",
+      "registry_state": "CHECKPOINT_MISSING",
+      "validated": false,
+      "supported_modalities": [
+        "ENDOSCOPY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "deepsa_angiography_adapter",
+      "status": "UNSUPPORTED",
+      "registry_state": "UNSUPPORTED",
+      "validated": false,
+      "supported_modalities": [
+        "ANGIOGRAPHY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "model_id": "gi_kvasir_v2_classifier",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "ENDOSCOPY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 1202,
+        "accuracy": 0.9259567387687188,
+        "macro_f1": 0.9259733239987497,
+        "accuracy_95ci": [
+          0.9109798441675753,
+          0.9403601042529688
+        ],
+        "ece_temperature_scaled": 0.01909106776440602
+      },
+      "evaluation_report_path": "docs/validation/models/gi_kvasir_v2_classifier.json",
+      "checkpoint_sha256": "6d7494d19e52c0b5462f90637e35f474d9db1950217e5a40e95cda4bec27a8e4"
+    },
+    {
+      "model_id": "angiography_stenosis_detector",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "ANGIOGRAPHY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 300,
+        "map_50_95": 0.06184247101347985,
+        "ap_50": 0.20287799507725116,
+        "operating_point": {
+          "threshold": 0.75,
+          "tp": 147,
+          "fp": 536,
+          "fn": 239,
+          "precision": 0.21522693997071743,
+          "recall": 0.38082901554404147,
+          "f1": 0.27502338634237605
+        }
+      },
+      "evaluation_report_path": "docs/validation/models/angiography_stenosis_detector.json",
+      "checkpoint_sha256": "d06224b406d7e9104f25c03921fcbe78c2aedae0752ce74e9bcbfefae49c05b8"
+    },
+    {
+      "model_id": "kidney_stone_detector",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "CT"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 196,
+        "map_50_95": 0.23123737867754052,
+        "ap_50": 0.6286374727151429,
+        "operating_point": {
+          "threshold": 0.85,
+          "tp": 221,
+          "fp": 77,
+          "fn": 181,
+          "precision": 0.7416107382550335,
+          "recall": 0.5497512437810945,
+          "f1": 0.6314285714285715
+        }
+      },
+      "evaluation_report_path": "docs/validation/models/kidney_stone_detector.json",
+      "checkpoint_sha256": "e9267f9a6e9fb36cc08fd27a888096209febf023ce2f140c5f7d38f6839b9fcb"
+    },
+    {
+      "model_id": "angiography_syntax_segmenter",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "ANGIOGRAPHY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "ARTIFACT_FILES_MISSING"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 300,
+        "mean_foreground_dice": 0.30704956064824246,
+        "vessel_dice": 0.6828798110705859
+      },
+      "evaluation_report_path": "docs/validation/models/angiography_syntax_segmenter.json",
+      "checkpoint_sha256": "3a3882071f72192edaec39a3cfd2449faf6d93f367d11dccf3455ba8824ab0a0"
+    },
+    {
+      "model_id": "gi_gastrovision_27class_classifier",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "ENDOSCOPY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 1225,
+        "accuracy": 0.7371428571428571,
+        "macro_f1": 0.5525663094851778,
+        "accuracy_95ci": [
+          0.712869831759146,
+          0.761437908496732
+        ],
+        "ece_temperature_scaled": 0.034995380834657336
+      },
+      "evaluation_report_path": "docs/validation/models/gi_gastrovision_27class_classifier.json",
+      "checkpoint_sha256": "464986a86033a6415af2870ac26a75d06c787e86caf3b9f74b865e4f5ba757f9"
+    },
+    {
+      "model_id": "ptbxl_ecg_baseline",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "ECG"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 2163,
+        "macro_auroc": 0.9173997640609741,
+        "macro_auprc": 0.8045339619956817,
+        "macro_auroc_95ci": [
+          0.9093794965744019,
+          0.9247173911333084
+        ],
+        "macro_f1_at_validation_thresholds": 0.7339670552127411
+      },
+      "evaluation_report_path": "docs/validation/models/ptbxl_ecg_baseline.json",
+      "checkpoint_sha256": "687f69a2ff1cb50dcd0c5a26759f2d2154090c71746518db150c7638d9efb067"
+    },
+    {
+      "model_id": "heart_failure_survival_cox",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 90,
+        "harrell_c": 0.6708791208791208,
+        "harrell_c_95ci": [
+          0.5688369298400173,
+          0.7736113497962022
+        ],
+        "integrated_brier": 0.16815082103719606,
+        "integrated_brier_kaplan_meier": 0.1578490642736095,
+        "integrated_brier_skill": -0.06526333754966007
+      },
+      "evaluation_report_path": "docs/validation/models/heart_failure_survival_cox.json",
+      "checkpoint_sha256": "0073a7eba793269e70640a4b52f469ad3e61235b21b1c2a895a81b5b26b162ed"
+    },
+    {
+      "model_id": "pbc_mayo_survival_cox",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 104,
+        "harrell_c": 0.7859437751004016,
+        "harrell_c_95ci": [
+          0.7091928780145406,
+          0.8538615591307922
+        ],
+        "integrated_brier": 0.10497801793539387,
+        "integrated_brier_kaplan_meier": 0.14592446774557913,
+        "integrated_brier_skill": 0.28060030262762947
+      },
+      "evaluation_report_path": "docs/validation/models/pbc_mayo_survival_cox.json",
+      "checkpoint_sha256": "3d86d29f24382b8d1cac71361eebbbf66ee90237d8b0261fc95077bfcc281af9"
+    },
+    {
+      "model_id": "gi_kvasir_seg_polyp_segmenter",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "ENDOSCOPY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "ARTIFACT_FILES_MISSING"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 120,
+        "mean_foreground_dice": 0.7678856140968849,
+        "vessel_dice": 0.7678856140968849
+      },
+      "evaluation_report_path": "docs/validation/models/gi_kvasir_seg_polyp_segmenter.json",
+      "checkpoint_sha256": "a5a2c88dc5af67a8993210ca8a3d40ea79b9cd5e0a7cd5f422c1356828115c36"
+    },
+    {
+      "model_id": "hematology_cnmc_all_classifier",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "MICROSCOPY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 1867,
+        "accuracy": 0.807177289769684,
+        "macro_f1": 0.7899273128248981,
+        "accuracy_95ci": [
+          0.659279762534959,
+          0.8935828706708719
+        ],
+        "ece_temperature_scaled": 0.020010658522372462
+      },
+      "evaluation_report_path": "docs/validation/models/hematology_cnmc_all_classifier.json",
+      "checkpoint_sha256": "f5ea1fafc826ae524c8d335a5e32019243c58dcd0bda19ef0e9722823ca82736"
+    },
+    {
+      "model_id": "acdc_cardiac_mri_3d_unet",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "MRI"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "ARTIFACT_FILES_MISSING"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 100,
+        "test_patients": 50,
+        "mean_case_macro_dice": 0.7500199820545065,
+        "lv_cavity_dice": 0.8120770176859853,
+        "myocardium_dice": 0.7307062985157627,
+        "rv_cavity_dice": 0.707276629961771,
+        "lv_ef_mean_absolute_error": 9.062311621270007
+      },
+      "evaluation_report_path": "docs/validation/models/acdc_cardiac_mri_3d_unet.json",
+      "checkpoint_sha256": "b18afcf66effbfd8c8db515958e798cb7b03f322b4a1da354d41edb5edc2d60e"
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-muscular-muscles-of-thorax-4",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/muscular/muscles_of_thorax.4.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 550948,
+  "sha256": "87d8671ee9d18d680dc1aa89afcc373ac9b5028cb954c5d0ba894a1778de2ebe",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2640
+      },
+      {
+        "type": "BIN",
+        "byteLength": 548280
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 34270,
+    "validator_vertex_count": 17129
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 34270,
+    "rendered_triangles": 34270,
+    "unique_vertices": 17129,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 6,
+    "closed_measured_primitives": 1,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.148653,
+        1.148289,
+        -0.056717
+      ],
+      "max": [
+        0.148653,
+        1.422993,
+        0.158729
+      ],
+      "size": [
+        0.297306,
+        0.274704,
+        0.215446
+      ],
+      "center": [
+        0,
+        1.285641,
+        0.051006
+      ],
+      "diagonal": 0.458552
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 1.38,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "muscular.muscles_of_thorax.4",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "muscular.muscles_of_thorax.4"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "muscular.muscles_of_thorax.4"
+    ]
+  },
+  "inspection_ms": 44,
+  "nodes": [
+    {
+      "path": "muscular.muscles_of_thorax.4",
+      "name": "muscular.muscles_of_thorax.4",
+      "semantic_name": "muscular.muscles_of_thorax.4",
+      "depth": 0,
+      "mesh": "muscular.muscles_of_thorax.4",
+      "material": null,
+      "triangles": 34270,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.148653,
+          1.148289,
+          -0.056717
+        ],
+        "max": [
+          0.148653,
+          1.422993,
+          0.158729
+        ],
+        "size": [
+          0.297306,
+          0.274704,
+          0.215446
+        ],
+        "center": [
+          0,
+          1.285641,
+          0.051006
+        ],
+        "diagonal": 0.458552
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "muscular.muscles_of_thorax.4",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 17129,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 34270,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 17129,
+            "connected_components": 6,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0.00076,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 34270,
+      "points": 0,
+      "lines": 0,
+      "vertices": 17129
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

@@ -1,0 +1,68 @@
+{
+  "listed_name": "archive (17).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (17).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "6083798374901a690ea9c83ceb07b83c869a76ef28b1bad3708004304cb301c2",
+  "size_bytes": 1793284877,
+  "entries": 8000,
+  "files": 8000,
+  "directories": 0,
+  "uncompressed_bytes": 1808006478,
+  "overall_ratio": 1.01,
+  "max_entry_ratio": 1.1,
+  "project_copy": "D:\\project\\archive (17).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (8000 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 8000
+  },
+  "extensions": {
+    ".jpg": 8000
+  },
+  "top_level": {
+    "Gastrovision/": 8000
+  },
+  "second_level": {
+    "Gastrovision/Normal mucosa and vascular pattern in the large bowel/": 1467,
+    "Gastrovision/Accessory tools/": 1266,
+    "Gastrovision/Normal stomach/": 969,
+    "Gastrovision/Small bowel_terminal ileum/": 846,
+    "Gastrovision/Colon polyps/": 820,
+    "Gastrovision/Pylorus/": 393,
+    "Gastrovision/Gastroesophageal_junction_normal z-line/": 330,
+    "Gastrovision/Dyed-resection-margins/": 246,
+    "Gastrovision/Duodenal bulb/": 205,
+    "Gastrovision/Ileocecal valve/": 200,
+    "Gastrovision/Blood in lumen/": 171,
+    "Gastrovision/Dyed-lifted-polyps/": 141,
+    "Gastrovision/Normal esophagus/": 140,
+    "Gastrovision/Colorectal cancer/": 139,
+    "Gastrovision/Cecum/": 113,
+    "Gastrovision/Esophagitis/": 107,
+    "Gastrovision/Barretts esophagus/": 95,
+    "Gastrovision/Resected polyps/": 92,
+    "Gastrovision/Retroflex rectum/": 67,
+    "Gastrovision/Gastric polyps/": 65,
+    "Gastrovision/Colon diverticula/": 29,
+    "Gastrovision/Mucosal inflammation large bowel/": 29,
+    "Gastrovision/Resection margins/": 25,
+    "Gastrovision/Angiectasia/": 17,
+    "Gastrovision/Erythema/": 15,
+    "Gastrovision/Esophageal varices/": 7,
+    "Gastrovision/Ulcer/": 6
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_17.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 24.0,
+  "notes": []
+}

@@ -1,0 +1,79 @@
+{
+  "source": {
+    "method": "post-hoc re-score of the frozen saved publisher-test predictions",
+    "held_out_predictions": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/predictions_test.json",
+    "checkpoint": "sha256:d06224b406d7e9104f25c03921fcbe78c2aedae0752ce74e9bcbfefae49c05b8"
+  },
+  "official_full_test": {
+    "n_images": 300,
+    "reference_boxes": 386,
+    "metrics": {
+      "map_50_95": 0.06184247101347985,
+      "ap_50": 0.20287799507725116,
+      "ap_75": 0.01490386383505618,
+      "ap_small": 0.033972952609945414,
+      "ap_medium": 0.0693456320331931,
+      "ap_large": 0.05522308008118756,
+      "ar_1": 0.09611398963730569,
+      "ar_10": 0.28704663212435233,
+      "ar_100": 0.35854922279792745,
+      "ar_small": 0.24,
+      "ar_medium": 0.36459143968871593,
+      "ar_large": 0.3605263157894737
+    },
+    "status": "PRESERVED_UNCHANGED",
+    "independent_crosscheck": "docs/validation/models/angiography_stenosis_detector.kit_crosscheck.json"
+  },
+  "selection": {
+    "near_duplicate_components_crossing_splits": 11,
+    "images_in_crossing_components": 54,
+    "test_images_in_crossing_components": 10,
+    "exclusion_rule": "exclude every test image in a transitive near-duplicate component that spans publisher splits",
+    "official_test_images": 300,
+    "excluded_test_images": 10,
+    "retained_test_images": 290
+  },
+  "conservative_component_subset": {
+    "n_images": 290,
+    "reference_boxes": 372,
+    "detections": 6943,
+    "metrics": {
+      "map_50_95": 0.06107918397339685,
+      "ap_50": 0.19825514755850893,
+      "ap_75": 0.01565179508586391,
+      "ap_small": 0.0340602594963898,
+      "ap_medium": 0.06908815979766449,
+      "ap_large": 0.053517421539135,
+      "ar_1": 0.09650537634408603,
+      "ar_10": 0.28655913978494624,
+      "ar_100": 0.35833333333333334,
+      "ar_small": 0.24,
+      "ar_medium": 0.36370967741935484,
+      "ar_large": 0.3623853211009175
+    },
+    "metric_implementation": "trainer score() protocol with bbox-derived reference area",
+    "evaluation_protocol": "pycocotools COCOeval bbox: IoU 0.50:0.05:0.95, 101-point interpolated precision, area ranges all/small/medium/large, max 1/10/100 detections. -1 (undefined) is reported as null."
+  },
+  "independent_kit": {
+    "dataset": "ARCADE coronary X-ray angiography",
+    "dataset_version": "2b1fbdaf7fe5431febcddff60f00b542b2ae4def1605941e532ee195d1229a93",
+    "evaluation_split": "test",
+    "model_checkpoint": "sha256:d06224b406d7e9104f25c03921fcbe78c2aedae0752ce74e9bcbfefae49c05b8",
+    "prediction_source": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/kit_crosscheck_components/predictions_coco.json",
+    "n_rows": 290,
+    "results_kind": "computed_from_supplied_labeled_evidence",
+    "medtw_accuracy_target": ">0.95 is an objective, not an assumed result",
+    "task": "bbox_detection",
+    "coco_mAP_50_95": 0.06107918397339685,
+    "coco_AP_50": 0.19825514755850893,
+    "coco_AP_75": 0.01565179508586391,
+    "COCO_reference_annotations": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/kit_crosscheck_components/reference_publisher_test.json",
+    "evaluation_protocol": "COCOeval bbox default IoU thresholds, area bins and max detections"
+  },
+  "evaluator_agreement": {
+    "map_50_95_abs_difference": 0.0,
+    "ap_50_abs_difference": 0.0,
+    "ap_75_abs_difference": 0.0
+  },
+  "generated_by": "python -m ml_training.kit_crosscheck detection --model-id angiography_stenosis_detector --category stenosis --component-rescore --update-artifacts"
+}

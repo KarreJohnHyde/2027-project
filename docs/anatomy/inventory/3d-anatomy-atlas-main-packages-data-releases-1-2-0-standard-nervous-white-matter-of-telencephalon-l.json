@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-nervous-white-matter-of-telencephalon-l",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/nervous/white_matter_of_telencephalon_l.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 564724,
+  "sha256": "d3212b5eb63d8c445ac46d4171fa92ae5945389e5770b5ec47a8234a802b0e6a",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2692
+      },
+      {
+        "type": "BIN",
+        "byteLength": 562004
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 33736,
+    "validator_vertex_count": 17420
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 33736,
+    "rendered_triangles": 33736,
+    "unique_vertices": 17420,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 9,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.00496,
+    "degenerate_triangles_measured": 4,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.030486,
+        1.587114,
+        -0.043335
+      ],
+      "max": [
+        0.06486,
+        1.696614,
+        0.131603
+      ],
+      "size": [
+        0.095347,
+        0.1095,
+        0.174938
+      ],
+      "center": [
+        0.017187,
+        1.641864,
+        0.044134
+      ],
+      "diagonal": 0.227342
+    },
+    "bounds_finite": true,
+    "tallest_axis": "z",
+    "aspect_ratio": 1.835,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "nervous.white_matter_of_telencephalon_l",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "nervous.white_matter_of_telencephalon_l"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "nervous.white_matter_of_telencephalon_l"
+    ]
+  },
+  "inspection_ms": 41,
+  "nodes": [
+    {
+      "path": "nervous.white_matter_of_telencephalon_l",
+      "name": "nervous.white_matter_of_telencephalon_l",
+      "semantic_name": "nervous.white_matter_of_telencephalon_l",
+      "depth": 0,
+      "mesh": "nervous.white_matter_of_telencephalon_l",
+      "material": null,
+      "triangles": 33736,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.030486,
+          1.587114,
+          -0.043335
+        ],
+        "max": [
+          0.06486,
+          1.696614,
+          0.131603
+        ],
+        "size": [
+          0.095347,
+          0.1095,
+          0.174938
+        ],
+        "center": [
+          0.017187,
+          1.641864,
+          0.044134
+        ],
+        "diagonal": 0.227342
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "nervous.white_matter_of_telencephalon_l",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 17420,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 33736,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 16883,
+            "connected_components": 9,
+            "boundary_edge_fraction": 0.00496,
+            "non_manifold_edge_fraction": 0.00494,
+            "degenerate_triangles": 4,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 33736,
+      "points": 0,
+      "lines": 0,
+      "vertices": 17420
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

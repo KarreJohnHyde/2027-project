@@ -1,0 +1,40 @@
+{
+  "listed_name": "archive (34).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (34).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "8feb2b162941756dc0bb18c2e02a0dad229b5cc28033b4419f6ad4891f5eb430",
+  "size_bytes": 15116,
+  "entries": 1,
+  "files": 1,
+  "directories": 0,
+  "uncompressed_bytes": 46183,
+  "overall_ratio": 3.09,
+  "max_entry_ratio": 3.1,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (1 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "tabular": 1
+  },
+  "extensions": {
+    ".csv": 1
+  },
+  "top_level": {
+    "HepatitisCdata.csv": 1
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_34.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.0,
+  "notes": []
+}

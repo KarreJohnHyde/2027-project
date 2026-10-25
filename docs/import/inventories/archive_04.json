@@ -1,0 +1,43 @@
+{
+  "listed_name": "archive (4).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (4).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "74760fa45836117b6cc34d434290bf11d14845d8100ded2aca15a4a1e826a2eb",
+  "size_bytes": 3409469,
+  "entries": 113,
+  "files": 113,
+  "directories": 0,
+  "uncompressed_bytes": 3613560,
+  "overall_ratio": 1.07,
+  "max_entry_ratio": 1.2,
+  "project_copy": "D:\\project\\archive (4).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (113 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 113
+  },
+  "extensions": {
+    ".jpg": 113
+  },
+  "top_level": {
+    "mri-tumor-detection-dataset(training and testing)/": 113
+  },
+  "second_level": {
+    "mri-tumor-detection-dataset(training and testing)/Training/": 57,
+    "mri-tumor-detection-dataset(training and testing)/Testing/": 56
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_04.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.3,
+  "notes": []
+}

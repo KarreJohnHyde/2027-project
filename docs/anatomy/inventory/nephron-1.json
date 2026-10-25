@@ -1,0 +1,436 @@
+{
+  "asset_id": "nephron-1",
+  "relative_path": "nephron (1).glb",
+  "source_group": "workspace_root",
+  "bytes": 12281356,
+  "sha256": "404269e85994b4fd2e298e13ca128a462e36c76956d7391f7be1f7aab8d6e606",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 5068
+      },
+      {
+        "type": "BIN",
+        "byteLength": 12276260
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.66.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "aymanba (https://sketchfab.com/aymanba)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/nephron-6d0a59a1706543a1b400eae82f582c86",
+      "title": "Nephron"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 2,
+    "validator_triangle_count": 76094,
+    "validator_vertex_count": 42247
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 7,
+    "mesh_nodes": 2,
+    "meshes": 2,
+    "primitives": 2,
+    "materials": 2,
+    "textures": 6,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 76094,
+    "rendered_triangles": 76094,
+    "unique_vertices": 42247,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 2,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 2,
+    "closed_measured_primitives": 2,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -2.142687,
+        -1.00803,
+        -0.281865
+      ],
+      "max": [
+        1.253022,
+        0.81872,
+        0.601389
+      ],
+      "size": [
+        3.395709,
+        1.82675,
+        0.883254
+      ],
+      "center": [
+        -0.444833,
+        -0.094655,
+        0.159762
+      ],
+      "diagonal": 3.955754
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 3.845,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Blood_supply_Blood_supply_mat_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 2,
+    "names": [
+      "Blood_supply_mat",
+      "Nephron_mat"
+    ]
+  },
+  "textures_summary": {
+    "count": 6,
+    "total_bytes": 9335276,
+    "max_edge_px": 2048,
+    "mime_types": [
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Blood_supply_Blood_supply_mat_0",
+      "Nephron_Nephron_mat_0"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "Nephron_Nephron_mat_0"
+    ]
+  },
+  "inspection_ms": 152,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Nephron.fbx",
+      "name": "Nephron.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Nephron.fbx/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Nephron.fbx/RootNode/Blood_supply",
+      "name": "Blood_supply",
+      "semantic_name": "Blood_supply",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Nephron.fbx/RootNode/Blood_supply/Blood_supply_Blood_supply_mat_0",
+      "name": "Blood_supply_Blood_supply_mat_0",
+      "semantic_name": "Blood_supply_Blood_supply_mat_0",
+      "depth": 4,
+      "mesh": "Blood_supply_Blood_supply_mat_0",
+      "material": "Blood_supply_mat",
+      "triangles": 54006,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -2.142687,
+          -1.00803,
+          -0.242607
+        ],
+        "max": [
+          0.924824,
+          0.81872,
+          0.601389
+        ],
+        "size": [
+          3.067511,
+          1.82675,
+          0.843996
+        ],
+        "center": [
+          -0.608931,
+          -0.094655,
+          0.179391
+        ],
+        "diagonal": 3.668647
+      }
+    },
+    {
+      "path": "Sketchfab_model/Nephron.fbx/RootNode/Nephron",
+      "name": "Nephron",
+      "semantic_name": "Nephron",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Nephron.fbx/RootNode/Nephron/Nephron_Nephron_mat_0",
+      "name": "Nephron_Nephron_mat_0",
+      "semantic_name": "Nephron_Nephron_mat_0",
+      "depth": 4,
+      "mesh": "Nephron_Nephron_mat_0",
+      "material": "Nephron_mat",
+      "triangles": 22088,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -1.362578,
+          -0.95005,
+          -0.281865
+        ],
+        "max": [
+          1.253022,
+          0.782412,
+          0.427874
+        ],
+        "size": [
+          2.6156,
+          1.732462,
+          0.70974
+        ],
+        "center": [
+          -0.054778,
+          -0.083819,
+          0.073004
+        ],
+        "diagonal": 3.2166
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Blood_supply_Blood_supply_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 30170,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Blood_supply_mat",
+          "morph_targets": 0,
+          "triangles": 54006,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 26927,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 54006,
+      "points": 0,
+      "lines": 0,
+      "vertices": 30170
+    },
+    {
+      "name": "Nephron_Nephron_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 12077,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Nephron_mat",
+          "morph_targets": 0,
+          "triangles": 22088,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 11040,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 22088,
+      "points": 0,
+      "lines": 0,
+      "vertices": 12077
+    }
+  ],
+  "materials": [
+    {
+      "name": "Blood_supply_mat",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Nephron_mat",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1373147,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 605,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1324659,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1873269,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 477444,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 4286152,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    }
+  ]
+}

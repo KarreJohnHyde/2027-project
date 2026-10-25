@@ -1,0 +1,474 @@
+{
+  "asset_id": "human-pancreas-cross-section",
+  "relative_path": "human_pancreas_cross_section.glb",
+  "source_group": "workspace_root",
+  "bytes": 5653164,
+  "sha256": "12a3c9ffc88afb4a9a87563e3fb5fc751160a45a692f92f89df650748d161c86",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 5344
+      },
+      {
+        "type": "BIN",
+        "byteLength": 5647792
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-16.59.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "arloopa (https://sketchfab.com/arloopa)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/human-pancreas-cross-section-f7b30e11b5df445fbdfe0e262e777c85",
+      "title": "Human Pancreas Cross section"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 3,
+    "validator_triangle_count": 55808,
+    "validator_vertex_count": 29552
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 9,
+    "mesh_nodes": 3,
+    "meshes": 3,
+    "primitives": 3,
+    "materials": 1,
+    "textures": 3,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 55808,
+    "rendered_triangles": 55808,
+    "unique_vertices": 29552,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 3,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 3,
+    "closed_measured_primitives": 2,
+    "max_boundary_edge_fraction": 0.00314,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.076227,
+        -0.087177,
+        -0.029932
+      ],
+      "max": [
+        0.120428,
+        0.081065,
+        0.04264
+      ],
+      "size": [
+        0.196654,
+        0.168242,
+        0.072572
+      ],
+      "center": [
+        0.0221,
+        -0.003056,
+        0.006354
+      ],
+      "diagonal": 0.268785
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 2.71,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "pCube3_lambert1_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 1,
+    "names": [
+      "lambert1"
+    ]
+  },
+  "textures_summary": {
+    "count": 3,
+    "total_bytes": 3559597,
+    "max_edge_px": 2048,
+    "mime_types": [
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "pCube3_lambert1_0",
+      "sweep1_lambert1_0",
+      "polySurface1_lambert1_0"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 103,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/80153d17231c4c35bcccd79c53dd383a.fbx",
+      "name": "80153d17231c4c35bcccd79c53dd383a.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/80153d17231c4c35bcccd79c53dd383a.fbx/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 3,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/80153d17231c4c35bcccd79c53dd383a.fbx/RootNode/pCube3",
+      "name": "pCube3",
+      "semantic_name": null,
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/80153d17231c4c35bcccd79c53dd383a.fbx/RootNode/pCube3/pCube3_lambert1_0",
+      "name": "pCube3_lambert1_0",
+      "semantic_name": "pCube3_lambert1_0",
+      "depth": 4,
+      "mesh": "pCube3_lambert1_0",
+      "material": "lambert1",
+      "triangles": 31296,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.076227,
+          -0.087177,
+          -0.020316
+        ],
+        "max": [
+          0.054095,
+          0.081065,
+          0.04264
+        ],
+        "size": [
+          0.130321,
+          0.168242,
+          0.062957
+        ],
+        "center": [
+          -0.011066,
+          -0.003056,
+          0.011162
+        ],
+        "diagonal": 0.221929
+      }
+    },
+    {
+      "path": "Sketchfab_model/80153d17231c4c35bcccd79c53dd383a.fbx/RootNode/sweep1",
+      "name": "sweep1",
+      "semantic_name": "sweep1",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/80153d17231c4c35bcccd79c53dd383a.fbx/RootNode/sweep1/sweep1_lambert1_0",
+      "name": "sweep1_lambert1_0",
+      "semantic_name": "sweep1_lambert1_0",
+      "depth": 4,
+      "mesh": "sweep1_lambert1_0",
+      "material": "lambert1",
+      "triangles": 6784,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.040608,
+          -0.02241,
+          -0.022096
+        ],
+        "max": [
+          0.11529,
+          0.005976,
+          0.029927
+        ],
+        "size": [
+          0.155898,
+          0.028386,
+          0.052023
+        ],
+        "center": [
+          0.037341,
+          -0.008217,
+          0.003916
+        ],
+        "diagonal": 0.166782
+      }
+    },
+    {
+      "path": "Sketchfab_model/80153d17231c4c35bcccd79c53dd383a.fbx/RootNode/polySurface1",
+      "name": "polySurface1",
+      "semantic_name": null,
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/80153d17231c4c35bcccd79c53dd383a.fbx/RootNode/polySurface1/polySurface1_lambert1_0",
+      "name": "polySurface1_lambert1_0",
+      "semantic_name": "polySurface1_lambert1_0",
+      "depth": 4,
+      "mesh": "polySurface1_lambert1_0",
+      "material": "lambert1",
+      "triangles": 17728,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.040607,
+          -0.051629,
+          -0.029932
+        ],
+        "max": [
+          0.120428,
+          0.02699,
+          0.030682
+        ],
+        "size": [
+          0.161035,
+          0.078619,
+          0.060613
+        ],
+        "center": [
+          0.03991,
+          -0.01232,
+          0.000375
+        ],
+        "diagonal": 0.189175
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "pCube3_lambert1_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 16358,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "lambert1",
+          "morph_targets": 0,
+          "triangles": 31296,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 15648,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 31296,
+      "points": 0,
+      "lines": 0,
+      "vertices": 16358
+    },
+    {
+      "name": "sweep1_lambert1_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 4011,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "lambert1",
+          "morph_targets": 0,
+          "triangles": 6784,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 3408,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.00314,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 6784,
+      "points": 0,
+      "lines": 0,
+      "vertices": 4011
+    },
+    {
+      "name": "polySurface1_lambert1_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 9183,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "lambert1",
+          "morph_targets": 0,
+          "triangles": 17728,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 8866,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 17728,
+      "points": 0,
+      "lines": 0,
+      "vertices": 9183
+    }
+  ],
+  "materials": [
+    {
+      "name": "lambert1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": true,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1231631,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 598645,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1729321,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    }
+  ]
+}

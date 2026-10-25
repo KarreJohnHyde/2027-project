@@ -1,0 +1,1054 @@
+{
+  "asset_id": "source-lung-right",
+  "relative_path": "source/lung_right.glb",
+  "source_group": "source_folder",
+  "bytes": 4695796,
+  "sha256": "ad26a4a88bed6b0a343c0701767216b184c89919de1c9127c0fc98e1f3afa028",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 14900
+      },
+      {
+        "type": "BIN",
+        "byteLength": 4680868
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.66.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "prasanth.k (https://sketchfab.com/prasanth.k)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/lung-right-974d63ce2b1f4760a885e6e88dca7f78",
+      "title": "Lung_Right"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 10,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 10
+    },
+    "draw_calls": 9,
+    "validator_triangle_count": 110316,
+    "validator_vertex_count": 57756
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 24,
+    "mesh_nodes": 9,
+    "meshes": 9,
+    "primitives": 9,
+    "materials": 3,
+    "textures": 3,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 110316,
+    "rendered_triangles": 110316,
+    "unique_vertices": 57756,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 9,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 9,
+    "closed_measured_primitives": 3,
+    "max_boundary_edge_fraction": 0.09119,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -1.04959,
+        1.281222,
+        -0.107166
+      ],
+      "max": [
+        -0.777182,
+        1.610133,
+        0.065133
+      ],
+      "size": [
+        0.272408,
+        0.328911,
+        0.1723
+      ],
+      "center": [
+        -0.913386,
+        1.445678,
+        -0.021016
+      ],
+      "diagonal": 0.460517
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 1.909,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Respiratoy_Trachea_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Bronchi_mat_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 3,
+    "names": [
+      "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratoy_Lung_mat",
+      "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratoy_Bronchi_mat",
+      "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat"
+    ]
+  },
+  "textures_summary": {
+    "count": 3,
+    "total_bytes": 1028331,
+    "max_edge_px": 1024,
+    "mime_types": [
+      "image/png",
+      "image/jpeg"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Respiratoy_Lung_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Lung_mat_0",
+      "Respiratoy_Trachea_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Bronchi_mat_0",
+      "Respiratory_Cricothyroid_Ligament_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_Epiglotis_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_Thyroid_Membrane_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_Epiglotis_Inner_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_Thyroid_Cartliage_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_True_Vocal_Fold_Geo_Left_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_True_Vocal_Fold_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0"
+    ],
+    "anatomically_named_mesh_nodes": 9,
+    "anatomical_names_sample": [
+      "Respiratoy_Lung_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Lung_mat_0",
+      "Respiratoy_Trachea_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Bronchi_mat_0",
+      "Respiratory_Cricothyroid_Ligament_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_Epiglotis_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_Thyroid_Membrane_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_Epiglotis_Inner_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_Thyroid_Cartliage_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_True_Vocal_Fold_Geo_Left_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "Respiratoy_True_Vocal_Fold_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0"
+    ]
+  },
+  "inspection_ms": 208,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx",
+      "name": "cbfe603511444f4dbf0b00d46f7cbd6e.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp",
+      "name": "Respiratory_System_grp",
+      "semantic_name": "Respiratory_System_grp",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Lungs",
+      "name": "Lungs",
+      "semantic_name": "Lungs",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Lungs/Respiratoy_Lung_Geo_Right",
+      "name": "Respiratoy_Lung_Geo_Right",
+      "semantic_name": "Respiratoy_Lung_Geo_Right",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Lungs/Respiratoy_Lung_Geo_Right/Respiratoy_Lung_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Lung_mat_0",
+      "name": "Respiratoy_Lung_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Lung_mat_0",
+      "semantic_name": "Respiratoy_Lung_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Lung_mat_0",
+      "depth": 6,
+      "mesh": "Respiratoy_Lung_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Lung_mat_0",
+      "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratoy_Lung_mat",
+      "triangles": 45360,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -1.04959,
+          1.281222,
+          -0.107166
+        ],
+        "max": [
+          -0.909466,
+          1.52041,
+          0.065133
+        ],
+        "size": [
+          0.140124,
+          0.239188,
+          0.1723
+        ],
+        "center": [
+          -0.979528,
+          1.400816,
+          -0.021016
+        ],
+        "diagonal": 0.326394
+      }
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Lungs/Respiratoy_Trachea_Geo",
+      "name": "Respiratoy_Trachea_Geo",
+      "semantic_name": "Respiratoy_Trachea_Geo",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Lungs/Respiratoy_Trachea_Geo/Respiratoy_Trachea_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Bronchi_mat_0",
+      "name": "Respiratoy_Trachea_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Bronchi_mat_0",
+      "semantic_name": "Respiratoy_Trachea_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Bronchi_mat_0",
+      "depth": 6,
+      "mesh": "Respiratoy_Trachea_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Bronchi_mat_0",
+      "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratoy_Bronchi_mat",
+      "triangles": 45508,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.983717,
+          1.294934,
+          -0.093399
+        ],
+        "max": [
+          -0.777182,
+          1.562715,
+          0.044665
+        ],
+        "size": [
+          0.206534,
+          0.267781,
+          0.138064
+        ],
+        "center": [
+          -0.880449,
+          1.428825,
+          -0.024367
+        ],
+        "diagonal": 0.365274
+      }
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx",
+      "name": "Larynx",
+      "semantic_name": "Larynx",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 7,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratory_Cricothyroid_Ligament_Geo",
+      "name": "Respiratory_Cricothyroid_Ligament_Geo",
+      "semantic_name": "Respiratory_Cricothyroid_Ligament_Geo",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratory_Cricothyroid_Ligament_Geo/Respiratory_Cricothyroid_Ligament_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "name": "Respiratory_Cricothyroid_Ligament_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "semantic_name": "Respiratory_Cricothyroid_Ligament_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "depth": 6,
+      "mesh": "Respiratory_Cricothyroid_Ligament_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+      "triangles": 416,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.91213,
+          1.548956,
+          0.019027
+        ],
+        "max": [
+          -0.88819,
+          1.562878,
+          0.028821
+        ],
+        "size": [
+          0.02394,
+          0.013922,
+          0.009794
+        ],
+        "center": [
+          -0.90016,
+          1.555917,
+          0.023924
+        ],
+        "diagonal": 0.029374
+      }
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_Epiglotis_Geo",
+      "name": "Respiratoy_Epiglotis_Geo",
+      "semantic_name": "Respiratoy_Epiglotis_Geo",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_Epiglotis_Geo/Respiratoy_Epiglotis_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "name": "Respiratoy_Epiglotis_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "semantic_name": "Respiratoy_Epiglotis_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "depth": 6,
+      "mesh": "Respiratoy_Epiglotis_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+      "triangles": 2444,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.91579,
+          1.549706,
+          0.004986
+        ],
+        "max": [
+          -0.883073,
+          1.608108,
+          0.05545
+        ],
+        "size": [
+          0.032717,
+          0.058403,
+          0.050464
+        ],
+        "center": [
+          -0.899431,
+          1.578907,
+          0.030218
+        ],
+        "diagonal": 0.083832
+      }
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_Thyroid_Membrane_Geo",
+      "name": "Respiratoy_Thyroid_Membrane_Geo",
+      "semantic_name": "Respiratoy_Thyroid_Membrane_Geo",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_Thyroid_Membrane_Geo/Respiratoy_Thyroid_Membrane_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "name": "Respiratoy_Thyroid_Membrane_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "semantic_name": "Respiratoy_Thyroid_Membrane_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "depth": 6,
+      "mesh": "Respiratoy_Thyroid_Membrane_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+      "triangles": 1228,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.920377,
+          1.564793,
+          0.018298
+        ],
+        "max": [
+          -0.879623,
+          1.608647,
+          0.055305
+        ],
+        "size": [
+          0.040754,
+          0.043854,
+          0.037006
+        ],
+        "center": [
+          -0.9,
+          1.58672,
+          0.036801
+        ],
+        "diagonal": 0.070381
+      }
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_Epiglotis_Inner_Geo",
+      "name": "Respiratoy_Epiglotis_Inner_Geo",
+      "semantic_name": "Respiratoy_Epiglotis_Inner_Geo",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_Epiglotis_Inner_Geo/Respiratoy_Epiglotis_Inner_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "name": "Respiratoy_Epiglotis_Inner_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "semantic_name": "Respiratoy_Epiglotis_Inner_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "depth": 6,
+      "mesh": "Respiratoy_Epiglotis_Inner_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+      "triangles": 7220,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.906308,
+          1.571889,
+          0.038577
+        ],
+        "max": [
+          -0.893554,
+          1.599786,
+          0.047934
+        ],
+        "size": [
+          0.012754,
+          0.027897,
+          0.009357
+        ],
+        "center": [
+          -0.899931,
+          1.585837,
+          0.043255
+        ],
+        "diagonal": 0.03207
+      }
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_Thyroid_Cartliage_Geo",
+      "name": "Respiratoy_Thyroid_Cartliage_Geo",
+      "semantic_name": "Respiratoy_Thyroid_Cartliage_Geo",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_Thyroid_Cartliage_Geo/Respiratoy_Thyroid_Cartliage_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "name": "Respiratoy_Thyroid_Cartliage_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "semantic_name": "Respiratoy_Thyroid_Cartliage_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "depth": 6,
+      "mesh": "Respiratoy_Thyroid_Cartliage_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+      "triangles": 4188,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.921982,
+          1.545987,
+          0.000455
+        ],
+        "max": [
+          -0.877727,
+          1.610133,
+          0.057751
+        ],
+        "size": [
+          0.044255,
+          0.064147,
+          0.057296
+        ],
+        "center": [
+          -0.899854,
+          1.57806,
+          0.029103
+        ],
+        "diagonal": 0.096727
+      }
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_True_Vocal_Fold_Geo_Left",
+      "name": "Respiratoy_True_Vocal_Fold_Geo_Left",
+      "semantic_name": "Respiratoy_True_Vocal_Fold_Geo_Left",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_True_Vocal_Fold_Geo_Left/Respiratoy_True_Vocal_Fold_Geo_Left_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "name": "Respiratoy_True_Vocal_Fold_Geo_Left_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "semantic_name": "Respiratoy_True_Vocal_Fold_Geo_Left_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "depth": 6,
+      "mesh": "Respiratoy_True_Vocal_Fold_Geo_Left_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+      "triangles": 1976,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.899822,
+          1.556811,
+          0.007134
+        ],
+        "max": [
+          -0.888603,
+          1.578461,
+          0.032118
+        ],
+        "size": [
+          0.011219,
+          0.021649,
+          0.024984
+        ],
+        "center": [
+          -0.894212,
+          1.567636,
+          0.019626
+        ],
+        "diagonal": 0.034911
+      }
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_True_Vocal_Fold_Geo_Right",
+      "name": "Respiratoy_True_Vocal_Fold_Geo_Right",
+      "semantic_name": "Respiratoy_True_Vocal_Fold_Geo_Right",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/cbfe603511444f4dbf0b00d46f7cbd6e.fbx/RootNode/Respiratory_System_grp/Larynx/Respiratoy_True_Vocal_Fold_Geo_Right/Respiratoy_True_Vocal_Fold_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "name": "Respiratoy_True_Vocal_Fold_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "semantic_name": "Respiratoy_True_Vocal_Fold_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "depth": 6,
+      "mesh": "Respiratoy_True_Vocal_Fold_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+      "triangles": 1976,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.911322,
+          1.556811,
+          0.00717
+        ],
+        "max": [
+          -0.900069,
+          1.578461,
+          0.032127
+        ],
+        "size": [
+          0.011253,
+          0.021649,
+          0.024957
+        ],
+        "center": [
+          -0.905696,
+          1.567636,
+          0.019649
+        ],
+        "diagonal": 0.034902
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Respiratoy_Lung_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Lung_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 23004,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratoy_Lung_mat",
+          "morph_targets": 0,
+          "triangles": 45360,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 22724,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.00129,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 45360,
+      "points": 0,
+      "lines": 0,
+      "vertices": 23004
+    },
+    {
+      "name": "Respiratoy_Trachea_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratoy_Bronchi_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 24293,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratoy_Bronchi_mat",
+          "morph_targets": 0,
+          "triangles": 45508,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 22774,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.00059,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 45508,
+      "points": 0,
+      "lines": 0,
+      "vertices": 24293
+    },
+    {
+      "name": "Respiratory_Cricothyroid_Ligament_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 233,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+          "morph_targets": 0,
+          "triangles": 416,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 210,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 416,
+      "points": 0,
+      "lines": 0,
+      "vertices": 233
+    },
+    {
+      "name": "Respiratoy_Epiglotis_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 1295,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+          "morph_targets": 0,
+          "triangles": 2444,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1252,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.01623,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 2444,
+      "points": 0,
+      "lines": 0,
+      "vertices": 1295
+    },
+    {
+      "name": "Respiratoy_Thyroid_Membrane_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 716,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+          "morph_targets": 0,
+          "triangles": 1228,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 700,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.09119,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 1228,
+      "points": 0,
+      "lines": 0,
+      "vertices": 716
+    },
+    {
+      "name": "Respiratoy_Epiglotis_Inner_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 3712,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+          "morph_targets": 0,
+          "triangles": 7220,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 3612,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 7220,
+      "points": 0,
+      "lines": 0,
+      "vertices": 3712
+    },
+    {
+      "name": "Respiratoy_Thyroid_Cartliage_Geo_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 2313,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "TEXCOORD_2"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+          "morph_targets": 0,
+          "triangles": 4188,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 2090,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 4188,
+      "points": 0,
+      "lines": 0,
+      "vertices": 2313
+    },
+    {
+      "name": "Respiratoy_True_Vocal_Fold_Geo_Left_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 1095,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+          "morph_targets": 0,
+          "triangles": 1976,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 995,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.00404,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 1976,
+      "points": 0,
+      "lines": 0,
+      "vertices": 1095
+    },
+    {
+      "name": "Respiratoy_True_Vocal_Fold_Geo_Right_Male_Anatomy_Pack_Complete_V05:Male_Respiratory_System_V05:Respiratory_Cricothyroid_Ligament_mat_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 1095,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+          "morph_targets": 0,
+          "triangles": 1976,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 995,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.00404,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 1976,
+      "points": 0,
+      "lines": 0,
+      "vertices": 1095
+    }
+  ],
+  "materials": [
+    {
+      "name": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratoy_Lung_mat",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratoy_Bronchi_mat",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Male_Anatomy_Pack_Complete_V05Male_Respiratory_System_V05Respiratory_Cricothyroid_Ligament_mat",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 264825,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 416051,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 347455,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    }
+  ]
+}

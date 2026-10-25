@@ -1,0 +1,217 @@
+{
+  "asset_id": "public-models-medtwin-l1-respiratory",
+  "relative_path": "public/models/medtwin_l1_respiratory.glb",
+  "source_group": "public_models",
+  "bytes": 276040,
+  "sha256": "b9629707a3fc5fa30ba74e5298acfbcc24fe429e7de65199f367c4c001cca15d",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2696
+      },
+      {
+        "type": "BIN",
+        "byteLength": 273316
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 13288,
+    "validator_vertex_count": 8488
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 13288,
+    "rendered_triangles": 13288,
+    "unique_vertices": 8488,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 130,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.12508,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.131131,
+        0.727078,
+        -0.029234
+      ],
+      "max": [
+        0.129848,
+        1.62009,
+        0.161676
+      ],
+      "size": [
+        0.260978,
+        0.893011,
+        0.19091
+      ],
+      "center": [
+        -0.000641,
+        1.173584,
+        0.066221
+      ],
+      "diagonal": 0.94975
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 4.678,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "visceral.endocrine_glands--respiratory_system",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "visceral.endocrine_glands--respiratory_system"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "visceral.endocrine_glands--respiratory_system"
+    ]
+  },
+  "inspection_ms": 20,
+  "nodes": [
+    {
+      "path": "visceral.endocrine_glands--respiratory_system",
+      "name": "visceral.endocrine_glands--respiratory_system",
+      "semantic_name": "visceral.endocrine_glands--respiratory_system",
+      "depth": 0,
+      "mesh": "visceral.endocrine_glands--respiratory_system",
+      "material": null,
+      "triangles": 13288,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.131131,
+          0.727078,
+          -0.029234
+        ],
+        "max": [
+          0.129848,
+          1.62009,
+          0.161676
+        ],
+        "size": [
+          0.260978,
+          0.893011,
+          0.19091
+        ],
+        "center": [
+          -0.000641,
+          1.173584,
+          0.066221
+        ],
+        "diagonal": 0.94975
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "visceral.endocrine_glands--respiratory_system",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 8488,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 13288,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 7997,
+            "connected_components": 130,
+            "boundary_edge_fraction": 0.12508,
+            "non_manifold_edge_fraction": 0.00094,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 13288,
+      "points": 0,
+      "lines": 0,
+      "vertices": 8488
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

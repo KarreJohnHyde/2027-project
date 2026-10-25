@@ -1,0 +1,327 @@
+{
+  "source": {
+    "method": "post-hoc re-score of the frozen saved publisher-test masks",
+    "held_out_predictions": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/test_masks",
+    "checkpoint": "sha256:3a3882071f72192edaec39a3cfd2449faf6d93f367d11dccf3455ba8824ab0a0"
+  },
+  "official_full_test": {
+    "n_images": 300,
+    "mean_foreground_dice_per_image": 0.30704956064824246,
+    "macro_segment_dice": 0.2006911961971082,
+    "vessel_dice": 0.6828798110705859,
+    "vessel_iou": 0.5351903824866634,
+    "vessel_hd95_px_at_model_resolution": 80.45497298335574,
+    "per_segment": [
+      {
+        "segment": "1",
+        "images": 110,
+        "mean_dice": 0.5817241342406254
+      },
+      {
+        "segment": "2",
+        "images": 115,
+        "mean_dice": 0.5762979280041053
+      },
+      {
+        "segment": "3",
+        "images": 138,
+        "mean_dice": 0.4597426307654909
+      },
+      {
+        "segment": "4",
+        "images": 134,
+        "mean_dice": 0.2687888974471375
+      },
+      {
+        "segment": "5",
+        "images": 213,
+        "mean_dice": 0.6444270108195886
+      },
+      {
+        "segment": "6",
+        "images": 230,
+        "mean_dice": 0.46530028876724155
+      },
+      {
+        "segment": "7",
+        "images": 196,
+        "mean_dice": 0.24434791153807156
+      },
+      {
+        "segment": "8",
+        "images": 155,
+        "mean_dice": 0.25203495173716745
+      },
+      {
+        "segment": "9",
+        "images": 125,
+        "mean_dice": 0.108235087221857
+      },
+      {
+        "segment": "9a",
+        "images": 54,
+        "mean_dice": 0.013270115486908861
+      },
+      {
+        "segment": "10",
+        "images": 14,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "10a",
+        "images": 0,
+        "mean_dice": null
+      },
+      {
+        "segment": "11",
+        "images": 187,
+        "mean_dice": 0.43211770046453973
+      },
+      {
+        "segment": "12",
+        "images": 100,
+        "mean_dice": 0.019440993099674116
+      },
+      {
+        "segment": "12a",
+        "images": 200,
+        "mean_dice": 0.019850393502196813
+      },
+      {
+        "segment": "13",
+        "images": 166,
+        "mean_dice": 0.24055162111555314
+      },
+      {
+        "segment": "14",
+        "images": 138,
+        "mean_dice": 0.03234116264859303
+      },
+      {
+        "segment": "14a",
+        "images": 29,
+        "mean_dice": 0.0003619115324631877
+      },
+      {
+        "segment": "15",
+        "images": 33,
+        "mean_dice": 0.007894036919686601
+      },
+      {
+        "segment": "16",
+        "images": 104,
+        "mean_dice": 0.3843020673205902
+      },
+      {
+        "segment": "16a",
+        "images": 52,
+        "mean_dice": 0.007910165241306211
+      },
+      {
+        "segment": "16b",
+        "images": 36,
+        "mean_dice": 0.013054891247522073
+      },
+      {
+        "segment": "16c",
+        "images": 25,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "12b",
+        "images": 73,
+        "mean_dice": 4.7224521733847694e-05
+      },
+      {
+        "segment": "14b",
+        "images": 64,
+        "mean_dice": 0.04454758508854374
+      }
+    ],
+    "confidence_intervals_95": {
+      "mean_foreground_dice_per_image": {
+        "status": "COMPUTED",
+        "low": 0.29116611905035095,
+        "high": 0.3224857754550668,
+        "resamples": 1000,
+        "unit": "near-duplicate group"
+      },
+      "vessel_dice": {
+        "status": "COMPUTED",
+        "low": 0.6650301340628155,
+        "high": 0.6988092558140778,
+        "resamples": 1000,
+        "unit": "near-duplicate group"
+      }
+    },
+    "status": "PRESERVED_UNCHANGED",
+    "independent_crosscheck": "docs/validation/models/angiography_syntax_segmenter.kit_crosscheck.json"
+  },
+  "selection": {
+    "near_duplicate_components_crossing_splits": 2,
+    "images_in_crossing_components": 6,
+    "test_images_in_crossing_components": 2,
+    "exclusion_rule": "exclude every test image in a transitive near-duplicate component that spans publisher splits",
+    "official_test_images": 300,
+    "excluded_test_images": 2,
+    "retained_test_images": 298
+  },
+  "conservative_component_subset": {
+    "n_images": 298,
+    "mean_foreground_dice_per_image": 0.3079512464376884,
+    "macro_segment_dice": 0.2008165571492643,
+    "vessel_dice": 0.6831018232210625,
+    "vessel_iou": 0.5355465925548452,
+    "vessel_hd95_px_at_model_resolution": 80.46768878421828,
+    "per_segment": [
+      {
+        "segment": "1",
+        "images": 110,
+        "mean_dice": 0.5817241342406254
+      },
+      {
+        "segment": "2",
+        "images": 115,
+        "mean_dice": 0.5762979280041053
+      },
+      {
+        "segment": "3",
+        "images": 137,
+        "mean_dice": 0.46309841639151633
+      },
+      {
+        "segment": "4",
+        "images": 133,
+        "mean_dice": 0.2708098666008754
+      },
+      {
+        "segment": "5",
+        "images": 211,
+        "mean_dice": 0.6462729663620586
+      },
+      {
+        "segment": "6",
+        "images": 228,
+        "mean_dice": 0.4667587069096314
+      },
+      {
+        "segment": "7",
+        "images": 195,
+        "mean_dice": 0.2456009777510873
+      },
+      {
+        "segment": "8",
+        "images": 154,
+        "mean_dice": 0.2536715423328633
+      },
+      {
+        "segment": "9",
+        "images": 124,
+        "mean_dice": 0.10910795082848487
+      },
+      {
+        "segment": "9a",
+        "images": 53,
+        "mean_dice": 0.013520495024397708
+      },
+      {
+        "segment": "10",
+        "images": 14,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "10a",
+        "images": 0,
+        "mean_dice": null
+      },
+      {
+        "segment": "11",
+        "images": 185,
+        "mean_dice": 0.4287871153719132
+      },
+      {
+        "segment": "12",
+        "images": 98,
+        "mean_dice": 0.019837748060891957
+      },
+      {
+        "segment": "12a",
+        "images": 198,
+        "mean_dice": 0.018934891082821585
+      },
+      {
+        "segment": "13",
+        "images": 164,
+        "mean_dice": 0.23735955151783875
+      },
+      {
+        "segment": "14",
+        "images": 136,
+        "mean_dice": 0.03272259482200237
+      },
+      {
+        "segment": "14a",
+        "images": 29,
+        "mean_dice": 0.0003619115324631877
+      },
+      {
+        "segment": "15",
+        "images": 31,
+        "mean_dice": 0.0076654000437481875
+      },
+      {
+        "segment": "16",
+        "images": 104,
+        "mean_dice": 0.3843020673205902
+      },
+      {
+        "segment": "16a",
+        "images": 52,
+        "mean_dice": 0.007910165241306211
+      },
+      {
+        "segment": "16b",
+        "images": 36,
+        "mean_dice": 0.013054891247522073
+      },
+      {
+        "segment": "16c",
+        "images": 25,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "12b",
+        "images": 71,
+        "mean_dice": 4.855478995170256e-05
+      },
+      {
+        "segment": "14b",
+        "images": 62,
+        "mean_dice": 0.04174949610564895
+      }
+    ]
+  },
+  "independent_kit": {
+    "dataset": "ARCADE coronary X-ray angiography",
+    "dataset_version": "c21bee6dc5bd0a4ef91711802b7a606cec4d6c08b686ed0af0db7f9c959486ba",
+    "evaluation_split": "test",
+    "model_checkpoint": "sha256:3a3882071f72192edaec39a3cfd2449faf6d93f367d11dccf3455ba8824ab0a0",
+    "prediction_source": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/kit_crosscheck_components/vessel_pairs.csv",
+    "n_rows": 298,
+    "results_kind": "computed_from_supplied_labeled_evidence",
+    "medtw_accuracy_target": ">0.95 is an objective, not an assumed result",
+    "task": "binary_segmentation",
+    "mean_dice": 0.6831018232210625,
+    "mean_iou": 0.5355465925548452,
+    "n_empty_reference_masks": 0,
+    "n_nonempty_reference_masks": 298,
+    "both_empty_convention": "Dice=1,IoU=1; must also report nonempty-only values",
+    "mean_dice_nonempty_reference": 0.6831018232210625,
+    "mean_iou_nonempty_reference": 0.5355465925548452
+  },
+  "evaluator_agreement": {
+    "vessel_dice_abs_difference": 0.0,
+    "vessel_iou_abs_difference": 0.0
+  },
+  "generated_by": "python -m ml_training.kit_crosscheck segmentation --model-id angiography_syntax_segmenter --component-rescore --update-artifacts"
+}

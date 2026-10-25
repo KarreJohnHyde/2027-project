@@ -1,0 +1,3096 @@
+{
+  "asset_id": "cardiac-anatomy-external-view-of-human-heart",
+  "relative_path": "cardiac_anatomy_external_view_of_human_heart.glb",
+  "source_group": "workspace_root",
+  "bytes": 121530008,
+  "sha256": "223f2bcb992bca9f36c5ae1093a5c5eb854ba9b14e243886fb3ae21827ed0556",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 46540
+      },
+      {
+        "type": "BIN",
+        "byteLength": 121483440
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.68.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "HannahNewey (https://sketchfab.com/HannahNewey)",
+      "license": "CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)",
+      "source": "https://sketchfab.com/3d-models/cardiac-anatomy-external-view-of-human-heart-a3f0ea2030214a6bbaa97e7357eebd58",
+      "title": "Cardiac Anatomy: External view of human heart"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 41,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 41
+    },
+    "draw_calls": 41,
+    "validator_triangle_count": 3003484,
+    "validator_vertex_count": 1780034
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 43,
+    "mesh_nodes": 41,
+    "meshes": 41,
+    "primitives": 41,
+    "materials": 1,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 3003484,
+    "rendered_triangles": 3003484,
+    "unique_vertices": 1780034,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 41,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 22628,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.42129,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.219165,
+        -0.481645,
+        -0.43159
+      ],
+      "max": [
+        0.478296,
+        0.560523,
+        0.837638
+      ],
+      "size": [
+        0.697461,
+        1.042168,
+        1.269228
+      ],
+      "center": [
+        0.129565,
+        0.039439,
+        0.203024
+      ],
+      "diagonal": 1.784238
+    },
+    "bounds_finite": true,
+    "tallest_axis": "z",
+    "aspect_ratio": 1.82,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Object_36",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 1,
+    "names": [
+      "defaultMat"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat",
+      "defaultMat"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 6426,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ",
+      "name": "SubTool-0-7412864.OBJ",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 41,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_2",
+      "name": "Object_2",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_0",
+      "material": "defaultMat",
+      "triangles": 1714,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.086216,
+          -0.256027,
+          -0.115022
+        ],
+        "max": [
+          0.268875,
+          0.070556,
+          0.167144
+        ],
+        "size": [
+          0.355091,
+          0.326583,
+          0.282166
+        ],
+        "center": [
+          0.09133,
+          -0.092735,
+          0.026061
+        ],
+        "diagonal": 0.558895
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_3",
+      "name": "Object_3",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_1",
+      "material": "defaultMat",
+      "triangles": 20480,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.085962,
+          -0.254208,
+          -0.115022
+        ],
+        "max": [
+          0.268916,
+          0.07069,
+          0.166185
+        ],
+        "size": [
+          0.354877,
+          0.324899,
+          0.281208
+        ],
+        "center": [
+          0.091477,
+          -0.091759,
+          0.025582
+        ],
+        "diagonal": 0.557292
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_4",
+      "name": "Object_4",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_2",
+      "material": "defaultMat",
+      "triangles": 6508,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.076096,
+          -0.245654,
+          -0.179829
+        ],
+        "max": [
+          0.370541,
+          0.019473,
+          0.142231
+        ],
+        "size": [
+          0.446636,
+          0.265126,
+          0.32206
+        ],
+        "center": [
+          0.147223,
+          -0.11309,
+          -0.018799
+        ],
+        "diagonal": 0.611145
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_5",
+      "name": "Object_5",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_3",
+      "material": "defaultMat",
+      "triangles": 45970,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.20912,
+          -0.126124,
+          -0.162369
+        ],
+        "max": [
+          0.399838,
+          0.074382,
+          -0.043906
+        ],
+        "size": [
+          0.190718,
+          0.200506,
+          0.118463
+        ],
+        "center": [
+          0.304479,
+          -0.025871,
+          -0.103137
+        ],
+        "diagonal": 0.301014
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_6",
+      "name": "Object_6",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_4",
+      "material": "defaultMat",
+      "triangles": 30438,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.117155,
+          -0.078314,
+          -0.205347
+        ],
+        "max": [
+          -0.008018,
+          0.046488,
+          -0.109713
+        ],
+        "size": [
+          0.109137,
+          0.124802,
+          0.095634
+        ],
+        "center": [
+          -0.062587,
+          -0.015913,
+          -0.15753
+        ],
+        "diagonal": 0.191396
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_7",
+      "name": "Object_7",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_5",
+      "material": "defaultMat",
+      "triangles": 23231,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.013669,
+          -0.115125,
+          -0.051089
+        ],
+        "max": [
+          0.140441,
+          0.067987,
+          0.128577
+        ],
+        "size": [
+          0.15411,
+          0.183112,
+          0.179666
+        ],
+        "center": [
+          0.063386,
+          -0.023569,
+          0.038744
+        ],
+        "diagonal": 0.299265
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_8",
+      "name": "Object_8",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_6",
+      "material": "defaultMat",
+      "triangles": 270,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.06206,
+          -0.136084,
+          -0.199843
+        ],
+        "max": [
+          0.014866,
+          0.523652,
+          -0.171436
+        ],
+        "size": [
+          0.076926,
+          0.659735,
+          0.028407
+        ],
+        "center": [
+          -0.023597,
+          0.193784,
+          -0.185639
+        ],
+        "diagonal": 0.664812
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_9",
+      "name": "Object_9",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_7",
+      "material": "defaultMat",
+      "triangles": 108196,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.205595,
+          -0.441015,
+          0.010747
+        ],
+        "max": [
+          0.477518,
+          0.1077,
+          0.777138
+        ],
+        "size": [
+          0.683113,
+          0.548715,
+          0.766391
+        ],
+        "center": [
+          0.135961,
+          -0.166657,
+          0.393943
+        ],
+        "diagonal": 1.164082
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_10",
+      "name": "Object_10",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_8",
+      "material": "defaultMat",
+      "triangles": 109475,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.187277,
+          -0.45092,
+          0.002485
+        ],
+        "max": [
+          0.478296,
+          0.108396,
+          0.777028
+        ],
+        "size": [
+          0.665572,
+          0.559315,
+          0.774543
+        ],
+        "center": [
+          0.14551,
+          -0.171262,
+          0.389756
+        ],
+        "diagonal": 1.164361
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_11",
+      "name": "Object_11",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_9",
+      "material": "defaultMat",
+      "triangles": 38083,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.205595,
+          -0.460076,
+          0.150903
+        ],
+        "max": [
+          0.476263,
+          0.108442,
+          0.776672
+        ],
+        "size": [
+          0.681858,
+          0.568518,
+          0.625769
+        ],
+        "center": [
+          0.135334,
+          -0.175817,
+          0.463788
+        ],
+        "diagonal": 1.086154
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_12",
+      "name": "Object_12",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_10",
+      "material": "defaultMat",
+      "triangles": 26063,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.116567,
+          -0.204995,
+          -0.175287
+        ],
+        "max": [
+          0.010176,
+          -0.068989,
+          -0.079775
+        ],
+        "size": [
+          0.126744,
+          0.136005,
+          0.095512
+        ],
+        "center": [
+          -0.053196,
+          -0.136992,
+          -0.127531
+        ],
+        "diagonal": 0.209007
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_13",
+      "name": "Object_13",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_11",
+      "material": "defaultMat",
+      "triangles": 48214,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.213809,
+          -0.209402,
+          -0.140855
+        ],
+        "max": [
+          0.415242,
+          -0.064281,
+          -0.043694
+        ],
+        "size": [
+          0.201433,
+          0.145121,
+          0.097161
+        ],
+        "center": [
+          0.314525,
+          -0.136841,
+          -0.092275
+        ],
+        "diagonal": 0.2666
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_14",
+      "name": "Object_14",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_12",
+      "material": "defaultMat",
+      "triangles": 122364,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.072266,
+          -0.045651,
+          -0.065287
+        ],
+        "max": [
+          0.377029,
+          0.175124,
+          0.175744
+        ],
+        "size": [
+          0.304764,
+          0.220776,
+          0.241031
+        ],
+        "center": [
+          0.224647,
+          0.064736,
+          0.055229
+        ],
+        "diagonal": 0.446899
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_15",
+      "name": "Object_15",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_13",
+      "material": "defaultMat",
+      "triangles": 27634,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.072678,
+          -0.045589,
+          -0.053786
+        ],
+        "max": [
+          0.377048,
+          0.175124,
+          0.174149
+        ],
+        "size": [
+          0.30437,
+          0.220714,
+          0.227935
+        ],
+        "center": [
+          0.224863,
+          0.064767,
+          0.060182
+        ],
+        "diagonal": 0.439671
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_16",
+      "name": "Object_16",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_14",
+      "material": "defaultMat",
+      "triangles": 117497,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.219165,
+          -0.481645,
+          -0.20488
+        ],
+        "max": [
+          0.067513,
+          0.559799,
+          0.292151
+        ],
+        "size": [
+          0.286679,
+          1.041444,
+          0.497031
+        ],
+        "center": [
+          -0.075826,
+          0.039077,
+          0.043635
+        ],
+        "diagonal": 1.189045
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_17",
+      "name": "Object_17",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_15",
+      "material": "defaultMat",
+      "triangles": 115964,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.200541,
+          -0.48087,
+          -0.204259
+        ],
+        "max": [
+          0.066984,
+          0.560523,
+          0.292227
+        ],
+        "size": [
+          0.267525,
+          1.041393,
+          0.496486
+        ],
+        "center": [
+          -0.066779,
+          0.039827,
+          0.043984
+        ],
+        "diagonal": 1.184301
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_18",
+      "name": "Object_18",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_16",
+      "material": "defaultMat",
+      "triangles": 104313,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.219117,
+          -0.478182,
+          -0.161528
+        ],
+        "max": [
+          0.068079,
+          0.560523,
+          0.292227
+        ],
+        "size": [
+          0.287196,
+          1.038705,
+          0.453755
+        ],
+        "center": [
+          -0.075519,
+          0.041171,
+          0.06535
+        ],
+        "diagonal": 1.169309
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_19",
+      "name": "Object_19",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_17",
+      "material": "defaultMat",
+      "triangles": 9228,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.163644,
+          -0.481336,
+          -0.109247
+        ],
+        "max": [
+          0.059859,
+          0.536329,
+          0.08367
+        ],
+        "size": [
+          0.223504,
+          1.017665,
+          0.192917
+        ],
+        "center": [
+          -0.051892,
+          0.027496,
+          -0.012788
+        ],
+        "diagonal": 1.059628
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_20",
+      "name": "Object_20",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_18",
+      "material": "defaultMat",
+      "triangles": 108439,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.197319,
+          -0.445206,
+          0.028157
+        ],
+        "max": [
+          0.469361,
+          0.174136,
+          0.837638
+        ],
+        "size": [
+          0.666679,
+          0.619342,
+          0.809481
+        ],
+        "center": [
+          0.136021,
+          -0.135535,
+          0.432897
+        ],
+        "diagonal": 1.21791
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_21",
+      "name": "Object_21",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_19",
+      "material": "defaultMat",
+      "triangles": 110322,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.192497,
+          -0.457778,
+          0.038342
+        ],
+        "max": [
+          0.4694,
+          0.174136,
+          0.758626
+        ],
+        "size": [
+          0.661897,
+          0.631914,
+          0.720284
+        ],
+        "center": [
+          0.138451,
+          -0.141821,
+          0.398484
+        ],
+        "diagonal": 1.164574
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_22",
+      "name": "Object_22",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_20",
+      "material": "defaultMat",
+      "triangles": 105705,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.196829,
+          -0.457728,
+          0.22172
+        ],
+        "max": [
+          0.469157,
+          0.169211,
+          0.837638
+        ],
+        "size": [
+          0.665986,
+          0.62694,
+          0.615918
+        ],
+        "center": [
+          0.136164,
+          -0.144259,
+          0.529679
+        ],
+        "diagonal": 1.102699
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_23",
+      "name": "Object_23",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_21",
+      "material": "defaultMat",
+      "triangles": 19536,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.151126,
+          -0.45413,
+          0.145551
+        ],
+        "max": [
+          0.469237,
+          0.172757,
+          0.37732
+        ],
+        "size": [
+          0.620364,
+          0.626888,
+          0.231768
+        ],
+        "center": [
+          0.159056,
+          -0.140687,
+          0.261436
+        ],
+        "diagonal": 0.911897
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_24",
+      "name": "Object_24",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_22",
+      "material": "defaultMat",
+      "triangles": 4732,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.033382,
+          -0.083632,
+          -0.189688
+        ],
+        "max": [
+          0.051314,
+          0.040174,
+          -0.145676
+        ],
+        "size": [
+          0.084696,
+          0.123807,
+          0.044012
+        ],
+        "center": [
+          0.008966,
+          -0.021729,
+          -0.167682
+        ],
+        "diagonal": 0.156328
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_25",
+      "name": "Object_25",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_23",
+      "material": "defaultMat",
+      "triangles": 4665,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.079649,
+          -0.154168,
+          -0.174965
+        ],
+        "max": [
+          0.362296,
+          -0.069071,
+          -0.03682
+        ],
+        "size": [
+          0.441945,
+          0.085097,
+          0.138145
+        ],
+        "center": [
+          0.141323,
+          -0.111619,
+          -0.105893
+        ],
+        "diagonal": 0.470787
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_26",
+      "name": "Object_26",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_24",
+      "material": "defaultMat",
+      "triangles": 123624,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.078466,
+          -0.313158,
+          -0.1796
+        ],
+        "max": [
+          0.335417,
+          0.075903,
+          0.167144
+        ],
+        "size": [
+          0.413882,
+          0.389061,
+          0.346744
+        ],
+        "center": [
+          0.128475,
+          -0.118628,
+          -0.006228
+        ],
+        "diagonal": 0.665506
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_27",
+      "name": "Object_27",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_25",
+      "material": "defaultMat",
+      "triangles": 98253,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.092698,
+          -0.313115,
+          -0.178078
+        ],
+        "max": [
+          0.389513,
+          0.076075,
+          0.158841
+        ],
+        "size": [
+          0.48221,
+          0.38919,
+          0.336919
+        ],
+        "center": [
+          0.148408,
+          -0.11852,
+          -0.009618
+        ],
+        "diagonal": 0.705344
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_28",
+      "name": "Object_28",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_26",
+      "material": "defaultMat",
+      "triangles": 115697,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.013469,
+          0.038209,
+          -0.43159
+        ],
+        "max": [
+          0.455165,
+          0.517271,
+          0.200231
+        ],
+        "size": [
+          0.468634,
+          0.479062,
+          0.631821
+        ],
+        "center": [
+          0.220848,
+          0.27774,
+          -0.115679
+        ],
+        "diagonal": 0.921041
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_29",
+      "name": "Object_29",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_27",
+      "material": "defaultMat",
+      "triangles": 120732,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.003638,
+          0.048375,
+          -0.431553
+        ],
+        "max": [
+          0.473537,
+          0.493253,
+          0.115995
+        ],
+        "size": [
+          0.477175,
+          0.444877,
+          0.547548
+        ],
+        "center": [
+          0.23495,
+          0.270814,
+          -0.157779
+        ],
+        "diagonal": 0.851716
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_30",
+      "name": "Object_30",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_28",
+      "material": "defaultMat",
+      "triangles": 112261,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.046281,
+          0.013158,
+          -0.345079
+        ],
+        "max": [
+          0.451447,
+          0.517302,
+          0.167188
+        ],
+        "size": [
+          0.497728,
+          0.504144,
+          0.512267
+        ],
+        "center": [
+          0.202583,
+          0.26523,
+          -0.088945
+        ],
+        "diagonal": 0.874249
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_31",
+      "name": "Object_31",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_29",
+      "material": "defaultMat",
+      "triangles": 116863,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.046069,
+          0.012069,
+          -0.137385
+        ],
+        "max": [
+          0.3241,
+          0.493136,
+          0.200268
+        ],
+        "size": [
+          0.370168,
+          0.481067,
+          0.337653
+        ],
+        "center": [
+          0.139015,
+          0.252602,
+          0.031442
+        ],
+        "diagonal": 0.694593
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_32",
+      "name": "Object_32",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_30",
+      "material": "defaultMat",
+      "triangles": 3841,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.038093,
+          0.271899,
+          -0.187955
+        ],
+        "max": [
+          0.345374,
+          0.507308,
+          -0.064135
+        ],
+        "size": [
+          0.307281,
+          0.235409,
+          0.123819
+        ],
+        "center": [
+          0.191734,
+          0.389604,
+          -0.126045
+        ],
+        "diagonal": 0.406411
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_33",
+      "name": "Object_33",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_31",
+      "material": "defaultMat",
+      "triangles": 120482,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.066149,
+          0.09238,
+          -0.193232
+        ],
+        "max": [
+          0.403874,
+          0.317223,
+          0.224847
+        ],
+        "size": [
+          0.337724,
+          0.224843,
+          0.418079
+        ],
+        "center": [
+          0.235012,
+          0.204801,
+          0.015807
+        ],
+        "diagonal": 0.582582
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_34",
+      "name": "Object_34",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_32",
+      "material": "defaultMat",
+      "triangles": 111648,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.133789,
+          -0.220694,
+          -0.16097
+        ],
+        "max": [
+          0.400337,
+          0.317367,
+          0.808522
+        ],
+        "size": [
+          0.534126,
+          0.538061,
+          0.969492
+        ],
+        "center": [
+          0.133274,
+          0.048337,
+          0.323776
+        ],
+        "diagonal": 1.230737
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_35",
+      "name": "Object_35",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_33",
+      "material": "defaultMat",
+      "triangles": 109091,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.178076,
+          -0.304782,
+          -0.077257
+        ],
+        "max": [
+          0.383076,
+          0.317342,
+          0.819709
+        ],
+        "size": [
+          0.561152,
+          0.622124,
+          0.896966
+        ],
+        "center": [
+          0.1025,
+          0.00628,
+          0.371226
+        ],
+        "diagonal": 1.227386
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_36",
+      "name": "Object_36",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_34",
+      "material": "defaultMat",
+      "triangles": 113440,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.178247,
+          -0.424677,
+          -0.056058
+        ],
+        "max": [
+          0.393662,
+          0.313131,
+          0.82351
+        ],
+        "size": [
+          0.571909,
+          0.737809,
+          0.879568
+        ],
+        "center": [
+          0.107708,
+          -0.055773,
+          0.383726
+        ],
+        "diagonal": 1.282607
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_37",
+      "name": "Object_37",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_35",
+      "material": "defaultMat",
+      "triangles": 103765,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.178051,
+          -0.438239,
+          -0.044602
+        ],
+        "max": [
+          0.417917,
+          0.317364,
+          0.703811
+        ],
+        "size": [
+          0.595968,
+          0.755603,
+          0.748413
+        ],
+        "center": [
+          0.119933,
+          -0.060438,
+          0.329604
+        ],
+        "diagonal": 1.219113
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_38",
+      "name": "Object_38",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_36",
+      "material": "defaultMat",
+      "triangles": 100899,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.178237,
+          -0.45074,
+          0.030596
+        ],
+        "max": [
+          0.450487,
+          0.316543,
+          0.832819
+        ],
+        "size": [
+          0.628724,
+          0.767283,
+          0.802222
+        ],
+        "center": [
+          0.136125,
+          -0.067098,
+          0.431707
+        ],
+        "diagonal": 1.275765
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_39",
+      "name": "Object_39",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_37",
+      "material": "defaultMat",
+      "triangles": 101816,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.178252,
+          -0.449724,
+          0.092815
+        ],
+        "max": [
+          0.460307,
+          0.307654,
+          0.832829
+        ],
+        "size": [
+          0.63856,
+          0.757377,
+          0.740014
+        ],
+        "center": [
+          0.141027,
+          -0.071035,
+          0.462822
+        ],
+        "diagonal": 1.236527
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_40",
+      "name": "Object_40",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_38",
+      "material": "defaultMat",
+      "triangles": 113788,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.177117,
+          -0.45069,
+          0.225196
+        ],
+        "max": [
+          0.460078,
+          0.151297,
+          0.814323
+        ],
+        "size": [
+          0.637196,
+          0.601987,
+          0.589127
+        ],
+        "center": [
+          0.14148,
+          -0.149696,
+          0.519759
+        ],
+        "diagonal": 1.056162
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_41",
+      "name": "Object_41",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_39",
+      "material": "defaultMat",
+      "triangles": 92025,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.177335,
+          -0.45076,
+          0.280331
+        ],
+        "max": [
+          0.458211,
+          0.200667,
+          0.832603
+        ],
+        "size": [
+          0.635546,
+          0.651427,
+          0.552271
+        ],
+        "center": [
+          0.140438,
+          -0.125047,
+          0.556467
+        ],
+        "diagonal": 1.064556
+      }
+    },
+    {
+      "path": "Sketchfab_model/SubTool-0-7412864.OBJ/Object_42",
+      "name": "Object_42",
+      "semantic_name": "defaultMat",
+      "depth": 2,
+      "mesh": "Object_40",
+      "material": "defaultMat",
+      "triangles": 36218,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.178252,
+          -0.45074,
+          0.183557
+        ],
+        "max": [
+          0.460211,
+          0.281227,
+          0.524594
+        ],
+        "size": [
+          0.638463,
+          0.731966,
+          0.341037
+        ],
+        "center": [
+          0.140979,
+          -0.084756,
+          0.354076
+        ],
+        "diagonal": 1.029425
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 1927,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 1714,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1663,
+            "connected_components": 147,
+            "boundary_edge_fraction": 0.40805,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 1714,
+      "points": 0,
+      "lines": 0,
+      "vertices": 1927
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 10992,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 20480,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 10771,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.03398,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 20480,
+      "points": 0,
+      "lines": 0,
+      "vertices": 10992
+    },
+    {
+      "name": "Object_2",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 3697,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 6508,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 3692,
+            "connected_components": 12,
+            "boundary_edge_fraction": 0.08363,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 6508,
+      "points": 0,
+      "lines": 0,
+      "vertices": 3697
+    },
+    {
+      "name": "Object_3",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 23551,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 45970,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 23327,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0.00984,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 45970,
+      "points": 0,
+      "lines": 0,
+      "vertices": 23551
+    },
+    {
+      "name": "Object_4",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 15639,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 30438,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 15489,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.01176,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 30438,
+      "points": 0,
+      "lines": 0,
+      "vertices": 15639
+    },
+    {
+      "name": "Object_5",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 11896,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 23231,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 11882,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.01512,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 23231,
+      "points": 0,
+      "lines": 0,
+      "vertices": 11896
+    },
+    {
+      "name": "Object_6",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 198,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 270,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 198,
+            "connected_components": 4,
+            "boundary_edge_fraction": 0.25431,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 270,
+      "points": 0,
+      "lines": 0,
+      "vertices": 198
+    },
+    {
+      "name": "Object_7",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 108196,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 63600,
+            "connected_components": 12,
+            "boundary_edge_fraction": 0.12934,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 108196,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_8",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65533,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 109475,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 64137,
+            "connected_components": 729,
+            "boundary_edge_fraction": 0.10495,
+            "non_manifold_edge_fraction": 0.00006,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 109475,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65533
+    },
+    {
+      "name": "Object_9",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 28397,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 38083,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 27933,
+            "connected_components": 1452,
+            "boundary_edge_fraction": 0.2304,
+            "non_manifold_edge_fraction": 0.00006,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 38083,
+      "points": 0,
+      "lines": 0,
+      "vertices": 28397
+    },
+    {
+      "name": "Object_10",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 13376,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 26063,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 13351,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.01626,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 26063,
+      "points": 0,
+      "lines": 0,
+      "vertices": 13376
+    },
+    {
+      "name": "Object_11",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 24664,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 48214,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 24473,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.0101,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 48214,
+      "points": 0,
+      "lines": 0,
+      "vertices": 24664
+    },
+    {
+      "name": "Object_12",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 122364,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65169,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.05688,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 122364,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_13",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 20457,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 27634,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 20457,
+            "connected_components": 1267,
+            "boundary_edge_fraction": 0.2295,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 27634,
+      "points": 0,
+      "lines": 0,
+      "vertices": 20457
+    },
+    {
+      "name": "Object_14",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 117497,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65093,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.08485,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 117497,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_15",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 115964,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65506,
+            "connected_components": 105,
+            "boundary_edge_fraction": 0.0943,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 115964,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_16",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 104313,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65411,
+            "connected_components": 1896,
+            "boundary_edge_fraction": 0.13711,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 104313,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_17",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 7669,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 9228,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 7660,
+            "connected_components": 591,
+            "boundary_edge_fraction": 0.30128,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 9228,
+      "points": 0,
+      "lines": 0,
+      "vertices": 7669
+    },
+    {
+      "name": "Object_18",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 108439,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 63663,
+            "connected_components": 8,
+            "boundary_edge_fraction": 0.12504,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 108439,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_19",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 110322,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 64136,
+            "connected_components": 379,
+            "boundary_edge_fraction": 0.10755,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 110322,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_20",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 105705,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 63781,
+            "connected_components": 1300,
+            "boundary_edge_fraction": 0.11529,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 105705,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_21",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 14007,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 19536,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 13728,
+            "connected_components": 633,
+            "boundary_edge_fraction": 0.20392,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 19536,
+      "points": 0,
+      "lines": 0,
+      "vertices": 14007
+    },
+    {
+      "name": "Object_22",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 2525,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 4732,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 2525,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0.04328,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 4732,
+      "points": 0,
+      "lines": 0,
+      "vertices": 2525
+    },
+    {
+      "name": "Object_23",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 2705,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 4665,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 2683,
+            "connected_components": 7,
+            "boundary_edge_fraction": 0.09358,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 4665,
+      "points": 0,
+      "lines": 0,
+      "vertices": 2705
+    },
+    {
+      "name": "Object_24",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 123624,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65521,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.04803,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 123624,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_25",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 55019,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 98253,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 54937,
+            "connected_components": 780,
+            "boundary_edge_fraction": 0.0661,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 98253,
+      "points": 0,
+      "lines": 0,
+      "vertices": 55019
+    },
+    {
+      "name": "Object_26",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 115697,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65226,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.10045,
+            "non_manifold_edge_fraction": 0.00001,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 115697,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_27",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 120732,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65258,
+            "connected_components": 247,
+            "boundary_edge_fraction": 0.05694,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 120732,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_28",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 112261,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65476,
+            "connected_components": 1213,
+            "boundary_edge_fraction": 0.10034,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 112261,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_29",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65533,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 116863,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 64924,
+            "connected_components": 1243,
+            "boundary_edge_fraction": 0.05863,
+            "non_manifold_edge_fraction": 0.00001,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 116863,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65533
+    },
+    {
+      "name": "Object_30",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 3894,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 3841,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 3894,
+            "connected_components": 436,
+            "boundary_edge_fraction": 0.42129,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 3841,
+      "points": 0,
+      "lines": 0,
+      "vertices": 3894
+    },
+    {
+      "name": "Object_31",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 120482,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65180,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.06794,
+            "non_manifold_edge_fraction": 0.00001,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 120482,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_32",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 111648,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65473,
+            "connected_components": 466,
+            "boundary_edge_fraction": 0.11917,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 111648,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_33",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 109091,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65532,
+            "connected_components": 359,
+            "boundary_edge_fraction": 0.14115,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 109091,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_34",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 113440,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65531,
+            "connected_components": 258,
+            "boundary_edge_fraction": 0.11193,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 113440,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_35",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 103765,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65503,
+            "connected_components": 1464,
+            "boundary_edge_fraction": 0.1528,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 103765,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_36",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 100899,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65532,
+            "connected_components": 1009,
+            "boundary_edge_fraction": 0.18381,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 100899,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_37",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 101816,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65504,
+            "connected_components": 838,
+            "boundary_edge_fraction": 0.17544,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 101816,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_38",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 113788,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65532,
+            "connected_components": 100,
+            "boundary_edge_fraction": 0.1073,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 113788,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_39",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 92025,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 65532,
+            "connected_components": 3194,
+            "boundary_edge_fraction": 0.21371,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 92025,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_40",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 32183,
+          "indexed": true,
+          "attributes": [
+            "COLOR_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "defaultMat",
+          "morph_targets": 0,
+          "triangles": 36218,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 32183,
+            "connected_components": 2465,
+            "boundary_edge_fraction": 0.35213,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 36218,
+      "points": 0,
+      "lines": 0,
+      "vertices": 32183
+    }
+  ],
+  "materials": [
+    {
+      "name": "defaultMat",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": []
+}

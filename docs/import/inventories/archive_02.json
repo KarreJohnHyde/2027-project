@@ -1,0 +1,50 @@
+{
+  "listed_name": "archive (2).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (2).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "882817250048c78ef7a759cf23e540d7b581f2327b16663c9d3db12f5d2ffdb4",
+  "size_bytes": 164670110,
+  "entries": 7200,
+  "files": 7200,
+  "directories": 0,
+  "uncompressed_bytes": 167848957,
+  "overall_ratio": 1.03,
+  "max_entry_ratio": 1.7,
+  "project_copy": "D:\\project\\archive (2).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (7200 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 7200
+  },
+  "extensions": {
+    ".jpg": 7200
+  },
+  "top_level": {
+    "Training/": 5600,
+    "Testing/": 1600
+  },
+  "second_level": {
+    "Training/glioma/": 1400,
+    "Training/meningioma/": 1400,
+    "Training/notumor/": 1400,
+    "Training/pituitary/": 1400,
+    "Testing/glioma/": 400,
+    "Testing/meningioma/": 400,
+    "Testing/notumor/": 400,
+    "Testing/pituitary/": 400
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_02.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 17.4,
+  "notes": []
+}

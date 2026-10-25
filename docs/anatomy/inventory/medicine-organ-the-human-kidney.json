@@ -1,0 +1,315 @@
+{
+  "asset_id": "medicine-organ-the-human-kidney",
+  "relative_path": "medicine_organ_-_the_human_kidney.glb",
+  "source_group": "workspace_root",
+  "bytes": 27217072,
+  "sha256": "b1e039ea17c4fe99a04baf7814f4e6b99408d83d36fc09ad7617657d5a1ebc83",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 3368
+      },
+      {
+        "type": "BIN",
+        "byteLength": 27213676
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-15.17.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "Safiya (https://sketchfab.com/thepersonS)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/medicine-organ-the-human-kidney-54bd93f545064617bbef79013efd2192",
+      "title": "Medicine: Organ - The human kidney"
+    },
+    "extensions_used": [
+      "KHR_materials_specular"
+    ],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 1,
+    "validator_triangle_count": 7413,
+    "validator_vertex_count": 4509
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 5,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 1,
+    "textures": 3,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 7413,
+    "rendered_triangles": 7413,
+    "unique_vertices": 4509,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 5,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.01207,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.014221,
+        -0.011488,
+        -0.005779
+      ],
+      "max": [
+        0.006909,
+        0.014496,
+        0.005788
+      ],
+      "size": [
+        0.02113,
+        0.025984,
+        0.011567
+      ],
+      "center": [
+        -0.003656,
+        0.001504,
+        0.000004
+      ],
+      "diagonal": 0.035433
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 2.246,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2_M_Kidney_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 1,
+    "names": [
+      "M_Kidney"
+    ]
+  },
+  "textures_summary": {
+    "count": 3,
+    "total_bytes": 26908287,
+    "max_edge_px": 4096,
+    "mime_types": [
+      "image/jpeg",
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2_M_Kidney_0"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2_M_Kidney_0"
+    ]
+  },
+  "inspection_ms": 129,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Kidney_FBX.fbx",
+      "name": "Kidney_FBX.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Kidney_FBX.fbx/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Kidney_FBX.fbx/RootNode/Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2",
+      "name": "Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2",
+      "semantic_name": "Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Kidney_FBX.fbx/RootNode/Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2/Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2_M_Kidney_0",
+      "name": "Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2_M_Kidney_0",
+      "semantic_name": "Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2_M_Kidney_0",
+      "depth": 4,
+      "mesh": "Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2_M_Kidney_0",
+      "material": "M_Kidney",
+      "triangles": 7413,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.014221,
+          -0.011488,
+          -0.005779
+        ],
+        "max": [
+          0.006909,
+          0.014496,
+          0.005788
+        ],
+        "size": [
+          0.02113,
+          0.025984,
+          0.011567
+        ],
+        "center": [
+          -0.003656,
+          0.001504,
+          0.000004
+        ],
+        "diagonal": 0.035433
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Kidney_OBJ:textureEditorIsolateSelectSetKidneyAll_L2_M_Kidney_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 4509,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "M_Kidney",
+          "morph_targets": 0,
+          "triangles": 7413,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 3765,
+            "connected_components": 5,
+            "boundary_edge_fraction": 0.01207,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 7413,
+      "points": 0,
+      "lines": 0,
+      "vertices": 4509
+    }
+  ],
+  "materials": [
+    {
+      "name": "M_Kidney",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_specular"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 2718775,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 7601714,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 16587798,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    }
+  ]
+}

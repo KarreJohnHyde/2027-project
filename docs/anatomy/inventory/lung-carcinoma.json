@@ -1,0 +1,457 @@
+{
+  "asset_id": "lung-carcinoma",
+  "relative_path": "lung_carcinoma.glb",
+  "source_group": "workspace_root",
+  "bytes": 6524460,
+  "sha256": "fa43f86c3c6ce080f422426e07c88f239be4d3e4ef95c49c14e5f1be91bb290a",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 3600
+      },
+      {
+        "type": "BIN",
+        "byteLength": 6520832
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.67.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "Brandon Holt (https://sketchfab.com/BrandonHolt)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/lung-carcinoma-8812aa5f0fc545379148024c370e51e5",
+      "title": "Lung Carcinoma"
+    },
+    "extensions_used": [
+      "KHR_materials_clearcoat"
+    ],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 4,
+    "validator_triangle_count": 233992,
+    "validator_vertex_count": 154717
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 6,
+    "mesh_nodes": 4,
+    "meshes": 4,
+    "primitives": 4,
+    "materials": 1,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 233992,
+    "rendered_triangles": 233992,
+    "unique_vertices": 154717,
+    "points": 0,
+    "primitive_modes": [
+      "LINES",
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 4,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 3,
+    "topology_skipped_primitives": 1,
+    "connected_components_measured": 3009,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.32995,
+    "degenerate_triangles_measured": 44,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -127.237999,
+        -1.275299,
+        -286.481903
+      ],
+      "max": [
+        141.906998,
+        305.753706,
+        -85.258841
+      ],
+      "size": [
+        269.144997,
+        307.029005,
+        201.223062
+      ],
+      "center": [
+        7.334499,
+        152.239203,
+        -185.870372
+      ],
+      "diagonal": 455.188488
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 1.526,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 1,
+    "largest_mesh_node": "Object_3",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 1,
+    "names": [
+      "mtl1"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Model_3.obj.cleaner.materialmerger.gles",
+      "Model_3.obj.cleaner.materialmerger.gles",
+      "Model_3.obj.cleaner.materialmerger.gles",
+      "Model_3.obj.cleaner.materialmerger.gles"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 399,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Model_3.obj.cleaner.materialmerger.gles",
+      "name": "Model_3.obj.cleaner.materialmerger.gles",
+      "semantic_name": "Model_3.obj.cleaner.materialmerger.gles",
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 4,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Model_3.obj.cleaner.materialmerger.gles/Object_2",
+      "name": "Object_2",
+      "semantic_name": "Model_3.obj.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_0",
+      "material": "mtl1",
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -71.300102,
+          49.037126,
+          -239.69705
+        ],
+        "max": [
+          58.250401,
+          194.705238,
+          -156.049786
+        ],
+        "size": [
+          129.550503,
+          145.668112,
+          83.647263
+        ],
+        "center": [
+          -6.524851,
+          121.871182,
+          -197.873418
+        ],
+        "diagonal": 212.130611
+      }
+    },
+    {
+      "path": "Sketchfab_model/Model_3.obj.cleaner.materialmerger.gles/Object_3",
+      "name": "Object_3",
+      "semantic_name": "Model_3.obj.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_1",
+      "material": "mtl1",
+      "triangles": 110364,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -127.049004,
+          -1.275299,
+          -286.449525
+        ],
+        "max": [
+          141.302994,
+          305.753706,
+          -85.258841
+        ],
+        "size": [
+          268.351997,
+          307.029005,
+          201.190684
+        ],
+        "center": [
+          7.126995,
+          152.239203,
+          -185.854183
+        ],
+        "diagonal": 454.705724
+      }
+    },
+    {
+      "path": "Sketchfab_model/Model_3.obj.cleaner.materialmerger.gles/Object_4",
+      "name": "Object_4",
+      "semantic_name": "Model_3.obj.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_2",
+      "material": "mtl1",
+      "triangles": 99401,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -127.237999,
+          1.918897,
+          -286.212105
+        ],
+        "max": [
+          141.906998,
+          229.327228,
+          -86.039529
+        ],
+        "size": [
+          269.144997,
+          227.408331,
+          200.172576
+        ],
+        "center": [
+          7.334499,
+          115.623062,
+          -186.125817
+        ],
+        "diagonal": 405.243925
+      }
+    },
+    {
+      "path": "Sketchfab_model/Model_3.obj.cleaner.materialmerger.gles/Object_5",
+      "name": "Object_5",
+      "semantic_name": "Model_3.obj.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_3",
+      "material": "mtl1",
+      "triangles": 24227,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -126.843002,
+          -1.078852,
+          -286.481903
+        ],
+        "max": [
+          141.660995,
+          153.137586,
+          -85.444529
+        ],
+        "size": [
+          268.503998,
+          154.216439,
+          201.037373
+        ],
+        "center": [
+          7.408997,
+          76.029367,
+          -185.963216
+        ],
+        "diagonal": 369.178998
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "mode": "LINES",
+          "vertex_count": 42,
+          "indexed": true,
+          "attributes": [
+            "POSITION"
+          ],
+          "has_normals": false,
+          "has_uv": false,
+          "material": "mtl1",
+          "morph_targets": 0,
+          "triangles": 0,
+          "points": 0,
+          "lines": 28,
+          "topology": {
+            "status": "NOT_TRIANGLES"
+          }
+        }
+      ],
+      "triangles": 0,
+      "points": 0,
+      "lines": 28,
+      "vertices": 42
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1",
+          "morph_targets": 0,
+          "triangles": 110364,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 63003,
+            "connected_components": 4,
+            "boundary_edge_fraction": 0.11677,
+            "non_manifold_edge_fraction": 0.00005,
+            "degenerate_triangles": 6,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 110364,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_2",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1",
+          "morph_targets": 0,
+          "triangles": 99401,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 60495,
+            "connected_components": 1103,
+            "boundary_edge_fraction": 0.13504,
+            "non_manifold_edge_fraction": 0.00012,
+            "degenerate_triangles": 22,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 99401,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Object_3",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 23611,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "mtl1",
+          "morph_targets": 0,
+          "triangles": 24227,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 21189,
+            "connected_components": 1902,
+            "boundary_edge_fraction": 0.32995,
+            "non_manifold_edge_fraction": 0.00018,
+            "degenerate_triangles": 16,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 24227,
+      "points": 0,
+      "lines": 0,
+      "vertices": 23611
+    }
+  ],
+  "materials": [
+    {
+      "name": "mtl1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_clearcoat"
+      ]
+    }
+  ],
+  "textures": []
+}

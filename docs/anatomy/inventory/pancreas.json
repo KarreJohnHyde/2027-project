@@ -1,0 +1,437 @@
+{
+  "asset_id": "pancreas",
+  "relative_path": "pancreas.glb",
+  "source_group": "workspace_root",
+  "bytes": 13460880,
+  "sha256": "ad47608b139fd7aed2232686c1390606f8a31fdfdc84084bd2b2126099125d5d",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 4180
+      },
+      {
+        "type": "BIN",
+        "byteLength": 13456672
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-15.55.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "CAPTAAINRO (https://sketchfab.com/CAPTAAINRO)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/pancreas-393c64c5d3644a5ea9a598354ce6e749",
+      "title": "Pancreas"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {},
+    "draw_calls": 3,
+    "validator_triangle_count": 280466,
+    "validator_vertex_count": 173354
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 5,
+    "mesh_nodes": 3,
+    "meshes": 3,
+    "primitives": 3,
+    "materials": 3,
+    "textures": 1,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 280466,
+    "rendered_triangles": 280466,
+    "unique_vertices": 173354,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 3,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 512,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.05259,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -13.8057,
+        -7.53511,
+        -4.0691
+      ],
+      "max": [
+        11.403853,
+        6.831385,
+        3.554896
+      ],
+      "size": [
+        25.209554,
+        14.366495,
+        7.623996
+      ],
+      "center": [
+        -1.200923,
+        -0.351863,
+        -0.257102
+      ],
+      "diagonal": 30.000718
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 3.307,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Object_3",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 3,
+    "names": [
+      "object_0",
+      "object_1",
+      "object_2"
+    ]
+  },
+  "textures_summary": {
+    "count": 1,
+    "total_bytes": 4543751,
+    "max_edge_px": 4096,
+    "mime_types": [
+      "image/jpeg"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "model.obj.cleaner.materialmerger.gles",
+      "model.obj.cleaner.materialmerger.gles",
+      "model.obj.cleaner.materialmerger.gles"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 447,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/model.obj.cleaner.materialmerger.gles",
+      "name": "model.obj.cleaner.materialmerger.gles",
+      "semantic_name": "model.obj.cleaner.materialmerger.gles",
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 3,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/model.obj.cleaner.materialmerger.gles/Object_2",
+      "name": "Object_2",
+      "semantic_name": "model.obj.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_0",
+      "material": "object_0",
+      "triangles": 110648,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -13.8057,
+          -5.77125,
+          -4.0691
+        ],
+        "max": [
+          2.441602,
+          6.831385,
+          3.554896
+        ],
+        "size": [
+          16.247303,
+          12.602634,
+          7.623996
+        ],
+        "center": [
+          -5.682049,
+          0.530067,
+          -0.257102
+        ],
+        "diagonal": 21.930038
+      }
+    },
+    {
+      "path": "Sketchfab_model/model.obj.cleaner.materialmerger.gles/Object_3",
+      "name": "Object_3",
+      "semantic_name": "model.obj.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_1",
+      "material": "object_1",
+      "triangles": 101763,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -11.563022,
+          -7.53511,
+          -2.056711
+        ],
+        "max": [
+          11.403084,
+          6.310075,
+          3.471134
+        ],
+        "size": [
+          22.966105,
+          13.845185,
+          5.527845
+        ],
+        "center": [
+          -0.079969,
+          -0.612518,
+          0.707211
+        ],
+        "diagonal": 27.380435
+      }
+    },
+    {
+      "path": "Sketchfab_model/model.obj.cleaner.materialmerger.gles/Object_4",
+      "name": "Object_4",
+      "semantic_name": "model.obj.cleaner.materialmerger.gles",
+      "depth": 2,
+      "mesh": "Object_2",
+      "material": "object_2",
+      "triangles": 68055,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -11.809985,
+          -5.769935,
+          -2.443646
+        ],
+        "max": [
+          11.403853,
+          6.32279,
+          3.473926
+        ],
+        "size": [
+          23.213839,
+          12.092724,
+          5.917572
+        ],
+        "center": [
+          -0.203066,
+          0.276428,
+          0.51514
+        ],
+        "diagonal": 26.835312
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65531,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "object_0",
+          "morph_targets": 0,
+          "triangles": 110648,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 58856,
+            "connected_components": 5,
+            "boundary_edge_fraction": 0.04758,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 110648,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65531
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65530,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "object_1",
+          "morph_targets": 0,
+          "triangles": 101763,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 53407,
+            "connected_components": 219,
+            "boundary_edge_fraction": 0.03002,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 101763,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65530
+    },
+    {
+      "name": "Object_2",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 42293,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "object_2",
+          "morph_targets": 0,
+          "triangles": 68055,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 37069,
+            "connected_components": 288,
+            "boundary_edge_fraction": 0.05259,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 68055,
+      "points": 0,
+      "lines": 0,
+      "vertices": 42293
+    }
+  ],
+  "materials": [
+    {
+      "name": "object_0",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "object_1",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "object_2",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 4543751,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    }
+  ]
+}

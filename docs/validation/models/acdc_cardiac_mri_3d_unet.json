@@ -1,0 +1,3938 @@
+{
+  "model_id": "acdc_cardiac_mri_3d_unet",
+  "run_id": "acdc_cardiac_mri_3d_unet-20261025T132755Z",
+  "task_id": "acdc-cardiac-segmentation",
+  "task_type": "volumetric_segmentation",
+  "dataset": "ACDC cardiac cine-MRI (CREATIS)",
+  "dataset_id": "acdc-cardiac-mri",
+  "dataset_version": "c0fa24d113128f2d33975747fa82c3d13eea27577c08de895346094544afebcd",
+  "dataset_license": {
+    "status": "SOURCE_AND_CITATION_VERIFIED_TERMS_NOT_FOUND",
+    "authorization_status": "VERIFIED",
+    "authorization_reason": "Repository owner authorized local, non-commercial research training on 2026-10-25 after review of the official source: CREATIS states that the data and ground truth remain publicly available, the download collection is public, and the publisher requires the citation for any use. No licence text is published; the data are not committed or redistributed.",
+    "authorized_by": "repository owner (recorded interactive decision)",
+    "authorized_on": "2026-10-25",
+    "authorization_scope": "local non-commercial research training and evaluation; no redistribution of images or masks",
+    "name": "CREATIS ACDC public research release; mandatory citation; explicit licence terms not published",
+    "source": "https://www.creatis.insa-lyon.fr/Challenge/acdc/databases.html (download: humanheart-project.creatis.insa-lyon.fr, public collection) and MANDATORY_CITATION.md in the archive",
+    "verified_on": "2026-10-25",
+    "citation": "Bernard O, Lalande A, Zotti C, et al. Deep Learning Techniques for Automatic MRI Cardiac Multi-structures Segmentation and Diagnosis: Is the Problem Solved? IEEE TMI 37(11):2514-2525 (2018)."
+  },
+  "split_method": "publisher test patients frozen; development patients split by patient (seed 20261024); development patients whose images duplicate a test patient are excluded",
+  "split_counts": {
+    "train": 168,
+    "val": 30,
+    "test": 100
+  },
+  "patients_per_split": {
+    "train": 84,
+    "val": 15,
+    "test": 50
+  },
+  "leakage_exclusions": {
+    "rule": "preserve publisher test; exclude the complete development patient linked by identical image SHA-256",
+    "excluded_development_patients": [
+      "patient055"
+    ],
+    "excluded_development_cases": 2,
+    "cross_cohort_identical_image_groups": [
+      {
+        "image_sha256": "11f7c54643e1da512c0d7b654b1b8e9f263b050d3ac6bdeed29789ec48c946c0",
+        "mask_annotations_identical": false,
+        "members": [
+          {
+            "patient_id": "patient055",
+            "case_id": "patient055_es",
+            "split_before_exclusion": "train",
+            "mask_sha256": "72f7ef3b9e17b0a187b1ff61c26dd7c8f516f1371579d4e3ae5b538a7d1153d1"
+          },
+          {
+            "patient_id": "patient118",
+            "case_id": "patient118_es",
+            "split_before_exclusion": "test",
+            "mask_sha256": "c973199124bc0007c13d97a7d671c351514f426d7bfd9c8cf497e006d33cb545"
+          }
+        ]
+      },
+      {
+        "image_sha256": "df3f3a57a3e8f262b8da34631bfe680e6ad4968c2e7f59b2f090e3135c590b75",
+        "mask_annotations_identical": false,
+        "members": [
+          {
+            "patient_id": "patient055",
+            "case_id": "patient055_ed",
+            "split_before_exclusion": "train",
+            "mask_sha256": "c70ce5e27160e6409cc4792585f7c587996f1bf144db61122e21d917821dbde7"
+          },
+          {
+            "patient_id": "patient118",
+            "case_id": "patient118_ed",
+            "split_before_exclusion": "test",
+            "mask_sha256": "0517932d9ba8ea4ad0f4d39a6d3f851551da3d59039180cedf6669008ec55327"
+          }
+        ]
+      }
+    ]
+  },
+  "test_n": 100,
+  "test_patients": 50,
+  "selection": {
+    "criterion": "validation mean of case-level macro foreground Dice",
+    "best_epoch": 41,
+    "best_score": 0.7755544910977609
+  },
+  "config": {
+    "epochs": 60,
+    "batch_size": 4,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "patch_size": [
+      128,
+      128,
+      16
+    ],
+    "channels": [
+      32,
+      64,
+      128,
+      256
+    ],
+    "patches_per_case": 4,
+    "workers": 4,
+    "seed": 20261024,
+    "device_requested": "cuda",
+    "device_effective": "cuda",
+    "amp_requested": true,
+    "amp_effective": true,
+    "deterministic_algorithms": "warn_only: CUDA nll_loss has no deterministic kernel; repeated CUDA runs can differ slightly",
+    "preprocessing_version": "nifti-native-grid-nonzero-zscore-v1"
+  },
+  "epochs_run": 60,
+  "metrics": {
+    "mean_case_macro_dice": 0.7500199820545065,
+    "mean_case_macro_dice_95ci": {
+      "status": "COMPUTED",
+      "low": 0.7190453888635197,
+      "high": 0.7780722469616891,
+      "resamples": 1000,
+      "unit": "patient"
+    },
+    "per_structure": {
+      "right_ventricular_cavity": {
+        "mean_dice": 0.707276629961771,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.6722135218053962,
+          "high": 0.7416295794486124,
+          "resamples": 1000,
+          "unit": "patient"
+        },
+        "mean_dice_ed": 0.7840310123936773,
+        "mean_dice_es": 0.6305222475298653,
+        "mean_hd95_mm": 81.63746183291562,
+        "mean_assd_mm": 15.763756980255689,
+        "cases_with_surface_distance": 100
+      },
+      "myocardium": {
+        "mean_dice": 0.7307062985157627,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.6979075491031947,
+          "high": 0.7583799344514871,
+          "resamples": 1000,
+          "unit": "patient"
+        },
+        "mean_dice_ed": 0.7295504920027855,
+        "mean_dice_es": 0.7318621050287396,
+        "mean_hd95_mm": 58.624116549150905,
+        "mean_assd_mm": 9.033145448470933,
+        "cases_with_surface_distance": 100
+      },
+      "left_ventricular_cavity": {
+        "mean_dice": 0.8120770176859853,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.7712549358867089,
+          "high": 0.848200451335018,
+          "resamples": 1000,
+          "unit": "patient"
+        },
+        "mean_dice_ed": 0.8733245113476003,
+        "mean_dice_es": 0.7508295240243705,
+        "mean_hd95_mm": 53.68089777658064,
+        "mean_assd_mm": 10.693498378686854,
+        "cases_with_surface_distance": 100
+      }
+    }
+  },
+  "clinical_indices": {
+    "lv_edv_ml": {
+      "n_patients": 50,
+      "reference_mean": 176.57662679511614,
+      "predicted_mean": 198.28724951766486,
+      "bias": 21.71062272254871,
+      "limits_of_agreement": [
+        -57.1803874430543,
+        100.60163288815171
+      ],
+      "mean_absolute_error": 30.296615860856082,
+      "mean_absolute_error_95ci": {
+        "status": "COMPUTED",
+        "low": 21.409666175041068,
+        "high": 40.15205202177162,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "pearson_r": 0.9004987152981238
+    },
+    "lv_esv_ml": {
+      "n_patients": 50,
+      "reference_mean": 98.600931295464,
+      "predicted_mean": 123.17889685845176,
+      "bias": 24.577965562987792,
+      "limits_of_agreement": [
+        -56.77778524872115,
+        105.93371637469673
+      ],
+      "mean_absolute_error": 30.370267238043688,
+      "mean_absolute_error_95ci": {
+        "status": "COMPUTED",
+        "low": 20.98746368023829,
+        "high": 40.803993976859836,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "pearson_r": 0.9010497539500083
+    },
+    "lv_ef_percent": {
+      "n_patients": 50,
+      "reference_mean": 50.74045534703568,
+      "predicted_mean": 44.930536546063465,
+      "bias": -5.8099188009722,
+      "limits_of_agreement": [
+        -29.566940792262585,
+        17.947103190318188
+      ],
+      "mean_absolute_error": 9.062311621270007,
+      "mean_absolute_error_95ci": {
+        "status": "COMPUTED",
+        "low": 6.455471756107358,
+        "high": 11.907405656507436,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "pearson_r": 0.8523093016737788
+    },
+    "rv_edv_ml": {
+      "n_patients": 50,
+      "reference_mean": 171.54869953716215,
+      "predicted_mean": 211.9045696741399,
+      "bias": 40.35587013697776,
+      "limits_of_agreement": [
+        -85.36506848598144,
+        166.07680875993697
+      ],
+      "mean_absolute_error": 52.046429540031546,
+      "mean_absolute_error_95ci": {
+        "status": "COMPUTED",
+        "low": 37.580466416073484,
+        "high": 67.53590363802833,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "pearson_r": 0.7556537194613879
+    },
+    "rv_esv_ml": {
+      "n_patients": 50,
+      "reference_mean": 94.17208136644577,
+      "predicted_mean": 150.10114142104908,
+      "bias": 55.92906005460331,
+      "limits_of_agreement": [
+        -84.24311104681006,
+        196.1012311560167
+      ],
+      "mean_absolute_error": 64.35652922758658,
+      "mean_absolute_error_95ci": {
+        "status": "COMPUTED",
+        "low": 47.867009400987435,
+        "high": 82.62017744337076,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "pearson_r": 0.6930379916053081
+    },
+    "rv_ef_percent": {
+      "n_patients": 50,
+      "reference_mean": 46.562669078533126,
+      "predicted_mean": 33.377109057756485,
+      "bias": -13.185560020776638,
+      "limits_of_agreement": [
+        -42.599222296326346,
+        16.22810225477307
+      ],
+      "mean_absolute_error": 16.562489570279265,
+      "mean_absolute_error_95ci": {
+        "status": "COMPUTED",
+        "low": 13.51184764637182,
+        "high": 19.665774511082216,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "pearson_r": 0.6023129725485478
+    },
+    "lv_myocardial_mass_g": {
+      "n_patients": 50,
+      "reference_mean": 133.73953843999442,
+      "predicted_mean": 160.9040972018941,
+      "bias": 27.164558761899666,
+      "limits_of_agreement": [
+        -50.42633367461977,
+        104.75545119841911
+      ],
+      "mean_absolute_error": 38.06211046154178,
+      "mean_absolute_error_95ci": {
+        "status": "COMPUTED",
+        "low": 30.38356763111683,
+        "high": 46.19635337193862,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "pearson_r": 0.7157120985489399
+    }
+  },
+  "clinical_index_definitions": {
+    "volumes": "voxel count x voxel volume (NIfTI header pixdim) at the publisher's end-diastolic (ED) and end-systolic (ES) frames",
+    "ejection_fraction": "(EDV - ESV) / EDV x 100",
+    "myocardial_mass": "ED myocardial volume x 1.05 g/mL",
+    "reference": "the same indices from the publisher's reference masks (not from clinical reports)"
+  },
+  "spacing_note": "Voxel spacing is read from the NIfTI header pixdim (for example 1.56 x 1.56 x 10 mm); the files' sform affine is unit-scaled.",
+  "benchmark_context": "Leading entries of the publisher's challenge (Bernard et al., IEEE TMI 2018) reported substantially higher overlap and ejection-fraction agreement; this from-scratch 3-D baseline is not competitive with them. Context only.",
+  "cases": [
+    {
+      "case_id": "patient101_ed",
+      "patient_id": "patient101",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6406199932098389,
+        1.6406199932098389,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.841734580943757,
+          "iou": 0.7267199444058374,
+          "reference_ml": 129.79058965341926,
+          "predicted_ml": 137.73090984167283,
+          "hd95_mm": 10.133688073062041,
+          "assd_mm": 4.7541432481046515
+        },
+        "myocardium": {
+          "dice": 0.7054151624548737,
+          "iou": 0.5448968209704406,
+          "reference_ml": 127.58344980448098,
+          "predicted_ml": 170.6495931983986,
+          "hd95_mm": 8.203099966049194,
+          "assd_mm": 2.5103855469123104
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9497695583688233,
+          "iou": 0.9043439617820243,
+          "reference_ml": 222.59812866731173,
+          "predicted_ml": 238.77484877965205,
+          "hd95_mm": 3.2812399864196777,
+          "assd_mm": 0.8089563634609273
+        }
+      }
+    },
+    {
+      "case_id": "patient101_es",
+      "patient_id": "patient101",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6406199932098389,
+        1.6406199932098389,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7485489608687512,
+          "iou": 0.5981448234590065,
+          "reference_ml": 70.06323203397974,
+          "predicted_ml": 73.69693788284154,
+          "hd95_mm": 165.40347557817836,
+          "assd_mm": 9.279859799493698
+        },
+        "myocardium": {
+          "dice": 0.7551325121313923,
+          "iou": 0.6065967016491755,
+          "reference_ml": 128.7946850874349,
+          "predicted_ml": 159.6408102933284,
+          "hd95_mm": 10.524568202471748,
+          "assd_mm": 2.8423865731698843
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9023202985558981,
+          "iou": 0.8220251293422025,
+          "reference_ml": 156.0071044444666,
+          "predicted_ml": 175.76369772642633,
+          "hd95_mm": 10.0,
+          "assd_mm": 2.858554777649082
+        }
+      }
+    },
+    {
+      "case_id": "patient102_ed",
+      "patient_id": "patient102",
+      "phase": "ED",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7675469424641028,
+          "iou": 0.6227798598663842,
+          "reference_ml": 100.09765625,
+          "predicted_ml": 143.0419921875,
+          "hd95_mm": 129.12150588205668,
+          "assd_mm": 14.382450043404324
+        },
+        "myocardium": {
+          "dice": 0.5901603095632947,
+          "iou": 0.4186010037641154,
+          "reference_ml": 73.1201171875,
+          "predicted_ml": 147.705078125,
+          "hd95_mm": 165.49935626312308,
+          "assd_mm": 42.67326091234926
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.6080078125,
+          "iou": 0.4367896730742248,
+          "reference_ml": 79.443359375,
+          "predicted_ml": 170.556640625,
+          "hd95_mm": 197.6687819764751,
+          "assd_mm": 72.82720048322545
+        }
+      }
+    },
+    {
+      "case_id": "patient102_es",
+      "patient_id": "patient102",
+      "phase": "ES",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5785947966973048,
+          "iou": 0.4070583077597545,
+          "reference_ml": 49.8046875,
+          "predicted_ml": 106.9091796875,
+          "hd95_mm": 137.549321628934,
+          "assd_mm": 22.615490956433263
+        },
+        "myocardium": {
+          "dice": 0.6105842765371673,
+          "iou": 0.43945398502862176,
+          "reference_ml": 84.423828125,
+          "predicted_ml": 155.0048828125,
+          "hd95_mm": 168.1373395403208,
+          "assd_mm": 44.30032418237921
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.2845962290999644,
+          "iou": 0.1659062629614268,
+          "reference_ml": 23.14453125,
+          "predicted_ml": 114.111328125,
+          "hd95_mm": 209.14288659388353,
+          "assd_mm": 106.98579446538088
+        }
+      }
+    },
+    {
+      "case_id": "patient103_ed",
+      "patient_id": "patient103",
+      "phase": "ED",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7423361522198731,
+          "iou": 0.5902500525320445,
+          "reference_ml": 88.8916015625,
+          "predicted_ml": 95.8740234375,
+          "hd95_mm": 137.08896180543718,
+          "assd_mm": 16.828164741464565
+        },
+        "myocardium": {
+          "dice": 0.8337994406711946,
+          "iou": 0.7149708804385063,
+          "reference_ml": 173.7548828125,
+          "predicted_ml": 192.8955078125,
+          "hd95_mm": 48.96287656224867,
+          "assd_mm": 4.4149240293560865
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9104911166655407,
+          "iou": 0.8356894841269841,
+          "reference_ml": 178.173828125,
+          "predicted_ml": 183.2275390625,
+          "hd95_mm": 62.8991095296932,
+          "assd_mm": 5.747292610314069
+        }
+      }
+    },
+    {
+      "case_id": "patient103_es",
+      "patient_id": "patient103",
+      "phase": "ES",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.3471725125268432,
+          "iou": 0.2100476396708532,
+          "reference_ml": 34.130859375,
+          "predicted_ml": 34.08203125,
+          "hd95_mm": 146.5318438024879,
+          "assd_mm": 37.83829921547515
+        },
+        "myocardium": {
+          "dice": 0.8177596135983652,
+          "iou": 0.6917033312382149,
+          "reference_ml": 174.365234375,
+          "predicted_ml": 219.8974609375,
+          "hd95_mm": 49.52557817000653,
+          "assd_mm": 4.741074394088689
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8768718801996672,
+          "iou": 0.7807407407407407,
+          "reference_ml": 131.7626953125,
+          "predicted_ml": 132.3486328125,
+          "hd95_mm": 74.97772702558682,
+          "assd_mm": 7.801939261200178
+        }
+      }
+    },
+    {
+      "case_id": "patient104_ed",
+      "patient_id": "patient104",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7192229500790603,
+          "iou": 0.5615520282186949,
+          "reference_ml": 135.3493878748149,
+          "predicted_ml": 112.9001937251598,
+          "hd95_mm": 15.437662692207477,
+          "assd_mm": 4.838913281213432
+        },
+        "myocardium": {
+          "dice": 0.7827284105131415,
+          "iou": 0.6430187127287682,
+          "reference_ml": 160.1164005711455,
+          "predicted_ml": 138.58311858912828,
+          "hd95_mm": 6.835950016975403,
+          "assd_mm": 2.7258633532341907
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9409024357779848,
+          "iou": 0.888400150810607,
+          "reference_ml": 141.66731262301093,
+          "predicted_ml": 139.1999573959048,
+          "hd95_mm": 3.0571297857495683,
+          "assd_mm": 0.5351428183354981
+        }
+      }
+    },
+    {
+      "case_id": "patient104_es",
+      "patient_id": "patient104",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8288038087681016,
+          "iou": 0.7076558265582655,
+          "reference_ml": 46.59936803920917,
+          "predicted_ml": 47.62743271717006,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.4460389436093992
+        },
+        "myocardium": {
+          "dice": 0.6846036887684274,
+          "iou": 0.5204543170167856,
+          "reference_ml": 170.58396820129275,
+          "predicted_ml": 112.17120240806025,
+          "hd95_mm": 10.009302771745789,
+          "assd_mm": 3.6286775781404685
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7096124811273277,
+          "iou": 0.5499219968798752,
+          "reference_ml": 22.03796827847076,
+          "predicted_ml": 15.103204723498198,
+          "hd95_mm": 10.894589714800388,
+          "assd_mm": 2.084276622160944
+        }
+      }
+    },
+    {
+      "case_id": "patient105_ed",
+      "patient_id": "patient105",
+      "phase": "ED",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8423811939793675,
+          "iou": 0.7276844411979547,
+          "reference_ml": 115.45732183885801,
+          "predicted_ml": 145.1148705402135,
+          "hd95_mm": 155.2279152995093,
+          "assd_mm": 13.060844125548844
+        },
+        "myocardium": {
+          "dice": 0.8197434551046433,
+          "iou": 0.6945468412355409,
+          "reference_ml": 135.81659004097725,
+          "predicted_ml": 157.9165316066976,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.4941053699599594
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8987021742794539,
+          "iou": 0.8160391796755433,
+          "reference_ml": 126.07763274082929,
+          "predicted_ml": 135.37591324006556,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.9981588370021839
+        }
+      }
+    },
+    {
+      "case_id": "patient105_es",
+      "patient_id": "patient105",
+      "phase": "ES",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5868869037586382,
+          "iou": 0.41531488549618323,
+          "reference_ml": 45.96259033508736,
+          "predicted_ml": 84.76418265536006,
+          "hd95_mm": 158.26059757259853,
+          "assd_mm": 23.116992637640127
+        },
+        "myocardium": {
+          "dice": 0.7887385105305059,
+          "iou": 0.6511711281070746,
+          "reference_ml": 159.28262968952376,
+          "predicted_ml": 145.1589382203047,
+          "hd95_mm": 19.37583548056173,
+          "assd_mm": 2.717603249873517
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7403846153846154,
+          "iou": 0.5877862595419847,
+          "reference_ml": 25.889762053560716,
+          "predicted_ml": 24.523663970734532,
+          "hd95_mm": 20.0,
+          "assd_mm": 2.658026469027004
+        }
+      }
+    },
+    {
+      "case_id": "patient106_ed",
+      "patient_id": "patient106",
+      "phase": "ED",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7274916468498841,
+          "iou": 0.5716989165917585,
+          "reference_ml": 307.3486328125,
+          "predicted_ml": 503.7109375,
+          "hd95_mm": 81.86366810893584,
+          "assd_mm": 16.02269759439859
+        },
+        "myocardium": {
+          "dice": 0.48888559573206875,
+          "iou": 0.3235265274100226,
+          "reference_ml": 124.70703125,
+          "predicted_ml": 204.78515625,
+          "hd95_mm": 98.63571313804144,
+          "assd_mm": 18.025697351481757
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9148295386098061,
+          "iou": 0.8430284191829485,
+          "reference_ml": 284.27734375,
+          "predicted_ml": 323.7060546875,
+          "hd95_mm": 9.110862335695781,
+          "assd_mm": 1.8573898793967112
+        }
+      }
+    },
+    {
+      "case_id": "patient106_es",
+      "patient_id": "patient106",
+      "phase": "ES",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6522503624641391,
+          "iou": 0.4839551384756237,
+          "reference_ml": 271.630859375,
+          "predicted_ml": 519.7998046875,
+          "hd95_mm": 89.4454486335107,
+          "assd_mm": 20.690746481755262
+        },
+        "myocardium": {
+          "dice": 0.49893012617132737,
+          "iou": 0.3323830121903264,
+          "reference_ml": 125.048828125,
+          "predicted_ml": 205.8349609375,
+          "hd95_mm": 99.53583679738585,
+          "assd_mm": 18.07484122573521
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.913552217953196,
+          "iou": 0.8408615978138563,
+          "reference_ml": 262.7685546875,
+          "predicted_ml": 296.4111328125,
+          "hd95_mm": 8.838834764831844,
+          "assd_mm": 1.8202514301956687
+        }
+      }
+    },
+    {
+      "case_id": "patient107_ed",
+      "patient_id": "patient107",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5474356565846328,
+          "iou": 0.3768753233316089,
+          "reference_ml": 134.67647281287688,
+          "predicted_ml": 263.31540215336526,
+          "hd95_mm": 102.33412582984352,
+          "assd_mm": 33.0750583480701
+        },
+        "myocardium": {
+          "dice": 0.5924977847789702,
+          "iou": 0.4209569110240627,
+          "reference_ml": 68.76818091305677,
+          "predicted_ml": 121.08732697873926,
+          "hd95_mm": 129.75070643646853,
+          "assd_mm": 21.293341961643527
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9275934881820039,
+          "iou": 0.864964430894309,
+          "reference_ml": 129.92868320920294,
+          "predicted_ml": 144.48981746613993,
+          "hd95_mm": 60.30267757914728,
+          "assd_mm": 4.742775103462643
+        }
+      }
+    },
+    {
+      "case_id": "patient107_es",
+      "patient_id": "patient107",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.4253287025551972,
+          "iou": 0.27010634107916504,
+          "reference_ml": 80.67503909234928,
+          "predicted_ml": 220.71614031567663,
+          "hd95_mm": 104.42853855110035,
+          "assd_mm": 38.58321891312376
+        },
+        "myocardium": {
+          "dice": 0.703708391342868,
+          "iou": 0.5428627221245851,
+          "reference_ml": 70.3009318874712,
+          "predicted_ml": 77.38523212287443,
+          "hd95_mm": 123.69631663570256,
+          "assd_mm": 9.595420076122172
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7919151756129887,
+          "iou": 0.6555128908392759,
+          "reference_ml": 50.48732173040672,
+          "predicted_ml": 62.33810365453773,
+          "hd95_mm": 12.113224700078257,
+          "assd_mm": 5.069445140257878
+        }
+      }
+    },
+    {
+      "case_id": "patient108_ed",
+      "patient_id": "patient108",
+      "phase": "ED",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8833255237967735,
+          "iou": 0.7910322503296967,
+          "reference_ml": 190.9912109375,
+          "predicted_ml": 173.73046875,
+          "hd95_mm": 10.0,
+          "assd_mm": 3.5115143932942554
+        },
+        "myocardium": {
+          "dice": 0.796064673581452,
+          "iou": 0.6612188014696566,
+          "reference_ml": 174.365234375,
+          "predicted_ml": 145.751953125,
+          "hd95_mm": 4.419417382415922,
+          "assd_mm": 0.8916333775518844
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9430604982206405,
+          "iou": 0.8922558922558923,
+          "reference_ml": 168.310546875,
+          "predicted_ml": 174.70703125,
+          "hd95_mm": 2.209708691207961,
+          "assd_mm": 0.5724643391253718
+        }
+      }
+    },
+    {
+      "case_id": "patient108_es",
+      "patient_id": "patient108",
+      "phase": "ES",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.737827000190949,
+          "iou": 0.5845688350983359,
+          "reference_ml": 65.5029296875,
+          "predicted_ml": 62.353515625,
+          "hd95_mm": 14.059027349002491,
+          "assd_mm": 4.069079007038013
+        },
+        "myocardium": {
+          "dice": 0.7508372926240361,
+          "iou": 0.6010724529243048,
+          "reference_ml": 155.76171875,
+          "predicted_ml": 157.6904296875,
+          "hd95_mm": 14.57553660812408,
+          "assd_mm": 2.795163583968437
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.623489932885906,
+          "iou": 0.45294978059483176,
+          "reference_ml": 27.05078125,
+          "predicted_ml": 45.703125,
+          "hd95_mm": 24.05235175611732,
+          "assd_mm": 5.9996784446541565
+        }
+      }
+    },
+    {
+      "case_id": "patient109_ed",
+      "patient_id": "patient109",
+      "phase": "ED",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5820178448867536,
+          "iou": 0.41045498547918685,
+          "reference_ml": 219.580078125,
+          "predicted_ml": 100.5615234375,
+          "hd95_mm": 13.441133229754104,
+          "assd_mm": 3.186401566342529
+        },
+        "myocardium": {
+          "dice": 0.7085201793721974,
+          "iou": 0.5486111111111112,
+          "reference_ml": 96.6796875,
+          "predicted_ml": 148.3154296875,
+          "hd95_mm": 164.0625,
+          "assd_mm": 22.41018782357986
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.962855838027097,
+          "iou": 0.9283722295611331,
+          "reference_ml": 158.8134765625,
+          "predicted_ml": 161.9384765625,
+          "hd95_mm": 14.0625,
+          "assd_mm": 1.1878124466045814
+        }
+      }
+    },
+    {
+      "case_id": "patient109_es",
+      "patient_id": "patient109",
+      "phase": "ES",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.36452830188679247,
+          "iou": 0.222888786340563,
+          "reference_ml": 145.4833984375,
+          "predicted_ml": 48.6083984375,
+          "hd95_mm": 23.228232417685163,
+          "assd_mm": 6.076387076922124
+        },
+        "myocardium": {
+          "dice": 0.631095406360424,
+          "iou": 0.4610221992772328,
+          "reference_ml": 98.2421875,
+          "predicted_ml": 178.125,
+          "hd95_mm": 167.7084417798825,
+          "assd_mm": 37.66257209784217
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8608644168146833,
+          "iou": 0.7557172557172557,
+          "reference_ml": 75.634765625,
+          "predicted_ml": 89.306640625,
+          "hd95_mm": 47.82883707816865,
+          "assd_mm": 5.822033100674646
+        }
+      }
+    },
+    {
+      "case_id": "patient110_ed",
+      "patient_id": "patient110",
+      "phase": "ED",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6906505135633395,
+          "iou": 0.5274760640437686,
+          "reference_ml": 172.412109375,
+          "predicted_ml": 291.0888671875,
+          "hd95_mm": 179.1090550683339,
+          "assd_mm": 39.56902512067939
+        },
+        "myocardium": {
+          "dice": 0.6434854089601315,
+          "iou": 0.47436674342503937,
+          "reference_ml": 113.8671875,
+          "predicted_ml": 183.1298828125,
+          "hd95_mm": 183.34026287334154,
+          "assd_mm": 34.96118039941651
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9189596683000377,
+          "iou": 0.8500697350069735,
+          "reference_ml": 125.5126953125,
+          "predicted_ml": 133.5693359375,
+          "hd95_mm": 180.0335063658357,
+          "assd_mm": 10.301148170691762
+        }
+      }
+    },
+    {
+      "case_id": "patient110_es",
+      "patient_id": "patient110",
+      "phase": "ES",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5243208186207393,
+          "iou": 0.3553081355601133,
+          "reference_ml": 94.4580078125,
+          "predicted_ml": 244.3359375,
+          "hd95_mm": 182.80655703865423,
+          "assd_mm": 50.45304307150356
+        },
+        "myocardium": {
+          "dice": 0.6882357783814934,
+          "iou": 0.5246642399899586,
+          "reference_ml": 128.1005859375,
+          "predicted_ml": 168.45703125,
+          "hd95_mm": 190.50944243330827,
+          "assd_mm": 39.225912571608895
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7906365071015256,
+          "iou": 0.6537625054371465,
+          "reference_ml": 41.748046875,
+          "predicted_ml": 51.07421875,
+          "hd95_mm": 193.20955315685617,
+          "assd_mm": 22.84642845364455
+        }
+      }
+    },
+    {
+      "case_id": "patient111_ed",
+      "patient_id": "patient111",
+      "phase": "ED",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7022407503908286,
+          "iou": 0.5411178927079987,
+          "reference_ml": 78.963134765625,
+          "predicted_ml": 110.78173828125,
+          "hd95_mm": 119.93515794888368,
+          "assd_mm": 15.195464842875877
+        },
+        "myocardium": {
+          "dice": 0.6717865028319093,
+          "iou": 0.5057820179242556,
+          "reference_ml": 118.632568359375,
+          "predicted_ml": 87.36767578125,
+          "hd95_mm": 10.021867777345454,
+          "assd_mm": 2.55455897724775
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8709522667306309,
+          "iou": 0.7714042914807733,
+          "reference_ml": 92.07421875,
+          "predicted_ml": 72.81298828125,
+          "hd95_mm": 9.943689110435825,
+          "assd_mm": 1.4854592407934857
+        }
+      }
+    },
+    {
+      "case_id": "patient111_es",
+      "patient_id": "patient111",
+      "phase": "ES",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.4820198928844682,
+          "iou": 0.3175403225806452,
+          "reference_ml": 30.988037109375,
+          "predicted_ml": 46.55126953125,
+          "hd95_mm": 137.57615078793634,
+          "assd_mm": 26.023126025850836
+        },
+        "myocardium": {
+          "dice": 0.6319803868155816,
+          "iou": 0.4619673436877738,
+          "reference_ml": 145.566650390625,
+          "predicted_ml": 72.2197265625,
+          "hd95_mm": 12.015005266852778,
+          "assd_mm": 2.918890025943101
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8933283075763286,
+          "iou": 0.8072207084468664,
+          "reference_ml": 27.4482421875,
+          "predicted_ml": 25.015869140625,
+          "hd95_mm": 3.1444705933590793,
+          "assd_mm": 0.7410544971701141
+        }
+      }
+    },
+    {
+      "case_id": "patient112_ed",
+      "patient_id": "patient112",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8354246070832084,
+          "iou": 0.7173641244392145,
+          "reference_ml": 188.2106044070586,
+          "predicted_ml": 248.26827368502853,
+          "hd95_mm": 47.82525597342965,
+          "assd_mm": 5.895296273184312
+        },
+        "myocardium": {
+          "dice": 0.7714421316699437,
+          "iou": 0.627924944812362,
+          "reference_ml": 147.66747192529178,
+          "predicted_ml": 128.02209053371183,
+          "hd95_mm": 5.637068794286485,
+          "assd_mm": 1.9339832899595233
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9417086726121235,
+          "iou": 0.8898387884709331,
+          "reference_ml": 222.36104380041405,
+          "predicted_ml": 211.50094238413627,
+          "hd95_mm": 4.101570010185242,
+          "assd_mm": 0.6591277345642005
+        }
+      }
+    },
+    {
+      "case_id": "patient112_es",
+      "patient_id": "patient112",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5144582861457153,
+          "iou": 0.3463102256556211,
+          "reference_ml": 65.7961393894971,
+          "predicted_ml": 181.78052714853956,
+          "hd95_mm": 45.47825025308812,
+          "assd_mm": 12.199970837533886
+        },
+        "myocardium": {
+          "dice": 0.7766466662172183,
+          "iou": 0.63485065579191,
+          "reference_ml": 148.09738988152998,
+          "predicted_ml": 129.16230772199572,
+          "hd95_mm": 10.0,
+          "assd_mm": 2.3729669101386275
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8624768419552515,
+          "iou": 0.7582059634176898,
+          "reference_ml": 121.87239455100031,
+          "predicted_ml": 140.4523270945117,
+          "hd95_mm": 10.093027717458396,
+          "assd_mm": 2.5572082100866007
+        }
+      }
+    },
+    {
+      "case_id": "patient113_ed",
+      "patient_id": "patient113",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.9459778249587166,
+          "iou": 0.8974932855863921,
+          "reference_ml": 178.49433807118118,
+          "predicted_ml": 181.5806139039475,
+          "hd95_mm": 2.3796830537423337,
+          "assd_mm": 0.6052032630914697
+        },
+        "myocardium": {
+          "dice": 0.8138663335415366,
+          "iou": 0.6861506055818852,
+          "reference_ml": 161.36409147646916,
+          "predicted_ml": 201.28747610216163,
+          "hd95_mm": 4.759366107484667,
+          "assd_mm": 1.4744360756032773
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9673715165943145,
+          "iou": 0.9368049905071875,
+          "reference_ml": 308.79747001971793,
+          "predicted_ml": 297.7831461761758,
+          "hd95_mm": 1.6826900243759155,
+          "assd_mm": 0.37433516891083546
+        }
+      }
+    },
+    {
+      "case_id": "patient113_es",
+      "patient_id": "patient113",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8217869087434305,
+          "iou": 0.6974858069748581,
+          "reference_ml": 105.52798191486235,
+          "predicted_ml": 131.52065360733448,
+          "hd95_mm": 10.551103395974133,
+          "assd_mm": 3.238279356441894
+        },
+        "myocardium": {
+          "dice": 0.8170908039329092,
+          "iou": 0.690746852463024,
+          "reference_ml": 175.3514333240522,
+          "predicted_ml": 216.294138408273,
+          "hd95_mm": 5.048070073127747,
+          "assd_mm": 1.5722167098234487
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9488658639036684,
+          "iou": 0.9027067348678602,
+          "reference_ml": 258.0862772079341,
+          "predicted_ml": 247.46835576493075,
+          "hd95_mm": 3.365380048751831,
+          "assd_mm": 0.593091399518794
+        }
+      }
+    },
+    {
+      "case_id": "patient114_ed",
+      "patient_id": "patient114",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6985829184220606,
+          "iou": 0.5367863449087699,
+          "reference_ml": 122.26492833713083,
+          "predicted_ml": 121.7602420406773,
+          "hd95_mm": 131.41565376213288,
+          "assd_mm": 11.68122565024446
+        },
+        "myocardium": {
+          "dice": 0.7256058394160584,
+          "iou": 0.5693731671554252,
+          "reference_ml": 343.54183120442246,
+          "predicted_ml": 296.6620818894058,
+          "hd95_mm": 92.7525174374759,
+          "assd_mm": 10.386614430268942
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7309160305343512,
+          "iou": 0.5759398496240602,
+          "reference_ml": 207.74383328831556,
+          "predicted_ml": 262.39948998572737,
+          "hd95_mm": 110.26828799401365,
+          "assd_mm": 18.88411241466945
+        }
+      }
+    },
+    {
+      "case_id": "patient114_es",
+      "patient_id": "patient114",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5507246376811594,
+          "iou": 0.38,
+          "reference_ml": 67.75880832014971,
+          "predicted_ml": 108.9374716937469,
+          "hd95_mm": 126.54725639918242,
+          "assd_mm": 17.7347012837091
+        },
+        "myocardium": {
+          "dice": 0.4996929375639713,
+          "iou": 0.33306044480829583,
+          "reference_ml": 367.54246841354586,
+          "predicted_ml": 180.32254451434048,
+          "hd95_mm": 105.54843472043179,
+          "assd_mm": 15.080287835342704
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.41482444733420026,
+          "iou": 0.2616899097621001,
+          "reference_ml": 62.9736345463681,
+          "predicted_ml": 138.26535314321308,
+          "hd95_mm": 122.79685673719004,
+          "assd_mm": 47.173539080592846
+        }
+      }
+    },
+    {
+      "case_id": "patient115_ed",
+      "patient_id": "patient115",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.9303808893435225,
+          "iou": 0.8698244824482448,
+          "reference_ml": 151.0507393200358,
+          "predicted_ml": 159.59302218963813,
+          "hd95_mm": 4.101570010185242,
+          "assd_mm": 0.7876855619205236
+        },
+        "myocardium": {
+          "dice": 0.7244790046656299,
+          "iou": 0.5679867342957472,
+          "reference_ml": 129.10623146683423,
+          "predicted_ml": 171.3690357735538,
+          "hd95_mm": 124.2182092809373,
+          "assd_mm": 11.934047187421873
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7594361785434612,
+          "iou": 0.6121701805327611,
+          "reference_ml": 185.40679164898344,
+          "predicted_ml": 291.9890606259472,
+          "hd95_mm": 79.98338711465462,
+          "assd_mm": 18.877612108803305
+        }
+      }
+    },
+    {
+      "case_id": "patient115_es",
+      "patient_id": "patient115",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8133876074174582,
+          "iou": 0.6854703460893429,
+          "reference_ml": 90.07715787442798,
+          "predicted_ml": 116.56384239571133,
+          "hd95_mm": 10.093027717458396,
+          "assd_mm": 3.0987725467095886
+        },
+        "myocardium": {
+          "dice": 0.7696632371957047,
+          "iou": 0.6255711935660757,
+          "reference_ml": 144.2468203604401,
+          "predicted_ml": 188.22929649211244,
+          "hd95_mm": 130.26488624265326,
+          "assd_mm": 13.398667772189423
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.6372033079153689,
+          "iou": 0.46757033651193947,
+          "reference_ml": 117.66667541388756,
+          "predicted_ml": 230.41733245861667,
+          "hd95_mm": 88.42447940399126,
+          "assd_mm": 27.731596549133137
+        }
+      }
+    },
+    {
+      "case_id": "patient116_ed",
+      "patient_id": "patient116",
+      "phase": "ED",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.9215107982113976,
+          "iou": 0.8544460127028934,
+          "reference_ml": 130.7373046875,
+          "predicted_ml": 125.87890625,
+          "hd95_mm": 3.4938562148434213,
+          "assd_mm": 1.1924472141456959
+        },
+        "myocardium": {
+          "dice": 0.8511216859279401,
+          "iou": 0.7408284023668639,
+          "reference_ml": 134.7412109375,
+          "predicted_ml": 152.5634765625,
+          "hd95_mm": 3.125,
+          "assd_mm": 0.7049357185947009
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9364582451984094,
+          "iou": 0.8805091487669053,
+          "reference_ml": 145.556640625,
+          "predicted_ml": 142.9931640625,
+          "hd95_mm": 3.125,
+          "assd_mm": 0.6206745461188303
+        }
+      }
+    },
+    {
+      "case_id": "patient116_es",
+      "patient_id": "patient116",
+      "phase": "ES",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6582337784024361,
+          "iou": 0.49057262569832405,
+          "reference_ml": 37.6953125,
+          "predicted_ml": 66.5283203125,
+          "hd95_mm": 10.93303480283494,
+          "assd_mm": 5.416767535859358
+        },
+        "myocardium": {
+          "dice": 0.8522131742320407,
+          "iou": 0.7424838437763417,
+          "reference_ml": 152.734375,
+          "predicted_ml": 150.0732421875,
+          "hd95_mm": 4.419417382415922,
+          "assd_mm": 0.990657438163755
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8637008991954567,
+          "iou": 0.7600999583506872,
+          "reference_ml": 53.0029296875,
+          "predicted_ml": 50.1708984375,
+          "hd95_mm": 5.633673867912483,
+          "assd_mm": 1.0189112903119137
+        }
+      }
+    },
+    {
+      "case_id": "patient117_ed",
+      "patient_id": "patient117",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8275035260930889,
+          "iou": 0.705762059424997,
+          "reference_ml": 231.76316258249275,
+          "predicted_ml": 298.3443695442509,
+          "hd95_mm": 141.4377490366094,
+          "assd_mm": 16.602683118514193
+        },
+        "myocardium": {
+          "dice": 0.6468332364904126,
+          "iou": 0.47801442803160427,
+          "reference_ml": 179.7991661328331,
+          "predicted_ml": 302.737009531902,
+          "hd95_mm": 149.37167753540982,
+          "assd_mm": 19.02901945371105
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8481686363255385,
+          "iou": 0.7363652901582681,
+          "reference_ml": 387.74861235674086,
+          "predicted_ml": 504.3124547524522,
+          "hd95_mm": 148.624926769808,
+          "assd_mm": 22.325782934335408
+        }
+      }
+    },
+    {
+      "case_id": "patient117_es",
+      "patient_id": "patient117",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5679806918744972,
+          "iou": 0.39662921348314606,
+          "reference_ml": 95.19878917917862,
+          "predicted_ml": 230.08087492764767,
+          "hd95_mm": 146.70397442071186,
+          "assd_mm": 26.79897271551781
+        },
+        "myocardium": {
+          "dice": 0.6705993051534452,
+          "iou": 0.504437306038003,
+          "reference_ml": 208.45413252036127,
+          "predicted_ml": 308.04556168719097,
+          "hd95_mm": 148.75377575467172,
+          "assd_mm": 18.756589288909698
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7803934390496431,
+          "iou": 0.6398731066529646,
+          "reference_ml": 280.6616570833236,
+          "predicted_ml": 405.37524856250667,
+          "hd95_mm": 149.53520205219965,
+          "assd_mm": 28.484299382096996
+        }
+      }
+    },
+    {
+      "case_id": "patient118_ed",
+      "patient_id": "patient118",
+      "phase": "ED",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8270382747966455,
+          "iou": 0.7050854746801419,
+          "reference_ml": 154.47925255958654,
+          "predicted_ml": 194.9554167233236,
+          "hd95_mm": 125.47006805274202,
+          "assd_mm": 16.617519240316103
+        },
+        "myocardium": {
+          "dice": 0.7359425493716337,
+          "iou": 0.5822065674355187,
+          "reference_ml": 133.1945630755528,
+          "predicted_ml": 173.62665955919869,
+          "hd95_mm": 139.82507582236062,
+          "assd_mm": 17.201656014530663
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8517769807629606,
+          "iou": 0.741821899136756,
+          "reference_ml": 149.4114693491023,
+          "predicted_ml": 188.477467749922,
+          "hd95_mm": 146.1821929483006,
+          "assd_mm": 16.47700558777631
+        }
+      }
+    },
+    {
+      "case_id": "patient118_es",
+      "patient_id": "patient118",
+      "phase": "ES",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.635209825997953,
+          "iou": 0.4654267286635668,
+          "reference_ml": 74.82692079480186,
+          "predicted_ml": 140.4436964505498,
+          "hd95_mm": 120.7566333584965,
+          "assd_mm": 25.775260482775618
+        },
+        "myocardium": {
+          "dice": 0.7621815232817463,
+          "iou": 0.6157457960253331,
+          "reference_ml": 141.10471165191728,
+          "predicted_ml": 184.93001950258306,
+          "hd95_mm": 140.76566750901966,
+          "assd_mm": 18.177674370693907
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8238332739579622,
+          "iou": 0.7004391943056186,
+          "reference_ml": 110.32343710823703,
+          "predicted_ml": 137.0725189235755,
+          "hd95_mm": 147.82248005016862,
+          "assd_mm": 18.52003667488868
+        }
+      }
+    },
+    {
+      "case_id": "patient119_ed",
+      "patient_id": "patient119",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.895110507470058,
+          "iou": 0.8101357769458568,
+          "reference_ml": 233.21202657412496,
+          "predicted_ml": 225.42555084925587,
+          "hd95_mm": 138.9384905669309,
+          "assd_mm": 9.119479656740701
+        },
+        "myocardium": {
+          "dice": 0.7139814496736516,
+          "iou": 0.5551875200341917,
+          "reference_ml": 81.51732222508417,
+          "predicted_ml": 124.54113991213363,
+          "hd95_mm": 42.834294967362005,
+          "assd_mm": 5.53976512951188
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8980496026968456,
+          "iou": 0.8149637269469452,
+          "reference_ml": 137.3392745581003,
+          "predicted_ml": 156.635577127185,
+          "hd95_mm": 44.48765257894853,
+          "assd_mm": 6.304087544918378
+        }
+      }
+    },
+    {
+      "case_id": "patient119_es",
+      "patient_id": "patient119",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8385657370517928,
+          "iou": 0.7220087815587267,
+          "reference_ml": 117.95802861747157,
+          "predicted_ml": 148.55179960191182,
+          "hd95_mm": 152.3500423673338,
+          "assd_mm": 12.141054233426482
+        },
+        "myocardium": {
+          "dice": 0.83750406239844,
+          "iou": 0.7204361196533408,
+          "reference_ml": 79.77598310843163,
+          "predicted_ml": 94.47118638554822,
+          "hd95_mm": 26.941006404076074,
+          "assd_mm": 1.9954785985489982
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8127579737335835,
+          "iou": 0.6845764854614412,
+          "reference_ml": 51.78714218467487,
+          "predicted_ml": 61.399900397740545,
+          "hd95_mm": 10.684438618414685,
+          "assd_mm": 3.00052925965134
+        }
+      }
+    },
+    {
+      "case_id": "patient120_ed",
+      "patient_id": "patient120",
+      "phase": "ED",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7642157579301272,
+          "iou": 0.6184054885261415,
+          "reference_ml": 59.76123046875,
+          "predicted_ml": 75.522216796875,
+          "hd95_mm": 10.761984598576603,
+          "assd_mm": 3.2480702795802334
+        },
+        "myocardium": {
+          "dice": 0.7330784333987806,
+          "iou": 0.5786296900489396,
+          "reference_ml": 102.930908203125,
+          "predicted_ml": 88.435546875,
+          "hd95_mm": 14.324589755668633,
+          "assd_mm": 1.7725480829077325
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8313380568450199,
+          "iou": 0.7113588850174216,
+          "reference_ml": 140.2470703125,
+          "predicted_ml": 102.574951171875,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.7083872708975167
+        }
+      }
+    },
+    {
+      "case_id": "patient120_es",
+      "patient_id": "patient120",
+      "phase": "ES",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7016958576591604,
+          "iou": 0.5404710920770878,
+          "reference_ml": 31.95703125,
+          "predicted_ml": 39.175048828125,
+          "hd95_mm": 23.638719561346804,
+          "assd_mm": 3.5218924902980095
+        },
+        "myocardium": {
+          "dice": 0.7626838235294118,
+          "iou": 0.6164017233694845,
+          "reference_ml": 117.3076171875,
+          "predicted_ml": 97.8486328125,
+          "hd95_mm": 9.004393458889943,
+          "assd_mm": 1.4772549851343646
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.888029077265799,
+          "iou": 0.7986081822016027,
+          "reference_ml": 91.144775390625,
+          "predicted_ml": 77.51953125,
+          "hd95_mm": 5.070306481121235,
+          "assd_mm": 0.9451933013993125
+        }
+      }
+    },
+    {
+      "case_id": "patient121_ed",
+      "patient_id": "patient121",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6666699647903442,
+        1.6666699647903442,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8880706921944035,
+          "iou": 0.7986754966887417,
+          "reference_ml": 239.5009478816828,
+          "predicted_ml": 213.16751032753814,
+          "hd95_mm": 8.975292439497064,
+          "assd_mm": 1.3491906500107729
+        },
+        "myocardium": {
+          "dice": 0.8245164297366582,
+          "iou": 0.7014274385408406,
+          "reference_ml": 107.52820334609072,
+          "predicted_ml": 130.8616290269784,
+          "hd95_mm": 5.000009894371033,
+          "assd_mm": 1.5606417198560831
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9544757033248081,
+          "iou": 0.9129158512720157,
+          "reference_ml": 167.13955038321566,
+          "predicted_ml": 158.69507251775156,
+          "hd95_mm": 2.3570272682063935,
+          "assd_mm": 0.8061844000174684
+        }
+      }
+    },
+    {
+      "case_id": "patient121_es",
+      "patient_id": "patient121",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6666699647903442,
+        1.6666699647903442,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.754497709241256,
+          "iou": 0.6057778575273641,
+          "reference_ml": 139.3616626678732,
+          "predicted_ml": 109.2226544967266,
+          "hd95_mm": 13.017093350220554,
+          "assd_mm": 3.2099225336299435
+        },
+        "myocardium": {
+          "dice": 0.8676731793960923,
+          "iou": 0.7662745098039215,
+          "reference_ml": 116.86157361844579,
+          "predicted_ml": 133.36163892135923,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.8036258125655007
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8078146297137665,
+          "iou": 0.6775914634146342,
+          "reference_ml": 57.33356024446687,
+          "predicted_ml": 64.9447014784707,
+          "hd95_mm": 13.944347178414786,
+          "assd_mm": 5.210003516880319
+        }
+      }
+    },
+    {
+      "case_id": "patient122_ed",
+      "patient_id": "patient122",
+      "phase": "ED",
+      "spacing_mm": [
+        1.696429967880249,
+        1.696429967880249,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8193043836180284,
+          "iou": 0.6939166811922608,
+          "reference_ml": 123.97883931552764,
+          "predicted_ml": 155.6930178033901,
+          "hd95_mm": 106.51037187847852,
+          "assd_mm": 11.571980077066195
+        },
+        "myocardium": {
+          "dice": 0.7758485297967018,
+          "iou": 0.6337847469707769,
+          "reference_ml": 158.65722867838994,
+          "predicted_ml": 171.17598334465143,
+          "hd95_mm": 71.94839023749405,
+          "assd_mm": 5.429168813319088
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8291378926264201,
+          "iou": 0.7081430745814308,
+          "reference_ml": 223.29429300120216,
+          "predicted_ml": 293.45687662498494,
+          "hd95_mm": 83.19428165080127,
+          "assd_mm": 13.819497347190913
+        }
+      }
+    },
+    {
+      "case_id": "patient122_es",
+      "patient_id": "patient122",
+      "phase": "ES",
+      "spacing_mm": [
+        1.696429967880249,
+        1.696429967880249,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6967185946304276,
+          "iou": 0.534587995930824,
+          "reference_ml": 66.42134659708398,
+          "predicted_ml": 107.22960893446053,
+          "hd95_mm": 107.74775513121581,
+          "assd_mm": 15.18417602361804
+        },
+        "myocardium": {
+          "dice": 0.7819767441860465,
+          "iou": 0.6420047732696897,
+          "reference_ml": 164.58565042838964,
+          "predicted_ml": 191.8103444842135,
+          "hd95_mm": 75.61488801367163,
+          "assd_mm": 7.187286900243732
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7527948471163101,
+          "iou": 0.6035854208714235,
+          "reference_ml": 156.58515894052596,
+          "predicted_ml": 232.12936813348327,
+          "hd95_mm": 87.35067390974773,
+          "assd_mm": 20.280729789231053
+        }
+      }
+    },
+    {
+      "case_id": "patient123_ed",
+      "patient_id": "patient123",
+      "phase": "ED",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7883128509807114,
+          "iou": 0.6505910800644814,
+          "reference_ml": 125.54882057973528,
+          "predicted_ml": 145.18097206035026,
+          "hd95_mm": 10.109568932677513,
+          "assd_mm": 5.056041959284079
+        },
+        "myocardium": {
+          "dice": 0.7755502288080192,
+          "iou": 0.6333867236163019,
+          "reference_ml": 98.16075740307488,
+          "predicted_ml": 104.06582653529128,
+          "hd95_mm": 10.0,
+          "assd_mm": 2.437707712922278
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8655749838097881,
+          "iou": 0.763007665959876,
+          "reference_ml": 106.9963272613539,
+          "predicted_ml": 131.1674497913591,
+          "hd95_mm": 10.946709827204941,
+          "assd_mm": 5.029570019652818
+        }
+      }
+    },
+    {
+      "case_id": "patient123_es",
+      "patient_id": "patient123",
+      "phase": "ES",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.661319073083779,
+          "iou": 0.4940079893475366,
+          "reference_ml": 66.8506706983006,
+          "predicted_ml": 106.2031090197129,
+          "hd95_mm": 20.10986742892943,
+          "assd_mm": 7.329549739842977
+        },
+        "myocardium": {
+          "dice": 0.7903559992465624,
+          "iou": 0.6533790096543133,
+          "reference_ml": 126.6064449019233,
+          "predicted_ml": 107.34886870208324,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.89851558275995
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7066160520607375,
+          "iou": 0.5463312368972746,
+          "reference_ml": 29.591447181218758,
+          "predicted_ml": 51.66935490689352,
+          "hd95_mm": 83.8514305428904,
+          "assd_mm": 7.704835236135403
+        }
+      }
+    },
+    {
+      "case_id": "patient124_ed",
+      "patient_id": "patient124",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7702466982307501,
+          "iou": 0.6263424518743668,
+          "reference_ml": 222.48084730239628,
+          "predicted_ml": 232.0228193725086,
+          "hd95_mm": 106.24900383165738,
+          "assd_mm": 16.173365483058404
+        },
+        "myocardium": {
+          "dice": 0.5782431100051646,
+          "iou": 0.4067102569183013,
+          "reference_ml": 95.91522370179668,
+          "predicted_ml": 205.619588050907,
+          "hd95_mm": 136.3625200462089,
+          "assd_mm": 30.338243291536607
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.704994640943194,
+          "iou": 0.5443951532808051,
+          "reference_ml": 121.78048033695276,
+          "predicted_ml": 208.43687654045056,
+          "hd95_mm": 122.52792070091904,
+          "assd_mm": 35.60700419971568
+        }
+      }
+    },
+    {
+      "case_id": "patient124_es",
+      "patient_id": "patient124",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6038364591788781,
+          "iou": 0.4324969400244798,
+          "reference_ml": 167.48001422763906,
+          "predicted_ml": 163.89823539419928,
+          "hd95_mm": 112.9753915649995,
+          "assd_mm": 20.160847348356647
+        },
+        "myocardium": {
+          "dice": 0.6003490401396161,
+          "iou": 0.428927680798005,
+          "reference_ml": 108.03381137541113,
+          "predicted_ml": 184.00149999295223,
+          "hd95_mm": 144.8740525856057,
+          "assd_mm": 40.06662153838757
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.3968317895019466,
+          "iou": 0.24752972701390052,
+          "reference_ml": 50.810293411918565,
+          "predicted_ml": 160.10409813189943,
+          "hd95_mm": 132.63411968875644,
+          "assd_mm": 48.581543993896624
+        }
+      }
+    },
+    {
+      "case_id": "patient125_ed",
+      "patient_id": "patient125",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7543674629740016,
+          "iou": 0.6056099536184937,
+          "reference_ml": 124.42788208340826,
+          "predicted_ml": 184.32711625053767,
+          "hd95_mm": 110.33266797315288,
+          "assd_mm": 23.41397582955373
+        },
+        "myocardium": {
+          "dice": 0.5936309199782254,
+          "iou": 0.42210179988387847,
+          "reference_ml": 65.90189908957396,
+          "predicted_ml": 142.15273227892848,
+          "hd95_mm": 140.46098514387862,
+          "assd_mm": 18.7248002906833
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8223805753496964,
+          "iou": 0.6983415508740475,
+          "reference_ml": 113.96569015490232,
+          "predicted_ml": 154.2430054953616,
+          "hd95_mm": 96.17146096848931,
+          "assd_mm": 20.64993250984832
+        }
+      }
+    },
+    {
+      "case_id": "patient125_es",
+      "patient_id": "patient125",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5755759370260707,
+          "iou": 0.40407625228148447,
+          "reference_ml": 67.40256532018509,
+          "predicted_ml": 128.63257897483757,
+          "hd95_mm": 111.99751230910306,
+          "assd_mm": 30.57972881709138
+        },
+        "myocardium": {
+          "dice": 0.5971446306641838,
+          "iou": 0.42566371681415927,
+          "reference_ml": 67.72818157777053,
+          "predicted_ml": 137.5374757583697,
+          "hd95_mm": 149.24080550097003,
+          "assd_mm": 27.711720368316666
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.5048243218641908,
+          "iou": 0.33763545598441497,
+          "reference_ml": 42.259327343153224,
+          "predicted_ml": 113.27198595395944,
+          "hd95_mm": 106.92701180314126,
+          "assd_mm": 39.836492179311556
+        }
+      }
+    },
+    {
+      "case_id": "patient126_ed",
+      "patient_id": "patient126",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8325685066212141,
+          "iou": 0.713162623539982,
+          "reference_ml": 169.33461117301698,
+          "predicted_ml": 154.59693621012838,
+          "hd95_mm": 51.47677393013656,
+          "assd_mm": 4.097412090122516
+        },
+        "myocardium": {
+          "dice": 0.6182073156480075,
+          "iou": 0.44739512855209745,
+          "reference_ml": 42.45752854342262,
+          "predicted_ml": 78.68587650694995,
+          "hd95_mm": 48.2132794281731,
+          "assd_mm": 9.481042128669273
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8252818698049543,
+          "iou": 0.7025360795852599,
+          "reference_ml": 73.9148904718938,
+          "predicted_ml": 98.1095941333507,
+          "hd95_mm": 87.05038339882994,
+          "assd_mm": 11.190355069237793
+        }
+      }
+    },
+    {
+      "case_id": "patient126_es",
+      "patient_id": "patient126",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8748920241865822,
+          "iou": 0.7776071657069737,
+          "reference_ml": 98.70419773415888,
+          "predicted_ml": 97.96802184744399,
+          "hd95_mm": 10.0,
+          "assd_mm": 2.8378885894338994
+        },
+        "myocardium": {
+          "dice": 0.8046292066392569,
+          "iou": 0.6731210191082803,
+          "reference_ml": 43.2503333445002,
+          "predicted_ml": 49.72018681043689,
+          "hd95_mm": 35.84680382641844,
+          "assd_mm": 3.2902900478896107
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8022230739747029,
+          "iou": 0.66976,
+          "reference_ml": 33.12791490217037,
+          "predicted_ml": 40.74450388395142,
+          "hd95_mm": 104.17559912290467,
+          "assd_mm": 8.401384896422375
+        }
+      }
+    },
+    {
+      "case_id": "patient127_ed",
+      "patient_id": "patient127",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8874189795579193,
+          "iou": 0.7976218929254302,
+          "reference_ml": 197.096936439323,
+          "predicted_ml": 228.82328571101692,
+          "hd95_mm": 20.0,
+          "assd_mm": 3.436819985290125
+        },
+        "myocardium": {
+          "dice": 0.8358554663372452,
+          "iou": 0.7179997347128266,
+          "reference_ml": 86.21752211718697,
+          "predicted_ml": 97.14690258918506,
+          "hd95_mm": 146.39403212070465,
+          "assd_mm": 5.73027090360688
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.949112308985708,
+          "iou": 0.9031529411764706,
+          "reference_ml": 141.0626256774468,
+          "predicted_ml": 145.21069365451342,
+          "hd95_mm": 145.07401071632424,
+          "assd_mm": 10.337150866907661
+        }
+      }
+    },
+    {
+      "case_id": "patient127_es",
+      "patient_id": "patient127",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8549791000737644,
+          "iou": 0.746693008074214,
+          "reference_ml": 130.64290543471287,
+          "predicted_ml": 157.24433795658388,
+          "hd95_mm": 22.137434988023966,
+          "assd_mm": 4.144656509738258
+        },
+        "myocardium": {
+          "dice": 0.8240541880059474,
+          "iou": 0.7007586400674347,
+          "reference_ml": 74.72185250156204,
+          "predicted_ml": 96.66555681710224,
+          "hd95_mm": 156.567049920276,
+          "assd_mm": 10.401338677913364
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8257692307692308,
+          "iou": 0.7032427120864724,
+          "reference_ml": 64.58527683064155,
+          "predicted_ml": 82.64990051233787,
+          "hd95_mm": 156.81615114940857,
+          "assd_mm": 21.66506628519545
+        }
+      }
+    },
+    {
+      "case_id": "patient128_ed",
+      "patient_id": "patient128",
+      "phase": "ED",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.853004622496148,
+          "iou": 0.7436861902203117,
+          "reference_ml": 160.67076161239552,
+          "predicted_ml": 196.82829312719818,
+          "hd95_mm": 151.02138857717065,
+          "assd_mm": 14.052609351547805
+        },
+        "myocardium": {
+          "dice": 0.5884780455595906,
+          "iou": 0.416910302888551,
+          "reference_ml": 99.3505847655364,
+          "predicted_ml": 167.61142122675435,
+          "hd95_mm": 138.07925909217315,
+          "assd_mm": 23.08747379210882
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9339335531321329,
+          "iou": 0.8760556678958011,
+          "reference_ml": 171.79785083541523,
+          "predicted_ml": 175.7198743635291,
+          "hd95_mm": 104.62247298150926,
+          "assd_mm": 3.893679628270584
+        }
+      }
+    },
+    {
+      "case_id": "patient128_es",
+      "patient_id": "patient128",
+      "phase": "ES",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6757774857643452,
+          "iou": 0.5103201905265944,
+          "reference_ml": 88.13536018233435,
+          "predicted_ml": 163.3809239380023,
+          "hd95_mm": 163.8036124633414,
+          "assd_mm": 22.413637168708934
+        },
+        "myocardium": {
+          "dice": 0.5804328149428125,
+          "iou": 0.40888012984001854,
+          "reference_ml": 111.9759751116558,
+          "predicted_ml": 155.80128296232155,
+          "hd95_mm": 140.4319570489288,
+          "assd_mm": 25.46373448343595
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7746972594008923,
+          "iou": 0.6322496749024707,
+          "reference_ml": 66.34389237725219,
+          "predicted_ml": 71.94048774883042,
+          "hd95_mm": 114.57826228782972,
+          "assd_mm": 8.019109243400973
+        }
+      }
+    },
+    {
+      "case_id": "patient129_ed",
+      "patient_id": "patient129",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6517900228500366,
+        1.6517900228500366,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8802323594737741,
+          "iou": 0.78608483368935,
+          "reference_ml": 244.09722566324422,
+          "predicted_ml": 234.98433532942389,
+          "hd95_mm": 8.258950114250183,
+          "assd_mm": 3.00158670169472
+        },
+        "myocardium": {
+          "dice": 0.6837919628404532,
+          "iou": 0.5195166292375147,
+          "reference_ml": 93.22977925348522,
+          "predicted_ml": 100.61012905976784,
+          "hd95_mm": 31.76907248143855,
+          "assd_mm": 2.388045870168358
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8561310630991558,
+          "iou": 0.7484520607917944,
+          "reference_ml": 183.2946025826496,
+          "predicted_ml": 198.08258629801074,
+          "hd95_mm": 56.514530222740156,
+          "assd_mm": 5.647356222021118
+        }
+      }
+    },
+    {
+      "case_id": "patient129_es",
+      "patient_id": "patient129",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6517900228500366,
+        1.6517900228500366,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7934297446884485,
+          "iou": 0.657591003255401,
+          "reference_ml": 149.16218998501716,
+          "predicted_ml": 156.47432953431013,
+          "hd95_mm": 15.0,
+          "assd_mm": 5.71120316405183
+        },
+        "myocardium": {
+          "dice": 0.6895099540581929,
+          "iou": 0.5261466549810108,
+          "reference_ml": 105.12564807248421,
+          "predicted_ml": 108.67258143594721,
+          "hd95_mm": 33.80405356331675,
+          "assd_mm": 3.305874236003897
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7227594609000229,
+          "iou": 0.5658757601049242,
+          "reference_ml": 79.79235862651961,
+          "predicted_ml": 99.3687023825558,
+          "hd95_mm": 65.19134938971361,
+          "assd_mm": 10.300948936918857
+        }
+      }
+    },
+    {
+      "case_id": "patient130_ed",
+      "patient_id": "patient130",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.9418357816082195,
+          "iou": 0.8900658000320976,
+          "reference_ml": 223.22087971289045,
+          "predicted_ml": 217.0524916451251,
+          "hd95_mm": 3.0571297857495683,
+          "assd_mm": 1.5005138201764128
+        },
+        "myocardium": {
+          "dice": 0.8230111768573307,
+          "iou": 0.6992514802815328,
+          "reference_ml": 133.79794481534665,
+          "predicted_ml": 150.5086688534746,
+          "hd95_mm": 13.942657012201003,
+          "assd_mm": 1.49427653613787
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9554304256537507,
+          "iou": 0.9146642302421197,
+          "reference_ml": 195.276212557408,
+          "predicted_ml": 196.43512183074574,
+          "hd95_mm": 14.273882691363097,
+          "assd_mm": 0.8607338069106284
+        }
+      }
+    },
+    {
+      "case_id": "patient130_es",
+      "patient_id": "patient130",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7586424625098658,
+          "iou": 0.6111393692777213,
+          "reference_ml": 105.64766472427205,
+          "predicted_ml": 131.18105290780983,
+          "hd95_mm": 20.370411582564245,
+          "assd_mm": 7.187435529747761
+        },
+        "myocardium": {
+          "dice": 0.7555083620918502,
+          "iou": 0.6070819112627986,
+          "reference_ml": 148.50861575271432,
+          "predicted_ml": 133.14372183846245,
+          "hd95_mm": 10.0,
+          "assd_mm": 2.110471955858742
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8408909194745859,
+          "iou": 0.7254631454473788,
+          "reference_ml": 77.68430548373578,
+          "predicted_ml": 85.96489916258442,
+          "hd95_mm": 10.093027717458396,
+          "assd_mm": 3.127033142981787
+        }
+      }
+    },
+    {
+      "case_id": "patient131_ed",
+      "patient_id": "patient131",
+      "phase": "ED",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8287283825025432,
+          "iou": 0.7075458588104503,
+          "reference_ml": 228.72216796875,
+          "predicted_ml": 257.258056640625,
+          "hd95_mm": 14.0625,
+          "assd_mm": 4.009444322419563
+        },
+        "myocardium": {
+          "dice": 0.7705536279981898,
+          "iou": 0.6267484662576687,
+          "reference_ml": 117.841552734375,
+          "predicted_ml": 144.340576171875,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.4120224561083758
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9518587210708814,
+          "iou": 0.9081397138021234,
+          "reference_ml": 241.516845703125,
+          "predicted_ml": 248.952392578125,
+          "hd95_mm": 9.004393458889943,
+          "assd_mm": 1.8128464534351487
+        }
+      }
+    },
+    {
+      "case_id": "patient131_es",
+      "patient_id": "patient131",
+      "phase": "ES",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7268956446962416,
+          "iou": 0.5709631277813096,
+          "reference_ml": 158.677734375,
+          "predicted_ml": 232.261962890625,
+          "hd95_mm": 15.56864838385144,
+          "assd_mm": 6.572009565647098
+        },
+        "myocardium": {
+          "dice": 0.7957021340098492,
+          "iou": 0.6607187112763321,
+          "reference_ml": 120.372802734375,
+          "predicted_ml": 144.656982421875,
+          "hd95_mm": 6.288941186718159,
+          "assd_mm": 0.9585343717171169
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9525950908750235,
+          "iou": 0.9094812164579607,
+          "reference_ml": 210.251953125,
+          "predicted_ml": 211.9130859375,
+          "hd95_mm": 4.446952959611783,
+          "assd_mm": 1.4599456688448194
+        }
+      }
+    },
+    {
+      "case_id": "patient132_ed",
+      "patient_id": "patient132",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8337484161314284,
+          "iou": 0.7148958489435037,
+          "reference_ml": 181.6870667232704,
+          "predicted_ml": 246.1186839038376,
+          "hd95_mm": 171.43858049066876,
+          "assd_mm": 29.75574031964651
+        },
+        "myocardium": {
+          "dice": 0.842180689078641,
+          "iou": 0.7273852501289324,
+          "reference_ml": 146.78894392776158,
+          "predicted_ml": 166.24740446880318,
+          "hd95_mm": 3.0571297857495683,
+          "assd_mm": 2.273815304523648
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9547146401985112,
+          "iou": 0.913353115727003,
+          "reference_ml": 271.7642245976984,
+          "predicted_ml": 270.6053153243607,
+          "hd95_mm": 91.64535185493321,
+          "assd_mm": 5.194666441530722
+        }
+      }
+    },
+    {
+      "case_id": "patient132_es",
+      "patient_id": "patient132",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7749572022499389,
+          "iou": 0.6325960233170965,
+          "reference_ml": 155.7237605834944,
+          "predicted_ml": 226.43591834214996,
+          "hd95_mm": 168.55259139621788,
+          "assd_mm": 33.376893750092904
+        },
+        "myocardium": {
+          "dice": 0.8361588549304863,
+          "iou": 0.7184475806451613,
+          "reference_ml": 149.72360128121358,
+          "predicted_ml": 168.9203726315015,
+          "hd95_mm": 4.929473660542748,
+          "assd_mm": 2.490913564518422
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9484495358483113,
+          "iou": 0.9019534184823441,
+          "reference_ml": 235.93149754949783,
+          "predicted_ml": 237.2586355883201,
+          "hd95_mm": 100.53025596133787,
+          "assd_mm": 5.848955682803145
+        }
+      }
+    },
+    {
+      "case_id": "patient133_ed",
+      "patient_id": "patient133",
+      "phase": "ED",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.876467556268255,
+          "iou": 0.7800999082475277,
+          "reference_ml": 194.2626953125,
+          "predicted_ml": 232.03125,
+          "hd95_mm": 10.12133421293853,
+          "assd_mm": 3.061354604666144
+        },
+        "myocardium": {
+          "dice": 0.6977774881053249,
+          "iou": 0.5358358358358358,
+          "reference_ml": 191.89453125,
+          "predicted_ml": 182.6904296875,
+          "hd95_mm": 53.9413222571543,
+          "assd_mm": 3.8092175059340785
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8753801169590644,
+          "iou": 0.7783786594560865,
+          "reference_ml": 373.0712890625,
+          "predicted_ml": 461.8896484375,
+          "hd95_mm": 59.59039472123943,
+          "assd_mm": 6.134333494165296
+        }
+      }
+    },
+    {
+      "case_id": "patient133_es",
+      "patient_id": "patient133",
+      "phase": "ES",
+      "spacing_mm": [
+        1.5625,
+        1.5625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8023934402009307,
+          "iou": 0.6699975326918333,
+          "reference_ml": 138.5986328125,
+          "predicted_ml": 191.89453125,
+          "hd95_mm": 10.592782035423934,
+          "assd_mm": 4.927123603949843
+        },
+        "myocardium": {
+          "dice": 0.6816981253623655,
+          "iou": 0.5171032056293979,
+          "reference_ml": 201.3671875,
+          "predicted_ml": 177.6123046875,
+          "hd95_mm": 59.57940377208081,
+          "assd_mm": 4.803284827233094
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8536967632027257,
+          "iou": 0.7447390322197123,
+          "reference_ml": 317.48046875,
+          "predicted_ml": 399.072265625,
+          "hd95_mm": 65.11445533253335,
+          "assd_mm": 8.08981060300224
+        }
+      }
+    },
+    {
+      "case_id": "patient134_ed",
+      "patient_id": "patient134",
+      "phase": "ED",
+      "spacing_mm": [
+        1.4453125,
+        1.4453125,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7856223987892547,
+          "iou": 0.6469341974077767,
+          "reference_ml": 138.2661590576172,
+          "predicted_ml": 137.78570556640625,
+          "hd95_mm": 128.66528733326166,
+          "assd_mm": 7.819836425360645
+        },
+        "myocardium": {
+          "dice": 0.7905240706886045,
+          "iou": 0.6536087668472099,
+          "reference_ml": 118.02444458007812,
+          "predicted_ml": 156.21005249023438,
+          "hd95_mm": 20.052155201440474,
+          "assd_mm": 3.6669148823867213
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8090181342917824,
+          "iou": 0.6792866941015089,
+          "reference_ml": 111.11009216308594,
+          "predicted_ml": 144.6165008544922,
+          "hd95_mm": 33.312601817729096,
+          "assd_mm": 8.127776966564161
+        }
+      }
+    },
+    {
+      "case_id": "patient134_es",
+      "patient_id": "patient134",
+      "phase": "ES",
+      "spacing_mm": [
+        1.4453125,
+        1.4453125,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.4878048780487805,
+          "iou": 0.3225806451612903,
+          "reference_ml": 75.59831237792969,
+          "predicted_ml": 45.162628173828125,
+          "hd95_mm": 127.60892797804604,
+          "assd_mm": 15.372226039441635
+        },
+        "myocardium": {
+          "dice": 0.8155617535578917,
+          "iou": 0.6885641830696776,
+          "reference_ml": 132.3544921875,
+          "predicted_ml": 159.74034118652344,
+          "hd95_mm": 20.259433385790462,
+          "assd_mm": 4.156607799709294
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.6834381551362684,
+          "iou": 0.5191082802547771,
+          "reference_ml": 41.987457275390625,
+          "predicted_ml": 67.61860656738281,
+          "hd95_mm": 31.395000511688263,
+          "assd_mm": 11.495672883459203
+        }
+      }
+    },
+    {
+      "case_id": "patient135_ed",
+      "patient_id": "patient135",
+      "phase": "ED",
+      "spacing_mm": [
+        1.9531199932098389,
+        1.9531199932098389,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8588225270512055,
+          "iou": 0.7525757802000896,
+          "reference_ml": 207.89993507924206,
+          "predicted_ml": 239.8287874941642,
+          "hd95_mm": 46.45024617289589,
+          "assd_mm": 4.025148429041022
+        },
+        "myocardium": {
+          "dice": 0.7967037942588064,
+          "iou": 0.6621011438892234,
+          "reference_ml": 196.72292939516538,
+          "predicted_ml": 224.53192988558143,
+          "hd95_mm": 6.17630772215569,
+          "assd_mm": 1.0856789354617293
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9658108462143045,
+          "iou": 0.9338822039265358,
+          "reference_ml": 285.0327183324948,
+          "predicted_ml": 297.3922741060131,
+          "hd95_mm": 1.9531199932098389,
+          "assd_mm": 0.37848472390891935
+        }
+      }
+    },
+    {
+      "case_id": "patient135_es",
+      "patient_id": "patient135",
+      "phase": "ES",
+      "spacing_mm": [
+        1.9531199932098389,
+        1.9531199932098389,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6915861284820921,
+          "iou": 0.5285683250054313,
+          "reference_ml": 103.6066465459122,
+          "predicted_ml": 164.79407698024326,
+          "hd95_mm": 20.09514064911903,
+          "assd_mm": 6.0650685084534315
+        },
+        "myocardium": {
+          "dice": 0.8216004277312422,
+          "iou": 0.6972171808832426,
+          "reference_ml": 205.15336712957134,
+          "predicted_ml": 222.9297652482735,
+          "hd95_mm": 4.3673090730311275,
+          "assd_mm": 1.0626117748689545
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9582062484543731,
+          "iou": 0.9197657857255895,
+          "reference_ml": 228.04143337682734,
+          "predicted_ml": 234.71711936561036,
+          "hd95_mm": 1.9531199932098389,
+          "assd_mm": 0.46954518045863336
+        }
+      }
+    },
+    {
+      "case_id": "patient136_ed",
+      "patient_id": "patient136",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6406199932098389,
+        1.6406199932098389,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8318468210457409,
+          "iou": 0.7121042308769964,
+          "reference_ml": 143.3295084828821,
+          "predicted_ml": 185.61507802778496,
+          "hd95_mm": 97.48582609903107,
+          "assd_mm": 7.868882362594632
+        },
+        "myocardium": {
+          "dice": 0.7576566671901994,
+          "iou": 0.6098609355246524,
+          "reference_ml": 153.58463387855875,
+          "predicted_ml": 189.16803485778317,
+          "hd95_mm": 36.024673671573126,
+          "assd_mm": 3.318264891751688
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9036265643555312,
+          "iou": 0.8241959673387769,
+          "reference_ml": 278.1265373058443,
+          "predicted_ml": 311.17980236067604,
+          "hd95_mm": 55.832961884088746,
+          "assd_mm": 4.775089139225064
+        }
+      }
+    },
+    {
+      "case_id": "patient136_es",
+      "patient_id": "patient136",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6406199932098389,
+        1.6406199932098389,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7158483228001945,
+          "iou": 0.5574484194586409,
+          "reference_ml": 84.92105150488132,
+          "predicted_ml": 136.54659089834007,
+          "hd95_mm": 105.80353681684815,
+          "assd_mm": 11.59139999948261
+        },
+        "myocardium": {
+          "dice": 0.7578677909953321,
+          "iou": 0.6101345617650624,
+          "reference_ml": 149.92401169007573,
+          "predicted_ml": 207.57881115868295,
+          "hd95_mm": 45.79782662095492,
+          "assd_mm": 4.633595097295297
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8336927721979173,
+          "iou": 0.7148140321217245,
+          "reference_ml": 194.3090557254321,
+          "predicted_ml": 242.51621998699864,
+          "hd95_mm": 61.99137884872867,
+          "assd_mm": 8.348286144148696
+        }
+      }
+    },
+    {
+      "case_id": "patient137_ed",
+      "patient_id": "patient137",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8185631318563131,
+          "iou": 0.6928538916704597,
+          "reference_ml": 149.91052213175192,
+          "predicted_ml": 197.68749152935266,
+          "hd95_mm": 30.433372461485117,
+          "assd_mm": 4.666323887969042
+        },
+        "myocardium": {
+          "dice": 0.807405398074054,
+          "iou": 0.6770158080291141,
+          "reference_ml": 127.27440713155845,
+          "predicted_ml": 148.35907907228366,
+          "hd95_mm": 10.093027717458396,
+          "assd_mm": 1.386338299072834
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.905106364764799,
+          "iou": 0.8266614542611416,
+          "reference_ml": 202.92127534442628,
+          "predicted_ml": 233.78190776830687,
+          "hd95_mm": 10.0,
+          "assd_mm": 3.070248670052299
+        }
+      }
+    },
+    {
+      "case_id": "patient137_es",
+      "patient_id": "patient137",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6301285505349857,
+          "iou": 0.4599910092155541,
+          "reference_ml": 82.8620130436479,
+          "predicted_ml": 159.96686389071482,
+          "hd95_mm": 36.893825972024715,
+          "assd_mm": 8.334704573260373
+        },
+        "myocardium": {
+          "dice": 0.7624126984126984,
+          "iou": 0.6160476092756002,
+          "reference_ml": 159.77994304017648,
+          "predicted_ml": 134.62039655771537,
+          "hd95_mm": 10.185205791282122,
+          "assd_mm": 1.8231899356418104
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7759269210102095,
+          "iou": 0.6338893766461808,
+          "reference_ml": 121.7602420406773,
+          "predicted_ml": 121.74154995562347,
+          "hd95_mm": 10.093027717458396,
+          "assd_mm": 3.76784881441653
+        }
+      }
+    },
+    {
+      "case_id": "patient138_ed",
+      "patient_id": "patient138",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7828182941903584,
+          "iou": 0.6431400426525845,
+          "reference_ml": 125.27435403079816,
+          "predicted_ml": 177.16358214024248,
+          "hd95_mm": 85.00162879955984,
+          "assd_mm": 7.4741891885137095
+        },
+        "myocardium": {
+          "dice": 0.9051953364696257,
+          "iou": 0.826809901914993,
+          "reference_ml": 178.6402568594954,
+          "predicted_ml": 186.90215845329018,
+          "hd95_mm": 1.933498645142241,
+          "assd_mm": 0.6106198366955975
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9432536510935116,
+          "iou": 0.8926017601760176,
+          "reference_ml": 133.91009732566965,
+          "predicted_ml": 123.34906927025322,
+          "hd95_mm": 1.933498645142241,
+          "assd_mm": 0.3994756098521585
+        }
+      }
+    },
+    {
+      "case_id": "patient138_es",
+      "patient_id": "patient138",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6983992367221457,
+          "iou": 0.5365694738556768,
+          "reference_ml": 69.75886142091,
+          "predicted_ml": 106.56357689190993,
+          "hd95_mm": 24.690370099103657,
+          "assd_mm": 7.583937362764713
+        },
+        "myocardium": {
+          "dice": 0.8300106799572802,
+          "iou": 0.7094173132511791,
+          "reference_ml": 232.2304647088386,
+          "predicted_ml": 187.81807062092807,
+          "hd95_mm": 10.36710345378755,
+          "assd_mm": 2.9612765549558007
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8191108840061319,
+          "iou": 0.6936391172652532,
+          "reference_ml": 41.496428819512374,
+          "predicted_ml": 31.66439208119548,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.4506419801749044
+        }
+      }
+    },
+    {
+      "case_id": "patient139_ed",
+      "patient_id": "patient139",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5684362152267203,
+          "iou": 0.39707362066074126,
+          "reference_ml": 141.09094013462814,
+          "predicted_ml": 330.6703881923048,
+          "hd95_mm": 121.42695584372827,
+          "assd_mm": 39.01529523068606
+        },
+        "myocardium": {
+          "dice": 0.6811682385153636,
+          "iou": 0.5164936562860438,
+          "reference_ml": 84.23551011449302,
+          "predicted_ml": 101.90373139565055,
+          "hd95_mm": 83.32192689306383,
+          "assd_mm": 9.164686518761245
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9306352758050394,
+          "iou": 0.870269286754003,
+          "reference_ml": 143.20036719463815,
+          "predicted_ml": 147.84393817237824,
+          "hd95_mm": 71.16805840060803,
+          "assd_mm": 3.4058860279005825
+        }
+      }
+    },
+    {
+      "case_id": "patient139_es",
+      "patient_id": "patient139",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.41503055519438303,
+          "iou": 0.2618539786710418,
+          "reference_ml": 75.06162598773815,
+          "predicted_ml": 251.58810928481606,
+          "hd95_mm": 123.25423188538149,
+          "assd_mm": 49.00988989373293
+        },
+        "myocardium": {
+          "dice": 0.7733353262088035,
+          "iou": 0.630437431460948,
+          "reference_ml": 87.61908774766341,
+          "predicted_ml": 101.81878802410652,
+          "hd95_mm": 88.78903350592621,
+          "assd_mm": 10.241380973059051
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7993315029246747,
+          "iou": 0.6657387154503878,
+          "reference_ml": 52.3109596425297,
+          "predicted_ml": 66.28414426152207,
+          "hd95_mm": 79.67734541835429,
+          "assd_mm": 6.127513183074773
+        }
+      }
+    },
+    {
+      "case_id": "patient140_ed",
+      "patient_id": "patient140",
+      "phase": "ED",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.9122209083953536,
+          "iou": 0.8386086066884072,
+          "reference_ml": 398.7383432562514,
+          "predicted_ml": 415.41555853606195,
+          "hd95_mm": 93.38068108326881,
+          "assd_mm": 5.239890355722171
+        },
+        "myocardium": {
+          "dice": 0.7334442092530995,
+          "iou": 0.5790855915005372,
+          "reference_ml": 79.33710902212083,
+          "predicted_ml": 107.93471077527644,
+          "hd95_mm": 10.096140146255493,
+          "assd_mm": 3.5712670166842257
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9232121064193313,
+          "iou": 0.857376008704325,
+          "reference_ml": 145.47968099773618,
+          "predicted_ml": 144.53114668216122,
+          "hd95_mm": 5.007210510969166,
+          "assd_mm": 2.520558196019952
+        }
+      }
+    },
+    {
+      "case_id": "patient140_es",
+      "patient_id": "patient140",
+      "phase": "ES",
+      "spacing_mm": [
+        1.6826900243759155,
+        1.6826900243759155,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8199724663772107,
+          "iou": 0.6948757067217087,
+          "reference_ml": 242.0602944432944,
+          "predicted_ml": 292.6865438835342,
+          "hd95_mm": 98.66480399919523,
+          "assd_mm": 7.768257692771657
+        },
+        "myocardium": {
+          "dice": 0.7896519420624054,
+          "iou": 0.6524172422005239,
+          "reference_ml": 81.95619631139498,
+          "predicted_ml": 114.50366484134783,
+          "hd95_mm": 42.339103468275304,
+          "assd_mm": 4.8217857159220365
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8100351022093744,
+          "iou": 0.6807218462606281,
+          "reference_ml": 64.30213225882812,
+          "predicted_ml": 72.82478387041212,
+          "hd95_mm": 24.561196243542536,
+          "assd_mm": 6.140907761637565
+        }
+      }
+    },
+    {
+      "case_id": "patient141_ed",
+      "patient_id": "patient141",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7830276079303317,
+          "iou": 0.6434226552984166,
+          "reference_ml": 340.0090271292478,
+          "predicted_ml": 366.1592541195621,
+          "hd95_mm": 63.68080713520644,
+          "assd_mm": 7.140525366755359
+        },
+        "myocardium": {
+          "dice": 0.728780487804878,
+          "iou": 0.5732924021488872,
+          "reference_ml": 93.21742816347216,
+          "predicted_ml": 136.695217998691,
+          "hd95_mm": 41.5363555252126,
+          "assd_mm": 5.980568587252058
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7336322869955157,
+          "iou": 0.5793201133144475,
+          "reference_ml": 121.46116867981596,
+          "predicted_ml": 191.16395384556444,
+          "hd95_mm": 42.941395552354365,
+          "assd_mm": 9.645600025201652
+        }
+      }
+    },
+    {
+      "case_id": "patient141_es",
+      "patient_id": "patient141",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8098956848885596,
+          "iou": 0.6805249544975572,
+          "reference_ml": 161.44353860996773,
+          "predicted_ml": 166.47170948944918,
+          "hd95_mm": 20.779233493839914,
+          "assd_mm": 4.0321420378592014
+        },
+        "myocardium": {
+          "dice": 0.8148805999605289,
+          "iou": 0.6875936719400499,
+          "reference_ml": 92.54451310153412,
+          "predicted_ml": 96.88107683402372,
+          "hd95_mm": 84.5780723943882,
+          "assd_mm": 3.8915158322121886
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7299798792756539,
+          "iou": 0.5747782002534855,
+          "reference_ml": 39.421607378536756,
+          "predicted_ml": 53.47805533902023,
+          "hd95_mm": 104.68856998684369,
+          "assd_mm": 9.7916037595429
+        }
+      }
+    },
+    {
+      "case_id": "patient142_ed",
+      "patient_id": "patient142",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6129966221650314,
+          "iou": 0.44195755537515946,
+          "reference_ml": 147.98523737120698,
+          "predicted_ml": 84.43214818817,
+          "hd95_mm": 138.90897349822924,
+          "assd_mm": 11.523015114330699
+        },
+        "myocardium": {
+          "dice": 0.4129047232215388,
+          "iou": 0.26016379058204153,
+          "reference_ml": 119.62934434454017,
+          "predicted_ml": 41.440352564350874,
+          "hd95_mm": 23.81810501164734,
+          "assd_mm": 6.8594446079202775
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.44243614931237724,
+          "iou": 0.2840565085771948,
+          "reference_ml": 108.05894369621669,
+          "predicted_ml": 34.65512568980898,
+          "hd95_mm": 16.911206382859454,
+          "assd_mm": 4.693677398091197
+        }
+      }
+    },
+    {
+      "case_id": "patient142_es",
+      "patient_id": "patient142",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.012716763005780347,
+          "iou": 0.006399069226294357,
+          "reference_ml": 55.19772716397299,
+          "predicted_ml": 9.476887122294043,
+          "hd95_mm": 142.47692933128744,
+          "assd_mm": 37.06797520858175
+        },
+        "myocardium": {
+          "dice": 0.03860807721615443,
+          "iou": 0.019684019684019685,
+          "reference_ml": 143.34960027785604,
+          "predicted_ml": 3.8318774360360526,
+          "hd95_mm": 110.39624237640655,
+          "assd_mm": 16.434737399116603
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.03760071620411817,
+          "iou": 0.01916058394160584,
+          "reference_ml": 19.925762667387474,
+          "predicted_ml": 0.9532963377455546,
+          "hd95_mm": 121.57804840957817,
+          "assd_mm": 19.791986441388982
+        }
+      }
+    },
+    {
+      "case_id": "patient143_ed",
+      "patient_id": "patient143",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8565047459519821,
+          "iou": 0.7490234375,
+          "reference_ml": 152.97602408058074,
+          "predicted_ml": 181.7992192335934,
+          "hd95_mm": 10.093027717458396,
+          "assd_mm": 2.8900739641108184
+        },
+        "myocardium": {
+          "dice": 0.7623955926781589,
+          "iou": 0.6160252728317059,
+          "reference_ml": 152.6208744645579,
+          "predicted_ml": 162.92021332922064,
+          "hd95_mm": 7.733994580568964,
+          "assd_mm": 1.6854003410490812
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9314858145656625,
+          "iou": 0.8717580236775474,
+          "reference_ml": 255.5208026859163,
+          "predicted_ml": 255.7451077065623,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.0429122919447842
+        }
+      }
+    },
+    {
+      "case_id": "patient143_es",
+      "patient_id": "patient143",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7416942503371338,
+          "iou": 0.5894388152766953,
+          "reference_ml": 62.78671369582976,
+          "predicted_ml": 89.68462408829747,
+          "hd95_mm": 20.66178052086611,
+          "assd_mm": 3.632298690266137
+        },
+        "myocardium": {
+          "dice": 0.8121284833942303,
+          "iou": 0.6836837755945276,
+          "reference_ml": 170.92042573226178,
+          "predicted_ml": 171.83633789989966,
+          "hd95_mm": 4.929473660542748,
+          "assd_mm": 1.0149866630182172
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9305076392311483,
+          "iou": 0.8700460829493087,
+          "reference_ml": 191.23872218577978,
+          "predicted_ml": 188.02368355652027,
+          "hd95_mm": 8.203140020370483,
+          "assd_mm": 0.8007205247187318
+        }
+      }
+    },
+    {
+      "case_id": "patient144_ed",
+      "patient_id": "patient144",
+      "phase": "ED",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6882669859323556,
+          "iou": 0.5247005134055904,
+          "reference_ml": 96.879638671875,
+          "predicted_ml": 167.398681640625,
+          "hd95_mm": 158.51701075351323,
+          "assd_mm": 30.65711485426693
+        },
+        "myocardium": {
+          "dice": 0.8480459770114942,
+          "iou": 0.736180403113151,
+          "reference_ml": 78.310546875,
+          "predicted_ml": 93.7353515625,
+          "hd95_mm": 4.21875,
+          "assd_mm": 1.7960582155625946
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9557699308336367,
+          "iou": 0.9152867352274708,
+          "reference_ml": 110.564208984375,
+          "predicted_ml": 106.727783203125,
+          "hd95_mm": 1.40625,
+          "assd_mm": 1.295901969808342
+        }
+      }
+    },
+    {
+      "case_id": "patient144_es",
+      "patient_id": "patient144",
+      "phase": "ES",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5598491988689915,
+          "iou": 0.3887434554973822,
+          "reference_ml": 50.03173828125,
+          "predicted_ml": 96.840087890625,
+          "hd95_mm": 167.59159184057808,
+          "assd_mm": 43.78908821445932
+        },
+        "myocardium": {
+          "dice": 0.8441356424349269,
+          "iou": 0.7303068365332854,
+          "reference_ml": 84.895751953125,
+          "predicted_ml": 105.79833984375,
+          "hd95_mm": 18.779982730814133,
+          "assd_mm": 2.57775359014533
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7704826038159371,
+          "iou": 0.6266544956640804,
+          "reference_ml": 32.431640625,
+          "predicted_ml": 38.0478515625,
+          "hd95_mm": 11.473474844178638,
+          "assd_mm": 4.78991118197519
+        }
+      }
+    },
+    {
+      "case_id": "patient145_ed",
+      "patient_id": "patient145",
+      "phase": "ED",
+      "spacing_mm": [
+        1.7578099966049194,
+        1.7578099966049194,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6546067415730337,
+          "iou": 0.4865542007683314,
+          "reference_ml": 99.43285277040353,
+          "predicted_ml": 175.5678898202091,
+          "hd95_mm": 30.35490749696597,
+          "assd_mm": 6.09484099917615
+        },
+        "myocardium": {
+          "dice": 0.7630687674863791,
+          "iou": 0.616904761904762,
+          "reference_ml": 214.65507401988606,
+          "predicted_ml": 205.0145985492938,
+          "hd95_mm": 11.839284091284169,
+          "assd_mm": 1.7188020854106418
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8537856976110808,
+          "iou": 0.7448744059742023,
+          "reference_ml": 214.28428650178634,
+          "predicted_ml": 182.7982464231533,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.8066340182226006
+        }
+      }
+    },
+    {
+      "case_id": "patient145_es",
+      "patient_id": "patient145",
+      "phase": "ES",
+      "spacing_mm": [
+        1.7578099966049194,
+        1.7578099966049194,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.4631749023831964,
+          "iou": 0.3013842649377957,
+          "reference_ml": 58.67712473927791,
+          "predicted_ml": 170.80945000459624,
+          "hd95_mm": 48.28234656789805,
+          "assd_mm": 11.352008346504078
+        },
+        "myocardium": {
+          "dice": 0.6737226833168355,
+          "iou": 0.5079802503157653,
+          "reference_ml": 236.34614382871865,
+          "predicted_ml": 169.449895771564,
+          "hd95_mm": 19.043139411713497,
+          "assd_mm": 3.189363775496415
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.6619363698786908,
+          "iou": 0.49469722887444406,
+          "reference_ml": 172.4779938360449,
+          "predicted_ml": 97.51711726022174,
+          "hd95_mm": 20.37062441257793,
+          "assd_mm": 3.9232560358110624
+        }
+      }
+    },
+    {
+      "case_id": "patient146_ed",
+      "patient_id": "patient146",
+      "phase": "ED",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.8145141144141893,
+          "iou": 0.6870719629122326,
+          "reference_ml": 147.91316822600263,
+          "predicted_ml": 204.89267858388178,
+          "hd95_mm": 65.81159136933923,
+          "assd_mm": 6.2442335483967595
+        },
+        "myocardium": {
+          "dice": 0.687464026706573,
+          "iou": 0.5237677600420979,
+          "reference_ml": 143.63860325715942,
+          "predicted_ml": 239.17733369480985,
+          "hd95_mm": 106.60907684535695,
+          "assd_mm": 17.24854816835053
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9585553582001184,
+          "iou": 0.9204093234792495,
+          "reference_ml": 146.39283326285735,
+          "predicted_ml": 151.32841343306808,
+          "hd95_mm": 2.9687600135803223,
+          "assd_mm": 0.5786954586399614
+        }
+      }
+    },
+    {
+      "case_id": "patient146_es",
+      "patient_id": "patient146",
+      "phase": "ES",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6739469578783152,
+          "iou": 0.508235294117647,
+          "reference_ml": 52.90324994944619,
+          "predicted_ml": 88.3336647427446,
+          "hd95_mm": 79.20998154284098,
+          "assd_mm": 8.200348420080108
+        },
+        "myocardium": {
+          "dice": 0.7333616388918374,
+          "iou": 0.5789826531467359,
+          "reference_ml": 171.11480179400215,
+          "predicted_ml": 244.04681234488382,
+          "hd95_mm": 110.78817360929955,
+          "assd_mm": 20.57101036196315
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7611021069692059,
+          "iou": 0.6143380429094715,
+          "reference_ml": 28.049078378027907,
+          "predicted_ml": 39.92531816259746,
+          "hd95_mm": 10.0,
+          "assd_mm": 3.7791824760579087
+        }
+      }
+    },
+    {
+      "case_id": "patient147_ed",
+      "patient_id": "patient147",
+      "phase": "ED",
+      "spacing_mm": [
+        1.736109972000122,
+        1.736109972000122,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5930687141196774,
+          "iou": 0.42153353192980697,
+          "reference_ml": 309.3197378043819,
+          "predicted_ml": 546.4673818526037,
+          "hd95_mm": 196.01248371483013,
+          "assd_mm": 68.3413112340041
+        },
+        "myocardium": {
+          "dice": 0.6254407377271495,
+          "iou": 0.45501183898973957,
+          "reference_ml": 103.91033335742817,
+          "predicted_ml": 118.34776618649505,
+          "hd95_mm": 97.58148238519827,
+          "assd_mm": 18.893848615006277
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.6778372934120771,
+          "iou": 0.5126731301939058,
+          "reference_ml": 122.0852227017441,
+          "predicted_ml": 207.09728803448556,
+          "hd95_mm": 120.45853820610184,
+          "assd_mm": 41.05169428716609
+        }
+      }
+    },
+    {
+      "case_id": "patient147_es",
+      "patient_id": "patient147",
+      "phase": "ES",
+      "spacing_mm": [
+        1.736109972000122,
+        1.736109972000122,
+        5.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.44149777744292923,
+          "iou": 0.28328338006381126,
+          "reference_ml": 162.95611814269338,
+          "predicted_ml": 437.1317083923947,
+          "hd95_mm": 205.10932665501397,
+          "assd_mm": 82.97591931332236
+        },
+        "myocardium": {
+          "dice": 0.7607196557266552,
+          "iou": 0.6138398460379885,
+          "reference_ml": 134.32237871134987,
+          "predicted_ml": 156.34021729513557,
+          "hd95_mm": 96.98608055507599,
+          "assd_mm": 20.46318588461217
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.39701465368162375,
+          "iou": 0.24767204178968885,
+          "reference_ml": 33.87823486403169,
+          "predicted_ml": 131.70013099500576,
+          "hd95_mm": 137.3323374191727,
+          "assd_mm": 64.63997919840477
+        }
+      }
+    },
+    {
+      "case_id": "patient148_ed",
+      "patient_id": "patient148",
+      "phase": "ED",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5835450695704779,
+          "iou": 0.41197574100965234,
+          "reference_ml": 113.09970095398056,
+          "predicted_ml": 251.11967499951615,
+          "hd95_mm": 152.92329373420537,
+          "assd_mm": 44.61773211093807
+        },
+        "myocardium": {
+          "dice": 0.8122967159794355,
+          "iou": 0.683922261484099,
+          "reference_ml": 98.18279124312046,
+          "predicted_ml": 111.82173823133671,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.7579037153416754
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.933135875601629,
+          "iou": 0.8746529705719045,
+          "reference_ml": 144.63012605921068,
+          "predicted_ml": 152.93688375639567,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.2226641028768872
+        }
+      }
+    },
+    {
+      "case_id": "patient148_es",
+      "patient_id": "patient148",
+      "phase": "ES",
+      "spacing_mm": [
+        1.4843800067901611,
+        1.4843800067901611,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.47158489234027534,
+          "iou": 0.3085450346420323,
+          "reference_ml": 76.3913234380383,
+          "predicted_ml": 235.71802080765323,
+          "hd95_mm": 154.02214025343963,
+          "assd_mm": 52.722425112075484
+        },
+        "myocardium": {
+          "dice": 0.8403902623851472,
+          "iou": 0.7247181833033818,
+          "reference_ml": 111.57936599083529,
+          "predicted_ml": 121.03188337039064,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.732840070348002
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.8968657348581109,
+          "iou": 0.813015933960453,
+          "reference_ml": 101.5099010900036,
+          "predicted_ml": 106.57768430048782,
+          "hd95_mm": 10.0,
+          "assd_mm": 1.6127790929041568
+        }
+      }
+    },
+    {
+      "case_id": "patient149_ed",
+      "patient_id": "patient149",
+      "phase": "ED",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.6467366009093838,
+          "iou": 0.4779088840679401,
+          "reference_ml": 191.287353515625,
+          "predicted_ml": 361.05908203125,
+          "hd95_mm": 94.30057025655194,
+          "assd_mm": 21.57223451062583
+        },
+        "myocardium": {
+          "dice": 0.7752032520325203,
+          "iou": 0.6329239960172586,
+          "reference_ml": 127.135986328125,
+          "predicted_ml": 164.748779296875,
+          "hd95_mm": 52.983497209626506,
+          "assd_mm": 5.087896314823551
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7448495600854484,
+          "iou": 0.5934344891247909,
+          "reference_ml": 211.853759765625,
+          "predicted_ml": 334.32275390625,
+          "hd95_mm": 63.07102426283007,
+          "assd_mm": 16.10067904487117
+        }
+      }
+    },
+    {
+      "case_id": "patient149_es",
+      "patient_id": "patient149",
+      "phase": "ES",
+      "spacing_mm": [
+        1.40625,
+        1.40625,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.40606708403318575,
+          "iou": 0.2547579512070507,
+          "reference_ml": 86.003173828125,
+          "predicted_ml": 302.52392578125,
+          "hd95_mm": 93.89923482675272,
+          "assd_mm": 29.84604479575577
+        },
+        "myocardium": {
+          "dice": 0.7837042721923766,
+          "iou": 0.6443369439478389,
+          "reference_ml": 132.21826171875,
+          "predicted_ml": 176.98974609375,
+          "hd95_mm": 52.51376176709492,
+          "assd_mm": 5.706320173988707
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.5988659793814433,
+          "iou": 0.42741520123611215,
+          "reference_ml": 123.853271484375,
+          "predicted_ml": 259.789306640625,
+          "hd95_mm": 68.35254430158398,
+          "assd_mm": 23.53667035329186
+        }
+      }
+    },
+    {
+      "case_id": "patient150_ed",
+      "patient_id": "patient150",
+      "phase": "ED",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.7635175678378558,
+          "iou": 0.6174916424026744,
+          "reference_ml": 115.4610093775351,
+          "predicted_ml": 164.9015743449271,
+          "hd95_mm": 120.74304836070495,
+          "assd_mm": 24.044661979071073
+        },
+        "myocardium": {
+          "dice": 0.8327440265723776,
+          "iou": 0.7134202313199927,
+          "reference_ml": 80.4133499015956,
+          "predicted_ml": 94.03987990584088,
+          "hd95_mm": 98.98894553800231,
+          "assd_mm": 4.926658104318136
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.9643198470850589,
+          "iou": 0.9310981236542603,
+          "reference_ml": 117.83490417937207,
+          "predicted_ml": 116.86291575657269,
+          "hd95_mm": 1.3671900033950806,
+          "assd_mm": 2.007731623221823
+        }
+      }
+    },
+    {
+      "case_id": "patient150_es",
+      "patient_id": "patient150",
+      "phase": "ES",
+      "spacing_mm": [
+        1.3671900033950806,
+        1.3671900033950806,
+        10.0
+      ],
+      "structures": {
+        "right_ventricular_cavity": {
+          "dice": 0.5546744574290484,
+          "iou": 0.3837712965636731,
+          "reference_ml": 53.44067116891256,
+          "predicted_ml": 125.70427198703636,
+          "hd95_mm": 121.16798538509141,
+          "assd_mm": 33.38930554249665
+        },
+        "myocardium": {
+          "dice": 0.825938566552901,
+          "iou": 0.7034883720930233,
+          "reference_ml": 98.24559904295361,
+          "predicted_ml": 104.39529502566513,
+          "hd95_mm": 10.0,
+          "assd_mm": 3.357741463413613
+        },
+        "left_ventricular_cavity": {
+          "dice": 0.7677587706581618,
+          "iou": 0.6230588235294118,
+          "reference_ml": 29.776491490758204,
+          "predicted_ml": 34.692509859916655,
+          "hd95_mm": 10.808463190872741,
+          "assd_mm": 4.24364025662148
+        }
+      }
+    }
+  ],
+  "checkpoint": {
+    "path": "artifacts/training/acdc_cardiac_mri_3d_unet-20261025T132755Z/best.pt",
+    "sha256": "b18afcf66effbfd8c8db515958e798cb7b03f322b4a1da354d41edb5edc2d60e"
+  },
+  "held_out_predictions": "artifacts/training/acdc_cardiac_mri_3d_unet-20261025T132755Z/held_out_predictions",
+  "determinism": "warn_only: CUDA nll_loss has no deterministic kernel; repeated CUDA runs can differ slightly",
+  "reporting_context": {
+    "dataset": "ACDC cardiac cine-MRI (CREATIS)",
+    "dataset_version": "c0fa24d113128f2d",
+    "split": "test",
+    "checkpoint": "sha256:b18afcf66effbfd8c8db515958e798cb7b03f322b4a1da354d41edb5edc2d60e"
+  },
+  "validation_readiness": {
+    "validation_ready": false,
+    "readiness": "INTERNAL_HELD_OUT_ONLY",
+    "run_scope": "RESEARCH"
+  },
+  "limitations": [
+    "Internal held-out evaluation on the publisher's test patients from one centre; no external or clinical validation.",
+    "Cardiac indices are compared with indices from the publisher's reference masks, not with clinically reported values.",
+    "Native acquisition grid without resampling; slice thickness (5-10 mm) limits through-plane accuracy, and HD95 is dominated by it.",
+    "No connected-component post-processing was prespecified; predicted regions away from the heart inflate volumes and HD95, so volumes, ejection fractions and myocardial mass carry large biases and wide limits of agreement.",
+    "Evaluation and training used float16 autocast on CUDA; CUDA cross-entropy is not deterministic, so a rerun can differ slightly.",
+    "Research-only output; there is no upload inference path, and nothing here is a patient measurement."
+  ]
+}

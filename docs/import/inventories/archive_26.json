@@ -1,0 +1,85 @@
+{
+  "listed_name": "archive (26).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (26).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "PARTIALLY_PRESENT",
+  "sha256": "9686563dff5cf7ebaf97fc618d9fc367f24ebee98a38ef67cd2e48122d2e1889",
+  "size_bytes": 4468889,
+  "entries": 157,
+  "files": 157,
+  "directories": 0,
+  "uncompressed_bytes": 151844307,
+  "overall_ratio": 34.24,
+  "max_entry_ratio": 954.0,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (154 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "volume": 105,
+    "code": 24,
+    "no_extension": 10,
+    "structured_annotation": 6,
+    "document": 4,
+    "other": 3,
+    "raster_image": 3,
+    "tabular": 1,
+    "text": 1
+  },
+  "extensions": {
+    ".nii": 105,
+    ".py": 22,
+    "<none>": 10,
+    ".json": 5,
+    ".md": 4,
+    ".png": 3,
+    ".sh": 2,
+    ".yml": 1,
+    ".hcl": 1,
+    ".tf": 1,
+    ".service": 1,
+    ".csv": 1,
+    ".txt": 1
+  },
+  "top_level": {
+    "tests/": 113,
+    "totalsegmentator/": 16,
+    "resources/": 10,
+    "bin/": 6,
+    ".dockerignore": 1,
+    ".github/": 1,
+    ".gitignore": 1,
+    "CHANGELOG.md": 1,
+    "Dockerfile": 1,
+    "LICENSE": 1,
+    "README.md": 1,
+    "run_server.sh": 1,
+    "server.py": 1,
+    "setup.py": 1,
+    "test_server.py": 1,
+    "tests.sh": 1
+  },
+  "second_level": {
+    "tests/reference_files/": 109,
+    "resources/imgs/": 3,
+    "tests/helpers/": 2,
+    ".github/workflows/": 1
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_26.entries.csv",
+  "mask_like_files": 104,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [
+    "Apache-2.0 in LICENSE",
+    "CITATION_REQUIRED in README.md"
+  ],
+  "duration_seconds": 0.5,
+  "notes": [
+    "154 of 157 files present with identical name, size and CRC-32; 3 missing or different on disk."
+  ]
+}

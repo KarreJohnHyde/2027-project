@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-visceral-urinary-system",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/visceral/urinary_system.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 612332,
+  "sha256": "8c0d72446d4fac7ea075b6b37dcc5fa0987fc8002234b3e67f93cf3187b558a6",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2648
+      },
+      {
+        "type": "BIN",
+        "byteLength": 609656
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 35213,
+    "validator_vertex_count": 19303
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 35213,
+    "rendered_triangles": 35213,
+    "unique_vertices": 19303,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 31,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.00533,
+    "degenerate_triangles_measured": 3,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.093059,
+        0.745302,
+        -0.007693
+      ],
+      "max": [
+        0.095204,
+        1.16367,
+        0.141475
+      ],
+      "size": [
+        0.188264,
+        0.418368,
+        0.149168
+      ],
+      "center": [
+        0.001073,
+        0.954486,
+        0.066891
+      ],
+      "diagonal": 0.482417
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 2.805,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "visceral.urinary_system",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "visceral.urinary_system"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "visceral.urinary_system"
+    ]
+  },
+  "inspection_ms": 45,
+  "nodes": [
+    {
+      "path": "visceral.urinary_system",
+      "name": "visceral.urinary_system",
+      "semantic_name": "visceral.urinary_system",
+      "depth": 0,
+      "mesh": "visceral.urinary_system",
+      "material": null,
+      "triangles": 35213,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.093059,
+          0.745302,
+          -0.007693
+        ],
+        "max": [
+          0.095204,
+          1.16367,
+          0.141475
+        ],
+        "size": [
+          0.188264,
+          0.418368,
+          0.149168
+        ],
+        "center": [
+          0.001073,
+          0.954486,
+          0.066891
+        ],
+        "diagonal": 0.482417
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "visceral.urinary_system",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 19303,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 35213,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 17671,
+            "connected_components": 31,
+            "boundary_edge_fraction": 0.00533,
+            "non_manifold_edge_fraction": 0.00015,
+            "degenerate_triangles": 3,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 35213,
+      "points": 0,
+      "lines": 0,
+      "vertices": 19303
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

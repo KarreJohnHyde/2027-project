@@ -1,0 +1,432 @@
+{
+  "model_id": "gi_kvasir_v2_classifier",
+  "run_id": "gi_kvasir_v2_classifier-20261024T151359Z",
+  "task_id": "kvasir-v2-8class",
+  "dataset": "Kvasir v2 (GI endoscopy)",
+  "dataset_id": "kvasir-v2",
+  "dataset_version": "f3eedd730fe4a33d30048a69e1cfe9af3aeae4804b5c20f552bda11450c22cf5",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "Kvasir terms of use: research and educational purposes only; commercial use requires written permission; cite the dataset paper",
+    "source": "https://datasets.simula.no/kvasir/",
+    "verified_on": "2026-10-24",
+    "citation": "Pogorelov et al., Kvasir: A Multi-Class Image Dataset for Computer Aided Gastrointestinal Disease Detection, ACM MMSys 2017."
+  },
+  "split_method": "group-aware stratified split, seed 20261024, fractions {'train': 0.7, 'val': 0.15, 'test': 0.15}, dHash threshold 4",
+  "split_counts": {
+    "train": 5599,
+    "val": 1199,
+    "test": 1202
+  },
+  "test_n": 1202,
+  "test_groups": 1194,
+  "classes": [
+    "dyed-lifted-polyps",
+    "dyed-resection-margins",
+    "esophagitis",
+    "normal-cecum",
+    "normal-pylorus",
+    "normal-z-line",
+    "polyps",
+    "ulcerative-colitis"
+  ],
+  "selection": {
+    "criterion": "validation macro-F1",
+    "candidates": {
+      "resnet18": {
+        "val_macro_f1": 0.9432215391077234,
+        "best_epoch": 7
+      },
+      "efficientnet_b0": {
+        "val_macro_f1": 0.9397757860169891,
+        "best_epoch": 6
+      }
+    },
+    "selected": "resnet18"
+  },
+  "calibration": {
+    "method": "temperature_scaling",
+    "fitted_on": "validation split",
+    "temperature": 1.0775630474090576
+  },
+  "metrics": {
+    "accuracy": 0.9259567387687188,
+    "balanced_accuracy": 0.9258995584988963,
+    "macro_f1": 0.9259733239987497,
+    "macro_auroc_one_vs_rest": 0.9950438588857651,
+    "ece_uncalibrated": 0.01961193547371814,
+    "ece_temperature_scaled": 0.01909106776440602,
+    "brier_multiclass": 0.11040380774475604
+  },
+  "confidence_intervals_95": {
+    "accuracy": {
+      "status": "COMPUTED",
+      "low": 0.9109798441675753,
+      "high": 0.9403601042529688,
+      "resamples": 1000,
+      "unit": "near-duplicate group"
+    },
+    "macro_f1": {
+      "status": "COMPUTED",
+      "low": 0.9110076912348976,
+      "high": 0.9398747407885755,
+      "resamples": 1000,
+      "unit": "near-duplicate group"
+    },
+    "balanced_accuracy": {
+      "status": "COMPUTED",
+      "low": 0.9115003776516857,
+      "high": 0.9400041277775978,
+      "resamples": 1000,
+      "unit": "near-duplicate group"
+    }
+  },
+  "per_class": [
+    {
+      "class": "dyed-lifted-polyps",
+      "support": 151,
+      "precision": 0.9666666666666667,
+      "recall": 0.9602649006622517,
+      "f1": 0.9634551495016611,
+      "auroc_one_vs_rest": 0.9986326694488525
+    },
+    {
+      "class": "dyed-resection-margins",
+      "support": 151,
+      "precision": 0.9666666666666667,
+      "recall": 0.9602649006622517,
+      "f1": 0.9634551495016611,
+      "auroc_one_vs_rest": 0.9987460970878601
+    },
+    {
+      "class": "esophagitis",
+      "support": 150,
+      "precision": 0.8206896551724138,
+      "recall": 0.7933333333333333,
+      "f1": 0.8067796610169492,
+      "auroc_one_vs_rest": 0.9841001033782959
+    },
+    {
+      "class": "normal-cecum",
+      "support": 150,
+      "precision": 0.9668874172185431,
+      "recall": 0.9733333333333334,
+      "f1": 0.9700996677740864,
+      "auroc_one_vs_rest": 0.9993726015090942
+    },
+    {
+      "class": "normal-pylorus",
+      "support": 150,
+      "precision": 0.9736842105263158,
+      "recall": 0.9866666666666667,
+      "f1": 0.9801324503311258,
+      "auroc_one_vs_rest": 0.9995944499969482
+    },
+    {
+      "class": "normal-z-line",
+      "support": 150,
+      "precision": 0.8037974683544303,
+      "recall": 0.8466666666666667,
+      "f1": 0.8246753246753247,
+      "auroc_one_vs_rest": 0.9846261143684387
+    },
+    {
+      "class": "polyps",
+      "support": 150,
+      "precision": 0.96,
+      "recall": 0.96,
+      "f1": 0.96,
+      "auroc_one_vs_rest": 0.9970088601112366
+    },
+    {
+      "class": "ulcerative-colitis",
+      "support": 150,
+      "precision": 0.952054794520548,
+      "recall": 0.9266666666666666,
+      "f1": 0.9391891891891891,
+      "auroc_one_vs_rest": 0.9982699751853943
+    }
+  ],
+  "confusion_matrix": [
+    [
+      145,
+      5,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      5,
+      145,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      119,
+      0,
+      0,
+      31,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      146,
+      0,
+      0,
+      0,
+      4
+    ],
+    [
+      0,
+      0,
+      2,
+      0,
+      148,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      23,
+      0,
+      0,
+      127,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      3,
+      0,
+      144,
+      2
+    ],
+    [
+      0,
+      0,
+      1,
+      4,
+      1,
+      0,
+      5,
+      139
+    ]
+  ],
+  "highest_confidence_errors": [
+    [
+      "kvasir-dataset-v2/polyps/bfd869ea-f150-4e52-96a0-7810ff526262.jpg",
+      "polyps",
+      "normal-pylorus",
+      0.9961353540420532
+    ],
+    [
+      "kvasir-dataset-v2/normal-cecum/8d8e53e6-2f73-45df-98f5-88cfb50958e7.jpg",
+      "normal-cecum",
+      "ulcerative-colitis",
+      0.9958751797676086
+    ],
+    [
+      "kvasir-dataset-v2/dyed-lifted-polyps/40f6ef85-0e89-457c-aaae-cabe2bbe47ea.jpg",
+      "dyed-lifted-polyps",
+      "dyed-resection-margins",
+      0.9859755635261536
+    ],
+    [
+      "kvasir-dataset-v2/esophagitis/ee5bc67e-ae91-4d3b-8ea3-63194fca6c1f.jpg",
+      "esophagitis",
+      "normal-z-line",
+      0.978076159954071
+    ],
+    [
+      "kvasir-dataset-v2/dyed-resection-margins/ba199668-f23a-4011-b3fe-989b45d82964.jpg",
+      "dyed-resection-margins",
+      "dyed-lifted-polyps",
+      0.9761446118354797
+    ],
+    [
+      "kvasir-dataset-v2/normal-z-line/328c76df-f2c7-4052-8b6a-2d31fee0908b.jpg",
+      "normal-z-line",
+      "esophagitis",
+      0.9713861346244812
+    ],
+    [
+      "kvasir-dataset-v2/normal-z-line/eeb09d3a-8833-48a3-a20b-5184fa33313e.jpg",
+      "normal-z-line",
+      "esophagitis",
+      0.9700692892074585
+    ],
+    [
+      "kvasir-dataset-v2/esophagitis/30a74e8c-d2f1-483c-9443-2347dbd1aa76.jpg",
+      "esophagitis",
+      "normal-z-line",
+      0.9691985249519348
+    ],
+    [
+      "kvasir-dataset-v2/polyps/33d8f58b-c26b-41f3-a317-3059b4897ed3.jpg",
+      "polyps",
+      "ulcerative-colitis",
+      0.9642843008041382
+    ],
+    [
+      "kvasir-dataset-v2/ulcerative-colitis/bcf701be-4f72-423c-a3e1-fb440a4e95bf.jpg",
+      "ulcerative-colitis",
+      "normal-pylorus",
+      0.9598833918571472
+    ],
+    [
+      "kvasir-dataset-v2/dyed-lifted-polyps/a1fa10cb-5c2b-450b-a3b4-fd9494b5b7eb.jpg",
+      "dyed-lifted-polyps",
+      "dyed-resection-margins",
+      0.9561818242073059
+    ],
+    [
+      "kvasir-dataset-v2/normal-z-line/9107d7ad-c3db-4a49-8d0f-b9db68cc81e3.jpg",
+      "normal-z-line",
+      "esophagitis",
+      0.949190616607666
+    ],
+    [
+      "kvasir-dataset-v2/normal-z-line/4a3f16dd-55b8-4019-ac9a-e23472a340e5.jpg",
+      "normal-z-line",
+      "esophagitis",
+      0.9448415040969849
+    ],
+    [
+      "kvasir-dataset-v2/esophagitis/820bb90d-3a37-4b1a-8498-56a385ccc69d.jpg",
+      "esophagitis",
+      "normal-z-line",
+      0.9428501129150391
+    ],
+    [
+      "kvasir-dataset-v2/esophagitis/5db4f1db-0aac-4207-aefb-a56f3b90f410.jpg",
+      "esophagitis",
+      "normal-z-line",
+      0.9385433793067932
+    ],
+    [
+      "kvasir-dataset-v2/ulcerative-colitis/fa3fad9f-c672-4778-a80f-b682e44af3e0.jpg",
+      "ulcerative-colitis",
+      "normal-cecum",
+      0.9360619187355042
+    ],
+    [
+      "kvasir-dataset-v2/dyed-lifted-polyps/bbb5960f-600f-4fb8-8d18-c2b41103d730.jpg",
+      "dyed-lifted-polyps",
+      "dyed-resection-margins",
+      0.9257042407989502
+    ],
+    [
+      "kvasir-dataset-v2/polyps/e2f0403f-37d9-4b31-8e86-01831520cceb.jpg",
+      "polyps",
+      "normal-pylorus",
+      0.9202304482460022
+    ],
+    [
+      "kvasir-dataset-v2/esophagitis/316bb88c-572e-49ca-a63f-e4146d5fa229.jpg",
+      "esophagitis",
+      "normal-z-line",
+      0.9104866981506348
+    ],
+    [
+      "kvasir-dataset-v2/esophagitis/3e839ef8-1584-41a9-b634-7e13d18f1466.jpg",
+      "esophagitis",
+      "normal-z-line",
+      0.9104803800582886
+    ],
+    [
+      "kvasir-dataset-v2/esophagitis/4f90db1f-b085-4447-a7f3-dce82296afbf.jpg",
+      "esophagitis",
+      "normal-z-line",
+      0.9000739455223083
+    ],
+    [
+      "kvasir-dataset-v2/dyed-resection-margins/c2325cc1-ade7-4dcf-9713-c37b02be9e97.jpg",
+      "dyed-resection-margins",
+      "dyed-lifted-polyps",
+      0.8957536816596985
+    ],
+    [
+      "kvasir-dataset-v2/normal-z-line/1d62f23e-3ff0-4799-a416-701e8008cd9e.jpg",
+      "normal-z-line",
+      "esophagitis",
+      0.8951942324638367
+    ],
+    [
+      "kvasir-dataset-v2/normal-z-line/efc57659-1738-49ae-8ecb-14cc19cdd661.jpg",
+      "normal-z-line",
+      "esophagitis",
+      0.8924369215965271
+    ],
+    [
+      "kvasir-dataset-v2/esophagitis/dc2729b0-75ef-4242-b1ef-3dc4948fa801.jpg",
+      "esophagitis",
+      "normal-z-line",
+      0.8868164420127869
+    ]
+  ],
+  "checkpoint": {
+    "path": "artifacts/training/gi_kvasir_v2_classifier-20261024T151359Z/model.pt",
+    "sha256": "6d7494d19e52c0b5462f90637e35f474d9db1950217e5a40e95cda4bec27a8e4"
+  },
+  "held_out_predictions": "artifacts/training/gi_kvasir_v2_classifier-20261024T151359Z/predictions_test.csv",
+  "evaluation_input": {
+    "evaluation_task": "multiclass",
+    "split": "test",
+    "artifact_path": "artifacts/training/gi_kvasir_v2_classifier-20261024T151359Z/predictions_test.csv",
+    "sha256": "23a9c7439914170a466925b700c7f726da49a41eb3adde6fba9edd02eda3456a",
+    "bytes": 233051,
+    "media_type": "text/csv",
+    "format": "MEDTWIN_MULTICLASS_CSV_V1",
+    "digest_scheme": "SHA256_RAW_BYTES_V1",
+    "required_columns": [
+      "y_true",
+      "y_pred"
+    ],
+    "row_count": 1202
+  },
+  "training_seconds": 704.3,
+  "config": {
+    "task_id": "kvasir-v2-8class",
+    "model_id": "gi_kvasir_v2_classifier",
+    "display_name": "Kvasir v2 8-class GI endoscopy classifier (research)",
+    "modality": "ENDOSCOPY",
+    "anatomy": "intestines",
+    "archs": "resnet18,efficientnet_b0",
+    "epochs": 8,
+    "batch_size": 48,
+    "image_size": 224,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "workers": 4,
+    "seed": 20261024
+  },
+  "reporting_context": {
+    "dataset": "Kvasir v2 (GI endoscopy)",
+    "dataset_version": "f3eedd730fe4a33d",
+    "split": "test",
+    "checkpoint": "sha256:6d7494d19e52c0b5462f90637e35f474d9db1950217e5a40e95cda4bec27a8e4"
+  },
+  "limitations": [
+    "The registry found no identifiers in sampled metadata, but the source provides no patient IDs; patient-level separation cannot be verified. Splits keep confirmed near-duplicate groups together.",
+    "Internal held-out test from the same source distribution; no external validation.",
+    "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "listed_name": "archive (30).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (30).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "2430fe41f8469463734dff5d9b9b500d1d985d113000f269cd8f5ad999313a75",
+  "size_bytes": 1846995396,
+  "entries": 87354,
+  "files": 87354,
+  "directories": 0,
+  "uncompressed_bytes": 3187052877,
+  "overall_ratio": 1.75,
+  "max_entry_ratio": 11.5,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (87354 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "waveform": 87348,
+    "text": 2,
+    "tabular": 2,
+    "no_extension": 1,
+    "code": 1
+  },
+  "extensions": {
+    ".dat": 43674,
+    ".hea": 43674,
+    ".txt": 2,
+    ".csv": 2,
+    "<none>": 1,
+    ".py": 1
+  },
+  "top_level": {
+    "ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.1/": 87354
+  },
+  "second_level": {
+    "ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.1/records100/": 43674,
+    "ptb-xl-a-large-publicly-available-electrocardiography-dataset-1.0.1/records500/": 43674
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_30.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [
+    "CC-BY-4.0 in LICENSE.txt"
+  ],
+  "duration_seconds": 267.5,
+  "notes": []
+}

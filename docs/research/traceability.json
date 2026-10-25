@@ -1,0 +1,782 @@
+{
+  "schema_version": "medtwin-traceability-1.0.0",
+  "manuscript": "MedTwin_2_Software_Only_IEEE_Revised_Research_Draft.docx (revised research-design draft)",
+  "manuscript_sha256": "dbcbc8c31d19160083f0014e4be2b72e26e16ec4211d1c672d325217cff4e609",
+  "manuscript_modified": false,
+  "earlier_manuscript_traceability": "docs/integration/IEEE_TRACEABILITY.md maps the earlier MedTwin_IEEE_Manuscript_Final.docx, whose equation numbering (Eq. 1-16) differs from this draft (Eq. 1-12).",
+  "generated_at": "2026-10-25",
+  "status_definitions": {
+    "IMPLEMENTED_AND_TESTED": "Executable software exists and an automated test or saved artifact in this repository exercises the stated behaviour. Software evidence only; no clinical performance is implied.",
+    "IMPLEMENTED_NOT_VALIDATED": "Executable software exists, but the evaluation the manuscript requires (annotated corpus, held-out data, user study) has not been run.",
+    "PARTIALLY_IMPLEMENTED": "Part of the stated capability exists; the gap column lists what is missing.",
+    "PROPOSED_ONLY": "Described in the manuscript; no implementation in this repository.",
+    "UNSUPPORTED": "Cannot be supported with the evidence available; the application reports the claim as unavailable."
+  },
+  "claims": [
+    {
+      "id": "EQ-1",
+      "equation": "Eq. (1)",
+      "section": "V-A",
+      "claim": "Each laboratory observation is the tuple o_j = (code_j, x_j, unit_j, [L_j, U_j], t_j, src_j, q_j) with the document/page/table span as source.",
+      "module": "backend/app/services/nlp_processor.py; backend/app/services/terminology.py; backend/app/services/fhir_import.py; backend/app/models/entities.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_measurements_capture_documented_reference_flag_and_code_without_inference",
+        "backend/tests/test_medtwin2_capabilities.py::test_fhir_observations_import_with_codes_ranges_and_dates",
+        "backend/tests/test_measurements_and_longitudinal.py::test_numeric_measurements_preserve_values_units_and_exact_spans",
+        "backend/tests/test_measurements_and_longitudinal.py::test_censored_lab_result_preserves_operator_and_never_becomes_exact",
+        "backend/tests/test_ocr.py::test_scanned_report_values_keep_decimals_and_ocr_provenance"
+      ],
+      "gap": "Code (curated LOINC, mapping unverified), value, comparison operator, unit, documented interval and inclusivity where explicit, documented date, source span/page, OCR page geometry, specimen, laboratory method/name and extractor version are stored. A scientifically calibrated per-value extraction quality q_j is not available."
+    },
+    {
+      "id": "EQ-2",
+      "equation": "Eq. (2)",
+      "section": "VI",
+      "claim": "Target registration error TRE = (1/K) sum ||T(p_k) - q_k|| is evaluated on landmarks disjoint from those used to fit T, against a prespecified threshold.",
+      "module": "backend/app/services/registration_service.py; backend/app/routers/anatomy.py",
+      "status": "IMPLEMENTED_NOT_VALIDATED",
+      "evidence": [
+        "backend/tests/test_evidence_and_fusion.py::test_anatomical_registration_gate_held_out_tre",
+        "backend/tests/test_new_features.py::test_anatomy_evaluate_registration_endpoint"
+      ],
+      "gap": "Exercised on synthetic landmarks only. No reviewed patient landmarks, threshold justification or held-out clinical registration benchmark exists."
+    },
+    {
+      "id": "EQ-3",
+      "equation": "Eq. (3)",
+      "section": "VII-A",
+      "claim": "Masked gated fusion alpha_k = m_k exp(e_k) / sum_j m_j exp(e_j) is defined only for a positive eligible denominator; zero or one valid modality bypasses fusion with an explicit state.",
+      "module": "backend/app/services/fusion_service.py",
+      "status": "IMPLEMENTED_NOT_VALIDATED",
+      "evidence": [
+        "backend/tests/test_evidence_and_fusion.py::test_masked_gated_fusion_weights_sum_to_one",
+        "backend/tests/test_evidence_and_fusion.py::test_fusion_abstention_on_zero_modalities",
+        "backend/tests/test_evidence_and_fusion.py::test_fusion_not_run_on_single_modality"
+      ],
+      "gap": "Tensor invariants are tested. No validated modality encoders or genuinely paired same-patient data exist, so case-level fusion abstains."
+    },
+    {
+      "id": "EQ-4",
+      "equation": "Eq. (4)",
+      "section": "VII-B",
+      "claim": "Delta x_j = x*_new - x*_old and r_j = Delta x_j / (t_new - t_old), on unit-compatible values, reported only when the comparability gates pass; otherwise NOT COMPARABLE.",
+      "module": "backend/app/services/biomarker_trends.py; backend/app/services/comparison_service.py; src/pages/HistoricalComparisonPage.tsx",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_biomarker_trend_statistics_are_tiered_and_unit_safe",
+        "backend/tests/test_medtwin2_capabilities.py::test_biomarker_trend_abstains_when_lab_context_is_not_documented",
+        "backend/tests/test_measurements_and_longitudinal.py::test_report_measurements_persist_and_compare_across_examinations",
+        "backend/tests/test_measurements_and_longitudinal.py::test_censored_lab_result_preserves_operator_and_never_becomes_exact",
+        "backend/tests/test_longitudinal_and_validation.py::test_comparison_does_not_invent_numeric_deltas"
+      ],
+      "gap": "Date, analyte, unit, specimen and laboratory-method comparability gates are enforced. Censored values abstain from exact arithmetic. Clinical interpretation, causal attribution and imaging deltas remain outside this equation."
+    },
+    {
+      "id": "EQ-5-FORECASTER",
+      "equation": "Eq. (5)",
+      "section": "VII-C",
+      "claim": "A target- and horizon-specific forecaster y_hat(t+h) = f_theta(x(t-L+1:t), Delta t, c).",
+      "module": "backend/app/services/prognosis_registry.py; backend/app/services/forecasting_service.py",
+      "status": "UNSUPPORTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_prognosis_registry_covers_ten_organs_without_forecasts",
+        "backend/tests/test_evidence_and_fusion.py::test_forecasting_eligibility_enforcement"
+      ],
+      "gap": "No forecasting model has been evaluated on a chronological held-out split. Both forecast endpoints return MODEL_NOT_VALIDATED; earlier persistence and linear extrapolations are no longer emitted."
+    },
+    {
+      "id": "EQ-5-6-METRICS",
+      "equation": "Eq. (5)-(6)",
+      "section": "VII-C",
+      "claim": "Forecast error MAE and RMSE per target and horizon.",
+      "module": "backend/app/services/evaluation_metrics.py; backend/app/routers/evaluation.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_forecast_errors_are_reported_per_target_and_horizon",
+        "backend/tests/test_medtwin2_capabilities.py::test_regression_survival_and_segmentation_metrics"
+      ],
+      "gap": "Computed from uploaded predictions only; no MedTwin forecaster has produced predictions to evaluate."
+    },
+    {
+      "id": "EQ-7-9",
+      "equation": "Eq. (7)-(9)",
+      "section": "IX",
+      "claim": "Accuracy, precision, sensitivity, specificity and F1 from a confusion matrix on independently labelled samples; never interchanged with case-level confidence.",
+      "module": "backend/app/services/evaluation_metrics.py; src/pages/ValidationCenterPage.tsx",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_classification_metrics_match_hand_computed_values",
+        "backend/tests/test_medtwin2_capabilities.py::test_validation_kit_formats_are_accepted_and_context_gates_reporting"
+      ],
+      "gap": null
+    },
+    {
+      "id": "EQ-10",
+      "equation": "Eq. (10)",
+      "section": "IX",
+      "claim": "Dice and IoU with a prespecified empty-mask convention.",
+      "module": "backend/app/services/evaluation_metrics.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_segmentation_follows_the_kit_empty_mask_convention_and_rejects_soft_masks",
+        "backend/tests/test_medtwin2_capabilities.py::test_segmentation_batch_reports_nonempty_only_means"
+      ],
+      "gap": "2D masks only, the validation kit's scope; multiclass averaging and 3D volumes are not evaluated."
+    },
+    {
+      "id": "EQ-11",
+      "equation": "Eq. (11)",
+      "section": "IX",
+      "claim": "Box IoU, with AP integrated over the precision-recall curve at prespecified IoU thresholds and mAP across classes.",
+      "module": "backend/app/services/evaluation_metrics.py; backend/app/routers/evaluation.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_coco_detection_uses_the_standard_evaluator"
+      ],
+      "gap": "Uses pycocotools COCOeval defaults (IoU 0.50:0.95); custom threshold sets are not configurable."
+    },
+    {
+      "id": "EQ-12",
+      "equation": "Eq. (12)",
+      "section": "IX",
+      "claim": "Brier score and expected calibration error.",
+      "module": "backend/app/services/evaluation_metrics.py; backend/app/services/calibration_service.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_classification_metrics_match_hand_computed_values",
+        "backend/tests/test_evidence_and_fusion.py::test_calibration_brier_and_ece"
+      ],
+      "gap": "ECE uses 10 equal-width bins; the value depends on that scheme."
+    },
+    {
+      "id": "IX-CI",
+      "section": "IX",
+      "claim": "Report 95% confidence intervals from independent-patient resampling where sample size permits.",
+      "module": "backend/app/services/evaluation_metrics.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_bootstrap_intervals_are_reproducible_and_cluster_aware"
+      ],
+      "gap": "Intervals are withheld below 20 rows or 5 per class."
+    },
+    {
+      "id": "O1",
+      "section": "III",
+      "claim": "Secure upload and semantic grouping of clinical documents, scans and recordings.",
+      "module": "backend/app/services/file_storage.py; backend/app/routers/files.py; src/pages/UploadCenterPage.tsx",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_phase1_persistence_gate.py::test_upload_requires_explicit_deidentified_attestation",
+        "backend/tests/test_medtwin2_capabilities.py::test_content_signature_must_match_extension",
+        "backend/tests/test_auth_and_access.py::test_cross_case_upload_job_and_provenance_isolation"
+      ],
+      "gap": "Grouping is by case, examination and detected modality, set by the uploader; there is no automatic grouping across files. No malware scanning."
+    },
+    {
+      "id": "O2",
+      "section": "III, V-A",
+      "claim": "Source-linked extraction of quantitative laboratory observations.",
+      "module": "backend/app/services/nlp_processor.py; backend/app/services/document_parser.py; backend/app/services/fhir_import.py",
+      "status": "IMPLEMENTED_NOT_VALIDATED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_measurements_capture_documented_reference_flag_and_code_without_inference",
+        "backend/tests/test_document_parser_formats.py::test_docx_upload_runs_real_parser_and_persists_measurement",
+        "backend/tests/test_measurements_and_longitudinal.py::test_censored_lab_result_preserves_operator_and_never_becomes_exact",
+        "backend/tests/test_ocr.py::test_scanned_report_values_keep_decimals_and_ocr_provenance"
+      ],
+      "gap": "Rules-v2.0.0 now preserves comparison operators, laboratory/specimen/method context, source hashes/spans, OCR page geometry and documented intervals. The evaluation harnesses exist, but no lawful independently reviewed report corpus has been executed, so clinical extraction accuracy remains unvalidated."
+    },
+    {
+      "id": "O3",
+      "section": "III, V-B",
+      "claim": "Task-appropriate analysis of supported images and digital signals.",
+      "module": "backend/app/services/image_processor.py; backend/app/services/ecg_processor.py; backend/app/services/imaging_readers.py; backend/app/services/model_registry.py; backend/app/services/model_inference.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_evidence_and_fusion.py::test_valid_inputs_do_not_create_unconfigured_model_predictions",
+        "backend/tests/test_medtwin2_capabilities.py::test_dicom_upload_metadata_render_and_identifier_warning",
+        "backend/tests/test_medtwin2_capabilities.py::test_nifti_volume_metadata_and_slices",
+        "backend/tests/test_research_inference.py::test_classifier_output_is_deterministic_labelled_and_pending_review",
+        "backend/tests/test_research_inference.py::test_detection_boxes_are_clipped_to_source_pixels",
+        "backend/tests/test_research_inference.py::test_segmentation_mask_maps_back_to_source_geometry",
+        "docs/validation/models/gi_kvasir_v2_classifier.json",
+        "docs/validation/models/gi_gastrovision_27class_classifier.json",
+        "docs/validation/models/angiography_stenosis_detector.json",
+        "docs/validation/models/kidney_stone_detector.json",
+        "docs/validation/models/angiography_syntax_segmenter.json",
+        "docs/validation/models/gi_kvasir_seg_polyp_segmenter.json",
+        "docs/validation/models/hematology_cnmc_all_classifier.json",
+        "docs/validation/models/ptbxl_ecg_baseline.json",
+        "backend/tests/test_training_volumetric.py::test_synthetic_smoke_executes_validation_training_evaluation_and_resume",
+        "docs/imaging/VOLUMETRIC_SEGMENTATION_PIPELINE.md"
+      ],
+      "gap": "Reading, metadata and window/level rendering exist. Seven checkpointed 2-D image models can run only through a research-only applicability and artifact-integrity gate; PTB-XL has internal evaluation evidence but no upload inference. A reusable 3-D pipeline passed synthetic execution and an ACDC data audit, but real ACDC training is licence-blocked and has no checkpoint or metric. All remain not clinically or externally validated; EEG inference and task-specific image quality/OOD gates are unavailable."
+    },
+    {
+      "id": "O4",
+      "section": "III, VII-A",
+      "claim": "Association and conditional fusion of findings from authorized case records.",
+      "module": "backend/app/services/concordance_service.py; backend/app/services/fusion_service.py; src/pages/MultimodalPage.tsx",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_evidence_and_fusion.py::test_report_concordance_flags_discordance_without_overwriting",
+        "backend/tests/test_evidence_and_fusion.py::test_unassociated_files_excluded_from_case_fusion"
+      ],
+      "gap": "Concordance and the fusion gate run; fusion itself needs a trained model and paired data."
+    },
+    {
+      "id": "O5",
+      "section": "III, VII-B",
+      "claim": "Reliable old-versus-new comparisons.",
+      "module": "backend/app/services/comparison_service.py; backend/app/services/biomarker_trends.py; src/pages/HistoricalComparisonPage.tsx; src/pages/BiomarkerAnalyticsPage.tsx",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_longitudinal_and_validation.py::test_longitudinal_comparison_endpoint",
+        "backend/tests/test_catalog_and_lab.py::test_transcribed_results_join_trends_without_double_counting",
+        "backend/tests/test_medtwin2_capabilities.py::test_biomarker_trend_abstains_when_lab_context_is_not_documented",
+        "backend/tests/test_comparison_statement_matching.py::test_repeated_nonidentical_statements_abstain_instead_of_overwriting"
+      ],
+      "gap": "Laboratory comparisons enforce unit/specimen/method context and exclude censored values; report statements use composite site/laterality/anatomy/context identities and abstain on repeated ambiguous matches. Serial imaging still returns REGISTRATION_UNAVAILABLE."
+    },
+    {
+      "id": "O6",
+      "section": "III, VI",
+      "claim": "Conservative organ-level 3D visualization.",
+      "module": "src/pages/AnatomyStudioPage.tsx; src/anatomy/AnatomyViewport.tsx; backend/app/services/anatomy_evidence.py; tools/asset-pipeline/build-manifest.mjs",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_anatomy_mapping_requires_clinician_confirmation_for_regions",
+        "backend/tests/test_medtwin2_capabilities.py::test_anatomy_systems_list_the_ten_required_workspaces",
+        "docs/anatomy/derivatives.json",
+        "docs/anatomy/ASSET_QA.md",
+        "docs/anatomy/BROWSER_WALKTHROUGH.md"
+      ],
+      "gap": "Automated Edge QA rendered all 43 registered variants across ten systems with WebGL counters and canvas-content checks. These are generic reference assets, not anatomically validated or patient-registered geometry."
+    },
+    {
+      "id": "O7",
+      "section": "III, VII-C",
+      "claim": "Eligible, uncertainty-aware forecasts.",
+      "module": "backend/app/services/prognosis_registry.py; src/pages/PrognosisStudioPage.tsx",
+      "status": "UNSUPPORTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_prognosis_registry_covers_ten_organs_without_forecasts"
+      ],
+      "gap": "Eligibility gating, observed-evidence display and the target-trial specification exist; no validated forecaster, so every scenario is UNAVAILABLE."
+    },
+    {
+      "id": "O8",
+      "section": "III, X",
+      "claim": "A reproducible evaluation and human-review procedure.",
+      "module": "backend/app/routers/evaluation.py; backend/app/services/evaluation_metrics.py; backend/app/routers/reviews.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_evaluation_runs_are_persisted_with_input_hash",
+        "backend/tests/test_medtwin2_capabilities.py::test_validation_kit_formats_are_accepted_and_context_gates_reporting",
+        "backend/tests/test_evaluation_context.py::test_multiclass_endpoint_binds_reportability_to_exact_registered_bytes",
+        "backend/tests/test_human_review_workflow.py::test_clinician_can_reject_finding_while_original_output_is_preserved",
+        "backend/tests/test_human_review_workflow.py::test_modified_review_stores_typed_proposal_without_changing_source_evidence"
+      ],
+      "gap": "Runs record input hashes, dataset, version, split, checkpoint, seed and code revision. Reporting eligibility requires exact registry/report/checkpoint/dataset/task/split and evaluator-byte agreement. Human findings and typed entity/measurement correction proposals preserve source output; there is no multi-reader adjudication protocol."
+    },
+    {
+      "id": "III-MODES",
+      "section": "III (input-mode table)",
+      "claim": "Document-only inputs yield findings, values and source locations with no organ-localized image output; longitudinal inputs compare aligned tests without inferring causality.",
+      "module": "backend/app/routers/analysis.py; backend/app/services/anatomy_evidence.py; backend/app/services/comparison_service.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_anatomy_mapping_requires_clinician_confirmation_for_regions",
+        "backend/tests/test_measurements_and_longitudinal.py::test_report_measurements_persist_and_compare_across_examinations"
+      ],
+      "gap": null
+    },
+    {
+      "id": "III-FORMAT",
+      "section": "III",
+      "claim": "The parser detects format and imaging metadata instead of assuming a file is a diagnostic scan; a waveform screenshot is never treated as a calibrated waveform.",
+      "module": "backend/app/services/file_storage.py; backend/app/services/modality_registry.py; backend/app/services/ecg_processor.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_content_signature_must_match_extension",
+        "backend/tests/test_medtwin2_capabilities.py::test_modality_registry_separates_formats_from_model_coverage",
+        "backend/tests/test_evidence_and_fusion.py::test_ecg_quality_rejection_rules",
+        "backend/tests/test_document_parser_csv.py::test_csv_parser_handles_quoted_commas_newlines_quotes_and_uneven_rows",
+        "backend/tests/test_document_parser_csv.py::test_csv_parser_rejects_malformed_or_nul_input"
+      ],
+      "gap": "Bounded RFC-style CSV parsing handles quoted commas/newlines and rejects malformed or NUL-bearing input. Native ECG is accepted as lead-column CSV only; EDF, WFDB and DICOM waveform readers are not implemented. Single DICOM objects and NIfTI-1 are supported, but atomic multi-file DICOM-series assembly/ordering/completeness validation is unavailable."
+    },
+    {
+      "id": "IV-FRONTEND",
+      "section": "IV",
+      "claim": "React/TypeScript client with current-versus-prior bundles, document and scan viewers, lab trend charts, provenance, uncertainty status and a Three.js anatomical scene.",
+      "module": "src/App.tsx; src/pages/DocumentIntelligencePage.tsx; src/pages/MedicalImagingPage.tsx; src/pages/BiomarkerAnalyticsPage.tsx; src/pages/AnatomyStudioPage.tsx",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "docs/anatomy/BROWSER_WALKTHROUGH.md",
+        "docs/testing/EXECUTED_TEST_RESULTS.md"
+      ],
+      "gap": "Automated Edge QA passed all 16 desktop and 16 responsive routes, 43/43 anatomy variants across ten systems, 7/7 explicitly bound 2-D image-model workflows, 10/10 trained-model report views, structured/censored labs, original-preserving correction proposals, strict Clinical NLP/OCR controls, request-ID correlation, hash-only/no-raw-text provenance, queue persistence and prognosis abstention with zero unexpected browser errors. Supplemental visible Chrome inspection opened the high-value correction, BMP/C-NMC, prognosis and anatomy paths. This is software acceptance evidence, not a usability, accessibility, cross-browser, anatomical or clinical validation study."
+    },
+    {
+      "id": "IV-BACKEND",
+      "section": "IV",
+      "claim": "API gateway with authentication, case-level authorization, secure uploads, queue-backed workers, model registry, audit events and PostgreSQL metadata with encrypted storage.",
+      "module": "backend/app/main.py; backend/app/services/auth.py; backend/app/security.py; backend/app/database.py; backend/app/services/audit_service.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_auth_and_access.py::test_cross_case_access_isolation",
+        "backend/tests/test_medtwin2_capabilities.py::test_case_membership_viewer_reads_but_cannot_write",
+        "backend/tests/test_medtwin2_capabilities.py::test_sliding_window_limiter_blocks_then_recovers",
+        "backend/tests/test_auth_and_access.py::test_global_audit_is_admin_only",
+        "backend/tests/test_job_queue.py::test_jobs_survive_process_restarts",
+        "backend/tests/test_storage_encryption.py::test_uploads_are_encrypted_on_disk_and_every_reader_still_works",
+        "backend/tests/test_storage_encryption.py::test_required_mode_without_a_key_refuses_to_store",
+        "backend/tests/test_request_ids.py::test_safe_caller_request_id_is_echoed",
+        "backend/tests/test_request_ids.py::test_request_id_is_returned_on_validation_errors",
+        "backend/tests/test_request_ids.py::test_request_id_is_returned_on_unhandled_errors",
+        "backend/tests/test_case_retention.py::test_case_erasure_removes_unique_managed_object_and_audits_metadata",
+        "backend/tests/test_case_retention.py::test_case_erasure_preserves_shared_object_until_final_reference_is_deleted"
+      ],
+      "gap": "A database-backed job queue with leases, retries, cancellation and a separate worker process is verified across process restarts; there is no Redis broker. Request IDs correlate success/error responses with audit events. Authorized local case erasure removes unique objects and preserves shared ones. Uploads use fail-closed AES-256-GCM in Compose, but SQLite metadata is plaintext; PostgreSQL, encrypted backups, legal retention schedules and secure-media erasure are untested."
+    },
+    {
+      "id": "IV-METADATA",
+      "section": "IV",
+      "claim": "Persist case identifier, asset hash, acquisition and processing dates, source file/page/region, modality, anatomical site, model name/version, quality gate, label ontology, calibrated score, review state and abstention reason.",
+      "module": "backend/app/models/entities.py; backend/app/migrations.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_phase1_persistence_gate.py::test_deidentified_document_persists_evidence_and_provenance",
+        "backend/tests/test_medtwin2_capabilities.py::test_migrations_add_columns_to_an_existing_v1_schema",
+        "backend/tests/test_research_inference.py::test_classifier_output_is_deterministic_labelled_and_pending_review",
+        "backend/tests/test_measurements_and_longitudinal.py::test_censored_lab_result_preserves_operator_and_never_becomes_exact",
+        "backend/tests/test_ocr.py::test_scanned_report_values_keep_decimals_and_ocr_provenance"
+      ],
+      "gap": "Measurements retain comparison operators, interval boundaries, specimen/method/laboratory context, extractor version, source hashes/spans and OCR page boxes. Research classification stores a temperature-scaled internal-validation score with explicit semantics. A formal verified ontology and clinically calibrated per-field uncertainty remain incomplete; detection/segmentation scores remain uncalibrated."
+    },
+    {
+      "id": "V-A-PIPELINE",
+      "section": "V-A",
+      "claim": "Document identification, embedded-text extraction or OCR, table parsing, NER, negation and temporality, test-name standardization, unit extraction and quality validation.",
+      "module": "backend/app/services/document_parser.py; backend/app/services/nlp_processor.py; backend/app/services/terminology.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_context_rules_do_not_turn_hedges_into_diagnoses",
+        "backend/tests/test_ocr.py::test_scanned_page_is_read_with_page_level_provenance",
+        "backend/tests/test_ocr.py::test_scanned_report_values_keep_decimals_and_ocr_provenance",
+        "backend/tests/test_ocr_evaluation.py::test_ocr_evaluator_computes_cer_wer_without_returning_text_or_raw_ids",
+        "backend/tests/test_clinical_nlp_evaluation.py::test_exact_overlap_label_errors_and_sample_provenance",
+        "backend/tests/test_clinical_nlp_evaluation.py::test_context_mismatches_are_counted_without_changing_span_matches",
+        "backend/tests/test_clinical_nlp_evaluation.py::test_normalized_concept_links_report_correct_missing_and_wrong_counts",
+        "backend/tests/test_document_parser_formats.py::test_blank_scanned_page_is_rejected_after_ocr_finds_no_text",
+        "backend/tests/test_document_parser_formats.py::test_docx_parser_extracts_paragraphs_and_table_cells",
+        "backend/tests/test_document_parser_csv.py::test_csv_parser_handles_quoted_commas_newlines_quotes_and_uneven_rows"
+      ],
+      "gap": "Local RapidOCR reads pages without embedded text and records engine/confidence plus page coordinates; strict CER/WER and span/context/concept evaluators exist. PDF tables are read as text; DOCX/XLSX tables and bounded RFC CSV are parsed. Entities come from rules/scispaCy paths. No lawful representative independently annotated clinical corpus has been executed, so accuracy remains unvalidated."
+    },
+    {
+      "id": "V-A-INTERVAL",
+      "section": "V-A",
+      "claim": "Never silently substitute a default reference interval for a missing laboratory interval; missing context means INDETERMINATE.",
+      "module": "backend/app/services/lab_service.py; backend/app/routers/catalog.py; backend/app/services/biomarker_trends.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_catalog_and_lab.py::test_record_lab_investigation_report",
+        "backend/tests/test_catalog_and_lab.py::test_lab_report_never_assumes_laboratory_or_specimen"
+      ],
+      "gap": null
+    },
+    {
+      "id": "V-A-UNITS",
+      "section": "V-A",
+      "claim": "Convert only compatible units with a verified factor, retaining the unconverted original.",
+      "module": "backend/app/services/terminology.py; backend/app/services/biomarker_trends.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_biomarker_trend_statistics_are_tiered_and_unit_safe"
+      ],
+      "gap": null
+    },
+    {
+      "id": "V-A-CRITICAL",
+      "section": "V-A",
+      "claim": "Critical-result alerts require prevalidated clinical rules and a timely human escalation workflow.",
+      "module": "",
+      "status": "PROPOSED_ONLY",
+      "evidence": [],
+      "gap": "No critical-result alerting exists, and none is generated without validated rules."
+    },
+    {
+      "id": "V-B-ROUTER",
+      "section": "V-B",
+      "claim": "The modality router uses metadata (DICOM modality and series properties) before any classifier; window/level is modality-appropriate and enhanced views are marked as transformations.",
+      "module": "backend/app/services/imaging_readers.py; backend/app/routers/modalities.py; src/pages/MedicalImagingPage.tsx",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_dicom_upload_metadata_render_and_identifier_warning",
+        "backend/tests/test_medtwin2_capabilities.py::test_nifti_volume_metadata_and_slices"
+      ],
+      "gap": "CLAHE and other enhancement are not offered."
+    },
+    {
+      "id": "V-B-MODELS",
+      "section": "V-B",
+      "claim": "Task-specific classification, detection, segmentation and ECG/EEG models with predeclared versions, thresholds, modality restrictions and failure states.",
+      "module": "backend/app/services/model_registry.py; backend/app/services/model_inference.py; src/pages/ModelRegistryPage.tsx; src/pages/MedicalImagingPage.tsx",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_model_registry.py::test_registry_exposes_truthful_non_activatable_statuses",
+        "backend/tests/test_model_registry.py::test_complete_bundle_requires_matching_checkpoint_hash",
+        "backend/tests/test_research_inference.py::test_listing_shows_only_research_models_with_gate_and_metrics",
+        "backend/tests/test_research_inference.py::test_gate_refuses_models_without_a_verified_bundle",
+        "backend/tests/test_research_inference.py::test_applicability_gate_rejects_unsupported_inputs",
+        "docs/validation/models/gi_kvasir_v2_classifier.json",
+        "docs/validation/models/gi_gastrovision_27class_classifier.json",
+        "docs/validation/models/angiography_stenosis_detector.json",
+        "docs/validation/models/kidney_stone_detector.json",
+        "docs/validation/models/angiography_syntax_segmenter.json",
+        "docs/validation/models/gi_kvasir_seg_polyp_segmenter.json",
+        "docs/validation/models/hematology_cnmc_all_classifier.json",
+        "docs/validation/models/ptbxl_ecg_baseline.json",
+        "backend/tests/test_training_volumetric.py::test_real_acdc_training_fails_closed_without_explicit_authorization",
+        "backend/tests/test_training_volumetric.py::test_synthetic_smoke_executes_validation_training_evaluation_and_resume",
+        "backend/tests/test_research_inference.py::test_inference_reports_the_numeric_precision_it_used",
+        "backend/tests/test_training_volumetric.py::test_recorded_owner_authorization_opens_the_real_data_gate",
+        "docs/validation/models/acdc_cardiac_mri_3d_unet.json"
+      ],
+      "gap": "Seven completed 2-D image bundles have frozen checkpoints, internal held-out reports, modality restrictions and research-only failure states. PTB-XL has weights and internal evaluation evidence but no upload inference path. A generic 3-D trainer produced a cardiac cine-MRI segmenter (owner-authorized research use) with held-out cardiac indices; it is evaluation evidence only, with no volume upload path. Inference reproduces each model's evaluated numeric precision. None is clinically activatable or externally validated; EEG weights and image OOD gates remain unavailable."
+    },
+    {
+      "id": "VI-VIEWER",
+      "section": "VI",
+      "claim": "Isolated organ models, interior/exterior cuts, skeletal/muscular/vascular/nervous layers and a combined body scene; a translucent mode is a visual mode, not a radiograph.",
+      "module": "src/anatomy/AnatomyViewport.tsx; src/anatomy/StudioPanels.tsx; src/pages/AnatomyStudioPage.tsx; tools/asset-pipeline/catalog.mjs",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_anatomy_systems_list_the_ten_required_workspaces",
+        "docs/anatomy/derivatives.json",
+        "docs/anatomy/ASSET_QA.md",
+        "docs/anatomy/BROWSER_WALKTHROUGH.md"
+      ],
+      "gap": "Automated Edge QA rendered and orbited all 43 registered variants across ten systems using geometry counters plus canvas pixel checks. Visual-mode controls are not exhaustively pixel-diffed, and no asset is clinically or patient-specifically validated."
+    },
+    {
+      "id": "VI-L1-L2",
+      "section": "VI",
+      "claim": "L1 shows a reference model; L2 displays a finding on a named region only after a valid anatomy association and checked registration; text-only findings label an organ, never an exact coordinate.",
+      "module": "backend/app/services/anatomy_evidence.py; backend/app/routers/anatomy_studio.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_anatomy_mapping_requires_clinician_confirmation_for_regions",
+        "backend/tests/test_medtwin2_capabilities.py::test_registration_review_records_the_reviewed_transform"
+      ],
+      "gap": "L2 named regions require clinician confirmation of the atlas structure; spatially registered lesion display remains REGISTRATION_UNAVAILABLE."
+    },
+    {
+      "id": "VI-L3",
+      "section": "VI",
+      "claim": "L3 patient-specific geometry from a reconstructed, registered volume.",
+      "module": "",
+      "status": "PROPOSED_ONLY",
+      "evidence": [],
+      "gap": "Future work in the manuscript; not implemented."
+    },
+    {
+      "id": "VII-A-CONCORDANCE",
+      "section": "VII-A",
+      "claim": "Report concordance compares entities with assertion and temporal qualifiers; disagreement triggers REVIEW without replacing either finding.",
+      "module": "backend/app/services/concordance_service.py; backend/app/routers/concordance.py",
+      "status": "IMPLEMENTED_NOT_VALIDATED",
+      "evidence": [
+        "backend/tests/test_evidence_and_fusion.py::test_report_concordance_flags_discordance_without_overwriting"
+      ],
+      "gap": "Not evaluated on independently annotated paired reports (the MIMIC-CXR experiment)."
+    },
+    {
+      "id": "VII-B-IMAGING",
+      "section": "VII-B",
+      "claim": "Imaging regions are matched only after registration; bounding-box coordinates are never subtracted across unregistered views.",
+      "module": "src/pages/HistoricalComparisonPage.tsx; backend/app/services/comparison_service.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_longitudinal_and_validation.py::test_comparison_does_not_invent_numeric_deltas"
+      ],
+      "gap": "No registration exists, so imaging change is always REGISTRATION_UNAVAILABLE."
+    },
+    {
+      "id": "VII-C-SCENARIOS",
+      "section": "VII-C",
+      "claim": "Intervention-versus-no-intervention scenarios require validated causal or mechanistic assumptions; forecast graphics show past observations and a NOT ELIGIBLE state.",
+      "module": "backend/app/services/prognosis_registry.py; src/pages/PrognosisStudioPage.tsx; src/components/charts.tsx",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_prognosis_registry_covers_ten_organs_without_forecasts"
+      ],
+      "gap": "Scenario A and B report UNAVAILABLE with the treatment effect NOT_IDENTIFIABLE; no 3D simulation of future anatomy is rendered."
+    },
+    {
+      "id": "VIII-REFERENCE",
+      "section": "VIII",
+      "claim": "A clinician-reviewed clinical reference layer (e.g. NLEM 2022 medicines list, follow-up protocols, patient education) that never chooses prescriptions or procedures.",
+      "module": "",
+      "status": "PROPOSED_ONLY",
+      "evidence": [],
+      "gap": "Not implemented. The application makes no drug, dose or procedure recommendation."
+    },
+    {
+      "id": "VIII-ROLES",
+      "section": "VIII",
+      "claim": "Role-specific views for clinicians, students, patients and caregivers.",
+      "module": "backend/app/services/auth.py; backend/app/routers/members.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_auth_and_access.py::test_public_registration_cannot_self_assign_privileged_role",
+        "backend/tests/test_medtwin2_capabilities.py::test_case_membership_viewer_reads_but_cannot_write"
+      ],
+      "gap": "Roles are admin, clinician and researcher with case viewer/editor membership. There is no patient- or caregiver-facing view."
+    },
+    {
+      "id": "VIII-EVIDENCE-CLASS",
+      "section": "VIII",
+      "claim": "Every result distinguishes SOURCE-REPORTED, MODEL-SUGGESTED, INDETERMINATE, CLINICIAN-CONFIRMED and REQUIRES URGENT HUMAN REVIEW.",
+      "module": "backend/app/models/entities.py; backend/app/services/model_inference.py; src/components/FindingReview.tsx",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_human_review_workflow.py::test_clinician_can_reject_finding_while_original_output_is_preserved",
+        "backend/tests/test_research_inference.py::test_classifier_output_is_deterministic_labelled_and_pending_review"
+      ],
+      "gap": "Source spans, research-model provenance, PENDING_HUMAN_REVIEW, review decisions and INDETERMINATE positions exist under their own codes, not this exact five-class vocabulary. Research outputs are labelled RESEARCH_ONLY_NOT_CLINICALLY_VALIDATED rather than MODEL-SUGGESTED, and no urgent-review rule exists."
+    },
+    {
+      "id": "X-DOC-EXTRACTION",
+      "section": "X",
+      "claim": "Document extraction experiment: field exact-match, unit validity, entity P/R/F1 and OCR error rate on an expert-labelled report set.",
+      "module": "backend/app/services/evaluation_metrics.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_lab_extraction_audit_counts_missed_values_and_rejects_duplicates",
+        "backend/tests/test_clinical_nlp_evaluation.py::test_exact_overlap_label_errors_and_sample_provenance",
+        "backend/tests/test_clinical_nlp_evaluation.py::test_context_mismatches_are_counted_without_changing_span_matches",
+        "backend/tests/test_clinical_nlp_evaluation.py::test_normalized_concept_links_report_correct_missing_and_wrong_counts",
+        "backend/tests/test_ocr_evaluation.py::test_ocr_evaluator_computes_cer_wer_without_returning_text_or_raw_ids"
+      ],
+      "gap": "Field exact/unit scoring, exact and label-aware overlap entity precision/recall/F1, context/confusion accounting, terminology-link accuracy, and OCR CER/WER/exact-page scoring are implemented under strict de-identified dual-artifact contracts. Experiment NOT RUN on a lawful independently annotated representative clinical report set; document-level measurement-tuple accuracy is also not established."
+    },
+    {
+      "id": "X-MURA",
+      "section": "X",
+      "claim": "Upper-limb radiograph study classification on MURA patient/study splits.",
+      "module": "backend/app/routers/evaluation.py; backend/app/services/model_registry.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_classification_metrics_match_hand_computed_values"
+      ],
+      "gap": "Evaluation harness only. MURA v1.1 is now on disk (archive 60, 40,009 images, 40,013/40,013 files verified) but excluded from training: the Stanford AIMI Research Use Agreement requires the user's own registration and the local copy arrived as a third-party download. Experiment NOT RUN until the user confirms their agreement."
+    },
+    {
+      "id": "X-PTBXL",
+      "section": "X",
+      "claim": "ECG diagnostic label analysis on PTB-XL patient-level folds.",
+      "module": "ml_training/ecg.py; ml_training/ptbxl.py; backend/app/services/evaluation_metrics.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_ecg_and_survival_training.py::test_wfdb_reader_returns_millivolts_and_rejects_corrupt_records",
+        "backend/tests/test_evidence_and_fusion.py::test_ecg_quality_rejection_rules",
+        "docs/validation/models/ptbxl_ecg_baseline.json"
+      ],
+      "gap": "Executed once (2026-10-25) on the publisher's patient-disjoint folds (1-8 train, 9 validation, 10 test; overlap asserted 0): 5-superclass macro AUROC 0.917 (95% CI 0.909-0.925), macro F1 at validation thresholds 0.734, n=2163 ECGs / 1881 patients. Internal single-source evaluation only; no external ECG cohort, no rejection/abstention metrics, research-only."
+    },
+    {
+      "id": "X-MIMIC-CXR",
+      "section": "X",
+      "claim": "Paired chest image/report concordance on MIMIC-CXR.",
+      "module": "backend/app/services/concordance_service.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_evidence_and_fusion.py::test_report_concordance_flags_discordance_without_overwriting"
+      ],
+      "gap": "Experiment NOT RUN: credentialed data access and an image model are required."
+    },
+    {
+      "id": "X-DETECTION-SEGMENTATION",
+      "section": "X",
+      "claim": "Lesion detection (mAP, recall) and segmentation (Dice/IoU) on task-matched expert boxes and masks.",
+      "module": "backend/app/services/evaluation_metrics.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_coco_detection_uses_the_standard_evaluator",
+        "backend/tests/test_medtwin2_capabilities.py::test_segmentation_batch_reports_nonempty_only_means",
+        "docs/validation/models/angiography_stenosis_detector.json",
+        "docs/validation/models/angiography_stenosis_detector.kit_crosscheck.json",
+        "docs/validation/models/kidney_stone_detector.json",
+        "docs/validation/models/kidney_stone_detector.kit_crosscheck.json",
+        "docs/validation/models/angiography_syntax_segmenter.json",
+        "docs/validation/models/angiography_syntax_segmenter.kit_crosscheck.json",
+        "docs/validation/models/gi_kvasir_seg_polyp_segmenter.json",
+        "docs/validation/models/gi_kvasir_seg_polyp_segmenter.kit_crosscheck.json",
+        "backend/tests/test_training_volumetric.py::test_synthetic_smoke_executes_validation_training_evaluation_and_resume",
+        "docs/validation/models/acdc_cardiac_mri_3d_unet.json",
+        "backend/tests/test_training_volumetric.py::test_recorded_owner_authorization_opens_the_real_data_gate"
+      ],
+      "gap": "Internal held-out experiments ran on publisher-annotated public data: ARCADE stenosis detection n=300, mAP 0.0618/AP50 0.2029/AR100 0.3585; TEZ kidney-stone detection n=196, mAP 0.2312/AP50 0.6286/AR100 0.3600; ARCADE SYNTAX segmentation n=300, vessel Dice 0.6829/IoU 0.5352 (mean foreground Dice/image 0.3070); Kvasir-SEG n=120, Dice 0.7679/IoU 0.6696. Validation-kit re-scores reproduced headline metrics. Cardiac cine-MRI (ACDC, owner-authorized research use) 3-D segmentation on 50 frozen test patients / 100 ED-ES volumes: mean case macro Dice 0.750 (LV 0.812, myocardium 0.731, RV 0.707); LV ejection fraction vs reference-mask values MAE 9.1 points, bias -5.8, r 0.852; volumes are overestimated (no prespecified connected-component post-processing). Patient-level independence is often unverifiable, rare/absent classes limit interpretation, and no external, clinical or independently re-annotated expert test set was evaluated."
+    },
+    {
+      "id": "X-FORECAST",
+      "section": "X",
+      "claim": "Longitudinal forecast model evaluated by MAE, RMSE, coverage and temporal holdout.",
+      "module": "backend/app/services/evaluation_metrics.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_forecast_errors_are_reported_per_target_and_horizon"
+      ],
+      "gap": "Error and interval-coverage scoring exist. Experiment NOT RUN: no longitudinal cohort or forecaster."
+    },
+    {
+      "id": "X-APPLICATION",
+      "section": "X",
+      "claim": "Anatomical mapping and application performance: held-out TRE; latency p50/p95, error rate and memory on authenticated load-test requests.",
+      "module": "benchmarks/http_benchmark.py; benchmarks/report_workflow_benchmark.py; backend/app/services/registration_service.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "benchmarks/results/http-benchmark-20261023-224119.json",
+        "benchmarks/results/report-workflow-benchmark-20261023-223734.json"
+      ],
+      "gap": "Local software benchmarks exist: the HTTP benchmark targets an unauthenticated catalog route, and the report-workflow benchmark exercises a synthetic upload-to-reload workflow. TRE has no landmark data. Neither measures clinical performance."
+    },
+    {
+      "id": "X-TRACKER",
+      "section": "X",
+      "claim": "The result tracker binds each score to its source predictions, immutable checkpoint and code commit; only fixed held-out test sets are reported.",
+      "module": "backend/app/routers/evaluation.py; backend/app/models/entities.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_validation_kit_formats_are_accepted_and_context_gates_reporting",
+        "backend/tests/test_evaluation_context.py::test_exact_registered_tuple_is_internal_research_reporting_evidence_only",
+        "backend/tests/test_evaluation_context.py::test_multiclass_endpoint_binds_reportability_to_exact_registered_bytes"
+      ],
+      "gap": "Server-computed evaluator-byte digest, locally re-hashed registered artifact, dataset/task/version/split, checkpoint bytes and code revision are recorded. Only one exact Kvasir held-out CSV currently satisfies every registry/report/input binding; altered bytes, legacy metadata-only runs and non-test splits remain EXPLORATORY. Uncommitted code is recorded as a warning, not a blocker."
+    },
+    {
+      "id": "X-ACCURACY-TARGET",
+      "section": "X",
+      "claim": "Accuracy > 95% is asserted only on a defined evaluation set with sample counts, reference labels, a frozen checkpoint and an uncertainty interval.",
+      "module": "backend/app/services/evaluation_metrics.py; src/pages/ValidationCenterPage.tsx",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_validation_kit_formats_are_accepted_and_context_gates_reporting",
+        "docs/validation/models/gi_kvasir_v2_classifier.json",
+        "docs/validation/models/gi_gastrovision_27class_classifier.json",
+        "docs/validation/models/hematology_cnmc_all_classifier.json"
+      ],
+      "gap": "Assessed on three internal public-dataset image-classifier splits. Kvasir v2 (n=1,202) reached accuracy 0.926, 95% CI 0.911-0.940. Exploratory GastroVision (n=1,225) reached 0.737, CI 0.713-0.761, with four classes below minimum support. C-NMC (n=1,867, 28 subject clusters) reached 0.807, cluster-bootstrap CI 0.659-0.894. The >95% objective is not met; no external or clinical evaluation set exists."
+    },
+    {
+      "id": "ALG-1-2",
+      "section": "XII (steps 1-2)",
+      "claim": "Authenticate and authorize case access; reject nonpermitted or malicious files; bind every asset to a verified case and acquisition date with hashes and provenance.",
+      "module": "backend/app/services/auth.py; backend/app/services/file_storage.py; backend/app/routers/files.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_auth_and_access.py::test_cross_case_access_isolation",
+        "backend/tests/test_evidence_and_fusion.py::test_invalid_file_extension_rejection",
+        "backend/tests/test_phase1_persistence_gate.py::test_deidentified_document_persists_evidence_and_provenance"
+      ],
+      "gap": "No malware scanning or sandboxed parsing."
+    },
+    {
+      "id": "ALG-4",
+      "section": "XII (step 4)",
+      "claim": "Extract statements and laboratory observations with units, intervals, time and spans; flag uncertain fields for manual review.",
+      "module": "backend/app/services/nlp_processor.py; backend/app/routers/analysis.py",
+      "status": "IMPLEMENTED_NOT_VALIDATED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_context_rules_do_not_turn_hedges_into_diagnoses",
+        "backend/tests/test_full_pipeline_api.py::test_full_clinician_workflow_api",
+        "backend/tests/test_measurements_and_longitudinal.py::test_censored_lab_result_preserves_operator_and_never_becomes_exact",
+        "backend/tests/test_ocr.py::test_scanned_report_values_keep_decimals_and_ocr_provenance"
+      ],
+      "gap": "Statements and measurements retain source spans, context, operators, lab provenance and OCR coordinates; every extracted item awaits clinician review. No scientifically calibrated per-field uncertainty score or lawful clinical-corpus accuracy result exists."
+    },
+    {
+      "id": "ALG-5-6",
+      "section": "XII (steps 5-6)",
+      "claim": "Quality-gate each image or signal, then run a validated task model or return NOT RUN / ABSTAIN.",
+      "module": "backend/app/services/image_processor.py; backend/app/services/ecg_processor.py; backend/app/services/model_inference.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_evidence_and_fusion.py::test_valid_inputs_do_not_create_unconfigured_model_predictions",
+        "backend/tests/test_evidence_and_fusion.py::test_ecg_quality_rejection_rules",
+        "backend/tests/test_research_inference.py::test_gate_refuses_models_without_a_verified_bundle",
+        "backend/tests/test_research_inference.py::test_applicability_gate_rejects_unsupported_inputs",
+        "docs/validation/models/gi_kvasir_seg_polyp_segmenter.json",
+        "docs/validation/models/hematology_cnmc_all_classifier.json",
+        "docs/validation/models/ptbxl_ecg_baseline.json",
+        "backend/tests/test_training_volumetric.py::test_real_acdc_training_fails_closed_without_explicit_authorization"
+      ],
+      "gap": "Supported 2-D inputs can run seven registered internally evaluated image models after modality, licence, report and checkpoint-byte gates; outputs are research-only and pending review. PTB-XL is evaluation-only, while the ACDC 3-D trainer refuses real data without explicit authorization. Task-specific image quality/OOD gates, EEG inference and every clinically validated model remain unavailable, so unsupported inputs return NOT RUN / refusal."
+    },
+    {
+      "id": "ALG-7-8",
+      "section": "XII (steps 7-8)",
+      "claim": "Match only within the same verified case; compute same-analyte, same-unit deltas; compare images only after alignment QA.",
+      "module": "backend/app/services/comparison_service.py; backend/app/services/biomarker_trends.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_auth_and_access.py::test_longitudinal_comparison_enforces_case_ownership",
+        "backend/tests/test_medtwin2_capabilities.py::test_biomarker_trend_statistics_are_tiered_and_unit_safe"
+      ],
+      "gap": null
+    },
+    {
+      "id": "ALG-10",
+      "section": "XII (step 10)",
+      "claim": "Set the anatomical presentation level (L1 always, L2 after valid mapping, L3 only after verified reconstruction); never invent coordinates.",
+      "module": "backend/app/services/anatomy_evidence.py; src/pages/AnatomyStudioPage.tsx",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_anatomy_mapping_requires_clinician_confirmation_for_regions"
+      ],
+      "gap": "L1 and organ/region-level L2 are implemented; L3 is not."
+    },
+    {
+      "id": "ALG-11",
+      "section": "XII (step 11)",
+      "claim": "Forecast only when longitudinal observations and a tested forecasting model meet predefined eligibility; otherwise NOT ELIGIBLE.",
+      "module": "backend/app/services/forecasting_service.py; backend/app/services/prognosis_registry.py",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_evidence_and_fusion.py::test_forecasting_eligibility_enforcement"
+      ],
+      "gap": "Every request is NOT ELIGIBLE (MODEL_NOT_VALIDATED) until a forecaster is evaluated."
+    },
+    {
+      "id": "ALG-13",
+      "section": "XII (step 13)",
+      "claim": "Present original evidence and review status, persist the audit trail, and return no autonomous drug or procedure recommendation.",
+      "module": "backend/app/services/audit_service.py; src/pages/ReportsPage.tsx; src/pages/CaseWorkspacePage.tsx",
+      "status": "IMPLEMENTED_AND_TESTED",
+      "evidence": [
+        "backend/tests/test_auth_and_access.py::test_audit_logging_sanitizes_clinical_text",
+        "backend/tests/test_medtwin2_capabilities.py::test_risk_registry_computes_no_score"
+      ],
+      "gap": null
+    },
+    {
+      "id": "XIII-PRIVACY",
+      "section": "XIII",
+      "claim": "Use de-identified or authorized data; isolate cases; encrypt stored records; implement consent, retention and deletion procedures.",
+      "module": "backend/app/services/nlp_processor.py; backend/app/services/auth.py; backend/app/routers/cases.py",
+      "status": "PARTIALLY_IMPLEMENTED",
+      "evidence": [
+        "backend/tests/test_medtwin2_capabilities.py::test_deidentification_masks_identifiers",
+        "backend/tests/test_auth_and_access.py::test_cross_case_access_isolation",
+        "backend/tests/test_storage_encryption.py::test_uploads_are_encrypted_on_disk_and_every_reader_still_works",
+        "backend/tests/test_case_retention.py::test_case_erasure_removes_unique_managed_object_and_audits_metadata",
+        "backend/tests/test_case_retention.py::test_case_erasure_preserves_shared_object_until_final_reference_is_deleted"
+      ],
+      "gap": "Upload requires a de-identification attestation, text is de-identified, cases are isolated, authorized local erasure is tested, and upload objects are AES-256-GCM encrypted with keys outside the repository. Reachable Git history still contains PHI and blocks sharing. The database/backups are not encrypted; consent records, legal retention schedules, secure-media erasure and tamper-evident audit retention are absent. No regulatory compliance is claimed."
+    }
+  ]
+}

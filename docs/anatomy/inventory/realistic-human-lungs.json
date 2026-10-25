@@ -1,0 +1,468 @@
+{
+  "asset_id": "realistic-human-lungs",
+  "relative_path": "realistic_human_lungs.glb",
+  "source_group": "workspace_root",
+  "bytes": 17147352,
+  "sha256": "66ed0f50b8ac6cc7fe648642e7b090dbc42b6beae9d0faee44bf8556e601a22e",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 7084
+      },
+      {
+        "type": "BIN",
+        "byteLength": 17140240
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-14.64.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "neshallads (https://sketchfab.com/neshallads)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/realistic-human-lungs-ce09f4099a68467880f46e61eb9a3531",
+      "title": "Realistic Human Lungs"
+    },
+    "extensions_used": [
+      "KHR_materials_specular"
+    ],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 4
+    },
+    "draw_calls": 2,
+    "validator_triangle_count": 63974,
+    "validator_vertex_count": 33454
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 7,
+    "mesh_nodes": 2,
+    "meshes": 2,
+    "primitives": 2,
+    "materials": 2,
+    "textures": 8,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 63974,
+    "rendered_triangles": 63974,
+    "unique_vertices": 33454,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 2,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 5,
+    "closed_measured_primitives": 2,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.108593,
+        -0.047046,
+        -0.127252
+      ],
+      "max": [
+        0.114708,
+        0.321659,
+        0.015093
+      ],
+      "size": [
+        0.223301,
+        0.368705,
+        0.142346
+      ],
+      "center": [
+        0.003058,
+        0.137306,
+        -0.056079
+      ],
+      "diagonal": 0.453948
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 2.59,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "thairoid01:low_part02_Group6344:Group24638_thairoid01:lungh_part02_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 2,
+    "names": [
+      "thairoid01lungh_part01",
+      "thairoid01lungh_part02"
+    ]
+  },
+  "textures_summary": {
+    "count": 8,
+    "total_bytes": 14231495,
+    "max_edge_px": 2048,
+    "mime_types": [
+      "image/jpeg",
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "thairoid01:low_part01_Group6344:Group18522_thairoid01:lungh_part01_0",
+      "thairoid01:low_part02_Group6344:Group24638_thairoid01:lungh_part02_0"
+    ],
+    "anatomically_named_mesh_nodes": 2,
+    "anatomical_names_sample": [
+      "thairoid01:low_part01_Group6344:Group18522_thairoid01:lungh_part01_0",
+      "thairoid01:low_part02_Group6344:Group24638_thairoid01:lungh_part02_0"
+    ]
+  },
+  "inspection_ms": 146,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/d21edbfa7dfc47c3984780dc30267f4d.fbx",
+      "name": "d21edbfa7dfc47c3984780dc30267f4d.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/d21edbfa7dfc47c3984780dc30267f4d.fbx/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/d21edbfa7dfc47c3984780dc30267f4d.fbx/RootNode/thairoid01:low_part01_Group6344:Group18522",
+      "name": "thairoid01:low_part01_Group6344:Group18522",
+      "semantic_name": "thairoid01:low_part01_Group6344:Group18522",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/d21edbfa7dfc47c3984780dc30267f4d.fbx/RootNode/thairoid01:low_part01_Group6344:Group18522/thairoid01:low_part01_Group6344:Group18522_thairoid01:lungh_part01_0",
+      "name": "thairoid01:low_part01_Group6344:Group18522_thairoid01:lungh_part01_0",
+      "semantic_name": "thairoid01:low_part01_Group6344:Group18522_thairoid01:lungh_part01_0",
+      "depth": 4,
+      "mesh": "thairoid01:low_part01_Group6344:Group18522_thairoid01:lungh_part01_0",
+      "material": "thairoid01lungh_part01",
+      "triangles": 46236,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.077074,
+          0.084289,
+          -0.069178
+        ],
+        "max": [
+          0.072363,
+          0.321659,
+          0.003704
+        ],
+        "size": [
+          0.149437,
+          0.23737,
+          0.072882
+        ],
+        "center": [
+          -0.002356,
+          0.202974,
+          -0.032737
+        ],
+        "diagonal": 0.289806
+      }
+    },
+    {
+      "path": "Sketchfab_model/d21edbfa7dfc47c3984780dc30267f4d.fbx/RootNode/thairoid01:low_part02_Group6344:Group24638",
+      "name": "thairoid01:low_part02_Group6344:Group24638",
+      "semantic_name": "thairoid01:low_part02_Group6344:Group24638",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/d21edbfa7dfc47c3984780dc30267f4d.fbx/RootNode/thairoid01:low_part02_Group6344:Group24638/thairoid01:low_part02_Group6344:Group24638_thairoid01:lungh_part02_0",
+      "name": "thairoid01:low_part02_Group6344:Group24638_thairoid01:lungh_part02_0",
+      "semantic_name": "thairoid01:low_part02_Group6344:Group24638_thairoid01:lungh_part02_0",
+      "depth": 4,
+      "mesh": "thairoid01:low_part02_Group6344:Group24638_thairoid01:lungh_part02_0",
+      "material": "thairoid01lungh_part02",
+      "triangles": 17738,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.108593,
+          -0.047046,
+          -0.127252
+        ],
+        "max": [
+          0.114708,
+          0.181225,
+          0.015093
+        ],
+        "size": [
+          0.223301,
+          0.228271,
+          0.142346
+        ],
+        "center": [
+          0.003058,
+          0.067089,
+          -0.056079
+        ],
+        "diagonal": 0.349619
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "thairoid01:low_part01_Group6344:Group18522_thairoid01:lungh_part01_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 24166,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "TEXCOORD_2"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "thairoid01lungh_part01",
+          "morph_targets": 0,
+          "triangles": 46236,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 23124,
+            "connected_components": 3,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 46236,
+      "points": 0,
+      "lines": 0,
+      "vertices": 24166
+    },
+    {
+      "name": "thairoid01:low_part02_Group6344:Group24638_thairoid01:lungh_part02_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 9288,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "TEXCOORD_2"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "thairoid01lungh_part02",
+          "morph_targets": 0,
+          "triangles": 17738,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 8873,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 17738,
+      "points": 0,
+      "lines": 0,
+      "vertices": 9288
+    }
+  ],
+  "materials": [
+    {
+      "name": "thairoid01lungh_part01",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": true,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "thairoid01lungh_part02",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": true,
+        "emissive": false
+      },
+      "extensions": [
+        "KHR_materials_specular"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 1040023,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 650908,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 3413389,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1078413,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 950492,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 773420,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 5121500,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1203350,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    }
+  ]
+}

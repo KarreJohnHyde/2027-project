@@ -1,0 +1,105 @@
+# MedTwin change log
+
+All work is on branch `feature/medtwin-2-integration`. Nothing has been pushed; the repository has no remote.
+
+| Commit | Date | Summary |
+| --- | --- | --- |
+| `bfb7988` | 2026-10-24 | Baseline: the Phase 1 workspace exactly as found (reversible starting point on `main`). |
+| `ba7eb13` | 2026-10-24 | Anatomy asset pipeline and MedTwin 2.0 evidence services (backend). |
+| `3aee888` | 2026-10-24 | MedTwin 2.0 application shell, lab and evaluation integration, traceability, deployment fixes. |
+| `c67342f` | 2026-10-24 | Privacy gate (redacting scanner, pre-push guard, drilled history-purge procedure), safe archive import of the 24 Downloads ZIPs, durable job queue and worker, AES-256-GCM encryption at rest, local OCR. |
+| next | 2026-10-24 | Dataset task audit, research model training (`ml_training/`), research-only inference with overlays, scispaCy secondary NER, browser QA tooling, documentation set (this entry). |
+| next | 2026-10-25 | Supplementary archive batch (38 archives), root-file restore, ECG and survival baselines, Kvasir-SEG polyp segmenter, evaluation-only model inputs (entry below). |
+| next | 2026-10-25 | Final master-directive reconciliation: seven browser-runnable 2-D workflows, strict OCR/NLP and laboratory evidence controls, generic volumetric pipeline, complete acceptance evidence, and explicit unresolved release/clinical blockers. |
+| next | 2026-10-25 | Cardiac cine-MRI segmentation with cardiac indices, evaluated-precision inference, medical display names with one attribution page, Supabase browser client (entry below). |
+
+## Cardiac MRI, inference precision, medical naming and Supabase client (next, 2026-10-25)
+
+- **Cardiac MRI.** The repository owner authorized local, non-commercial research training on the cardiac cine-MRI set after review of the publisher's statement that the data and ground truth remain publicly available with a mandatory citation (no licence text exists); the authorization, scope and evidence are recorded in the dataset registry, and availability alone still never opens the gate. The audit gains a volumetric preparer that summarises the same manifest the trainer validates. A 3-D U-Net trained through `ml_training.volumetric` (epoch 41 of 60 selected on validation) scored, on the 50 frozen test patients (100 ED/ES volumes): mean case macro Dice 0.750 (95% patient-bootstrap CI 0.719–0.778; LV 0.812, myocardium 0.731, RV 0.707); LV ejection fraction against the reference masks MAE 9.1 points, bias −5.8, r 0.852. All volumes are overestimated (no prespecified connected-component post-processing), so the indices are research evidence only. Registered `READY_UNVALIDATED`, evaluation-only (`volume_nifti`), with a Validation Center view of structures and cardiac indices.
+- `ml_training/volumetric_report.py`: per-structure Dice with patient-bootstrap intervals, 3-D HD95 and ASSD in millimetres, and per-patient LV/RV end-diastolic and end-systolic volumes, ejection fractions and LV myocardial mass from predicted and reference masks (bias, limits of agreement, mean absolute error, Pearson r). Voxel volume comes from the NIfTI header pixdim because these files' sform affine is unit-scaled; the manifest's affine-derived spacing (1 mm) is therefore not used for volumes.
+- `ml_training/volumetric.py`: strict deterministic algorithms refused the first CUDA training step (cross-entropy has no deterministic CUDA kernel); CUDA now runs in warn-only mode and the run records it. The failed first attempt is kept and marked `FAILED`.
+- **Inference precision.** Classifiers and segmenters were evaluated under bfloat16 autocast, but the adapter served them in float32; for the leukaemia-cell classifier this changed 84 of 1,867 held-out predictions (accuracy 0.807 → 0.787). The adapter now reproduces the evaluated precision on CUDA (parity: 21/21 top classes, maximum probability difference 0.0008, was 0.135) and every output states its precision; CPU inference is labelled as differing.
+- **Medical naming.** Datasets, tasks, models, anatomy assets, frameworks and runtimes are shown under medical names (`src/lib/displayNames.ts`, registry display names, anatomy labels in the pipeline catalogue and manifest); generated free text keeps its source names on disk and is neutralised for display. Internal identifiers, file paths and research documents are unchanged. Original names, creators, licences and citations appear only on the new `/attribution` page (Data sources and licences), linked from Settings, Validation Center, Medical Imaging and Live Anatomy Studio.
+- **Supabase.** `@supabase/supabase-js` and `@supabase/ssr` installed; `src/lib/supabase/client.ts` is the browser client from the Next.js registry block, ported to Vite (`envPrefix` admits the `NEXT_PUBLIC_` variable names; values live in the git-ignored `.env.local`). The block's server and middleware files need a Next.js server runtime and were not added. No patient data is sent to the service.
+- Dataset audit: the C-NMC subject split joins subjects that share pixel-identical images (14 subject pairs; 3 training subjects linked to the test set removed). The registry test now expects the 32 task units the audit source defines (the previous generated file listed 34; the two extra entries are not defined by the current source) with cardiac MRI `READY_FOR_TRAINING`.
+
+## Supplementary datasets, ECG and survival baselines (next, 2026-10-25)
+
+- **Root-file incident.** The 38 archives `archive (23).zip`–`archive (60).zip` were extracted into the repository root on 2026-10-25; the TotalSegmentator archive overwrote MedTwin's `README.md`, `.gitignore` and `.dockerignore`. With the user's approval the extracted copies were moved to `_imports/overwritten_by_extraction_20261025/` (provenance in `ORIGIN.txt`) and MedTwin's files restored from `c67342f`. `.gitignore` gains root-anchored rules for the extracted dataset folders and TotalSegmentator files (untracked entries 417,704 → 127; no tracked file is ignored).
+- `scripts/archive_audit_and_extract.py`: a `SUPPLEMENTARY` role audits every entry of these archives for presence (name, size, CRC-32; exhaustive, not first-match), writes per-entry manifests, and never extracts. Result: 35 `ALREADY_PRESENT_VERIFIED`, 3 `PARTIALLY_PRESENT`; the missing entries are exactly the root-level files later extractions overwrote, and the report now names them. Audit mode re-verifies the earlier `archive.zip` extraction instead of reporting it as not extracted.
+- `scripts/dataset_task_audit.py`: 61 dataset units and 34 task units. Final readiness: 9 `READY_FOR_TRAINING`, 1 `EXPLORATORY_TRAINING_ONLY`, 24 `BLOCKED`; 10 training-eligible and 9 validation-ready. Licences/permissions, subject grouping, duplicate/leakage checks, and split evidence are explicit. ACDC remains licence-authorization blocked; C-NMC now has a subject-grouped internal experiment.
+- `ml_training/ptbxl.py`, `ml_training/ecg.py`: WFDB format-16 reader with header checksum, first-sample and size checks; publisher SHA256SUMS verified for 42,862 files; 1-D ResNet on the five diagnostic superclasses with patient-disjoint folds 1–8/9/10, validation-only Platt scaling and thresholds. Held-out macro AUROC 0.917 (95% CI 0.909–0.925).
+- `ml_training/survival.py`: Cox proportional hazards (Breslow), Harrell's C, IPCW Brier score (Graf 1999) and integrated Brier skill against Kaplan–Meier, checked on simulated data. Mayo PBC: hold-out C 0.786, Brier skill 0.281 (`RESEARCH`); heart failure: C 0.671 but no Brier skill over Kaplan–Meier, so `EXPLORATORY_ONLY`.
+- Registry entries declare `inference_input`; ECG and survival models are held-out evaluation evidence only and are never run on uploads. `evaluation_summary` raised `KeyError` for tasks it did not know (which would have broken `/research-models`); it now covers the new tasks and falls back explicitly. Validation Center shows multi-label and survival reports and marks exploratory-only runs.
+- `ml_training/segment.py`: RGB input, publisher binary masks and a configurable foreground label; the evaluated resolution in limitations is no longer hard-coded to 512 px.
+- The ARCADE registry entries record `dataset_version_lineage`: the audit's duplicate-flag rule changed after training; the training-time manifest hash was reproduced from the current manifest with the earlier rule.
+
+## Dataset audit, training and research inference (next)
+
+- `scripts/dataset_task_audit.py` → `dataset_registry/tasks.json`, `docs/data/DATA_READINESS_MATRIX.md`. Near-duplicate groups are dHash candidate pools confirmed by 64×64 pixel correlation (endoscopy frame and text panel masked); an earlier version chained look-alike frames into a 255-image mixed-class group and was replaced. TEZ kidney-stone data are re-split by acquisition session after the audit found 88 of 123 publisher test images sharing a session with train/validation images.
+- `ml_training/` (classify, detect, segment, kit_crosscheck): one GPU job at a time, validation-only selection and thresholds, single test evaluation, group bootstrap CIs, reports in `docs/validation/models/`, cards in `docs/models/`, registry entries `READY_UNVALIDATED` with `research_inference`. Results: `docs/imaging/DATASET_TRAINING_RESULTS.md`. The user's validation kit re-scores saved predictions (`*.kit_crosscheck.json`).
+- `app/services/model_inference.py`, `app/routers/research_models.py`: research gate (verified licence, report present, checkpoint SHA-256 re-hashed; the loaded bytes are the hashed bytes; `weights_only` loading), applicability gate (PNG/JPEG/BMP, declared input type), GPU job kind `RESEARCH_MODEL_INFERENCE`, outputs in source pixels, findings `PENDING_HUMAN_REVIEW` and not mapped to anatomy. Medical Imaging gains a research-model panel with box/mask overlays; Validation Center gains a "Trained models" tab; Model Registry shows the research gate.
+- scispaCy (`en_ner_bc5cdr_md`) runs in WSL as secondary NER (`MEDTWIN_SCISPACY=wsl`, off by default); statements carry their own `extractor_version` and are badged "Model inference · unvalidated".
+- `scripts/storage_keys.py` (status / encrypt-legacy / rotate, dry run by default) with `storage_crypto.reencrypt_in_place`.
+- Fixes: modality table matched models by substring (now explicit `supported_modalities`); `VALIDATION_FLAG_FALSE` rendered as a pass; `model_registry.PROJECT_ROOT` ignored `MEDTWIN_PROJECT_ROOT`; backend image lacked OpenCV system libraries; compose gains storage-encryption settings, a read-only checkpoint mount and a `worker` profile.
+- Browser QA: `scripts/dev.ps1` (isolated QA stack), `scripts/verify.ps1`, `tools/browser-qa/walkthrough.mjs` (playwright-core 1.63.0 driving installed Edge); the anatomy probe now counts points as well as triangles.
+
+## Final master-directive reconciliation (next, 2026-10-25)
+
+- Final verification receipt `artifacts/verify/20261025T112434Z.json`: backend **258 passed, 1 skipped**; frontend typecheck, lint and production build passed; the current-tree privacy scan passed.
+- Canonical browser acceptance passed 16/16 desktop routes, 16/16 responsive routes, 43/43 anatomy variants across all 10 systems, all seven registered `image_2d` workflows, and all 10 trained-model report views. Native BMP was exercised through the C-NMC upload, display and inference path. The run also verified structured and censored laboratory evidence, original-preserving correction proposals, strict Clinical NLP/OCR evaluator controls, request-ID correlation, hash-only evaluator provenance and prognosis abstention. It recorded zero unexpected console errors, page errors or HTTP 5xx responses; one intentional 422 tested request-ID display.
+- The dataset registry contains 61 units covering 34 tasks: 9 `READY_FOR_TRAINING`, 1 `EXPLORATORY_TRAINING_ONLY` and 24 `BLOCKED`. The model registry contains 21 entries: 10 research-runnable/evaluation bundles and 0 clinically activatable models.
+- The ACDC volumetric pipeline was audited and exercised with synthetic data. Real ACDC training was refused before producing an output because licence authorization was not verified; no ACDC checkpoint or metric was fabricated.
+- Docker Compose configuration validates, but images were not built or run because the Docker engine is unavailable. Repository sharing remains blocked because identifiable data survives in reachable Git history. These and all scientific-validation gaps remain explicit in the current status documents.
+- Vite 8 startup no longer uses the removed `optimizeDeps.disabled` option. React/CommonJS dependency optimization is restored, optimizer discovery is limited to MedTwin's `index.html`, and the file watcher is scoped to frontend source and public assets so imported datasets and research projects are not scanned. `npm run dev` now reuses an existing server only after verifying the MedTwin shell and an optimized React import; a clean startup and visible Chrome reload rendered the sign-in page with no browser-console errors or dependency-scan warnings.
+- This acceptance evidence validates software behavior only. It does not establish clinical safety, model generalization, NLP/OCR accuracy, patient-specific registration, prognosis accuracy or treatment-effect validity.
+
+## Before you share this repository
+
+- **Identifiable patient data is in commit `bfb7988`.** `backend/app/services/lab_service.py` in the baseline embedded two real laboratory reports (named patients, ages, sex, hospital, report IDs and collection times). The block was unused and is removed from the working tree, but it remains in the baseline commit and in `ba7eb13`. History was not rewritten. Before adding a remote or sharing the repository, purge it (for example `git filter-repo --path backend/app/services/lab_service.py --invert-paths` followed by re-adding the current file, or a `--replace-text` rule), and treat the data as exposed to anyone who already has a copy.
+
+## Application (frontend)
+
+- Replaced the Phase 1 single-page cockpit with a routed shell (`src/App.tsx`, `src/components/AppShell.tsx`) exposing the 16 required sections: Overview, Case Workspace, Document Intelligence, Medical Imaging, Biomarker Analytics, Historical Comparison, Live Anatomy Studio (`/anatomy-studio`), Prognosis Studio (`/prognosis-studio`), Multimodal Intelligence, Risk & Explainability, Research Analytics (`/research/analytics`), Model Registry, Dataset Registry, Validation Center, Reports and Settings, plus the Upload Center (`/upload`). Routes are lazy-loaded.
+- Design tokens for light and dark themes in `src/index.css`; validated chart palette; every chart carries a provenance footer and a table view.
+- Anatomy Studio: ten system workspaces, 43 asset variants plus the Z-Anatomy atlas, hierarchy, isolation, sections, transparency, labels, evidence-linked inspector, registration review, screenshots and performance overlay (`src/anatomy/`).
+- Prognosis Studio shows observed evidence only; Scenario A and B report UNAVAILABLE with machine-readable reasons.
+- New in this entry:
+  - Investigation orders (Case Workspace) and transcribed laboratory results (Biomarker Analytics) restore the Phase 1 catalog features that the new shell had dropped (`src/components/LabEntry.tsx`). Nothing is pre-filled; blank laboratory or specimen fields are stored as `NOT_DOCUMENTED`.
+  - Validation Center accepts the validation kit's formats and adds forecast, lab-extraction, mask-archive and COCO detection tasks, an evaluation-context form (dataset, version, split, checkpoint) and a reporting-status banner.
+  - Traceability tab reads the new matrix and shows the earlier manuscript's equation map in a collapsible section.
+  - Settings shows the system-wide audit log to administrators.
+  - Lint-driven fixes: module-level structure cache and pure layer matrices in the Anatomy Studio; error-boundary reset through `getDerivedStateFromProps`; removed memoisation of per-render values.
+
+## Backend
+
+- (`ba7eb13`) Context-scoped clinical NLP (`rules-v2.0.0`), measurement context, FHIR Observation import, XLSX parsing, DICOM/NIfTI/NRRD/MHA readers and slice rendering, modality registry, anatomy evidence mapping, biomarker trends, CKD-EPI 2021 eGFR, prognosis and risk registries (no scores), evaluation metrics, research analytics, case memberships, schema migrations, rate limiting, security headers and readiness checks.
+- (`ba7eb13`) Fixed a pre-existing de-identification bug: the phone-number pattern redacted ISO dates and numeric ranges such as `13.0-17.0`.
+- New in this entry:
+  - Removed unused `SAMPLE_LAB_REPORTS` (identifiable patient data, see above) and `STANDARD_PANELS` (invented default lab values) from `lab_service.py`.
+  - Lab reports no longer default the laboratory to "MedTwin Research Laboratory" or the specimen to "Whole Blood EDTA". They record `source_file_id`, `collection_date`, `entry_method` and `recorded_by_id`.
+  - **Behaviour change:** a transcribed result's position is computed only against the interval the laboratory printed. Without one it is `INDETERMINATE`, and the catalog default is returned separately as `catalog_interval`, for orientation only. This follows manuscript Sec. V-A ("Never silently substitute a default reference interval"). `test_record_lab_investigation_report` was updated accordingly.
+  - Dated quantitative transcriptions join biomarker series as `MANUAL_TRANSCRIPTION` points. A transcription repeating an extracted value on the same date is excluded as `DUPLICATE_OF_M<id>`.
+  - **Behaviour change:** the legacy `/cases/{id}/forecast` endpoints no longer emit persistence or linear extrapolations. With sufficient data they return `NOT_ELIGIBLE` / `MODEL_NOT_VALIDATED` and the observed series, consistent with `/prognosis/evaluate` and Algorithm 1 step 11.
+  - Evaluation: kit column aliases (`score`, `patient_id`); new tasks `forecast` and `lab_extraction`; `POST /evaluation/segmentation/batch` (ZIP + manifest.csv); `POST /evaluation/detection/coco` (pycocotools COCOeval). Segmentation now follows the kit's empty-mask convention and rejects non-binary masks. Every run records dataset, version, split, checkpoint and code commit, and is `EXPLORATORY` unless all are present on a held-out test split. A classification run reports the >95% accuracy objective only against the CI lower bound.
+  - `GET /metrics/ieee-validation` now requires authentication, names the earlier manuscript it maps, and corrects stale statuses (Dice/IoU and COCO evaluation exist; forecasting is gate-only).
+  - `app/services/build_info.py` reports the code commit (`MEDTWIN_CODE_COMMIT` or git).
+  - Added `pycocotools==2.0.11` to `backend/requirements.txt`.
+
+## Research traceability and evidence
+
+- `docs/research/traceability.json`: 56 claims from the revised draft `MedTwin_2_Software_Only_IEEE_Revised_Research_Draft.docx` (SHA-256 `dbcbc8c3…`, not modified), covering equations (1)–(12), objectives O1–O8, sections III–XIII and Algorithm 1. Each claim gives a module, evidence and gap. `test_traceability_matrix_cites_only_real_code_and_tests` fails if any cited path or test does not exist.
+- `docs/research/implementation_gaps.md`: gap report derived from the matrix.
+- `scripts/record_test_evidence.py` writes `docs/validation/test-evidence.json` from actual command output.
+- `docs/anatomy/README.md`: anatomy asset report.
+
+## Deployment
+
+- `nginx.conf`: body limit raised from 25 MB to 520 MB to match the imaging upload limit; uploads stream to the backend (`proxy_request_buffering off`); longer proxy timeouts; immutable caching for hashed `/assets/`.
+- Backend image now includes `model_registry/` and the generated evidence files. `MEDTWIN_PROJECT_ROOT` and `MODEL_REGISTRY_PATH` are set so these resolve inside the container (they previously resolved above `/app`). `MEDTWIN_CODE_COMMIT` is a build argument.
+- Frontend image excludes `public/models/` (242 MB of original GLBs used only by unreferenced legacy components).
+- `docker compose config --quiet` passes. Images were not built: no Docker engine was available.
+
+## Not removed
+
+These Phase 1 components are no longer imported, so they are excluded from the bundle. They are kept for reference and are candidates for deletion: `src/components/{AnatomicalViewer, CaseHeader, CaseManagementView, ClinicalCatalogPanel, CreateCaseModal, DashboardView, DigitalTwin3D, EcgAnalysisView, FileUploadModal, Header, HumanReviewPanel, IeeeValidationView, ImageAnalysisView, LoginPage, LongitudinalComparisonView, ModalityViewer, MultimodalFusionPanel, ReportConcordancePanel, ReportNlpView, Sidebar, ThreeCanvas, TimelineForecastingPanel, UserManagementView}.tsx`. Every backend capability they used now has a consumer in the new pages.

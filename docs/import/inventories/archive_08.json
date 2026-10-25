@@ -1,0 +1,45 @@
+{
+  "listed_name": "archive (8).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (8).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "ced74262eaf6ec06679930e881988de842cfa7f1a66735d0d7ea6ecf996c9bfa",
+  "size_bytes": 5193236906,
+  "entries": 182,
+  "files": 182,
+  "directories": 0,
+  "uncompressed_bytes": 30938299984,
+  "overall_ratio": 5.96,
+  "max_entry_ratio": 940.9,
+  "project_copy": "D:\\project\\archive (8).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (182 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "volume": 182
+  },
+  "extensions": {
+    ".nii": 182
+  },
+  "top_level": {
+    "segmentations/": 131,
+    "volume_pt1/": 11,
+    "volume_pt2/": 10,
+    "volume_pt3/": 10,
+    "volume_pt4/": 10,
+    "volume_pt5/": 10
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_08.entries.csv",
+  "mask_like_files": 131,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 28.3,
+  "notes": []
+}

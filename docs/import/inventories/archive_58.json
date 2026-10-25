@@ -1,0 +1,54 @@
+{
+  "listed_name": "archive (58).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (58).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "df9e34b2fcfe1d96573d126fcf0d37da49631b8f999016e872e83679e7ca3dd0",
+  "size_bytes": 88202233,
+  "entries": 16596,
+  "files": 16596,
+  "directories": 0,
+  "uncompressed_bytes": 92633117,
+  "overall_ratio": 1.11,
+  "max_entry_ratio": 2.9,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (16596 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "text": 8298,
+    "raster_image": 8296,
+    "structured_annotation": 2
+  },
+  "extensions": {
+    ".txt": 8298,
+    ".jpg": 8296,
+    ".yaml": 2
+  },
+  "top_level": {
+    "BoneFractureYolo8/": 8298,
+    "bone fracture detection.v4-v4.yolov8/": 8298
+  },
+  "second_level": {
+    "BoneFractureYolo8/train/": 7262,
+    "bone fracture detection.v4-v4.yolov8/train/": 7262,
+    "BoneFractureYolo8/valid/": 696,
+    "bone fracture detection.v4-v4.yolov8/valid/": 696,
+    "BoneFractureYolo8/test/": 338,
+    "bone fracture detection.v4-v4.yolov8/test/": 338
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_58.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 8296,
+  "license_evidence": [
+    "CC-BY-4.0 in README.dataset.txt"
+  ],
+  "duration_seconds": 34.7,
+  "notes": []
+}

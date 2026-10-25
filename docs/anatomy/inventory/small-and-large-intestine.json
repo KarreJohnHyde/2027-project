@@ -1,0 +1,492 @@
+{
+  "asset_id": "small-and-large-intestine",
+  "relative_path": "small_and_large_intestine.glb",
+  "source_group": "workspace_root",
+  "bytes": 15629192,
+  "sha256": "54e5549536a166b6f0eb7e006f001c79e09175c71e852406156c4e63bc2faa79",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 6928
+      },
+      {
+        "type": "BIN",
+        "byteLength": 15622236
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.66.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "antonia.sundberg (https://sketchfab.com/antonia.sundberg)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/small-and-large-intestine-8a1ca8e3ca224cdeb9264674416bde38",
+      "title": "Small and large intestine"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 1,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 1
+    },
+    "draw_calls": 3,
+    "validator_triangle_count": 254208,
+    "validator_vertex_count": 135784
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 8,
+    "mesh_nodes": 3,
+    "meshes": 3,
+    "primitives": 3,
+    "materials": 2,
+    "textures": 4,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 254208,
+    "rendered_triangles": 254208,
+    "unique_vertices": 135784,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 3,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 176,
+    "closed_measured_primitives": 1,
+    "max_boundary_edge_fraction": 0.03704,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.195339,
+        -0.722068,
+        -0.437516
+      ],
+      "max": [
+        1.318362,
+        1.122166,
+        0.309337
+      ],
+      "size": [
+        1.513701,
+        1.844233,
+        0.746853
+      ],
+      "center": [
+        0.561512,
+        0.200049,
+        -0.06409
+      ],
+      "diagonal": 2.500055
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 2.469,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Tjocktarm_Default Material_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 2,
+    "names": [
+      "Default_Material",
+      "Default_Material_0"
+    ]
+  },
+  "textures_summary": {
+    "count": 4,
+    "total_bytes": 4967833,
+    "max_edge_px": 4096,
+    "mime_types": [
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Tjocktarm_Default Material_0",
+      "Tjocktarm_Default Material_0",
+      "Tunntarm_Default Material_0"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 460,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Tarmpaket Sketchfab 1.FBX",
+      "name": "Tarmpaket Sketchfab 1.FBX",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Tarmpaket Sketchfab 1.FBX/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Tarmpaket Sketchfab 1.FBX/RootNode/Tjocktarm",
+      "name": "Tjocktarm",
+      "semantic_name": "Tjocktarm",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Tarmpaket Sketchfab 1.FBX/RootNode/Tjocktarm/Tjocktarm_Default Material_0",
+      "name": "Tjocktarm_Default Material_0",
+      "semantic_name": "Tjocktarm_Default Material_0",
+      "depth": 4,
+      "mesh": "Tjocktarm_Default Material_0",
+      "material": "Default_Material",
+      "triangles": 121646,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.152182,
+          -0.722068,
+          -0.437516
+        ],
+        "max": [
+          1.318362,
+          0.998819,
+          0.255172
+        ],
+        "size": [
+          1.470545,
+          1.720887,
+          0.692689
+        ],
+        "center": [
+          0.58309,
+          0.138376,
+          -0.091172
+        ],
+        "diagonal": 2.367228
+      }
+    },
+    {
+      "path": "Sketchfab_model/Tarmpaket Sketchfab 1.FBX/RootNode/Tjocktarm/Tjocktarm_Default Material_0",
+      "name": "Tjocktarm_Default Material_0",
+      "semantic_name": "Tjocktarm_Default Material_0",
+      "depth": 4,
+      "mesh": "Tjocktarm_Default Material_0",
+      "material": "Default_Material",
+      "triangles": 82706,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.195339,
+          -0.694811,
+          -0.41131
+        ],
+        "max": [
+          1.302514,
+          0.999051,
+          0.309337
+        ],
+        "size": [
+          1.497853,
+          1.693862,
+          0.720647
+        ],
+        "center": [
+          0.553588,
+          0.15212,
+          -0.050987
+        ],
+        "diagonal": 2.373197
+      }
+    },
+    {
+      "path": "Sketchfab_model/Tarmpaket Sketchfab 1.FBX/RootNode/Tunntarm",
+      "name": "Tunntarm",
+      "semantic_name": "Tunntarm",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/Tarmpaket Sketchfab 1.FBX/RootNode/Tunntarm/Tunntarm_Default Material_0",
+      "name": "Tunntarm_Default Material_0",
+      "semantic_name": "Tunntarm_Default Material_0",
+      "depth": 4,
+      "mesh": "Tunntarm_Default Material_0",
+      "material": "Default_Material_0",
+      "triangles": 49856,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          0.00217,
+          -0.335484,
+          -0.154124
+        ],
+        "max": [
+          1.045408,
+          1.122166,
+          0.241678
+        ],
+        "size": [
+          1.043238,
+          1.45765,
+          0.395802
+        ],
+        "center": [
+          0.523789,
+          0.393341,
+          0.043777
+        ],
+        "diagonal": 1.835687
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Tjocktarm_Default Material_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 65532,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Default_Material",
+          "morph_targets": 0,
+          "triangles": 121646,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 62992,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.02533,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 121646,
+      "points": 0,
+      "lines": 0,
+      "vertices": 65532
+    },
+    {
+      "name": "Tjocktarm_Default Material_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 43868,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Default_Material",
+          "morph_targets": 0,
+          "triangles": 82706,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 43868,
+            "connected_components": 174,
+            "boundary_edge_fraction": 0.03704,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 82706,
+      "points": 0,
+      "lines": 0,
+      "vertices": 43868
+    },
+    {
+      "name": "Tunntarm_Default Material_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 26384,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Default_Material_0",
+          "morph_targets": 0,
+          "triangles": 49856,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 24930,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 49856,
+      "points": 0,
+      "lines": 0,
+      "vertices": 26384
+    }
+  ],
+  "materials": [
+    {
+      "name": "Default_Material",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Default_Material_0",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1087855,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 1440494,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 2004561,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 434923,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    }
+  ]
+}

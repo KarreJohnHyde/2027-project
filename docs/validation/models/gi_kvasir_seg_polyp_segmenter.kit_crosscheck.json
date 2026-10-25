@@ -1,0 +1,25 @@
+{
+  "trainer": {
+    "vessel_dice": 0.7678856140968849,
+    "vessel_iou": 0.669584395162636
+  },
+  "kit": {
+    "dataset": "Kvasir-SEG (GI polyp segmentation)",
+    "dataset_version": "4c97d0496ca08a60e9de783bf16eb8eb576393e16a4c70953ca5b8f3a2c36abb",
+    "evaluation_split": "test",
+    "model_checkpoint": "sha256:a5a2c88dc5af67a8993210ca8a3d40ea79b9cd5e0a7cd5f422c1356828115c36",
+    "prediction_source": "artifacts/training/gi_kvasir_seg_polyp_segmenter-20261025T080312Z/kit_crosscheck/vessel_pairs.csv",
+    "n_rows": 120,
+    "results_kind": "computed_from_supplied_labeled_evidence",
+    "medtw_accuracy_target": ">0.95 is an objective, not an assumed result",
+    "task": "binary_segmentation",
+    "mean_dice": 0.7678856140968849,
+    "mean_iou": 0.669584395162636,
+    "n_empty_reference_masks": 0,
+    "n_nonempty_reference_masks": 120,
+    "both_empty_convention": "Dice=1,IoU=1; must also report nonempty-only values",
+    "mean_dice_nonempty_reference": 0.7678856140968849,
+    "mean_iou_nonempty_reference": 0.669584395162636
+  },
+  "generated_by": "python -m ml_training.kit_crosscheck segmentation --model-id gi_kvasir_seg_polyp_segmenter"
+}

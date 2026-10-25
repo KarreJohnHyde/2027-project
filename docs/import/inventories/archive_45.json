@@ -1,0 +1,46 @@
+{
+  "listed_name": "archive (45).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (45).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "730913166eb4cccdf5ad38d35e948706aaea963eb276171a9c2d9e4972ddc817",
+  "size_bytes": 155920737,
+  "entries": 7052,
+  "files": 7052,
+  "directories": 0,
+  "uncompressed_bytes": 160190965,
+  "overall_ratio": 1.04,
+  "max_entry_ratio": 3.3,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (7052 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 3526,
+    "text": 3526
+  },
+  "extensions": {
+    ".txt": 3526,
+    ".jpg": 3525,
+    ".png": 1
+  },
+  "top_level": {
+    "train/": 7052
+  },
+  "second_level": {
+    "train/images/": 3526,
+    "train/labels/": 3526
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_45.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 3526,
+  "license_evidence": [],
+  "duration_seconds": 15.5,
+  "notes": []
+}

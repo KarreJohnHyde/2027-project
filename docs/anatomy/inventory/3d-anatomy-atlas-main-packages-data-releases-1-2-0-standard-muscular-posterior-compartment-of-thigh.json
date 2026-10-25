@@ -1,0 +1,215 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-muscular-posterior-compartment-of-thigh",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/muscular/posterior_compartment_of_thigh.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 556656,
+  "sha256": "b5aacee84538ac93232cdff30cb242ba79f47b790e6de3adb138a238827a266c",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2692
+      },
+      {
+        "type": "BIN",
+        "byteLength": 553936
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 33014,
+    "validator_vertex_count": 17245
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 33014,
+    "rendered_triangles": 33014,
+    "unique_vertices": 17245,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 9,
+    "closed_measured_primitives": 1,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.128296,
+        0.351846,
+        -0.022909
+      ],
+      "max": [
+        0.128297,
+        0.82056,
+        0.039644
+      ],
+      "size": [
+        0.256593,
+        0.468713,
+        0.062553
+      ],
+      "center": [
+        0,
+        0.586203,
+        0.008367
+      ],
+      "diagonal": 0.538001
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 7.493,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "muscular.posterior_compartment_of_thigh",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "muscular.posterior_compartment_of_thigh"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 44,
+  "nodes": [
+    {
+      "path": "muscular.posterior_compartment_of_thigh",
+      "name": "muscular.posterior_compartment_of_thigh",
+      "semantic_name": "muscular.posterior_compartment_of_thigh",
+      "depth": 0,
+      "mesh": "muscular.posterior_compartment_of_thigh",
+      "material": null,
+      "triangles": 33014,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.128296,
+          0.351846,
+          -0.022909
+        ],
+        "max": [
+          0.128297,
+          0.82056,
+          0.039644
+        ],
+        "size": [
+          0.256593,
+          0.468713,
+          0.062553
+        ],
+        "center": [
+          0,
+          0.586203,
+          0.008367
+        ],
+        "diagonal": 0.538001
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "muscular.posterior_compartment_of_thigh",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 17245,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 33014,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 16515,
+            "connected_components": 9,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0.00024,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 33014,
+      "points": 0,
+      "lines": 0,
+      "vertices": 17245
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

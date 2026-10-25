@@ -1,0 +1,86 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      args:
+        MEDTWIN_CODE_COMMIT: "${MEDTWIN_CODE_COMMIT:-}"
+    ports:
+      - "${MEDTWIN_BACKEND_PORT:-8000}:8000"
+    environment:
+      ENVIRONMENT: "${ENVIRONMENT:-development}"
+      DATABASE_URL: "${DATABASE_URL:-sqlite:////data/medtwin.db}"
+      SECRET_KEY: "${SECRET_KEY:?Set SECRET_KEY in .env before running Docker Compose}"
+      ACCESS_TOKEN_EXPIRE_MINUTES: "${ACCESS_TOKEN_EXPIRE_MINUTES:-480}"
+      UPLOAD_DIR: /data/uploads
+      MAX_UPLOAD_SIZE_BYTES: "${MAX_UPLOAD_SIZE_BYTES:-26214400}"
+      MAX_IMAGE_UPLOAD_SIZE_BYTES: "${MAX_IMAGE_UPLOAD_SIZE_BYTES:-536870912}"
+      CORS_ORIGINS: '${CORS_ORIGINS:-["http://localhost:5173","http://127.0.0.1:5173","http://localhost:8443","http://127.0.0.1:8443"]}'
+      DEV_SEED_ENABLED: "${DEV_SEED_ENABLED:-false}"
+      DEV_SEED_USERNAME: "${DEV_SEED_USERNAME:-}"
+      DEV_SEED_PASSWORD: "${DEV_SEED_PASSWORD:-}"
+      DEV_SEED_EMAIL: "${DEV_SEED_EMAIL:-}"
+      DEV_SEED_FULL_NAME: "${DEV_SEED_FULL_NAME:-MedTwin Development User}"
+      DEV_SEED_ROLE: "${DEV_SEED_ROLE:-clinician}"
+      DEV_SEED_CASE_ENABLED: "${DEV_SEED_CASE_ENABLED:-false}"
+      TAU_TRE_THRESHOLD_DEFAULT: "${TAU_TRE_THRESHOLD_DEFAULT:-5.0}"
+      L_MIN_OBSERVATIONS: "${L_MIN_OBSERVATIONS:-3}"
+      # Encryption at rest for uploads: "required" refuses uploads without a key.
+      # MEDTWIN_STORAGE_KEYS takes comma-separated base64 AES-256 keys (newest first).
+      # Compose is fail-closed: provide MEDTWIN_STORAGE_KEYS or a mounted key
+      # file before patient uploads are accepted.
+      MEDTWIN_STORAGE_ENCRYPTION: "${MEDTWIN_STORAGE_ENCRYPTION:-required}"
+      MEDTWIN_STORAGE_KEYS: "${MEDTWIN_STORAGE_KEYS:-}"
+      # "worker" hands analysis jobs to the worker service (profile "worker").
+      MEDTWIN_JOB_EXECUTION: "${MEDTWIN_JOB_EXECUTION:-inline}"
+    volumes:
+      - medtwin_data:/data
+      # Research checkpoints are not in the image; the research gate re-hashes them.
+      - ./artifacts/training:/app/project/artifacts/training:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+    restart: unless-stopped
+
+  worker:
+    # Durable-queue worker; start with: docker compose --profile worker up
+    profiles: ["worker"]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: ["python", "-m", "app.worker", "--poll-seconds", "2"]
+    environment:
+      ENVIRONMENT: "${ENVIRONMENT:-development}"
+      DATABASE_URL: "${DATABASE_URL:-sqlite:////data/medtwin.db}"
+      SECRET_KEY: "${SECRET_KEY:?Set SECRET_KEY in .env before running Docker Compose}"
+      UPLOAD_DIR: /data/uploads
+      MEDTWIN_STORAGE_ENCRYPTION: "${MEDTWIN_STORAGE_ENCRYPTION:-required}"
+      MEDTWIN_STORAGE_KEYS: "${MEDTWIN_STORAGE_KEYS:-}"
+    volumes:
+      - medtwin_data:/data
+      - ./artifacts/training:/app/project/artifacts/training:ro
+    healthcheck:
+      disable: true
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_MEDTWIN_API_URL: "${VITE_MEDTWIN_API_URL:-}"
+    ports:
+      - "${MEDTWIN_FRONTEND_PORT:-5173}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  medtwin_data:

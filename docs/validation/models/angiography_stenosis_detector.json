@@ -1,0 +1,154 @@
+{
+  "model_id": "angiography_stenosis_detector",
+  "run_id": "angiography_stenosis_detector-20261024T152607Z",
+  "task_id": "arcade-stenosis-detection",
+  "dataset": "ARCADE coronary X-ray angiography",
+  "dataset_id": "arcade",
+  "dataset_version": "2b1fbdaf7fe5431febcddff60f00b542b2ae4def1605941e532ee195d1229a93",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "CC0 1.0",
+    "source": "https://zenodo.org/records/10390295",
+    "verified_on": "2026-10-24",
+    "citation": "Popov et al., Dataset for Automatic Region-based Coronary Artery Disease Diagnostics Using X-Ray Angiography Images, Scientific Data 2024."
+  },
+  "split_method": "publisher splits kept",
+  "split_counts": {
+    "train": 1000,
+    "val": 200,
+    "test": 300
+  },
+  "leakage_check": {
+    "near_duplicate_groups_crossing_splits": 11,
+    "images_in_crossing_groups": 41,
+    "test_images_with_cross_split_duplicate": 4,
+    "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+    "near_duplicate_components_crossing_splits": 11,
+    "images_in_crossing_components": 54,
+    "test_images_in_crossing_components": 10,
+    "exclusion_rule": "exclude every test image in a transitive near-duplicate component that spans publisher splits"
+  },
+  "selection": {
+    "criterion": "validation AP50 (COCOeval)",
+    "best_epoch": 4,
+    "val_ap50": 0.22564340384797477
+  },
+  "operating_point": {
+    "chosen_on": "validation",
+    "criterion": "maximum F1 at IoU 0.5",
+    "validation": {
+      "threshold": 0.75,
+      "tp": 133,
+      "fp": 262,
+      "fn": 273,
+      "precision": 0.3367088607594937,
+      "recall": 0.3275862068965517,
+      "f1": 0.33208489388264667
+    },
+    "test": {
+      "threshold": 0.75,
+      "tp": 147,
+      "fp": 536,
+      "fn": 239,
+      "precision": 0.21522693997071743,
+      "recall": 0.38082901554404147,
+      "f1": 0.27502338634237605
+    }
+  },
+  "test": {
+    "n_images": 300,
+    "reference_boxes": 386,
+    "metrics": {
+      "map_50_95": 0.06184247101347985,
+      "ap_50": 0.20287799507725116,
+      "ap_75": 0.01490386383505618,
+      "ap_small": 0.033972952609945414,
+      "ap_medium": 0.0693456320331931,
+      "ap_large": 0.05522308008118756,
+      "ar_1": 0.09611398963730569,
+      "ar_10": 0.28704663212435233,
+      "ar_100": 0.35854922279792745,
+      "ar_small": 0.24,
+      "ar_medium": 0.36459143968871593,
+      "ar_large": 0.3605263157894737
+    }
+  },
+  "test_without_cross_split_duplicates": {
+    "n_images": 290,
+    "reference_boxes": 372,
+    "metrics": {
+      "map_50_95": 0.06107918397339685,
+      "ap_50": 0.19825514755850893,
+      "ap_75": 0.01565179508586391,
+      "ap_small": 0.0340602594963898,
+      "ap_medium": 0.06908815979766449,
+      "ap_large": 0.053517421539135,
+      "ar_1": 0.09650537634408603,
+      "ar_10": 0.28655913978494624,
+      "ar_100": 0.35833333333333334,
+      "ar_small": 0.24,
+      "ar_medium": 0.36370967741935484,
+      "ar_large": 0.3623853211009175
+    },
+    "metric_implementation": "trainer score() protocol with bbox-derived reference area",
+    "selection_rule": "exclude every test image in a transitive near-duplicate component that spans publisher splits",
+    "post_hoc_rescore": true,
+    "source_predictions": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/predictions_test.json",
+    "independent_crosscheck": "docs/validation/models/angiography_stenosis_detector.component_rescore.json"
+  },
+  "evaluation_protocol": "pycocotools COCOeval bbox: IoU 0.50:0.05:0.95, 101-point interpolated precision, area ranges all/small/medium/large, max 1/10/100 detections. -1 (undefined) is reported as null.",
+  "checkpoint": {
+    "path": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/model.pt",
+    "sha256": "d06224b406d7e9104f25c03921fcbe78c2aedae0752ce74e9bcbfefae49c05b8"
+  },
+  "held_out_predictions": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/predictions_test.json",
+  "training_seconds": 2950.8,
+  "config": {
+    "task_id": "arcade-stenosis-detection",
+    "model_id": "angiography_stenosis_detector",
+    "display_name": "ARCADE coronary stenosis detector (research)",
+    "modality": "ANGIOGRAPHY",
+    "anatomy": "heart",
+    "category": "stenosis",
+    "allow_flip": false,
+    "epochs": 20,
+    "batch_size": 4,
+    "lr": 0.01,
+    "min_size": 512,
+    "max_size": 1024,
+    "workers": 4,
+    "seed": 20261024
+  },
+  "reporting_context": {
+    "dataset": "ARCADE coronary X-ray angiography",
+    "dataset_version": "2b1fbdaf7fe5431f",
+    "split": "test",
+    "checkpoint": "sha256:d06224b406d7e9104f25c03921fcbe78c2aedae0752ce74e9bcbfefae49c05b8"
+  },
+  "limitations": [
+    "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+    "Internal test split from the same source; no external validation.",
+    "Detection scores are not probabilities and are not calibrated.",
+    "Research-only output; not validated for clinical use.",
+    "The conservative duplicate sensitivity analysis excludes every test image in a transitive near-duplicate component spanning publisher splits; it is a post-hoc subset analysis, while the official publisher test result remains unchanged."
+  ],
+  "legacy_test_without_direct_cross_split_duplicate_endpoints": {
+    "n_images": 296,
+    "metrics": {
+      "map_50_95": 0.061522991249358644,
+      "ap_50": 0.20209713520509828,
+      "ap_75": 0.014851996175860523,
+      "ap_small": 0.03402267639737602,
+      "ap_medium": 0.06878075305228774,
+      "ap_large": 0.05493424520102674,
+      "ar_1": 0.09605263157894736,
+      "ar_10": 0.28657894736842104,
+      "ar_100": 0.3578947368421052,
+      "ar_small": 0.24,
+      "ar_medium": 0.36363636363636365,
+      "ar_large": 0.3607142857142857
+    },
+    "status": "SUPERSEDED_AS_CONSERVATIVE_SENSITIVITY_ANALYSIS",
+    "reason": "Direct endpoint filtering omitted other test members of transitive components spanning splits."
+  }
+}

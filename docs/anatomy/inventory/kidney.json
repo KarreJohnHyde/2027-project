@@ -1,0 +1,760 @@
+{
+  "asset_id": "kidney",
+  "relative_path": "kidney.glb",
+  "source_group": "workspace_root",
+  "bytes": 5328172,
+  "sha256": "c46fcff1ee95d779690c14da0237b67e79427687e8d1c795af79f0912daa5fca",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 8032
+      },
+      {
+        "type": "BIN",
+        "byteLength": 5320112
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.68.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "payoman (https://sketchfab.com/payoman)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/kidney-337f06a149e24f05a9d639b161f8f3e9",
+      "title": "Kidney"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 3,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 6,
+    "validator_triangle_count": 216788,
+    "validator_vertex_count": 109728
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 14,
+    "mesh_nodes": 6,
+    "meshes": 6,
+    "primitives": 6,
+    "materials": 6,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 216788,
+    "rendered_triangles": 216788,
+    "unique_vertices": 109728,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 3,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 6,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 54,
+    "closed_measured_primitives": 4,
+    "max_boundary_edge_fraction": 0.5,
+    "degenerate_triangles_measured": 2,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -65.344596,
+        -157.068193,
+        -49.697973
+      ],
+      "max": [
+        88.381112,
+        97.227538,
+        19.143247
+      ],
+      "size": [
+        153.725708,
+        254.295731,
+        68.84122
+      ],
+      "center": [
+        11.518258,
+        -29.920328,
+        -15.277363
+      ],
+      "diagonal": 305.019713
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 3.694,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "KidneyOutside_Ri��on_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 6,
+    "names": [
+      "Rion",
+      "kidneyEdge",
+      "arterias",
+      "tronco",
+      "venas",
+      "PiramideRenal"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "KidneyOutside_Ri��on_0",
+      "KidneyOutside_kidneyEdge_0",
+      "BezierCurve_arterias_0",
+      "BezierCurve.001_tronco_0",
+      "BezierCurve.002_venas_0",
+      "Icosphere_PiramideRenal_0"
+    ],
+    "anatomically_named_mesh_nodes": 5,
+    "anatomical_names_sample": [
+      "KidneyOutside_Ri��on_0",
+      "KidneyOutside_kidneyEdge_0",
+      "BezierCurve_arterias_0",
+      "BezierCurve.002_venas_0",
+      "Icosphere_PiramideRenal_0"
+    ]
+  },
+  "inspection_ms": 334,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx",
+      "name": "2cce5bf08134466199ddb3d571dea591.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 5,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/KidneyOutside",
+      "name": "KidneyOutside",
+      "semantic_name": "KidneyOutside",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/KidneyOutside/KidneyOutside_Ri��on_0",
+      "name": "KidneyOutside_Ri��on_0",
+      "semantic_name": "KidneyOutside_Ri��on_0",
+      "depth": 4,
+      "mesh": "KidneyOutside_Ri��on_0",
+      "material": "Rion",
+      "triangles": 3200,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -65.344596,
+          -157.068193,
+          -49.697973
+        ],
+        "max": [
+          80.537271,
+          97.227538,
+          3.241172
+        ],
+        "size": [
+          145.881867,
+          254.295731,
+          52.939145
+        ],
+        "center": [
+          7.596338,
+          -29.920328,
+          -23.228401
+        ],
+        "diagonal": 297.910038
+      }
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/KidneyOutside/KidneyOutside_kidneyEdge_0",
+      "name": "KidneyOutside_kidneyEdge_0",
+      "semantic_name": "KidneyOutside_kidneyEdge_0",
+      "depth": 4,
+      "mesh": "KidneyOutside_kidneyEdge_0",
+      "material": "kidneyEdge",
+      "triangles": 132,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -65.344596,
+          -157.068193,
+          -3.53686
+        ],
+        "max": [
+          80.537271,
+          97.227532,
+          3.241172
+        ],
+        "size": [
+          145.881867,
+          254.295724,
+          6.778032
+        ],
+        "center": [
+          7.596338,
+          -29.92033,
+          -0.147844
+        ],
+        "diagonal": 293.246955
+      }
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/BezierCurve",
+      "name": "BezierCurve",
+      "semantic_name": "BezierCurve",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/BezierCurve/BezierCurve_arterias_0",
+      "name": "BezierCurve_arterias_0",
+      "semantic_name": "BezierCurve_arterias_0",
+      "depth": 4,
+      "mesh": "BezierCurve_arterias_0",
+      "material": "arterias",
+      "triangles": 81024,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -52.171272,
+          -145.185524,
+          -6.265595
+        ],
+        "max": [
+          86.992509,
+          82.958701,
+          15.736323
+        ],
+        "size": [
+          139.16378,
+          228.144226,
+          22.001918
+        ],
+        "center": [
+          17.410619,
+          -31.113412,
+          4.735364
+        ],
+        "diagonal": 268.142555
+      }
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/BezierCurve.001",
+      "name": "BezierCurve.001",
+      "semantic_name": "BezierCurve.001",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/BezierCurve.001/BezierCurve.001_tronco_0",
+      "name": "BezierCurve.001_tronco_0",
+      "semantic_name": "BezierCurve.001_tronco_0",
+      "depth": 4,
+      "mesh": "BezierCurve.001_tronco_0",
+      "material": "tronco",
+      "triangles": 38544,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -27.840187,
+          -120.234036,
+          -13.784508
+        ],
+        "max": [
+          79.38961,
+          55.613634,
+          8.004085
+        ],
+        "size": [
+          107.229797,
+          175.84767,
+          21.788593
+        ],
+        "center": [
+          25.774712,
+          -32.310201,
+          -2.890212
+        ],
+        "diagonal": 207.111987
+      }
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/BezierCurve.002",
+      "name": "BezierCurve.002",
+      "semantic_name": "BezierCurve.002",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/BezierCurve.002/BezierCurve.002_venas_0",
+      "name": "BezierCurve.002_venas_0",
+      "semantic_name": "BezierCurve.002_venas_0",
+      "depth": 4,
+      "mesh": "BezierCurve.002_venas_0",
+      "material": "venas",
+      "triangles": 78528,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -49.197575,
+          -143.250547,
+          -17.934206
+        ],
+        "max": [
+          88.381112,
+          77.926563,
+          19.143247
+        ],
+        "size": [
+          137.578687,
+          221.17711,
+          37.077453
+        ],
+        "center": [
+          19.591768,
+          -32.661992,
+          0.60452
+        ],
+        "diagonal": 263.10064
+      }
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/Icosphere",
+      "name": "Icosphere",
+      "semantic_name": "Icosphere",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2cce5bf08134466199ddb3d571dea591.fbx/RootNode/Icosphere/Icosphere_PiramideRenal_0",
+      "name": "Icosphere_PiramideRenal_0",
+      "semantic_name": "Icosphere_PiramideRenal_0",
+      "depth": 4,
+      "mesh": "Icosphere_PiramideRenal_0",
+      "material": "PiramideRenal",
+      "triangles": 15360,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -51.649822,
+          -142.233688,
+          -21.774271
+        ],
+        "max": [
+          69.056013,
+          81.585379,
+          11.757312
+        ],
+        "size": [
+          120.705836,
+          223.819067,
+          33.531583
+        ],
+        "center": [
+          8.703096,
+          -30.324155,
+          -5.00848
+        ],
+        "diagonal": 256.494134
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "KidneyOutside_Ri��on_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 1764,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Rion",
+          "morph_targets": 0,
+          "triangles": 3200,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1668,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0.02713,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 3200,
+      "points": 0,
+      "lines": 0,
+      "vertices": 1764
+    },
+    {
+      "name": "KidneyOutside_kidneyEdge_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 136,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "kidneyEdge",
+          "morph_targets": 0,
+          "triangles": 132,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 132,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.5,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 132,
+      "points": 0,
+      "lines": 0,
+      "vertices": 136
+    },
+    {
+      "name": "BezierCurve_arterias_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 40516,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "arterias",
+          "morph_targets": 0,
+          "triangles": 81024,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 40516,
+            "connected_components": 14,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 81024,
+      "points": 0,
+      "lines": 0,
+      "vertices": 40516
+    },
+    {
+      "name": "BezierCurve.001_tronco_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 19296,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "tronco",
+          "morph_targets": 0,
+          "triangles": 38544,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 19296,
+            "connected_components": 12,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 38544,
+      "points": 0,
+      "lines": 0,
+      "vertices": 19296
+    },
+    {
+      "name": "BezierCurve.002_venas_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 39268,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "venas",
+          "morph_targets": 0,
+          "triangles": 78528,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 39267,
+            "connected_components": 13,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 2,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 78528,
+      "points": 0,
+      "lines": 0,
+      "vertices": 39268
+    },
+    {
+      "name": "Icosphere_PiramideRenal_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 8748,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "PiramideRenal",
+          "morph_targets": 0,
+          "triangles": 15360,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 7704,
+            "connected_components": 12,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 15360,
+      "points": 0,
+      "lines": 0,
+      "vertices": 8748
+    }
+  ],
+  "materials": [
+    {
+      "name": "Rion",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "kidneyEdge",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "arterias",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "tronco",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "venas",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "PiramideRenal",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": []
+}

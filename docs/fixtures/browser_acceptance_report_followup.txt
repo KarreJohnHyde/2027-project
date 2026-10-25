@@ -1,0 +1,11 @@
+SYNTHETIC DE-IDENTIFIED FOLLOW-UP REPORT — FOR SOFTWARE ACCEPTANCE TESTING ONLY
+
+Examination date: 2026-11-23
+Heart rate: 80 bpm.
+Blood pressure: 122/78 mmHg.
+Oxygen saturation: 97%.
+Hemoglobin: 14.1 g/dL.
+Creatinine: 1.0 mg/dL.
+No chest pain is reported.
+
+This fixture contains no real patient information and must not be used for clinical care.

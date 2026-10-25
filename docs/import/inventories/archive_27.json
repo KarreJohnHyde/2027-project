@@ -1,0 +1,40 @@
+{
+  "listed_name": "archive (27).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (27).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "6bce9a89158f5d54b5fead1665ed9b29a009002a7dd2915cdbde6a4452363761",
+  "size_bytes": 1312547858,
+  "entries": 4,
+  "files": 4,
+  "directories": 0,
+  "uncompressed_bytes": 7925149903,
+  "overall_ratio": 6.04,
+  "max_entry_ratio": 6.2,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (4 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "other": 4
+  },
+  "extensions": {
+    ".tfrec": 4
+  },
+  "top_level": {
+    "tfrecords/": 4
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_27.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 6.0,
+  "notes": []
+}

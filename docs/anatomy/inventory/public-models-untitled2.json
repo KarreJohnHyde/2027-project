@@ -1,0 +1,638 @@
+{
+  "asset_id": "public-models-untitled2",
+  "relative_path": "public/models/Untitled2.glb",
+  "source_group": "public_models",
+  "bytes": 12225920,
+  "sha256": "d83de721e0f892c3c925ed7e566a6258ecf0ef6b6759cab0acd1c748c1ad4f50",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 23400
+      },
+      {
+        "type": "BIN",
+        "byteLength": 12202492
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Khronos glTF Blender I/O v5.2.40",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "KHR_lights_punctual",
+      "KHR_materials_specular",
+      "KHR_materials_ior"
+    ],
+    "extensions_required": [
+      "KHR_lights_punctual"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 2,
+    "infos": 6,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "WARNING:MESH_PRIMITIVE_GENERATED_TANGENT_SPACE": 1,
+      "INFO:UNUSED_OBJECT": 5,
+      "INFO:NODE_EMPTY": 1,
+      "WARNING:NODE_SKINNED_MESH_NON_ROOT": 1
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 34401,
+    "validator_vertex_count": 20169
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 29,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 1,
+    "textures": 6,
+    "animations": 1,
+    "skins": 1,
+    "cameras": 1
+  },
+  "geometry": {
+    "unique_triangles": 34401,
+    "rendered_triangles": 34401,
+    "unique_vertices": 20169,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 3,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.0006,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.000577,
+        -0.000001,
+        -0.000537
+      ],
+      "max": [
+        0.000537,
+        0.001669,
+        0.000213
+      ],
+      "size": [
+        0.001113,
+        0.00167,
+        0.00075
+      ],
+      "center": [
+        -0.00002,
+        0.000834,
+        -0.000162
+      ],
+      "diagonal": 0.002142
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 2.227,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "Object_30",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 1,
+    "names": [
+      "material_0"
+    ]
+  },
+  "textures_summary": {
+    "count": 6,
+    "total_bytes": 10132649,
+    "max_edge_px": 2048,
+    "mime_types": [
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "GLTF_created_0"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 93,
+  "nodes": [
+    {
+      "path": "Camera",
+      "name": "Camera",
+      "semantic_name": "Camera",
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Light",
+      "name": "Light",
+      "semantic_name": "Light",
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model",
+      "name": "Sketchfab Model",
+      "semantic_name": "Sketchfab Model",
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0",
+      "name": "GLTF_created_0",
+      "semantic_name": "GLTF_created_0",
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 3,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/heart.2_2_correction",
+      "name": "heart.2_2_correction",
+      "semantic_name": "heart.2_2_correction",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/heart.2_2_correction/heart.2_2",
+      "name": "heart.2_2",
+      "semantic_name": "heart.2_2",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/Object_30",
+      "name": "Object_30",
+      "semantic_name": "GLTF_created_0",
+      "depth": 2,
+      "mesh": "Object_0",
+      "material": "material_0",
+      "triangles": 34401,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -0.000577,
+          -0.000001,
+          -0.000537
+        ],
+        "max": [
+          0.000537,
+          0.001669,
+          0.000213
+        ],
+        "size": [
+          0.001113,
+          0.00167,
+          0.00075
+        ],
+        "center": [
+          -0.00002,
+          0.000834,
+          -0.000162
+        ],
+        "diagonal": 0.002142
+      }
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint",
+      "name": "GLTF_created_0_rootJoint",
+      "semantic_name": "GLTF_created_0_rootJoint",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4",
+      "name": "Root.4_4",
+      "semantic_name": "Root.4_4",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5",
+      "name": "heart_jnt.5_5",
+      "semantic_name": "heart_jnt.5_5",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 13,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/aortic_valve_01_jnt.21_21",
+      "name": "aortic_valve_01_jnt.21_21",
+      "semantic_name": "aortic_valve_01_jnt.21_21",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/aortic_valve_01_jnt.21_21/aortic_valve_01_endjnt.22_22",
+      "name": "aortic_valve_01_endjnt.22_22",
+      "semantic_name": "aortic_valve_01_endjnt.22_22",
+      "depth": 6,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/aortic_valve_02_jnt.17_17",
+      "name": "aortic_valve_02_jnt.17_17",
+      "semantic_name": "aortic_valve_02_jnt.17_17",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/aortic_valve_02_jnt.17_17/aortic_valve_02_endjnt.18_18",
+      "name": "aortic_valve_02_endjnt.18_18",
+      "semantic_name": "aortic_valve_02_endjnt.18_18",
+      "depth": 6,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/aortic_valve_03_jnt.19_19",
+      "name": "aortic_valve_03_jnt.19_19",
+      "semantic_name": "aortic_valve_03_jnt.19_19",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/aortic_valve_03_jnt.19_19/aortic_valve_03_endjnt.20_20",
+      "name": "aortic_valve_03_endjnt.20_20",
+      "semantic_name": "aortic_valve_03_endjnt.20_20",
+      "depth": 6,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/cardiac_muscle_jnt.7_7",
+      "name": "cardiac_muscle_jnt.7_7",
+      "semantic_name": "cardiac_muscle_jnt.7_7",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/cardiac_muscle_jnt.7_7/cardiac_muscle_endjnt.8_8",
+      "name": "cardiac_muscle_endjnt.8_8",
+      "semantic_name": "cardiac_muscle_endjnt.8_8",
+      "depth": 6,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/left_atrium_jnt.13_13",
+      "name": "left_atrium_jnt.13_13",
+      "semantic_name": "left_atrium_jnt.13_13",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/left_atrium_storage_jnt.14_14",
+      "name": "left_atrium_storage_jnt.14_14",
+      "semantic_name": "left_atrium_storage_jnt.14_14",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/left_mitral_valve_jnt.15_15",
+      "name": "left_mitral_valve_jnt.15_15",
+      "semantic_name": "left_mitral_valve_jnt.15_15",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/left_pulmonary_valve_jnt.11_11",
+      "name": "left_pulmonary_valve_jnt.11_11",
+      "semantic_name": "left_pulmonary_valve_jnt.11_11",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/left_pulmonary_valve_jnt.11_11/left_pulmonary_valve_endjnt.12_12",
+      "name": "left_pulmonary_valve_endjnt.12_12",
+      "semantic_name": "left_pulmonary_valve_endjnt.12_12",
+      "depth": 6,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/left_tricuspid_valve_jnt.23_23",
+      "name": "left_tricuspid_valve_jnt.23_23",
+      "semantic_name": "left_tricuspid_valve_jnt.23_23",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/right_atrium_jnt.6_6",
+      "name": "right_atrium_jnt.6_6",
+      "semantic_name": "right_atrium_jnt.6_6",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/right_mitral_valve_jnt.16_16",
+      "name": "right_mitral_valve_jnt.16_16",
+      "semantic_name": "right_mitral_valve_jnt.16_16",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/right_pulmonary_valve_jnt.9_9",
+      "name": "right_pulmonary_valve_jnt.9_9",
+      "semantic_name": "right_pulmonary_valve_jnt.9_9",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/right_pulmonary_valve_jnt.9_9/right_pulmonary_valve_endjnt.10_10",
+      "name": "right_pulmonary_valve_endjnt.10_10",
+      "semantic_name": "right_pulmonary_valve_endjnt.10_10",
+      "depth": 6,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab Model/GLTF_created_0/GLTF_created_0_rootJoint/Root.4_4/heart_jnt.5_5/right_tricuspid_valve_jnt.24_24",
+      "name": "right_tricuspid_valve_jnt.24_24",
+      "semantic_name": "right_tricuspid_valve_jnt.24_24",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": null
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 20169,
+          "indexed": true,
+          "attributes": [
+            "POSITION",
+            "NORMAL",
+            "TEXCOORD_0",
+            "TEXCOORD_1",
+            "TEXCOORD_2",
+            "TEXCOORD_3",
+            "TEXCOORD_4",
+            "TEXCOORD_5",
+            "JOINTS_0",
+            "WEIGHTS_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "material_0",
+          "morph_targets": 0,
+          "triangles": 34401,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 17176,
+            "connected_components": 3,
+            "boundary_edge_fraction": 0.0006,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 34401,
+      "points": 0,
+      "lines": 0,
+      "vertices": 20169
+    }
+  ],
+  "materials": [
+    {
+      "name": "material_0",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": true,
+        "occlusion": true,
+        "emissive": true
+      },
+      "extensions": [
+        "KHR_materials_ior",
+        "KHR_materials_specular"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "name": "material_0_emissive",
+      "mime_type": "image/png",
+      "bytes": 2636282,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": "material_0_specularGlossiness",
+      "mime_type": "image/png",
+      "bytes": 163220,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "material_0_normal",
+      "mime_type": "image/png",
+      "bytes": 2579311,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": "material_0_occlusion",
+      "mime_type": "image/png",
+      "bytes": 834726,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": "material_0_diffuse",
+      "mime_type": "image/png",
+      "bytes": 3903151,
+      "dimensions": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "name": "material_0_specularGlossiness",
+      "mime_type": "image/png",
+      "bytes": 15959,
+      "dimensions": [
+        1024,
+        1024
+      ]
+    }
+  ]
+}

@@ -1,0 +1,857 @@
+{
+  "asset_id": "kidney-1",
+  "relative_path": "kidney (1).glb",
+  "source_group": "workspace_root",
+  "bytes": 53362764,
+  "sha256": "16aac1db2c7bf2163dcc159ef338a70157b91faba06eac00142db2161b3cb4f3",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 11072
+      },
+      {
+        "type": "BIN",
+        "byteLength": 53351664
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.65.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "cgmac (https://sketchfab.com/cgmac)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/kidney-686992c2a7fb456eaa8997b0366f4062",
+      "title": "Kidney"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 3,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 6,
+    "validator_triangle_count": 84443,
+    "validator_vertex_count": 44977
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 16,
+    "mesh_nodes": 6,
+    "meshes": 6,
+    "primitives": 6,
+    "materials": 6,
+    "textures": 7,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 84443,
+    "rendered_triangles": 84443,
+    "unique_vertices": 44977,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 2,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 6,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 17,
+    "closed_measured_primitives": 3,
+    "max_boundary_edge_fraction": 0.03688,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -5.563232,
+        -1.064222,
+        -3.177169
+      ],
+      "max": [
+        2.905486,
+        9.032361,
+        1.704966
+      ],
+      "size": [
+        8.468719,
+        10.096583,
+        4.882135
+      ],
+      "center": [
+        -1.328873,
+        3.984069,
+        -0.736102
+      ],
+      "diagonal": 14.053307
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 2.068,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 1,
+    "largest_mesh_node": "Maya_2018:RED_Maya_2018:red_0",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 6,
+    "names": [
+      "Maya_201803_-_Default",
+      "Maya_2018Renal___Ureter_Diffuse",
+      "Maya_2018Cortex_Diffuse",
+      "Maya_2018Capsule2",
+      "Maya_2018red",
+      "Maya_2018blue"
+    ]
+  },
+  "textures_summary": {
+    "count": 7,
+    "total_bytes": 50847907,
+    "max_edge_px": 4096,
+    "mime_types": [
+      "image/jpeg",
+      "image/png"
+    ]
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "Maya_2018:Medulla pyramid_Maya_2018:03 - Default_0",
+      "Maya_2018:Ureter_Maya_2018:Renal___Ureter_Diffuse_0",
+      "Maya_2018:Cortex_Maya_2018:Cortex_Diffuse_0",
+      "Maya_2018:Capsule_Maya_2018:Capsule2_0",
+      "Maya_2018:RED_Maya_2018:red_0",
+      "Maya_2018:BLUE_Maya_2018:blue_0"
+    ],
+    "anatomically_named_mesh_nodes": 4,
+    "anatomical_names_sample": [
+      "Maya_2018:Medulla pyramid_Maya_2018:03 - Default_0",
+      "Maya_2018:Ureter_Maya_2018:Renal___Ureter_Diffuse_0",
+      "Maya_2018:Cortex_Maya_2018:Cortex_Diffuse_0",
+      "Maya_2018:Capsule_Maya_2018:Capsule2_0"
+    ]
+  },
+  "inspection_ms": 258,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx",
+      "name": "0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode",
+      "name": "RootNode",
+      "semantic_name": null,
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 3,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:KIDNEY",
+      "name": "Maya_2018:KIDNEY",
+      "semantic_name": "Maya_2018:KIDNEY",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 4,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:KIDNEY/Maya_2018:Medulla pyramid",
+      "name": "Maya_2018:Medulla pyramid",
+      "semantic_name": "Maya_2018:Medulla pyramid",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:KIDNEY/Maya_2018:Medulla pyramid/Maya_2018:Medulla pyramid_Maya_2018:03 - Default_0",
+      "name": "Maya_2018:Medulla pyramid_Maya_2018:03 - Default_0",
+      "semantic_name": "Maya_2018:Medulla pyramid_Maya_2018:03 - Default_0",
+      "depth": 5,
+      "mesh": "Maya_2018:Medulla pyramid_Maya_2018:03 - Default_0",
+      "material": "Maya_201803_-_Default",
+      "triangles": 11906,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -4.744529,
+          0.240371,
+          -0.144253
+        ],
+        "max": [
+          0.292049,
+          8.351761,
+          0.226637
+        ],
+        "size": [
+          5.036578,
+          8.111389,
+          0.37089
+        ],
+        "center": [
+          -2.22624,
+          4.296066,
+          0.041192
+        ],
+        "diagonal": 9.555067
+      }
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:KIDNEY/Maya_2018:Ureter",
+      "name": "Maya_2018:Ureter",
+      "semantic_name": "Maya_2018:Ureter",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:KIDNEY/Maya_2018:Ureter/Maya_2018:Ureter_Maya_2018:Renal___Ureter_Diffuse_0",
+      "name": "Maya_2018:Ureter_Maya_2018:Renal___Ureter_Diffuse_0",
+      "semantic_name": "Maya_2018:Ureter_Maya_2018:Renal___Ureter_Diffuse_0",
+      "depth": 5,
+      "mesh": "Maya_2018:Ureter_Maya_2018:Renal___Ureter_Diffuse_0",
+      "material": "Maya_2018Renal___Ureter_Diffuse",
+      "triangles": 2706,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -3.88252,
+          -1.064222,
+          -0.83684
+        ],
+        "max": [
+          0.504051,
+          7.561899,
+          0.111936
+        ],
+        "size": [
+          4.386571,
+          8.626121,
+          0.948777
+        ],
+        "center": [
+          -1.689235,
+          3.248838,
+          -0.362452
+        ],
+        "diagonal": 9.723793
+      }
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:KIDNEY/Maya_2018:Cortex",
+      "name": "Maya_2018:Cortex",
+      "semantic_name": "Maya_2018:Cortex",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:KIDNEY/Maya_2018:Cortex/Maya_2018:Cortex_Maya_2018:Cortex_Diffuse_0",
+      "name": "Maya_2018:Cortex_Maya_2018:Cortex_Diffuse_0",
+      "semantic_name": "Maya_2018:Cortex_Maya_2018:Cortex_Diffuse_0",
+      "depth": 5,
+      "mesh": "Maya_2018:Cortex_Maya_2018:Cortex_Diffuse_0",
+      "material": "Maya_2018Cortex_Diffuse",
+      "triangles": 6527,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -5.369179,
+          -0.484671,
+          -0.974663
+        ],
+        "max": [
+          1.410883,
+          8.91243,
+          0.152152
+        ],
+        "size": [
+          6.780062,
+          9.397101,
+          1.126815
+        ],
+        "center": [
+          -1.979148,
+          4.213879,
+          -0.411256
+        ],
+        "diagonal": 11.642356
+      }
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:KIDNEY/Maya_2018:Capsule",
+      "name": "Maya_2018:Capsule",
+      "semantic_name": "Maya_2018:Capsule",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:KIDNEY/Maya_2018:Capsule/Maya_2018:Capsule_Maya_2018:Capsule2_0",
+      "name": "Maya_2018:Capsule_Maya_2018:Capsule2_0",
+      "semantic_name": "Maya_2018:Capsule_Maya_2018:Capsule2_0",
+      "depth": 5,
+      "mesh": "Maya_2018:Capsule_Maya_2018:Capsule2_0",
+      "material": "Maya_2018Capsule2",
+      "triangles": 10336,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -5.563232,
+          -0.659073,
+          -3.177169
+        ],
+        "max": [
+          1.572017,
+          9.032361,
+          0.028273
+        ],
+        "size": [
+          7.13525,
+          9.691434,
+          3.205442
+        ],
+        "center": [
+          -1.995608,
+          4.186644,
+          -1.574448
+        ],
+        "diagonal": 12.454338
+      }
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:RED",
+      "name": "Maya_2018:RED",
+      "semantic_name": "Maya_2018:RED",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:RED/Maya_2018:RED_Maya_2018:red_0",
+      "name": "Maya_2018:RED_Maya_2018:red_0",
+      "semantic_name": "Maya_2018:RED_Maya_2018:red_0",
+      "depth": 4,
+      "mesh": "Maya_2018:RED_Maya_2018:red_0",
+      "material": "Maya_2018red",
+      "triangles": 26484,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -5.303318,
+          -0.441251,
+          -0.281726
+        ],
+        "max": [
+          2.905486,
+          8.902808,
+          0.8991
+        ],
+        "size": [
+          8.208804,
+          9.344059,
+          1.180826
+        ],
+        "center": [
+          -1.198916,
+          4.230779,
+          0.308687
+        ],
+        "diagonal": 12.493608
+      }
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:BLUE",
+      "name": "Maya_2018:BLUE",
+      "semantic_name": "Maya_2018:BLUE",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/0b81bbbf931b4cb98b72c8acc4c4ac6d.fbx/RootNode/Maya_2018:BLUE/Maya_2018:BLUE_Maya_2018:blue_0",
+      "name": "Maya_2018:BLUE_Maya_2018:blue_0",
+      "semantic_name": "Maya_2018:BLUE_Maya_2018:blue_0",
+      "depth": 4,
+      "mesh": "Maya_2018:BLUE_Maya_2018:blue_0",
+      "material": "Maya_2018blue",
+      "triangles": 26484,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -5.254092,
+          -0.433583,
+          0.003895
+        ],
+        "max": [
+          1.959096,
+          8.856974,
+          1.704966
+        ],
+        "size": [
+          7.213188,
+          9.290557,
+          1.701071
+        ],
+        "center": [
+          -1.647498,
+          4.211695,
+          0.85443
+        ],
+        "diagonal": 11.884366
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Maya_2018:Medulla pyramid_Maya_2018:03 - Default_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 6324,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Maya_201803_-_Default",
+          "morph_targets": 0,
+          "triangles": 11906,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 5972,
+            "connected_components": 8,
+            "boundary_edge_fraction": 0.00045,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 11906,
+      "points": 0,
+      "lines": 0,
+      "vertices": 6324
+    },
+    {
+      "name": "Maya_2018:Ureter_Maya_2018:Renal___Ureter_Diffuse_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 1552,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Maya_2018Renal___Ureter_Diffuse",
+          "morph_targets": 0,
+          "triangles": 2706,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1358,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0.00098,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 2706,
+      "points": 0,
+      "lines": 0,
+      "vertices": 1552
+    },
+    {
+      "name": "Maya_2018:Cortex_Maya_2018:Cortex_Diffuse_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 3657,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TANGENT",
+            "TEXCOORD_0",
+            "TEXCOORD_1"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Maya_2018Cortex_Diffuse",
+          "morph_targets": 0,
+          "triangles": 6527,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 3450,
+            "connected_components": 4,
+            "boundary_edge_fraction": 0.03688,
+            "non_manifold_edge_fraction": 0.00221,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 6527,
+      "points": 0,
+      "lines": 0,
+      "vertices": 3657
+    },
+    {
+      "name": "Maya_2018:Capsule_Maya_2018:Capsule2_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 5242,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Maya_2018Capsule2",
+          "morph_targets": 0,
+          "triangles": 10336,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 5170,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 10336,
+      "points": 0,
+      "lines": 0,
+      "vertices": 5242
+    },
+    {
+      "name": "Maya_2018:RED_Maya_2018:red_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 13872,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Maya_2018red",
+          "morph_targets": 0,
+          "triangles": 26484,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 13244,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 26484,
+      "points": 0,
+      "lines": 0,
+      "vertices": 13872
+    },
+    {
+      "name": "Maya_2018:BLUE_Maya_2018:blue_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 14330,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": "Maya_2018blue",
+          "morph_targets": 0,
+          "triangles": 26484,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 13244,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 26484,
+      "points": 0,
+      "lines": 0,
+      "vertices": 14330
+    }
+  ],
+  "materials": [
+    {
+      "name": "Maya_201803_-_Default",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Maya_2018Renal___Ureter_Diffuse",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Maya_2018Cortex_Diffuse",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": true,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Maya_2018Capsule2",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": true,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Maya_2018red",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Maya_2018blue",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": [
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 4865385,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 9075241,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 4580953,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 16740406,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 4768340,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/png",
+      "bytes": 9601874,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "name": null,
+      "mime_type": "image/jpeg",
+      "bytes": 1215708,
+      "dimensions": [
+        4096,
+        4096
+      ]
+    }
+  ]
+}

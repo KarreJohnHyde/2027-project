@@ -1,0 +1,293 @@
+{
+  "model_id": "ptbxl_ecg_baseline",
+  "run_id": "ptbxl_ecg_baseline-20261025T072058Z",
+  "task_id": "ptbxl-diagnostic-superclass",
+  "task_type": "multilabel_classification",
+  "dataset": "PTB-XL 1.0.1 (12-lead ECG, 100 Hz)",
+  "dataset_id": "ptb-xl-1.0.1",
+  "dataset_version": "a1f01931077bf242b541169497def6401e190b30a1408c371fef8eb15a44e104",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "CC BY 4.0 (Creative Commons Attribution 4.0 International)",
+    "source": "LICENSE.txt shipped with the dataset; https://physionet.org/content/ptb-xl/1.0.1/",
+    "verified_on": "2026-10-25",
+    "citation": "Wagner P, Strodthoff N, Bousseljot R-D, et al. PTB-XL, a large publicly available electrocardiography dataset. Sci Data 7, 154 (2020)."
+  },
+  "split_method": "publisher stratified folds: 1-8 train, 9 validation, 10 test (patient-disjoint, asserted)",
+  "split_counts": {
+    "train": 17111,
+    "val": 2156,
+    "test": 2163
+  },
+  "patients": {
+    "patients_per_split": {
+      "train": 14834,
+      "val": 1922,
+      "test": 1881
+    },
+    "patient_overlap": {
+      "train&val": 0,
+      "train&test": 0,
+      "val&test": 0
+    }
+  },
+  "excluded_records": {
+    "no_diagnostic_superclass": 407
+  },
+  "label_prevalence": {
+    "train": {
+      "NORM": 0.44456782937049866,
+      "MI": 0.2565016746520996,
+      "STTC": 0.24504704773426056,
+      "CD": 0.2286248654127121,
+      "HYP": 0.12395534664392471
+    },
+    "val": {
+      "NORM": 0.44387754797935486,
+      "MI": 0.2523190975189209,
+      "STTC": 0.2476808875799179,
+      "CD": 0.23051947355270386,
+      "HYP": 0.12569573521614075
+    },
+    "test": {
+      "NORM": 0.4456773102283478,
+      "MI": 0.2556634247303009,
+      "STTC": 0.24179381132125854,
+      "CD": 0.23023578524589539,
+      "HYP": 0.12159038335084915
+    }
+  },
+  "integrity": {
+    "files_verified": 42862,
+    "against": "SHA256SUMS.txt (publisher)",
+    "leads_checksum_and_first_sample_verified": 257160
+  },
+  "classes": [
+    "NORM",
+    "MI",
+    "STTC",
+    "CD",
+    "HYP"
+  ],
+  "test_n": 2163,
+  "test_patients": 1881,
+  "selection": {
+    "criterion": "validation macro AUROC",
+    "best_epoch": 11,
+    "val_macro_auroc": 0.9232286930084228
+  },
+  "calibration": {
+    "method": "per-class Platt scaling",
+    "fitted_on": "validation fold",
+    "parameters": {
+      "NORM": [
+        0.9738507866859436,
+        0.15986257791519165
+      ],
+      "MI": [
+        1.1119568347930908,
+        0.21749266982078552
+      ],
+      "STTC": [
+        0.8887076377868652,
+        -0.586120069026947
+      ],
+      "CD": [
+        1.0587983131408691,
+        0.18099072575569153
+      ],
+      "HYP": [
+        0.8911073207855225,
+        0.45461922883987427
+      ]
+    }
+  },
+  "decision_thresholds": {
+    "rule": "per-class maximum F1 on the validation fold",
+    "values": {
+      "NORM": 0.3506999909877777,
+      "MI": 0.36250001192092896,
+      "STTC": 0.45339998602867126,
+      "CD": 0.42179998755455017,
+      "HYP": 0.30149999260902405
+    }
+  },
+  "metrics": {
+    "macro_auroc": 0.9173997640609741,
+    "macro_auprc": 0.8045339619956817,
+    "macro_f1_at_validation_thresholds": 0.7339670552127411,
+    "mean_ece_raw": 0.026949838794495733,
+    "mean_ece_platt": 0.015222582658490153
+  },
+  "confidence_intervals_95": {
+    "macro_auroc": {
+      "status": "COMPUTED",
+      "low": 0.9093794965744019,
+      "high": 0.9247173911333084,
+      "resamples": 1000,
+      "unit": "patient"
+    },
+    "macro_f1_at_validation_thresholds": {
+      "status": "COMPUTED",
+      "low": 0.7172298851277826,
+      "high": 0.7495153198000575,
+      "resamples": 1000,
+      "unit": "patient"
+    }
+  },
+  "per_class": [
+    {
+      "class": "NORM",
+      "positives": 964,
+      "prevalence": 0.44567730004623207,
+      "auroc": 0.9375218749046326,
+      "auprc": 0.9130429365551234,
+      "auroc_95ci": {
+        "status": "COMPUTED",
+        "low": 0.927308838069439,
+        "high": 0.9471167102456093,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.3506999909877777,
+      "tp": 899,
+      "fp": 256,
+      "fn": 65,
+      "tn": 943,
+      "sensitivity": 0.9325726141078838,
+      "specificity": 0.786488740617181,
+      "ppv": 0.7783549783549784,
+      "f1": 0.8485134497404436,
+      "ece_raw": 0.013843294999498046,
+      "ece_platt": 0.016941798507299242
+    },
+    {
+      "class": "MI",
+      "positives": 553,
+      "prevalence": 0.255663430420712,
+      "auroc": 0.9076802730560303,
+      "auprc": 0.7962603438569384,
+      "auroc_95ci": {
+        "status": "COMPUTED",
+        "low": 0.8926645874977112,
+        "high": 0.9218574821949005,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.36250001192092896,
+      "tp": 413,
+      "fp": 187,
+      "fn": 140,
+      "tn": 1423,
+      "sensitivity": 0.7468354430379747,
+      "specificity": 0.8838509316770187,
+      "ppv": 0.6883333333333334,
+      "f1": 0.7163920208152645,
+      "ece_raw": 0.01894007138890686,
+      "ece_platt": 0.018867288484060264
+    },
+    {
+      "class": "STTC",
+      "positives": 523,
+      "prevalence": 0.241793804900601,
+      "auroc": 0.9313616156578064,
+      "auprc": 0.8217669009877957,
+      "auroc_95ci": {
+        "status": "COMPUTED",
+        "low": 0.9195672124624252,
+        "high": 0.9420565083622933,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.45339998602867126,
+      "tp": 390,
+      "fp": 123,
+      "fn": 133,
+      "tn": 1517,
+      "sensitivity": 0.745697896749522,
+      "specificity": 0.925,
+      "ppv": 0.7602339181286549,
+      "f1": 0.752895752895753,
+      "ece_raw": 0.04907322556324651,
+      "ece_platt": 0.013276302657411764
+    },
+    {
+      "class": "CD",
+      "positives": 498,
+      "prevalence": 0.2302357836338419,
+      "auroc": 0.9075443148612976,
+      "auprc": 0.8222131538055891,
+      "auroc_95ci": {
+        "status": "COMPUTED",
+        "low": 0.8891592353582383,
+        "high": 0.9239332631230355,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.42179998755455017,
+      "tp": 326,
+      "fp": 90,
+      "fn": 172,
+      "tn": 1575,
+      "sensitivity": 0.6546184738955824,
+      "specificity": 0.9459459459459459,
+      "ppv": 0.7836538461538461,
+      "f1": 0.7133479212253829,
+      "ece_raw": 0.020813256887942073,
+      "ece_platt": 0.016456536152987804
+    },
+    {
+      "class": "HYP",
+      "positives": 263,
+      "prevalence": 0.12159038372630605,
+      "auroc": 0.9028907418251038,
+      "auprc": 0.6693864747729616,
+      "auroc_95ci": {
+        "status": "COMPUTED",
+        "low": 0.881280742585659,
+        "high": 0.9234883278608322,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.30149999260902405,
+      "tp": 175,
+      "fp": 110,
+      "fn": 88,
+      "tn": 1790,
+      "sensitivity": 0.6653992395437263,
+      "specificity": 0.9421052631578948,
+      "ppv": 0.6140350877192983,
+      "f1": 0.6386861313868614,
+      "ece_raw": 0.03207934513288519,
+      "ece_platt": 0.01057098749069169
+    }
+  ],
+  "benchmark_context": "Strodthoff et al. 2020 (IEEE JBHI) report macro AUROC about 0.93 for the PTB-XL superdiagnostic task with 1D CNNs; context only, not a comparison under identical conditions.",
+  "checkpoint": {
+    "path": "artifacts/training/ptbxl_ecg_baseline-20261025T072058Z/model.pt",
+    "sha256": "687f69a2ff1cb50dcd0c5a26759f2d2154090c71746518db150c7638d9efb067"
+  },
+  "held_out_predictions": "artifacts/training/ptbxl_ecg_baseline-20261025T072058Z/predictions_test.csv",
+  "training_seconds": 91.9,
+  "config": {
+    "model_id": "ptbxl_ecg_baseline",
+    "epochs": 40,
+    "batch_size": 128,
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "seed": 20261024
+  },
+  "reporting_context": {
+    "dataset": "PTB-XL 1.0.1",
+    "dataset_version": "a1f01931077bf242",
+    "split": "test (strat_fold 10)",
+    "checkpoint": "sha256:687f69a2ff1cb50dcd0c5a26759f2d2154090c71746518db150c7638d9efb067"
+  },
+  "limitations": [
+    "Single-source internal evaluation (PTB-XL, Physikalisch-Technische Bundesanstalt, recordings 1989-1996); no external validation.",
+    "Superclass labels aggregate cardiologist SCP statements; they are not adjudicated clinical diagnoses.",
+    "Only 100 Hz, 10-second, 12-lead resting ECGs in the PTB-XL lead order are in scope; other devices, sampling rates or lead sets are out of distribution.",
+    "Platt calibration was fitted on the validation fold of the same source; probabilities are not calibrated for any clinical population.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

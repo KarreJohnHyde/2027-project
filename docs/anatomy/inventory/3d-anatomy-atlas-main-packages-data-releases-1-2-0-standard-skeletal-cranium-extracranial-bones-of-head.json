@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-skeletal-cranium-extracranial-bones-of-head",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/skeletal/cranium--extracranial_bones_of_head.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 1111880,
+  "sha256": "99a29c9755eca3e0ed480a3bb14d7b2a1f5658c346eef32eb1c847500329db63",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2720
+      },
+      {
+        "type": "BIN",
+        "byteLength": 1109132
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 57818,
+    "validator_vertex_count": 34894
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 57818,
+    "rendered_triangles": 57818,
+    "unique_vertices": 34894,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 38,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.00135,
+    "degenerate_triangles_measured": 6,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.074391,
+        1.4919,
+        -0.049664
+      ],
+      "max": [
+        0.074287,
+        1.705826,
+        0.153985
+      ],
+      "size": [
+        0.148678,
+        0.213926,
+        0.20365
+      ],
+      "center": [
+        -0.000052,
+        1.598863,
+        0.052161
+      ],
+      "diagonal": 0.33067
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 1.439,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "skeletal.cranium--extracranial_bones_of_head",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "skeletal.cranium--extracranial_bones_of_head"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "skeletal.cranium--extracranial_bones_of_head"
+    ]
+  },
+  "inspection_ms": 78,
+  "nodes": [
+    {
+      "path": "skeletal.cranium--extracranial_bones_of_head",
+      "name": "skeletal.cranium--extracranial_bones_of_head",
+      "semantic_name": "skeletal.cranium--extracranial_bones_of_head",
+      "depth": 0,
+      "mesh": "skeletal.cranium--extracranial_bones_of_head",
+      "material": null,
+      "triangles": 57818,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.074391,
+          1.4919,
+          -0.049664
+        ],
+        "max": [
+          0.074287,
+          1.705826,
+          0.153985
+        ],
+        "size": [
+          0.148678,
+          0.213926,
+          0.20365
+        ],
+        "center": [
+          -0.000052,
+          1.598863,
+          0.052161
+        ],
+        "diagonal": 0.33067
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "skeletal.cranium--extracranial_bones_of_head",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 34894,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 57818,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 27940,
+            "connected_components": 38,
+            "boundary_edge_fraction": 0.00135,
+            "non_manifold_edge_fraction": 0.01793,
+            "degenerate_triangles": 6,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 57818,
+      "points": 0,
+      "lines": 0,
+      "vertices": 34894
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

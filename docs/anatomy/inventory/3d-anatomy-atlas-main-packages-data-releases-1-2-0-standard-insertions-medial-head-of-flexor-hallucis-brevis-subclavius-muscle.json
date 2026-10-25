@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-insertions-medial-head-of-flexor-hallucis-brevis-subclavius-muscle",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/insertions/medial_head_of_flexor_hallucis_brevis--subclavius_muscle.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 906284,
+  "sha256": "75bc7a8ff24b2cfa9db7454166c32bb3b6ac5e2a15f81602ffef7bee76bc4ce8",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2780
+      },
+      {
+        "type": "BIN",
+        "byteLength": 903476
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 57620,
+    "validator_vertex_count": 29228
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 57620,
+    "rendered_triangles": 57620,
+    "unique_vertices": 29228,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 211,
+    "closed_measured_primitives": 1,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.281134,
+        0.012525,
+        -0.059575
+      ],
+      "max": [
+        0.264528,
+        1.630305,
+        0.167438
+      ],
+      "size": [
+        0.545662,
+        1.61778,
+        0.227014
+      ],
+      "center": [
+        -0.008303,
+        0.821415,
+        0.053931
+      ],
+      "diagonal": 1.722351
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 7.126,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle"
+    ]
+  },
+  "inspection_ms": 72,
+  "nodes": [
+    {
+      "path": "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle",
+      "name": "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle",
+      "semantic_name": "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle",
+      "depth": 0,
+      "mesh": "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle",
+      "material": null,
+      "triangles": 57620,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.281134,
+          0.012525,
+          -0.059575
+        ],
+        "max": [
+          0.264528,
+          1.630305,
+          0.167438
+        ],
+        "size": [
+          0.545662,
+          1.61778,
+          0.227014
+        ],
+        "center": [
+          -0.008303,
+          0.821415,
+          0.053931
+        ],
+        "diagonal": 1.722351
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "insertions.medial_head_of_flexor_hallucis_brevis--subclavius_muscle",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 29228,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 57620,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 29228,
+            "connected_components": 211,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0.00006,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 57620,
+      "points": 0,
+      "lines": 0,
+      "vertices": 29228
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

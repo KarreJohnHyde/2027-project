@@ -1,0 +1,345 @@
+{
+  "model_id": "hematology_cnmc_all_classifier",
+  "run_id": "hematology_cnmc_all_classifier-20261025T082713Z",
+  "task_id": "cnmc-all-vs-normal",
+  "dataset": "C-NMC 2019 leukaemia cell images (TCIA)",
+  "dataset_id": "c-nmc-2019",
+  "dataset_version": "6d29f9139eccdb722b2b625f87c8d81360923eef0fb91e6ce7246055e8c1ba16",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "CC BY 3.0 (TCIA Data Usage Policy; citation required)",
+    "source": "https://www.cancerimagingarchive.net/collection/c-nmc-2019/",
+    "verified_on": "2026-10-25",
+    "citation": "Mourya S, Kant S, Kumar P, Gupta A, Gupta R. ALL Challenge dataset of ISBI 2019 (C-NMC 2019). TCIA (2019). doi:10.7937/tcia.2019.dc64i46r"
+  },
+  "split_method": "subject clusters (subject id from the file name; subjects sharing a pixel-confirmed near-duplicate image joined) split train/validation 85/15 per class, seed 20261024; the publisher's labelled preliminary-phase test images are the frozen test set, and training subjects sharing an image with it are removed; bootstrap unit = subject cluster",
+  "split_counts": {
+    "train": 8157,
+    "val": 1430,
+    "test": 1867
+  },
+  "test_n": 1867,
+  "test_groups": 28,
+  "group_unit": "subject cluster",
+  "classes": [
+    "all",
+    "hem"
+  ],
+  "validation_readiness": {
+    "validation_ready": true,
+    "readiness": "READY_FOR_TRAINING",
+    "run_scope": "STANDARD_INTERNAL_EVALUATION",
+    "minimum_samples_per_class": null,
+    "classes_below_minimum": [],
+    "source_flags": [
+      "TASK_SUPPORTED_BY_LABELS"
+    ],
+    "effective_flags": [
+      "TASK_SUPPORTED_BY_LABELS"
+    ]
+  },
+  "run_scope": "STANDARD_INTERNAL_EVALUATION",
+  "class_distribution": {
+    "per_split": {
+      "train": {
+        "all": 5272,
+        "hem": 2885
+      },
+      "val": {
+        "all": 926,
+        "hem": 504
+      },
+      "test": {
+        "all": 1219,
+        "hem": 648
+      }
+    },
+    "total": {
+      "all": 7417,
+      "hem": 4037
+    }
+  },
+  "class_imbalance": {
+    "strategy": "inverse_frequency",
+    "enabled": true,
+    "formula": "w_c = N_train / (K * n_train,c)",
+    "computed_from": "training split only",
+    "training_counts": {
+      "all": 5272,
+      "hem": 2885
+    },
+    "weights_by_class": {
+      "all": 0.7736153262518968,
+      "hem": 1.4136915077989602
+    },
+    "normalization": "equal aggregate training-loss contribution per observed class"
+  },
+  "selection": {
+    "criterion": "validation macro-F1",
+    "candidates": {
+      "resnet18": {
+        "val_macro_f1": 0.783463453350788,
+        "best_epoch": 8
+      },
+      "efficientnet_b0": {
+        "val_macro_f1": 0.8210063245190611,
+        "best_epoch": 8
+      }
+    },
+    "selected": "efficientnet_b0"
+  },
+  "calibration": {
+    "method": "temperature_scaling",
+    "fitted_on": "validation split",
+    "temperature": 3.1912505626678467
+  },
+  "metrics": {
+    "accuracy": 0.807177289769684,
+    "balanced_accuracy": 0.793785890073831,
+    "macro_f1": 0.7899273128248981,
+    "macro_auroc_one_vs_rest": 0.8668212294578552,
+    "ece_uncalibrated": 0.13781586910354046,
+    "ece_temperature_scaled": 0.020010658522372462,
+    "brier_multiclass": 0.2817659069925066
+  },
+  "confidence_intervals_95": {
+    "accuracy": {
+      "status": "COMPUTED",
+      "low": 0.659279762534959,
+      "high": 0.8935828706708719,
+      "resamples": 1000,
+      "unit": "near-duplicate group"
+    },
+    "macro_f1": {
+      "status": "COMPUTED",
+      "low": 0.6259381804591816,
+      "high": 0.8769561310913734,
+      "resamples": 1000,
+      "unit": "near-duplicate group"
+    },
+    "balanced_accuracy": {
+      "status": "COMPUTED",
+      "low": 0.6568772970924799,
+      "high": 0.8711348673831603,
+      "resamples": 1000,
+      "unit": "near-duplicate group"
+    }
+  },
+  "per_class": [
+    {
+      "class": "all",
+      "support": 1219,
+      "precision": 0.8630600169061707,
+      "recall": 0.837571780147662,
+      "f1": 0.8501248959200666,
+      "auroc_one_vs_rest": 0.8668224811553955
+    },
+    {
+      "class": "hem",
+      "support": 648,
+      "precision": 0.7105263157894737,
+      "recall": 0.75,
+      "f1": 0.7297297297297297,
+      "auroc_one_vs_rest": 0.8668199777603149
+    }
+  ],
+  "confusion_matrix": [
+    [
+      1021,
+      198
+    ],
+    [
+      162,
+      486
+    ]
+  ],
+  "highest_confidence_errors": [
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/963.bmp",
+      "hem",
+      "all",
+      0.9708489775657654
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/472.bmp",
+      "hem",
+      "all",
+      0.9623586535453796
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/251.bmp",
+      "hem",
+      "all",
+      0.9594157934188843
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/850.bmp",
+      "all",
+      "hem",
+      0.9532943367958069
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/531.bmp",
+      "hem",
+      "all",
+      0.951968789100647
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/385.bmp",
+      "all",
+      "hem",
+      0.9501457810401917
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/423.bmp",
+      "hem",
+      "all",
+      0.9477747082710266
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/264.bmp",
+      "hem",
+      "all",
+      0.9467967748641968
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/243.bmp",
+      "all",
+      "hem",
+      0.9427096843719482
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/1074.bmp",
+      "hem",
+      "all",
+      0.9405571222305298
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/76.bmp",
+      "all",
+      "hem",
+      0.9394527077674866
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/1049.bmp",
+      "all",
+      "hem",
+      0.9377599954605103
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/1191.bmp",
+      "hem",
+      "all",
+      0.9357292652130127
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/1814.bmp",
+      "hem",
+      "all",
+      0.9351378083229065
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/376.bmp",
+      "hem",
+      "all",
+      0.9305381774902344
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/47.bmp",
+      "all",
+      "hem",
+      0.9305381774902344
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/768.bmp",
+      "all",
+      "hem",
+      0.9299025535583496
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/186.bmp",
+      "all",
+      "hem",
+      0.9279632568359375
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/54.bmp",
+      "hem",
+      "all",
+      0.924961507320404
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/654.bmp",
+      "hem",
+      "all",
+      0.924961507320404
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/1195.bmp",
+      "hem",
+      "all",
+      0.9218451380729675
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/327.bmp",
+      "all",
+      "hem",
+      0.9214916229248047
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/915.bmp",
+      "all",
+      "hem",
+      0.9197021722793579
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/1411.bmp",
+      "hem",
+      "all",
+      0.9193398356437683
+    ],
+    [
+      "C-NMC_Leukemia/validation_data/C-NMC_test_prelim_phase_data/1673.bmp",
+      "hem",
+      "all",
+      0.9189760088920593
+    ]
+  ],
+  "checkpoint": {
+    "path": "artifacts/training/hematology_cnmc_all_classifier-20261025T082713Z/model.pt",
+    "sha256": "f5ea1fafc826ae524c8d335a5e32019243c58dcd0bda19ef0e9722823ca82736"
+  },
+  "held_out_predictions": "artifacts/training/hematology_cnmc_all_classifier-20261025T082713Z/predictions_test.csv",
+  "training_seconds": 361.3,
+  "config": {
+    "task_id": "cnmc-all-vs-normal",
+    "model_id": "hematology_cnmc_all_classifier",
+    "display_name": "C-NMC ALL vs normal cell classifier (research)",
+    "modality": "MICROSCOPY",
+    "anatomy": "blood",
+    "archs": "resnet18,efficientnet_b0",
+    "epochs": 8,
+    "batch_size": 48,
+    "image_size": 224,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "class_weighting": "inverse_frequency",
+    "exploratory": false,
+    "workers": 4,
+    "seed": 20261024
+  },
+  "reporting_context": {
+    "dataset": "C-NMC 2019 leukaemia cell images (TCIA)",
+    "dataset_version": "6d29f9139eccdb72",
+    "split": "test",
+    "checkpoint": "sha256:f5ea1fafc826ae524c8d335a5e32019243c58dcd0bda19ef0e9722823ca82736",
+    "reporting_status": "INTERNAL_HELD_OUT"
+  },
+  "limitations": [
+    "Training used inverse-frequency weighted cross-entropy computed from the training split only. Weighting changes optimisation but does not create rare-class evidence or correct evaluation uncertainty.",
+    "Subject ids come from the publisher's file names. Identical images occur under different subject ids, so subjects sharing an image were joined into clusters, training subjects linked to the test set were removed, and the bootstrap resamples clusters; whether an id denotes one patient cannot be verified.",
+    "Internal held-out test from the same source distribution; no external validation.",
+    "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

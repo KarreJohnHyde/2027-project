@@ -1,0 +1,51 @@
+{
+  "listed_name": "archive (21).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (21).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "69b3b7c272285c70a95bf16ef421c8b91f692bd551a454384522ea23d9882421",
+  "size_bytes": 1344227845,
+  "entries": 10865,
+  "files": 10865,
+  "directories": 0,
+  "uncompressed_bytes": 1352871663,
+  "overall_ratio": 1.01,
+  "max_entry_ratio": 1.1,
+  "project_copy": "D:\\project\\archive (21).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (10865 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 10865
+  },
+  "extensions": {
+    ".png": 10865
+  },
+  "top_level": {
+    "cerebrovascular lesions/": 10865
+  },
+  "second_level": {
+    "cerebrovascular lesions/Mixed cerebrovascular disease/": 1191,
+    "cerebrovascular lesions/Subdural hemorrhage/": 1177,
+    "cerebrovascular lesions/Subarachnoid arachnoid hemorrhage/": 1166,
+    "cerebrovascular lesions/Acute ischemic infarction/": 1119,
+    "cerebrovascular lesions/Subdural effusion/": 1080,
+    "cerebrovascular lesions/Parenchymal hemorrhage/": 1077,
+    "cerebrovascular lesions/Ventricular hemorrhage/": 1020,
+    "cerebrovascular lesions/Healthy Control/": 1016,
+    "cerebrovascular lesions/Epidural hemorrhage/": 1011,
+    "cerebrovascular lesions/Chronic ischemic infarction/": 1008
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_21.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 29.4,
+  "notes": []
+}

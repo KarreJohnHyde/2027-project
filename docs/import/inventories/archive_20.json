@@ -1,0 +1,47 @@
+{
+  "listed_name": "archive (20).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (20).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "1a2f1df5f4661ae560fb5dd63b7ddda31f045b2e49dbfa288e605b4143dc7fa3",
+  "size_bytes": 378311120,
+  "entries": 9620,
+  "files": 9620,
+  "directories": 0,
+  "uncompressed_bytes": 394666547,
+  "overall_ratio": 1.05,
+  "max_entry_ratio": 2.7,
+  "project_copy": "D:\\project\\archive (20).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (9620 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 9618,
+    "text": 2
+  },
+  "extensions": {
+    ".jpg": 8854,
+    ".png": 745,
+    ".jpeg": 19,
+    ".txt": 2
+  },
+  "top_level": {
+    "Dataset/": 9620
+  },
+  "second_level": {
+    "Dataset/Brain Tumor MRI images/": 5001,
+    "Dataset/Brain Tumor CT scan Images/": 4619
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_20.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 24.1,
+  "notes": []
+}

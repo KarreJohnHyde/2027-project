@@ -1,0 +1,2549 @@
+{
+  "generated_at": "2026-10-25",
+  "tool": "scripts/dataset_task_audit.py",
+  "split_seed": 20261024,
+  "dhash_threshold": 4,
+  "datasets": [
+    {
+      "id": "kvasir-v2",
+      "archive": "archive_16",
+      "title": "Kvasir v2 (GI endoscopy)",
+      "modality": "ENDOSCOPY",
+      "system": "intestines",
+      "identity": "8 publisher class folders x 1000 images, matching the official Kvasir v2 release",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (16).zip",
+      "source_sha256": "ceafcc3b2209ce5fb4e395f7e823159818c03c8af50d7f450ec7a4550ee0c6b4",
+      "files": 8000,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "Kvasir terms of use: research and educational purposes only; commercial use requires written permission; cite the dataset paper",
+        "source": "https://datasets.simula.no/kvasir/",
+        "verified_on": "2026-10-24",
+        "citation": "Pogorelov et al., Kvasir: A Multi-Class Image Dataset for Computer Aided Gastrointestinal Disease Detection, ACM MMSys 2017."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_18": 7988
+      },
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "kvasir-v2-8class",
+          "type": "CLASSIFICATION",
+          "target": "8 Kvasir findings/landmarks per image",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 8000,
+            "labels": [
+              "dyed-lifted-polyps",
+              "dyed-resection-margins",
+              "esophagitis",
+              "normal-cecum",
+              "normal-pylorus",
+              "normal-z-line",
+              "polyps",
+              "ulcerative-colitis"
+            ],
+            "per_split": {
+              "train": 5599,
+              "val": 1199,
+              "test": 1202
+            },
+            "per_split_per_label": {
+              "train": {
+                "dyed-lifted-polyps": 699,
+                "dyed-resection-margins": 700,
+                "esophagitis": 700,
+                "normal-cecum": 700,
+                "normal-pylorus": 700,
+                "normal-z-line": 700,
+                "polyps": 700,
+                "ulcerative-colitis": 700
+              },
+              "val": {
+                "dyed-lifted-polyps": 150,
+                "dyed-resection-margins": 149,
+                "esophagitis": 150,
+                "normal-cecum": 150,
+                "normal-pylorus": 150,
+                "normal-z-line": 150,
+                "polyps": 150,
+                "ulcerative-colitis": 150
+              },
+              "test": {
+                "dyed-lifted-polyps": 151,
+                "dyed-resection-margins": 151,
+                "esophagitis": 150,
+                "normal-cecum": 150,
+                "normal-pylorus": 150,
+                "normal-z-line": 150,
+                "polyps": 150,
+                "ulcerative-colitis": 150
+              }
+            },
+            "near_duplicate_groups_with_more_than_one_image": 29,
+            "images_in_near_duplicate_groups": 58,
+            "largest_near_duplicate_group": 2,
+            "dhash_candidate_pools_with_more_than_one_image": 196,
+            "largest_dhash_candidate_pool": 390,
+            "pixel_confirmed_pairs": 29,
+            "group_rule": "pairs within a dHash (<= 4 bits) candidate pool with 64x64 normalised correlation >= 0.95 over content pixels (luminance >= 50; frame and text panel excluded)",
+            "near_duplicate_groups_with_conflicting_labels": 1,
+            "split_method": "group-aware stratified split, seed 20261024, fractions {'train': 0.7, 'val': 0.15, 'test': 0.15}, dHash threshold 4",
+            "minimum_samples_per_class": null,
+            "classes_below_minimum": [],
+            "sample_manifest": "D:\\project\\_derived\\datasets\\kvasir-v2-8class\\samples.csv",
+            "dataset_version": "f3eedd730fe4a33d30048a69e1cfe9af3aeae4804b5c20f552bda11450c22cf5"
+          }
+        }
+      ]
+    },
+    {
+      "id": "kvasir-v2-copy",
+      "archive": "archive_18",
+      "title": "Kvasir v2 (second copy, folders at project root)",
+      "modality": "ENDOSCOPY",
+      "system": "intestines",
+      "identity": "same 8 classes x 1000 images as archive_16",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (18).zip",
+      "source_sha256": "8f31ea6fe506e4562e9695dcd41fa1f9e58d9c4775733a7a5f3f0390807e8878",
+      "files": 8000,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "Kvasir terms of use: research and educational purposes only; commercial use requires written permission; cite the dataset paper",
+        "source": "https://datasets.simula.no/kvasir/",
+        "verified_on": "2026-10-24",
+        "citation": "Pogorelov et al., Kvasir: A Multi-Class Image Dataset for Computer Aided Gastrointestinal Disease Detection, ACM MMSys 2017."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_16": 7988
+      },
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "gastrovision",
+      "archive": "archive_17",
+      "title": "GastroVision (GI endoscopy, 27 classes)",
+      "modality": "ENDOSCOPY",
+      "system": "intestines",
+      "identity": "27 publisher class folders, 8000 images, matching the OSF GastroVision description",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (17).zip",
+      "source_sha256": "6083798374901a690ea9c83ceb07b83c869a76ef28b1bad3708004304cb301c2",
+      "files": 8000,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "CC BY 4.0",
+        "source": "https://api.osf.io/v2/nodes/84e7f/ (OSF project 84e7f, license field)",
+        "verified_on": "2026-10-24",
+        "citation": "Jha et al., GastroVision: A Multi-class Endoscopy Image Dataset for Computer Aided Gastrointestinal Disease Detection, ML4MHD @ ICML 2023."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "gastrovision-27class",
+          "type": "CLASSIFICATION",
+          "target": "27 GastroVision classes per image",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK",
+            "INSUFFICIENT_SAMPLES"
+          ],
+          "training_eligible": true,
+          "minimum_samples_per_class": 20,
+          "validation_ready": false,
+          "readiness": "EXPLORATORY_TRAINING_ONLY",
+          "preparation": {
+            "samples": 8000,
+            "labels": [
+              "Accessory tools",
+              "Angiectasia",
+              "Barretts esophagus",
+              "Blood in lumen",
+              "Cecum",
+              "Colon diverticula",
+              "Colon polyps",
+              "Colorectal cancer",
+              "Duodenal bulb",
+              "Dyed-lifted-polyps",
+              "Dyed-resection-margins",
+              "Erythema",
+              "Esophageal varices",
+              "Esophagitis",
+              "Gastric polyps",
+              "Gastroesophageal_junction_normal z-line",
+              "Ileocecal valve",
+              "Mucosal inflammation large bowel",
+              "Normal esophagus",
+              "Normal mucosa and vascular pattern in the large bowel",
+              "Normal stomach",
+              "Pylorus",
+              "Resected polyps",
+              "Resection margins",
+              "Retroflex rectum",
+              "Small bowel_terminal ileum",
+              "Ulcer"
+            ],
+            "per_split": {
+              "train": 5587,
+              "val": 1188,
+              "test": 1225
+            },
+            "per_split_per_label": {
+              "train": {
+                "Accessory tools": 886,
+                "Angiectasia": 11,
+                "Barretts esophagus": 66,
+                "Blood in lumen": 119,
+                "Cecum": 79,
+                "Colon diverticula": 20,
+                "Colon polyps": 574,
+                "Colorectal cancer": 97,
+                "Duodenal bulb": 143,
+                "Dyed-lifted-polyps": 98,
+                "Dyed-resection-margins": 172,
+                "Erythema": 10,
+                "Esophageal varices": 4,
+                "Esophagitis": 74,
+                "Gastric polyps": 44,
+                "Gastroesophageal_junction_normal z-line": 230,
+                "Ileocecal valve": 140,
+                "Mucosal inflammation large bowel": 20,
+                "Normal esophagus": 98,
+                "Normal mucosa and vascular pattern in the large bowel": 1026,
+                "Normal stomach": 678,
+                "Pylorus": 275,
+                "Resected polyps": 64,
+                "Resection margins": 17,
+                "Retroflex rectum": 46,
+                "Small bowel_terminal ileum": 592,
+                "Ulcer": 4
+              },
+              "val": {
+                "Accessory tools": 189,
+                "Angiectasia": 2,
+                "Barretts esophagus": 14,
+                "Blood in lumen": 25,
+                "Cecum": 16,
+                "Colon diverticula": 4,
+                "Colon polyps": 123,
+                "Colorectal cancer": 20,
+                "Duodenal bulb": 30,
+                "Dyed-lifted-polyps": 21,
+                "Dyed-resection-margins": 36,
+                "Erythema": 2,
+                "Esophageal varices": 1,
+                "Esophagitis": 16,
+                "Gastric polyps": 10,
+                "Gastroesophageal_junction_normal z-line": 49,
+                "Ileocecal valve": 30,
+                "Mucosal inflammation large bowel": 4,
+                "Normal esophagus": 20,
+                "Normal mucosa and vascular pattern in the large bowel": 220,
+                "Normal stomach": 145,
+                "Pylorus": 58,
+                "Resected polyps": 13,
+                "Resection margins": 3,
+                "Retroflex rectum": 10,
+                "Small bowel_terminal ileum": 126,
+                "Ulcer": 1
+              },
+              "test": {
+                "Accessory tools": 191,
+                "Angiectasia": 4,
+                "Barretts esophagus": 15,
+                "Blood in lumen": 27,
+                "Cecum": 18,
+                "Colon diverticula": 5,
+                "Colon polyps": 123,
+                "Colorectal cancer": 22,
+                "Duodenal bulb": 32,
+                "Dyed-lifted-polyps": 22,
+                "Dyed-resection-margins": 38,
+                "Erythema": 3,
+                "Esophageal varices": 2,
+                "Esophagitis": 17,
+                "Gastric polyps": 11,
+                "Gastroesophageal_junction_normal z-line": 51,
+                "Ileocecal valve": 30,
+                "Mucosal inflammation large bowel": 5,
+                "Normal esophagus": 22,
+                "Normal mucosa and vascular pattern in the large bowel": 221,
+                "Normal stomach": 146,
+                "Pylorus": 60,
+                "Resected polyps": 15,
+                "Resection margins": 5,
+                "Retroflex rectum": 11,
+                "Small bowel_terminal ileum": 128,
+                "Ulcer": 1
+              }
+            },
+            "near_duplicate_groups_with_more_than_one_image": 19,
+            "images_in_near_duplicate_groups": 38,
+            "largest_near_duplicate_group": 2,
+            "dhash_candidate_pools_with_more_than_one_image": 164,
+            "largest_dhash_candidate_pool": 246,
+            "pixel_confirmed_pairs": 19,
+            "group_rule": "pairs within a dHash (<= 4 bits) candidate pool with 64x64 normalised correlation >= 0.95 over content pixels (luminance >= 50; frame and text panel excluded)",
+            "near_duplicate_groups_with_conflicting_labels": 3,
+            "split_method": "group-aware stratified split, seed 20261024, fractions {'train': 0.7, 'val': 0.15, 'test': 0.15}, dHash threshold 4",
+            "minimum_samples_per_class": 20,
+            "classes_below_minimum": [
+              "Angiectasia",
+              "Erythema",
+              "Esophageal varices",
+              "Ulcer"
+            ],
+            "sample_manifest": "D:\\project\\_derived\\datasets\\gastrovision-27class\\samples.csv",
+            "dataset_version": "1f2d40f8aa2a284d1776b8e877d116873533757c1199359a1ab1412c5dc047d5"
+          }
+        }
+      ]
+    },
+    {
+      "id": "arcade",
+      "archive": "archive_06",
+      "title": "ARCADE coronary X-ray angiography",
+      "modality": "ANGIOGRAPHY",
+      "system": "heart",
+      "identity": "syntax/stenosis tasks with train/val/test 1000/200/300 and COCO annotations, matching Zenodo record 10390295",
+      "labels": "COCO",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (6).zip",
+      "source_sha256": "3eb4be5cb16f19b1c6111e8ae51487251c253b48ae48f4e90c1a81f9270679e3",
+      "files": 3007,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "CC0 1.0",
+        "source": "https://zenodo.org/records/10390295",
+        "verified_on": "2026-10-24",
+        "citation": "Popov et al., Dataset for Automatic Region-based Coronary Artery Disease Diagnostics Using X-Ray Angiography Images, Scientific Data 2024."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "arcade-stenosis-detection",
+          "type": "DETECTION",
+          "target": "stenosis regions (COCO boxes, category 'stenosis')",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK",
+            "LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 1500,
+            "per_split": {
+              "train": 1000,
+              "val": 200,
+              "test": 300
+            },
+            "split_method": "publisher splits kept",
+            "near_duplicate_candidate_pairs_across_splits": 154,
+            "near_duplicate_groups_crossing_splits": 11,
+            "images_in_crossing_groups": 54,
+            "test_images_with_cross_split_duplicate": 10,
+            "crossing_group_rule": "all members of any transitive near-duplicate component spanning publisher splits",
+            "largest_near_duplicate_group": 19,
+            "dhash_candidate_pools_with_more_than_one_image": 51,
+            "largest_dhash_candidate_pool": 179,
+            "pixel_confirmed_pairs": 99,
+            "group_rule": "pairs within a dHash (<= 4 bits) candidate pool with 64x64 normalised correlation >= 0.95",
+            "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+            "sample_manifest": "D:\\project\\_derived\\datasets\\arcade-stenosis-detection\\samples.csv",
+            "dataset_version": "e4e58c7c8ade713a49b8f884dc46648b8c747ada5066460217c3f57d24b1d5a7"
+          }
+        },
+        {
+          "task_id": "arcade-syntax-segmentation",
+          "type": "SEGMENTATION",
+          "target": "25 SYNTAX coronary segments (COCO polygons)",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK",
+            "LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 1500,
+            "per_split": {
+              "train": 1000,
+              "val": 200,
+              "test": 300
+            },
+            "split_method": "publisher splits kept",
+            "near_duplicate_candidate_pairs_across_splits": 4,
+            "near_duplicate_groups_crossing_splits": 2,
+            "images_in_crossing_groups": 6,
+            "test_images_with_cross_split_duplicate": 2,
+            "crossing_group_rule": "all members of any transitive near-duplicate component spanning publisher splits",
+            "largest_near_duplicate_group": 3,
+            "dhash_candidate_pools_with_more_than_one_image": 27,
+            "largest_dhash_candidate_pool": 96,
+            "pixel_confirmed_pairs": 20,
+            "group_rule": "pairs within a dHash (<= 4 bits) candidate pool with 64x64 normalised correlation >= 0.95",
+            "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+            "sample_manifest": "D:\\project\\_derived\\datasets\\arcade-syntax-segmentation\\samples.csv",
+            "dataset_version": "0e3c2dec8df98b7a3662a778d13888eedd0515bbdf0d21c6dd17a8c74af56f7b"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tez-roi-aug-kidney-stone",
+      "archive": "archive_11",
+      "title": "TEZ_ROI_AUG kidney stone detection (Roboflow)",
+      "modality": "CT",
+      "system": "kidneys",
+      "identity": "Roboflow export with data.yaml (1 class 'Tas_Var', stone present) and YOLO labels",
+      "labels": "YOLO",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (11).zip",
+      "source_sha256": "587e2fd3195aebc8a186b64d4643bbb8559f5d4fa06a7ac4b6177dabb2efc687",
+      "files": 2603,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "CC BY 4.0",
+        "source": "in-archive README.dataset.txt and data.yaml (Roboflow Universe tez-nwkf5/tez_roi_aug v3)",
+        "verified_on": "2026-10-24",
+        "citation": "Roboflow Universe project tez_roi_aug (workspace tez-nwkf5), version 3."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [
+        "Images are augmented ROI crops exported by Roboflow; augmented copies of one source image may exist.",
+        "The publisher split is image-level: slices from one acquisition session (filename timestamps within 30 min) appear in train and test, so the task is re-split by session; the publisher split is kept as publisher_split."
+      ],
+      "tasks": [
+        {
+          "task_id": "tez-kidney-stone-detection",
+          "type": "DETECTION",
+          "target": "kidney stone boxes (class Tas_Var)",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 1300,
+            "per_split": {
+              "train": 909,
+              "val": 195,
+              "test": 196
+            },
+            "split_method": "re-split by acquisition session joined with pixel near-duplicate groups; stratified by stone present, seed 20261024, fractions {'train': 0.7, 'val': 0.15, 'test': 0.15} (publisher split kept as publisher_split)",
+            "near_duplicate_candidate_pairs_across_splits": 0,
+            "near_duplicate_groups_crossing_splits": 0,
+            "images_in_crossing_groups": 0,
+            "test_images_with_cross_split_duplicate": 0,
+            "crossing_group_rule": "all members of any transitive near-duplicate component spanning publisher splits",
+            "largest_near_duplicate_group": 2,
+            "dhash_candidate_pools_with_more_than_one_image": 115,
+            "largest_dhash_candidate_pool": 8,
+            "pixel_confirmed_pairs": 20,
+            "group_rule": "pairs within a dHash (<= 4 bits) candidate pool with 64x64 normalised correlation >= 0.95",
+            "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+            "publisher_split_audit": {
+              "publisher_split_sessions": 225,
+              "publisher_split_sessions_spanning_splits": 88,
+              "publisher_test_images_sharing_a_session_with_train_or_val": 88,
+              "session_rule": "filename .NET tick timestamps within 30 min of the previous slice"
+            },
+            "sample_manifest": "D:\\project\\_derived\\datasets\\tez-kidney-stone-detection\\samples.csv",
+            "dataset_version": "5085472ca7ecf856a18fb95240da90e16f81462283b0317295ca9cdedd38a7f6"
+          }
+        }
+      ]
+    },
+    {
+      "id": "brain-ct-hemorrhage-binary",
+      "archive": "archive_00",
+      "title": "Brain CT normal vs hemorrhagic (unidentified source)",
+      "modality": "CT",
+      "system": "brain",
+      "identity": "Data/NORMAL (4105) and Data/Hemorrhagic (2690) JPEG slices",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive.zip",
+      "source_sha256": "cdabc840ff7cd8781344189efeaa12fe77359b5e1818f126c2804fadd8cf9c95",
+      "files": 6795,
+      "location": "D:\\project\\_imports\\archives\\archive_00",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "brain-ct-hemorrhage-binary",
+          "type": "CLASSIFICATION",
+          "target": "normal vs hemorrhagic slice",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "brain-stroke-ct",
+      "archive": "archive_01",
+      "title": "Brain stroke CT (Normal/Ischemia/Bleeding, DICOM+PNG, overlays, external test masks)",
+      "modality": "CT",
+      "system": "brain",
+      "identity": "class counts 4427/1130/1093 match published descriptions of the Turkish Ministry of Health stroke data; distribution terms not verified",
+      "labels": "CLASS_FOLDER_AND_MASKS",
+      "official_splits": true,
+      "patient_ids": "UNKNOWN_DICOM_HEADERS_NOT_REVIEWED",
+      "source_archive": "archive (1).zip",
+      "source_sha256": "45836be9b73a339b37b044afef7695a8e24d9e8f40fe7764b8eb4a20692e0072",
+      "files": 16324,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "brain-stroke-ct-3class",
+          "type": "CLASSIFICATION",
+          "target": "normal / ischemia / bleeding",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        },
+        {
+          "task_id": "brain-stroke-ct-lesion-segmentation",
+          "type": "SEGMENTATION",
+          "target": "lesion masks (external test only)",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "brain-mri-tumor-4class-a",
+      "archive": "archive_02",
+      "title": "Brain MRI tumor 4-class (balanced variant)",
+      "modality": "MRI",
+      "system": "brain",
+      "identity": "glioma/meningioma/notumor/pituitary, 1400/400 per class",
+      "labels": "CLASS_FOLDER",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (2).zip",
+      "source_sha256": "882817250048c78ef7a759cf23e540d7b581f2327b16663c9d3db12f5d2ffdb4",
+      "files": 7200,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_03": 6606,
+        "archive_04": 42,
+        "archive_20": 686
+      },
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "brain-mri-tumor-4class-a",
+          "type": "CLASSIFICATION",
+          "target": "tumour type",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "brain-mri-tumor-4class-b",
+      "archive": "archive_03",
+      "title": "Brain MRI tumor 4-class (second variant)",
+      "modality": "MRI",
+      "system": "brain",
+      "identity": "glioma/meningioma/notumor/pituitary, 5723 train / 1430 test",
+      "labels": "CLASS_FOLDER",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (3).zip",
+      "source_sha256": "a48c05894b0f161d642a14cf5b2d678ce562bfe90e3d6d136a0537ae420b7cdc",
+      "files": 7153,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_02": 6606,
+        "archive_04": 30,
+        "archive_20": 689
+      },
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "brain-mri-tumor-4class-b",
+          "type": "CLASSIFICATION",
+          "target": "tumour type",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "mri-tumor-detection-small",
+      "archive": "archive_04",
+      "title": "MRI tumor detection (113 images)",
+      "modality": "MRI",
+      "system": "brain",
+      "identity": "Training/Testing folders without class labels",
+      "labels": "UNCLEAR",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (4).zip",
+      "source_sha256": "74760fa45836117b6cc34d434290bf11d14845d8100ded2aca15a4a1e826a2eb",
+      "files": 113,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_02": 42,
+        "archive_03": 30,
+        "archive_20": 15
+      },
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "mri-tumor-detection-small",
+          "type": "CLASSIFICATION",
+          "target": "unclear",
+          "flags": [
+            "LICENSE_BLOCKED",
+            "NEEDS_REVIEW",
+            "INSUFFICIENT_SAMPLES",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "st000001-mr-study",
+      "archive": "archive_05",
+      "title": "Single brain MR DICOM study (10 series) with condition list and PDF",
+      "modality": "MRI",
+      "system": "brain",
+      "identity": "one DICOM study; PatientName/Institution/Referrer are placeholders, PatientID pseudonymous, birth date present",
+      "labels": "NONE",
+      "official_splits": false,
+      "patient_ids": "PRESENT_BIRTH_DATE",
+      "source_archive": "archive (5).zip",
+      "source_sha256": "33d53f64af3014325aa6c754cec146296b2e3bfeb65ebb24830b2522f25167b4",
+      "files": 702,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "PRIVACY_REVIEW_REQUIRED",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "lung-cancer-ct",
+      "archive": "archive_07",
+      "title": "Lung cancer CT (train/valid/test + test cases)",
+      "modality": "CT",
+      "system": "lungs",
+      "identity": "Data/train (1460), valid (142), test (475) and 197 unlabelled test cases",
+      "labels": "CLASS_FOLDER",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (7).zip",
+      "source_sha256": "cc646fa9d61ee03baecef51019bccce07a3edfae6af8e841690a91fd51419e27",
+      "files": 2274,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "lung-cancer-ct-classification",
+          "type": "CLASSIFICATION",
+          "target": "publisher classes (not reviewed)",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "liver-ct-volumes",
+      "archive": "archive_08",
+      "title": "Liver CT volumes with segmentation masks (LiTS-style)",
+      "modality": "CT",
+      "system": "liver",
+      "identity": "131 segmentation volumes but only 51 image volumes present (volume_pt1-pt5)",
+      "labels": "MASK_VOLUME",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (8).zip",
+      "source_sha256": "ced74262eaf6ec06679930e881988de842cfa7f1a66735d0d7ea6ecf996c9bfa",
+      "files": 182,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "liver-ct-segmentation",
+          "type": "SEGMENTATION",
+          "target": "liver and lesion masks",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "INSUFFICIENT_SAMPLES",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "dataset-train-test-unlabelled",
+      "archive": "archive_09",
+      "title": "DATASET/train, DATASET/test (no class folders)",
+      "modality": "UNKNOWN",
+      "system": null,
+      "identity": "999 + 412 images without labels; shares the DATASET folder with archives 10, 14 and 20",
+      "labels": "NONE",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (9).zip",
+      "source_sha256": "1c3a2cfaf51ced1b63df34a990744152c58332800b5f8c2d32217483e02570c4",
+      "files": 1411,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "kidney-ct-normal-tumor",
+      "archive": "archive_10",
+      "title": "Kidney CT normal vs tumor (subset of the kidney CT set)",
+      "modality": "CT",
+      "system": "kidneys",
+      "identity": "DATASET/train|val/Normal|Tumor; 6536 files are byte-identical to archive_12 (kidney CT Normal/Cyst/Tumor/Stone)",
+      "labels": "CLASS_FOLDER",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (10).zip",
+      "source_sha256": "3ab718053bc08472075923ff6b0a146e08b7d1abf025f05f6af1257d89188ba7",
+      "files": 7360,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_12": 6536
+      },
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "kidney-ct-normal-tumor",
+          "type": "CLASSIFICATION",
+          "target": "normal vs tumor",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "kidney-ct-4class",
+      "archive": "archive_12",
+      "title": "Kidney CT Normal/Cyst/Tumor/Stone",
+      "modality": "CT",
+      "system": "kidneys",
+      "identity": "split_data train/val/test with Normal, Cyst, Tumor, Stone",
+      "labels": "CLASS_FOLDER",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (12).zip",
+      "source_sha256": "3940064617feabd45e4a94cbfdf2c148ac76d23a37eaa2f85914d9ac8372333e",
+      "files": 15569,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_10": 6536
+      },
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "kidney-ct-4class",
+          "type": "CLASSIFICATION",
+          "target": "normal / cyst / tumor / stone",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "2d-segmentation-pairs",
+      "archive": "archive_13",
+      "title": "2D segmentation image/mask pairs (organ not stated)",
+      "modality": "UNKNOWN",
+      "system": null,
+      "identity": "2027 images and 2027 masks",
+      "labels": "MASK_PAIR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (13).zip",
+      "source_sha256": "2e6a2839916ea32749b4a49cfa01f4a6a495b0f9261700b611cdbd781a11038d",
+      "files": 4054,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "2d-segmentation-pairs",
+          "type": "SEGMENTATION",
+          "target": "unknown structure",
+          "flags": [
+            "LICENSE_BLOCKED",
+            "NEEDS_REVIEW",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "liver-fibrosis-f0-f4",
+      "archive": "archive_14",
+      "title": "Liver fibrosis stage F0-F4 images",
+      "modality": "ULTRASOUND",
+      "system": "liver",
+      "identity": "Dataset/Dataset/F0..F4 class folders",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (14).zip",
+      "source_sha256": "70fee851f151f5c360a78f674599465adba725efb5948c7d0d0c83003915e2b9",
+      "files": 6323,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "liver-fibrosis-staging",
+          "type": "CLASSIFICATION",
+          "target": "fibrosis stage F0-F4",
+          "flags": [
+            "LICENSE_BLOCKED",
+            "NEEDS_REVIEW",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "behsof-nafld",
+      "archive": "archive_15",
+      "title": "BEHSOF NAFLD vs non-NAFLD",
+      "modality": "ULTRASOUND",
+      "system": "liver",
+      "identity": "BEHSOF/NAFLD (1517) and Non-NAFLD (152)",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (15).zip",
+      "source_sha256": "d96eb622bfc9fbc9a8cdb0940eb9c8dccc276a0e2e738da3acec9fcfe15352c5",
+      "files": 1669,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "behsof-nafld-binary",
+          "type": "CLASSIFICATION",
+          "target": "NAFLD vs non-NAFLD",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "brain-mri-multicondition",
+      "archive": "archive_19",
+      "title": "Brain MRI: tumors, Alzheimer stages, MS, normal (merged sources)",
+      "modality": "MRI",
+      "system": "brain",
+      "identity": "BT_*, AD_*, MS and Normal class folders combined from several sources",
+      "labels": "CLASS_FOLDER",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (19).zip",
+      "source_sha256": "442512c3671f9c9c1f528223be9a9244c2ec51ce4e1cd89f402d01c9fcf7f9d3",
+      "files": 11955,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "brain-mri-multicondition",
+          "type": "CLASSIFICATION",
+          "target": "mixed condition taxonomy",
+          "flags": [
+            "LICENSE_BLOCKED",
+            "NEEDS_REVIEW",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "brain-tumor-ct-mri",
+      "archive": "archive_20",
+      "title": "Brain tumor vs healthy, CT and MRI",
+      "modality": "CT_AND_MRI",
+      "system": "brain",
+      "identity": "Brain Tumor MRI images and Brain Tumor CT scan Images, Healthy/Tumor",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (20).zip",
+      "source_sha256": "1a2f1df5f4661ae560fb5dd63b7ddda31f045b2e49dbfa288e605b4143dc7fa3",
+      "files": 9620,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_02": 686,
+        "archive_03": 689,
+        "archive_04": 15
+      },
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "brain-tumor-ct-mri-binary",
+          "type": "CLASSIFICATION",
+          "target": "tumor vs healthy",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "cerebrovascular-lesions-ct",
+      "archive": "archive_21",
+      "title": "Cerebrovascular lesions (10 classes)",
+      "modality": "CT",
+      "system": "brain",
+      "identity": "10 class folders, about 1000 images each",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (21).zip",
+      "source_sha256": "69b3b7c272285c70a95bf16ef421c8b91f692bd551a454384522ea23d9882421",
+      "files": 10865,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "cerebrovascular-lesions-10class",
+          "type": "CLASSIFICATION",
+          "target": "10 cerebrovascular classes",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "brain-stroke-ct-3class-external",
+      "archive": "archive_22",
+      "title": "Brain CT hemorrhage/ischemia/normal with external test",
+      "modality": "CT",
+      "system": "brain",
+      "identity": "Train 3x4000, Test 3x1000, External_test 639",
+      "labels": "CLASS_FOLDER",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (22).zip",
+      "source_sha256": "5f743b0ecd296cc762a6851f290d9a99f1ce152281f9ce2b4a79d2fc75181333",
+      "files": 15639,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "brain-stroke-ct-3class-external",
+          "type": "CLASSIFICATION",
+          "target": "hemorrhage / ischemia / normal",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "kvasir-seg",
+      "archive": "archive_25",
+      "title": "Kvasir-SEG (GI polyp segmentation)",
+      "modality": "ENDOSCOPY",
+      "system": "intestines",
+      "identity": "1000 polyp images with gastroenterologist-verified binary masks; official train.txt (880) / val.txt (120) lists",
+      "labels": "MASK_FOLDERS",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (25).zip",
+      "source_sha256": "3f5223b5e2be7c90d03861f940a7cc7b72ff35d66ef7e59823ae0e0545a20b88",
+      "files": 4004,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "Kvasir-SEG terms of use: research and educational purposes only; commercial use forbidden without prior written permission; cite the dataset paper",
+        "source": "https://datasets.simula.no/kvasir-seg/",
+        "verified_on": "2026-10-25",
+        "citation": "Jha D, Smedsrud PH, Riegler MA, et al. Kvasir-SEG: A Segmented Polyp Dataset. MultiMedia Modeling (MMM) 2020."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [
+        "Images are taken from the Kvasir v2 polyps class; models trained on both may share images."
+      ],
+      "tasks": [
+        {
+          "task_id": "kvasir-seg-polyp-segmentation",
+          "type": "SEGMENTATION_MASK_FOLDERS",
+          "target": "binary polyp masks",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": true,
+          "class_name": "polyp",
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 1000,
+            "per_split": {
+              "train": 748,
+              "test": 120,
+              "val": 132
+            },
+            "split_method": "publisher lists: train.txt split group-aware into train/validation (85/15, seed 20261024); val.txt is the frozen test set",
+            "near_duplicate_groups_crossing_splits": 0,
+            "images_in_crossing_groups": 0,
+            "test_images_with_cross_split_duplicate": 0,
+            "near_duplicate_candidate_pairs_across_splits": 0,
+            "dhash_candidate_pools_with_more_than_one_image": 9,
+            "largest_dhash_candidate_pool": 2,
+            "pixel_confirmed_pairs": 3,
+            "group_rule": "pairs within a dHash (<= 4 bits) candidate pool with 64x64 normalised correlation >= 0.95 over content pixels (luminance >= 50; frame and text panel excluded)",
+            "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+            "sample_manifest": "D:\\project\\_derived\\datasets\\kvasir-seg-polyp-segmentation\\samples.csv",
+            "dataset_version": "4c97d0496ca08a60e9de783bf16eb8eb576393e16a4c70953ca5b8f3a2c36abb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ptb-xl-1.0.1",
+      "archive": "archive_30",
+      "title": "PTB-XL 1.0.1 (12-lead ECG)",
+      "modality": "ECG",
+      "system": "heart",
+      "identity": "21,837 10-second 12-lead ECGs (100 and 500 Hz WFDB) from 18,885 patients with SCP-ECG statements and 10 stratified folds",
+      "labels": "WFDB_WITH_SCP_STATEMENTS",
+      "official_splits": true,
+      "patient_ids": "PSEUDONYMOUS_PATIENT_ID",
+      "source_archive": "archive (30).zip",
+      "source_sha256": "2430fe41f8469463734dff5d9b9b500d1d985d113000f269cd8f5ad999313a75",
+      "files": 87354,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "CC BY 4.0",
+        "source": "LICENSE.txt in the archive; https://physionet.org/content/ptb-xl/1.0.1/",
+        "verified_on": "2026-10-25",
+        "citation": "Wagner P, Strodthoff N, Bousseljot R-D, et al. PTB-XL, a large publicly available electrocardiography dataset. Sci Data 7, 154 (2020)."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "ptbxl-diagnostic-superclass",
+          "type": "ECG_MULTILABEL",
+          "target": "5 diagnostic superclasses (NORM, MI, STTC, CD, HYP)",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 21430,
+            "per_split": {
+              "train": 17111,
+              "val": 2156,
+              "test": 2163
+            },
+            "split_method": "publisher strat_fold: 1-8 train, 9 validation, 10 test (patient-disjoint, asserted)",
+            "patients": {
+              "patients_per_split": {
+                "train": 14834,
+                "val": 1922,
+                "test": 1881
+              },
+              "patient_overlap": {
+                "train&val": 0,
+                "train&test": 0,
+                "val&test": 0
+              }
+            },
+            "excluded": {
+              "no_diagnostic_superclass": 407
+            },
+            "diagnostic_statements": 44,
+            "label_counts": {
+              "NORM": 9528,
+              "MI": 5486,
+              "STTC": 5250,
+              "HYP": 2655,
+              "CD": 4907
+            },
+            "files_missing": 0,
+            "dataset_version": "a1f01931077bf242b541169497def6401e190b30a1408c371fef8eb15a44e104",
+            "trainer": "python -m ml_training.ecg"
+          }
+        }
+      ]
+    },
+    {
+      "id": "uci-heart-failure-clinical-records",
+      "archive": "archive_28",
+      "title": "Heart failure clinical records (UCI)",
+      "modality": "CLINICAL_TABULAR",
+      "system": "heart",
+      "identity": "299 patients, 12 clinical features, follow-up time and death event",
+      "labels": "TABULAR_SURVIVAL",
+      "official_splits": false,
+      "patient_ids": "ONE_ROW_PER_PATIENT",
+      "source_archive": "archive (28).zip",
+      "source_sha256": "f8035fab1351224b62bb40fa4082bc1abe2c442d2c62787886960d6b9d4e99fc",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "CC BY 4.0",
+        "source": "https://archive.ics.uci.edu/dataset/519/heart+failure+clinical+records",
+        "verified_on": "2026-10-25",
+        "citation": "Chicco D, Jurman G. BMC Med Inform Decis Mak 20, 16 (2020); data of Ahmad T et al., PLoS ONE 12(7): e0181001 (2017)."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "heart-failure-survival",
+          "type": "SURVIVAL",
+          "target": "time to death during follow-up",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 299,
+            "per_split": {
+              "all": 299
+            },
+            "events": 96,
+            "censored": 203,
+            "split_method": "defined in ml_training/survival.py (stratified 70/30, or the publisher's trial/non-trial cohorts for PBC)",
+            "dataset_version": "9c73cea7468ff5d517801ec050fe9993da5912fce4b56f296f8df3b38dd75912",
+            "trainer": "python -m ml_training.survival"
+          }
+        }
+      ]
+    },
+    {
+      "id": "uci-cirrhosis-mayo-pbc",
+      "archive": "archive_35",
+      "title": "Cirrhosis patient survival, Mayo Clinic PBC (UCI)",
+      "modality": "CLINICAL_TABULAR",
+      "system": "liver",
+      "identity": "418 PBC patients (312 randomized trial + 106 non-randomized), follow-up days and status C/CL/D",
+      "labels": "TABULAR_SURVIVAL",
+      "official_splits": true,
+      "patient_ids": "ONE_ROW_PER_PATIENT",
+      "source_archive": "archive (35).zip",
+      "source_sha256": "96e57dd91632c10d71ffc97736dd21bbb642125c8710bfb0e7092d93cfc943b8",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "CC BY 4.0",
+        "source": "https://archive.ics.uci.edu/dataset/878/cirrhosis+patient+survival+prediction+dataset-1",
+        "verified_on": "2026-10-25",
+        "citation": "Dickson ER, Grambsch PM, Fleming TR, Fisher LD, Langworthy A. Hepatology 10(1):1-7 (1989)."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "pbc-survival",
+          "type": "SURVIVAL",
+          "target": "time to death (transplant censored)",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 418,
+            "per_split": {
+              "all": 418
+            },
+            "events": 161,
+            "censored": 257,
+            "split_method": "defined in ml_training/survival.py (stratified 70/30, or the publisher's trial/non-trial cohorts for PBC)",
+            "dataset_version": "24ae2d5bedbc59898e536b98b152da35bbbb0ed70a2afef0adac8b7c5c8c6d54",
+            "trainer": "python -m ml_training.survival"
+          }
+        }
+      ]
+    },
+    {
+      "id": "acdc-cardiac-mri",
+      "archive": "archive_23",
+      "title": "ACDC cardiac cine-MRI (CREATIS)",
+      "modality": "MRI",
+      "system": "heart",
+      "identity": "150 patients (100 training, 50 testing), 4D cine volumes with ED/ES ground truth for LV, myocardium and RV",
+      "labels": "NIFTI_VOLUMES_WITH_MASKS",
+      "official_splits": true,
+      "patient_ids": "PSEUDONYMOUS_PATIENT_FOLDERS",
+      "source_archive": "archive (23).zip",
+      "source_sha256": "e9263a41019981cf117d1a21962a96fdcb10506a8a944f778d2379dc04dc6977",
+      "files": 1053,
+      "location": "D:/project",
+      "license": {
+        "status": "SOURCE_AND_CITATION_VERIFIED_TERMS_NOT_FOUND",
+        "authorization_status": "VERIFIED",
+        "authorization_reason": "Repository owner authorized local, non-commercial research training on 2026-10-25 after review of the official source: CREATIS states that the data and ground truth remain publicly available, the download collection is public, and the publisher requires the citation for any use. No licence text is published; the data are not committed or redistributed.",
+        "authorized_by": "repository owner (recorded interactive decision)",
+        "authorized_on": "2026-10-25",
+        "authorization_scope": "local non-commercial research training and evaluation; no redistribution of images or masks",
+        "name": "CREATIS ACDC public research release; mandatory citation; explicit licence terms not published",
+        "source": "https://www.creatis.insa-lyon.fr/Challenge/acdc/databases.html (download: humanheart-project.creatis.insa-lyon.fr, public collection) and MANDATORY_CITATION.md in the archive",
+        "verified_on": "2026-10-25",
+        "citation": "Bernard O, Lalande A, Zotti C, et al. Deep Learning Techniques for Automatic MRI Cardiac Multi-structures Segmentation and Diagnosis: Is the Problem Solved? IEEE TMI 37(11):2514-2525 (2018)."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "acdc-cardiac-segmentation",
+          "type": "SEGMENTATION_VOLUMES",
+          "target": "LV cavity, myocardium, RV cavity at ED and ES",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": true,
+          "trainer": "python -m ml_training.volumetric train",
+          "manifest_builder": "python -m ml_training.volumetric_manifest acdc",
+          "pipeline_verification": {
+            "status": "IMPLEMENTED_TESTED_ON_SYNTHETIC_FIXTURE",
+            "real_data_training_executed": false,
+            "acdc_manifest_validation": {
+              "dataset_version": "c0fa24d113128f2d33975747fa82c3d13eea27577c08de895346094544afebcd",
+              "discovered_cases": 300,
+              "retained_cases": 298,
+              "retained_patients": 149,
+              "patients_per_split": {
+                "train": 84,
+                "val": 15,
+                "test": 50
+              },
+              "cases_per_split": {
+                "train": 168,
+                "val": 30,
+                "test": 100
+              },
+              "patient_split_overlap": 0,
+              "cross_split_identical_content": 0,
+              "leakage_exclusion": "patient055 (two phase images identical to frozen-test patient118; masks differ)",
+              "observed_label_ids": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "geometry_and_affine_checks": "PASSED"
+            },
+            "license_gate": "REFUSED_REAL_ACDC_BEFORE_OUTPUT_CREATION (before the owner's authorization of 2026-10-25)"
+          },
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 298,
+            "patient_count": 149,
+            "per_split": {
+              "train": 168,
+              "val": 30,
+              "test": 100
+            },
+            "patients_per_split": {
+              "train": 84,
+              "val": 15,
+              "test": 50
+            },
+            "leakage_exclusions": {
+              "rule": "preserve publisher test; exclude the complete development patient linked by identical image SHA-256",
+              "excluded_development_patients": [
+                "patient055"
+              ],
+              "excluded_development_cases": 2,
+              "cross_cohort_identical_image_groups": [
+                {
+                  "image_sha256": "11f7c54643e1da512c0d7b654b1b8e9f263b050d3ac6bdeed29789ec48c946c0",
+                  "mask_annotations_identical": false,
+                  "members": [
+                    {
+                      "patient_id": "patient055",
+                      "case_id": "patient055_es",
+                      "split_before_exclusion": "train",
+                      "mask_sha256": "72f7ef3b9e17b0a187b1ff61c26dd7c8f516f1371579d4e3ae5b538a7d1153d1"
+                    },
+                    {
+                      "patient_id": "patient118",
+                      "case_id": "patient118_es",
+                      "split_before_exclusion": "test",
+                      "mask_sha256": "c973199124bc0007c13d97a7d671c351514f426d7bfd9c8cf497e006d33cb545"
+                    }
+                  ]
+                },
+                {
+                  "image_sha256": "df3f3a57a3e8f262b8da34631bfe680e6ad4968c2e7f59b2f090e3135c590b75",
+                  "mask_annotations_identical": false,
+                  "members": [
+                    {
+                      "patient_id": "patient055",
+                      "case_id": "patient055_ed",
+                      "split_before_exclusion": "train",
+                      "mask_sha256": "c70ce5e27160e6409cc4792585f7c587996f1bf144db61122e21d917821dbde7"
+                    },
+                    {
+                      "patient_id": "patient118",
+                      "case_id": "patient118_ed",
+                      "split_before_exclusion": "test",
+                      "mask_sha256": "0517932d9ba8ea4ad0f4d39a6d3f851551da3d59039180cedf6669008ec55327"
+                    }
+                  ]
+                }
+              ]
+            },
+            "split_method": "publisher test patients frozen; development patients split by patient (seed 20261024); development patients whose images duplicate a test patient are excluded",
+            "classes_below_minimum": [],
+            "dataset_version": "c0fa24d113128f2d33975747fa82c3d13eea27577c08de895346094544afebcd",
+            "sample_manifest": "written by: python -m ml_training.volumetric_manifest acdc --dataset-root database"
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-nmc-2019",
+      "archive": "archive_47",
+      "title": "C-NMC 2019 leukaemia cell images (TCIA)",
+      "modality": "MICROSCOPY",
+      "system": null,
+      "identity": "15,114 segmented cell images, ALL vs normal (hem), subject ID in each file name",
+      "labels": "CLASS_FOLDER",
+      "official_splits": true,
+      "patient_ids": "SUBJECT_ID_IN_FILENAME",
+      "source_archive": "archive (47).zip",
+      "source_sha256": "19e237f8064d502c46e0b0b3ba5c29596c336f61bee5d38dbe58192299ec2412",
+      "files": 15115,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "CC BY 3.0 (TCIA Data Usage Policy; citation required)",
+        "source": "https://www.cancerimagingarchive.net/collection/c-nmc-2019/",
+        "verified_on": "2026-10-25",
+        "citation": "Mourya S, Kant S, Kumar P, Gupta A, Gupta R. ALL Challenge dataset of ISBI 2019 (C-NMC 2019). TCIA (2019). doi:10.7937/tcia.2019.dc64i46r"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "cnmc-all-vs-normal",
+          "type": "SUBJECT_CLASSIFICATION",
+          "target": "ALL blast vs normal B-lymphoid precursor cell",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 11454,
+            "labels": [
+              "all",
+              "hem"
+            ],
+            "per_split": {
+              "train": 8157,
+              "val": 1430,
+              "test": 1867
+            },
+            "per_split_per_label": {
+              "train": {
+                "all": 5272,
+                "hem": 2885
+              },
+              "val": {
+                "all": 926,
+                "hem": 504
+              },
+              "test": {
+                "all": 1219,
+                "hem": 648
+              }
+            },
+            "subjects_per_split": {
+              "train": 52,
+              "val": 18,
+              "test": 28
+            },
+            "subject_overlap_between_splits": {
+              "train-val": 0,
+              "train-test": 0,
+              "val-test": 0
+            },
+            "subject_clusters_with_both_classes": 0,
+            "subject_pairs_sharing_near_identical_images": [
+              "17-18",
+              "17-21",
+              "20-21",
+              "26-27",
+              "43-44",
+              "51-55",
+              "51-75",
+              "51-78",
+              "H10-H3",
+              "H19-H20",
+              "H2-H4",
+              "H2-H5",
+              "H2-H6",
+              "H2-H7"
+            ],
+            "training_subjects_removed_for_sharing_images_with_test": [
+              "51",
+              "75",
+              "78"
+            ],
+            "training_images_removed": 1074,
+            "unlabelled_images_excluded": 2586,
+            "split_method": "subject clusters (subject id from the file name; subjects sharing a pixel-confirmed near-duplicate image joined) split train/validation 85/15 per class, seed 20261024; the publisher's labelled preliminary-phase test images are the frozen test set, and training subjects sharing an image with it are removed; bootstrap unit = subject cluster",
+            "near_duplicate_candidate_pairs_across_splits": 0,
+            "near_duplicate_groups_crossing_splits": 0,
+            "images_in_crossing_groups": 0,
+            "test_images_with_cross_split_duplicate": 0,
+            "crossing_group_rule": "all members of any transitive near-duplicate component spanning publisher splits",
+            "largest_near_duplicate_group": 2,
+            "dhash_candidate_pools_with_more_than_one_image": 73,
+            "largest_dhash_candidate_pool": 10539,
+            "pixel_confirmed_pairs": 302,
+            "group_rule": "pairs within a dHash (<= 4 bits) candidate pool with 64x64 normalised correlation >= 0.95 over content pixels (luminance >= 10; black background excluded)",
+            "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+            "group_unit": "subject cluster",
+            "classes_below_minimum": [],
+            "sample_manifest": "D:\\project\\_derived\\datasets\\cnmc-all-vs-normal\\samples.csv",
+            "dataset_version": "6d29f9139eccdb722b2b625f87c8d81360923eef0fb91e6ce7246055e8c1ba16"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bone-fracture-roboflow-v4",
+      "archive": "archive_58",
+      "title": "Bone fracture detection v4 (Roboflow)",
+      "modality": "XRAY",
+      "system": "skeletal",
+      "identity": "4148 X-ray images with YOLO boxes in 7 classes; the archive holds two identical copies",
+      "labels": "YOLO",
+      "official_splits": true,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (58).zip",
+      "source_sha256": "df9e34b2fcfe1d96573d126fcf0d37da49631b8f999016e872e83679e7ca3dd0",
+      "files": 16596,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "CC BY 4.0",
+        "source": "in-archive README.dataset.txt and data.yaml (Roboflow Universe veda/bone-fracture-detection-daoon v4)",
+        "verified_on": "2026-10-25",
+        "citation": "Roboflow Universe project bone-fracture-detection-daoon (workspace veda), version 4."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "bone-fracture-detection",
+          "type": "DETECTION",
+          "target": "fracture boxes",
+          "flags": [
+            "NEEDS_REVIEW",
+            "LEAKAGE_RISK"
+          ],
+          "training_eligible": false,
+          "needs_review": "class set mixes fracture labels with a non-fracture 'humerus' class; task definition needs clinical review",
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "mura-v1.1",
+      "archive": "archive_60",
+      "title": "MURA v1.1 musculoskeletal radiographs (Stanford AIMI)",
+      "modality": "XRAY",
+      "system": "skeletal",
+      "identity": "40,009 upper-extremity radiographs in 14,863 studies with study-level normal/abnormal labels; public valid split",
+      "labels": "STUDY_LABEL_CSV",
+      "official_splits": true,
+      "patient_ids": "PSEUDONYMOUS_PATIENT_FOLDERS",
+      "source_archive": "archive (60).zip",
+      "source_sha256": "d95a96e1e8a4d035ae8f326d1e7498ff69fefa15c1bb072521cf596d542f2588",
+      "files": 40013,
+      "location": "D:/project",
+      "license": {
+        "status": "PERMISSION_UNVERIFIED",
+        "name": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
+        "source": "https://echonet.github.io/dynamic/ (agreement terms); https://aimi.stanford.edu/datasets/mura-msk-xrays",
+        "verified_on": "2026-10-25",
+        "note": "Usable only after the user confirms their own Stanford AIMI registration and acceptance of the agreement for this dataset."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "mura-study-abnormality",
+          "type": "CLASSIFICATION",
+          "target": "study-level normal vs abnormal",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "echonet-dynamic",
+      "archive": "archive_56",
+      "title": "EchoNet-Dynamic echocardiography videos (Stanford AIMI)",
+      "modality": "ECHO",
+      "system": "heart",
+      "identity": "10,030 apical-4-chamber videos with EF, ESV/EDV and LV tracings",
+      "labels": "VIDEO_WITH_EF",
+      "official_splits": true,
+      "patient_ids": "ONE_VIDEO_PER_PATIENT",
+      "source_archive": "archive (56).zip",
+      "source_sha256": "b7d7d7ddf011c1ea8daed0ce9a53a27910b2be413c2a3dff86a412872f2eb673",
+      "files": 10033,
+      "location": "D:/project",
+      "license": {
+        "status": "PERMISSION_UNVERIFIED",
+        "name": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
+        "source": "https://echonet.github.io/dynamic/ (agreement terms); https://aimi.stanford.edu/datasets/mura-msk-xrays",
+        "verified_on": "2026-10-25",
+        "note": "Usable only after the user confirms their own Stanford AIMI registration and acceptance of the agreement for this dataset."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "echonet-ef-regression",
+          "type": "REGRESSION",
+          "target": "left-ventricular ejection fraction",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LICENSE_BLOCKED"
+          ],
+          "training_eligible": false,
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "kits19-labels",
+      "archive": "archive_24",
+      "title": "KiTS19 kidney tumour segmentations and clinical data (no CT imaging)",
+      "modality": "CT",
+      "system": "kidneys",
+      "identity": "210 case folders with segmentation.nii and kits.json clinical records; imaging.nii files are absent",
+      "labels": "MASKS_WITHOUT_IMAGES",
+      "official_splits": false,
+      "patient_ids": "PSEUDONYMOUS_CASE_IDS",
+      "source_archive": "archive (24).zip",
+      "source_sha256": "afc03e03cc38b677c4fa2d83afe44b8c89b7dbf306268b7cb034c0b75b12b26a",
+      "files": 223,
+      "location": "D:/project",
+      "license": {
+        "status": "VERIFIED",
+        "name": "CC BY-NC-SA 4.0",
+        "source": "LICENSE in the archive (KiTS19 challenge data repository)",
+        "verified_on": "2026-10-25",
+        "citation": "Heller N, et al. The KiTS19 Challenge Data: 300 Kidney Tumor Cases with Clinical Context, CT Semantic Segmentations, and Surgical Outcomes. arXiv:1904.00445."
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "kits19-kidney-tumour-segmentation",
+          "type": "SEGMENTATION_VOLUMES",
+          "target": "kidney and tumour",
+          "flags": [
+            "MISSING_IMAGES",
+            "CT_IMAGING_NOT_PRESENT"
+          ],
+          "training_eligible": false,
+          "pending": "CT_IMAGING_NOT_PRESENT",
+          "validation_ready": false,
+          "readiness": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "lidc-idri-xml",
+      "archive": "archive_59",
+      "title": "LIDC-IDRI radiologist XML annotations (no CT imaging)",
+      "modality": "CT",
+      "system": "lungs",
+      "identity": "1319 nodule annotation XML files and TCIA metadata; no CT volumes",
+      "labels": "ANNOTATIONS_WITHOUT_IMAGES",
+      "official_splits": false,
+      "patient_ids": "TCIA_SUBJECT_IDS",
+      "source_archive": "archive (59).zip",
+      "source_sha256": "e8a34d88c7027ebbe21fc0e8cd2306a4fe44035c385a09be54b434bce97ed067",
+      "files": 1322,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "totalsegmentator-repository",
+      "archive": "archive_26",
+      "title": "TotalSegmentator source repository (code and test references)",
+      "modality": "CT",
+      "system": null,
+      "identity": "upstream tool source; not a dataset",
+      "labels": "NONE",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (26).zip",
+      "source_sha256": "9686563dff5cf7ebaf97fc618d9fc367f24ebee98a38ef67cd2e48122d2e1889",
+      "files": 157,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "unknown-tfrecords",
+      "archive": "archive_27",
+      "title": "Four TFRecord shards (unidentified)",
+      "modality": "UNKNOWN",
+      "system": null,
+      "identity": "7.9 GB of TFRecords without a README",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (27).zip",
+      "source_sha256": "6bce9a89158f5d54b5fead1665ed9b29a009002a7dd2915cdbde6a4452363761",
+      "files": 4,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "heart-csv",
+      "archive": "archive_29",
+      "title": "heart.csv (heart-disease table, source not stated)",
+      "modality": "CLINICAL_TABULAR",
+      "system": "heart",
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (29).zip",
+      "source_sha256": "44c9dee9d3072915a677a2d1f15ad6269ca0a1a9258ca9b100789f2e377e4974",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "stroke-csv",
+      "archive": "archive_31",
+      "title": "Healthcare stroke dataset (Kaggle-style CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": "brain",
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (31).zip",
+      "source_sha256": "83c150178a7a10439862a66b2703869aadc11f201c359436ae1df77d2b5e7485",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "epileptic-seizure-csv",
+      "archive": "archive_32",
+      "title": "Epileptic seizure recognition (EEG features CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": "brain",
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (32).zip",
+      "source_sha256": "0e85d1b46534464a7d36903a0a22a057501cd3de0938aeaa99004b6645a8ac1a",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "indian-liver-patient-csv",
+      "archive": "archive_33",
+      "title": "Indian liver patient records (CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": "liver",
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (33).zip",
+      "source_sha256": "ae3ff2d86f811bf422e4994e082e8b8fe1f71171a106273df1f09a082431512a",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "hepatitis-c-csv",
+      "archive": "archive_34",
+      "title": "Hepatitis C laboratory data (CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": "liver",
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (34).zip",
+      "source_sha256": "8feb2b162941756dc0bb18c2e02a0dad229b5cc28033b4419f6ad4891f5eb430",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "kidney-disease-csv",
+      "archive": "archive_36",
+      "title": "Chronic kidney disease records (CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": "kidneys",
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (36).zip",
+      "source_sha256": "8de74aa69dd0af5aa672615f094fbab9926c24c513bf88c2e59126c7dc5f227e",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "diabetes-prediction-csv",
+      "archive": "archive_37",
+      "title": "Diabetes prediction dataset (CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": null,
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (37).zip",
+      "source_sha256": "7a0c879f303c49c3778639558c214cdce885a69c528eb08d98c9d065d14c79d9",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "thyroid-csv",
+      "archive": "archive_38",
+      "title": "Thyroid disease tables (CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": null,
+      "identity": "two CSVs without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (38).zip",
+      "source_sha256": "74edbb082915d1f43daed5e7f1c777dc8eca6cd2a6cbf10eb3805b45f07a1068",
+      "files": 2,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "anemia-csv",
+      "archive": "archive_39",
+      "title": "Anaemia table (CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": null,
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (39).zip",
+      "source_sha256": "7ada48c54e7ca93b6755eadc8da8828ad8a9a6695917ad723e6f36a2011b5396",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "data-csv",
+      "archive": "archive_40",
+      "title": "data.csv (content not identified)",
+      "modality": "CLINICAL_TABULAR",
+      "system": null,
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (40).zip",
+      "source_sha256": "f1ee175765fd5e65183a07a5d66d6029ec6b9746680c74eba7a2730b1467bc32",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "pcos-tables",
+      "archive": "archive_41",
+      "title": "PCOS tables (CSV, XLSX)",
+      "modality": "CLINICAL_TABULAR",
+      "system": null,
+      "identity": "two tables without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (41).zip",
+      "source_sha256": "380ce7ff504cb8aa89349a251c64841a09aadbfe410627df94e6a62e67a23891",
+      "files": 2,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "fetal-health-csv",
+      "archive": "archive_42",
+      "title": "Fetal health (cardiotocography features, CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": null,
+      "identity": "single CSV without provenance",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (42).zip",
+      "source_sha256": "27d9079b324b4971649240e1f5a39dfd1ef51eda986ae8a165548048864e8405",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_46": 1
+      },
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "support2-csv",
+      "archive": "archive_43",
+      "title": "SUPPORT2 seriously ill hospitalised adults (CSV)",
+      "modality": "CLINICAL_TABULAR",
+      "system": null,
+      "identity": "survival table; UCI page defers licensing to the original source, which was not verified",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (43).zip",
+      "source_sha256": "f48dda69e79d78285f08e59798c720df99f75f3d1b9e2dafb28b81b1804a9bd5",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "voc-images-root",
+      "archive": "archive_44",
+      "title": "870 JPEG/XML pairs extracted flat into the workspace root (unidentified)",
+      "modality": "UNKNOWN",
+      "system": null,
+      "identity": "Pascal-VOC-style XML without a README",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (44).zip",
+      "source_sha256": "c6bc36f4b555008073333f0aa4888ddc5f51fc90e23ee1a8a0512e770a5ea7d3",
+      "files": 870,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "roboflow-train-folder",
+      "archive": "archive_45",
+      "title": "7052 files added to the shared train/ folder (unidentified Roboflow export)",
+      "modality": "UNKNOWN",
+      "system": null,
+      "identity": "no data.yaml or README in the archive",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (45).zip",
+      "source_sha256": "730913166eb4cccdf5ad38d35e948706aaea963eb276171a9c2d9e4972ddc817",
+      "files": 7052,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "ultrasound-fetus",
+      "archive": "archive_46",
+      "title": "Ultrasound fetus dataset (PNG + CSV; contains an untrusted .pth file that is never loaded)",
+      "modality": "ULTRASOUND",
+      "system": null,
+      "identity": "no licence file",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (46).zip",
+      "source_sha256": "edb036207c35bda609571900ddb73b7d5815bea9327b8984239c01507e20b029",
+      "files": 6038,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {
+        "archive_42": 1
+      },
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "lymphoma-cll-fl-mcl",
+      "archive": "archive_48",
+      "title": "Malignant lymphoma subtypes CLL/FL/MCL (TIFF)",
+      "modality": "MICROSCOPY",
+      "system": null,
+      "identity": "no licence file",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (48).zip",
+      "source_sha256": "5cbd0c51b429eab0b85dcff0b050e4aee4040469d325b4b58c0308fbbf2e2f80",
+      "files": 374,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "otoscopic-images",
+      "archive": "archive_49",
+      "title": "Otoscopic images, 5 classes",
+      "modality": "OTOSCOPY",
+      "system": null,
+      "identity": "no licence file",
+      "labels": "CLASS_FOLDER",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (49).zip",
+      "source_sha256": "76b0b466a805147a1f13f599f034c2915a9e468f30241ded00882d5c1ccc420e",
+      "files": 3000,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "mtsamples",
+      "archive": "archive_50",
+      "title": "MTSamples transcription samples (CSV)",
+      "modality": "DOCUMENT",
+      "system": null,
+      "identity": "unannotated clinical-note samples; terms not verified",
+      "labels": "NONE",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (50).zip",
+      "source_sha256": "7b6ad5f8a2991361e0be336906173938f489b7586217b7cf51176e74fa4eb1a1",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "mtsamples-final",
+      "archive": "archive_51",
+      "title": "MTSamples derived table (CSV)",
+      "modality": "DOCUMENT",
+      "system": null,
+      "identity": "unannotated clinical-note samples; terms not verified",
+      "labels": "NONE",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (51).zip",
+      "source_sha256": "515d0fa3e66fb61c4a899784dd2e2ea9e5edb244041c6f1b39e40def9f0721a3",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "resized-images",
+      "archive": "archive_52",
+      "title": "Resized images at 4 resolutions with cleaned_dataset.csv (unidentified)",
+      "modality": "UNKNOWN",
+      "system": null,
+      "identity": "no README",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (52).zip",
+      "source_sha256": "fe139852fd5d86ef00257ee96f1bf7e113c7d0e2704592d1f28ebcd4bc1786ea",
+      "files": 29061,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "nbme-patient-notes",
+      "archive": "archive_53",
+      "title": "NBME clinical patient notes (train CSV)",
+      "modality": "DOCUMENT",
+      "system": null,
+      "identity": "candidate annotated NLP corpus; competition terms not verified",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (53).zip",
+      "source_sha256": "c910de6566bf0acd089d117e8052edaf8d4798422a2ef261e115a0a278f82f5f",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "medquad",
+      "archive": "archive_54",
+      "title": "MedQuAD medical question-answer pairs (CSV)",
+      "modality": "DOCUMENT",
+      "system": null,
+      "identity": "question-answer corpus; terms not verified",
+      "labels": "NONE",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (54).zip",
+      "source_sha256": "7e379a010fa061b8a1e50c64772cc5c77e38a5aaba8503c6a7d8fc966f4eead3",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "dataset-link",
+      "archive": "archive_55",
+      "title": "dataset_link.txt only",
+      "modality": "UNKNOWN",
+      "system": null,
+      "identity": "a link file, no data",
+      "labels": "NONE",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (55).zip",
+      "source_sha256": "38f6f6a8f8f72c303cb70e7f3bf99e8c0648c6c039bbf1b7eb8193ef523124ae",
+      "files": 1,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    },
+    {
+      "id": "thermal-dataset-folder",
+      "archive": "archive_57",
+      "title": "16,520 thermal images added to the shared DATASET/ folder",
+      "modality": "THERMOGRAPHY",
+      "system": null,
+      "identity": "no licence file",
+      "labels": "UNCLEAR",
+      "official_splits": false,
+      "patient_ids": "NONE_AVAILABLE",
+      "source_archive": "archive (57).zip",
+      "source_sha256": "8827db3d2312a4fec029dabfb27381d09c5ffaed440b38df03a7d806676cbc3b",
+      "files": 16520,
+      "location": "D:/project",
+      "license": {
+        "status": "UNVERIFIED",
+        "name": "No licence file in the archive and no official source matched",
+        "source": null,
+        "verified_on": "2026-10-24"
+      },
+      "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": []
+    }
+  ]
+}

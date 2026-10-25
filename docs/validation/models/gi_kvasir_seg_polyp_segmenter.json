@@ -1,0 +1,122 @@
+{
+  "model_id": "gi_kvasir_seg_polyp_segmenter",
+  "run_id": "gi_kvasir_seg_polyp_segmenter-20261025T080312Z",
+  "task_id": "kvasir-seg-polyp-segmentation",
+  "dataset": "Kvasir-SEG (GI polyp segmentation)",
+  "dataset_id": "kvasir-seg",
+  "dataset_version": "4c97d0496ca08a60e9de783bf16eb8eb576393e16a4c70953ca5b8f3a2c36abb",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "Kvasir-SEG terms of use: research and educational purposes only; commercial use forbidden without prior written permission; cite the dataset paper",
+    "source": "https://datasets.simula.no/kvasir-seg/",
+    "verified_on": "2026-10-25",
+    "citation": "Jha D, Smedsrud PH, Riegler MA, et al. Kvasir-SEG: A Segmented Polyp Dataset. MultiMedia Modeling (MMM) 2020."
+  },
+  "split_method": "publisher lists: train.txt split group-aware into train/validation (85/15, seed 20261024); val.txt is the frozen test set",
+  "split_counts": {
+    "train": 748,
+    "test": 120,
+    "val": 132
+  },
+  "leakage_check": {
+    "near_duplicate_groups_crossing_splits": 0,
+    "images_in_crossing_groups": 0,
+    "test_images_with_cross_split_duplicate": 0,
+    "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+    "near_duplicate_components_crossing_splits": 0,
+    "images_in_crossing_components": 0,
+    "test_images_in_crossing_components": 0,
+    "exclusion_rule": "exclude every test image in a transitive near-duplicate component that spans publisher splits"
+  },
+  "classes": [
+    "polyp"
+  ],
+  "foreground_label": "polyp",
+  "input_color": "rgb",
+  "selection": {
+    "criterion": "validation mean foreground Dice per image",
+    "best_epoch": 54,
+    "val_mean_dice": 0.8099061953584519
+  },
+  "test": {
+    "n_images": 120,
+    "mean_foreground_dice_per_image": 0.7678856140968849,
+    "macro_segment_dice": 0.7678856140968849,
+    "vessel_dice": 0.7678856140968849,
+    "vessel_iou": 0.669584395162636,
+    "vessel_hd95_px_at_model_resolution": 73.5874457234813,
+    "per_segment": [
+      {
+        "segment": "polyp",
+        "images": 120,
+        "mean_dice": 0.7678856140968849
+      }
+    ],
+    "confidence_intervals_95": {
+      "mean_foreground_dice_per_image": {
+        "status": "COMPUTED",
+        "low": 0.7253854224830004,
+        "high": 0.8087967150110857,
+        "resamples": 1000,
+        "unit": "near-duplicate group"
+      },
+      "vessel_dice": {
+        "status": "COMPUTED",
+        "low": 0.7253854224830004,
+        "high": 0.8087967150110857,
+        "resamples": 1000,
+        "unit": "near-duplicate group"
+      }
+    }
+  },
+  "test_without_cross_split_duplicates": {
+    "n_images": 120,
+    "mean_foreground_dice_per_image": 0.7678856140968849,
+    "macro_segment_dice": 0.7678856140968849,
+    "vessel_dice": 0.7678856140968849,
+    "vessel_iou": 0.669584395162636,
+    "vessel_hd95_px_at_model_resolution": 73.5874457234813,
+    "per_segment": [
+      {
+        "segment": "polyp",
+        "images": 120,
+        "mean_dice": 0.7678856140968849
+      }
+    ]
+  },
+  "evaluated_at_resolution": "352x352",
+  "empty_mask_convention": "A segment absent from both prediction and reference is not scored for that image; whole-polyp Dice uses Dice = 1 when both are empty.",
+  "checkpoint": {
+    "path": "artifacts/training/gi_kvasir_seg_polyp_segmenter-20261025T080312Z/model.pt",
+    "sha256": "a5a2c88dc5af67a8993210ca8a3d40ea79b9cd5e0a7cd5f422c1356828115c36"
+  },
+  "held_out_predictions": "artifacts/training/gi_kvasir_seg_polyp_segmenter-20261025T080312Z/test_masks",
+  "training_seconds": 1131.3,
+  "config": {
+    "task_id": "kvasir-seg-polyp-segmentation",
+    "model_id": "gi_kvasir_seg_polyp_segmenter",
+    "display_name": "Kvasir-SEG polyp segmenter (research)",
+    "modality": "ENDOSCOPY",
+    "anatomy": "intestines",
+    "size": 352,
+    "epochs": 80,
+    "batch_size": 8,
+    "lr": 0.001,
+    "workers": 4,
+    "seed": 20261024,
+    "rgb": true,
+    "foreground_label": "polyp"
+  },
+  "reporting_context": {
+    "dataset": "Kvasir-SEG (GI polyp segmentation)",
+    "dataset_version": "4c97d0496ca08a60",
+    "split": "test",
+    "checkpoint": "sha256:a5a2c88dc5af67a8993210ca8a3d40ea79b9cd5e0a7cd5f422c1356828115c36"
+  },
+  "limitations": [
+    "Evaluated at the model's 352x352 working resolution; distances are in those pixels, not millimetres.",
+    "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+    "Internal test split from the same source; no external validation.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

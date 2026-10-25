@@ -1,0 +1,1877 @@
+{
+  "schema_version": "1.0.0",
+  "generated_from": "verified local environment and Phase 1 execution evidence",
+  "models": [
+    {
+      "model_id": "clinical_rules_v1",
+      "display_name": "Transparent clinical-text rules baseline",
+      "domain": "clinical_nlp",
+      "task": "entity_assertion_temporality_extraction",
+      "anatomy": "multi_system",
+      "framework": "python_rules",
+      "adapter": "app.services.nlp_processor",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": null,
+      "device": "cpu",
+      "supported_inputs": [
+        "text/plain",
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      ],
+      "supported_classes": [
+        "clinical_entity",
+        "negation",
+        "temporality"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": true,
+      "limitations": [
+        "Transparent rule baseline, not a trained clinical language model.",
+        "No licensed annotated-corpus evaluation has been completed.",
+        "Pages without embedded text are read by local OCR (RapidOCR); OCR-derived measurements are marked OCR_RULE_BASELINE and OCR accuracy is not validated.",
+        "All extracted statements require human review."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": "Extract bounded clinical entities, assertion/negation and temporality from de-identified reports.",
+        "label_definition": null,
+        "preprocessing_version": "document-parser-v1+rules-v1.0.0",
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "DOCUMENT"
+      ]
+    },
+    {
+      "model_id": "mura_study_baseline",
+      "display_name": "Musculoskeletal radiograph study-level abnormality baseline",
+      "domain": "medical_imaging",
+      "task": "study_level_binary_classification",
+      "anatomy": "musculoskeletal",
+      "framework": "pytorch_monai",
+      "adapter": "planned.monai.mura",
+      "source_repository": "MONAI-dev",
+      "dependency_environment": ".venv",
+      "weights_path": null,
+      "device": "auto",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg",
+        "application/dicom"
+      ],
+      "supported_classes": [
+        "normal",
+        "abnormal"
+      ],
+      "status": "WEIGHTS_MISSING",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "MURA data and a patient-aware split manifest are not registered locally.",
+        "No checkpoint, calibration, held-out predictions, or evaluation report exists.",
+        "MURA labels do not support detection or segmentation claims."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": "Patient-aware study-level normal versus abnormal classification.",
+        "label_definition": {
+          "normal": 0,
+          "abnormal": 1
+        },
+        "preprocessing_version": null,
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "XRAY"
+      ],
+      "source_display_name": "MURA study-level abnormality baseline"
+    },
+    {
+      "model_id": "monai_runtime",
+      "display_name": "Medical-imaging deep-learning runtime adapter",
+      "domain": "medical_imaging_framework",
+      "task": "training_and_inference_framework",
+      "anatomy": "multi_system",
+      "framework": "monai",
+      "adapter": "planned.monai.runtime",
+      "source_repository": "MONAI-dev",
+      "dependency_environment": ".venv",
+      "weights_path": null,
+      "device": "auto",
+      "supported_inputs": [],
+      "supported_classes": [],
+      "status": "DISCOVERED",
+      "validated": false,
+      "processor_only": true,
+      "limitations": [
+        "A source-tree CUDA UNet smoke test passed, but MONAI is not installed as a pinned runtime dependency.",
+        "A framework import is not a trained or validated medical model."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": null,
+        "label_definition": null,
+        "preprocessing_version": null,
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [],
+      "source_display_name": "MONAI source-tree runtime adapter"
+    },
+    {
+      "model_id": "medcat_adapter",
+      "display_name": "Clinical concept-linking terminology adapter",
+      "domain": "clinical_nlp",
+      "task": "concept_annotation",
+      "anatomy": "multi_system",
+      "framework": "medcat",
+      "adapter": "planned.medcat",
+      "source_repository": "MedCAT-main",
+      "dependency_environment": "isolated-required",
+      "weights_path": null,
+      "device": "cpu",
+      "supported_inputs": [
+        "text/plain"
+      ],
+      "supported_classes": [],
+      "status": "DEPENDENCY_MISSING",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "MedCAT is not installed.",
+        "Available MedCAT variants have incompatible NumPy requirements.",
+        "No concept database or vocabulary bundle is configured."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": null,
+        "label_definition": null,
+        "preprocessing_version": null,
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "DOCUMENT"
+      ],
+      "source_display_name": "MedCAT clinical terminology adapter"
+    },
+    {
+      "model_id": "scispacy_adapter",
+      "display_name": "Biomedical named-entity recognition adapter",
+      "domain": "clinical_nlp",
+      "task": "biomedical_entity_recognition",
+      "anatomy": "multi_system",
+      "framework": "spacy_scispacy",
+      "adapter": "app.services.scispacy_adapter",
+      "source_repository": "scispacy-main",
+      "dependency_environment": "wsl:~/.medtwin/venv-nlp (scripts/setup_nlp_wsl.sh; spaCy 3.7.5, scispaCy 0.5.5, en_ner_bc5cdr_md 0.5.4)",
+      "weights_path": null,
+      "device": "cpu",
+      "supported_inputs": [
+        "text/plain",
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      ],
+      "supported_classes": [
+        "DISEASE",
+        "CHEMICAL"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "Runs in WSL because Windows Smart App Control blocks spaCy's native extensions on this host; enabled with MEDTWIN_SCISPACY=wsl (off by default, about 17 s per report).",
+        "Secondary statements only: each entity gets the rule extractor's negation/certainty/temporality context and its own extractor_version; the report label and rule statements are unchanged.",
+        "Pretrained publisher pipeline (BC5CDR diseases/chemicals); MedTwin has no annotated clinical corpus, so no task-specific evaluation exists."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": null,
+        "label_definition": null,
+        "preprocessing_version": null,
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "DOCUMENT"
+      ],
+      "source_display_name": "scispaCy biomedical entity adapter"
+    },
+    {
+      "model_id": "radgraph_adapter",
+      "display_name": "Radiology report entity-relation adapter",
+      "domain": "radiology_nlp",
+      "task": "entity_relation_extraction",
+      "anatomy": "multi_system",
+      "framework": "pytorch_transformers",
+      "adapter": "planned.radgraph",
+      "source_repository": "radgraph-master",
+      "dependency_environment": "isolated-required",
+      "weights_path": null,
+      "device": "auto",
+      "supported_inputs": [
+        "text/plain"
+      ],
+      "supported_classes": [],
+      "status": "DEPENDENCY_MISSING",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "Required Python dependencies are missing.",
+        "No RadGraph checkpoint is available locally.",
+        "No licensed evaluation corpus has been selected."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": null,
+        "label_definition": null,
+        "preprocessing_version": null,
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "DOCUMENT"
+      ],
+      "source_display_name": "RadGraph radiology relation adapter"
+    },
+    {
+      "model_id": "brain_imaging_adapter",
+      "display_name": "Brain MRI/CT inference adapter",
+      "domain": "neurology_imaging",
+      "task": "unselected",
+      "anatomy": "brain",
+      "framework": "pytorch_monai",
+      "adapter": "planned.imaging.brain",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": null,
+      "device": "auto",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg",
+        "application/dicom",
+        "application/nifti"
+      ],
+      "supported_classes": [],
+      "status": "WEIGHTS_MISSING",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "Local dataset presence does not establish task compatibility.",
+        "No checkpoint, split manifest, or held-out evaluation is registered."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": null,
+        "label_definition": null,
+        "preprocessing_version": null,
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "MRI",
+        "CT"
+      ]
+    },
+    {
+      "model_id": "lung_imaging_adapter",
+      "display_name": "Pulmonary imaging inference adapter",
+      "domain": "pulmonary_imaging",
+      "task": "unselected",
+      "anatomy": "lungs",
+      "framework": "pytorch_monai",
+      "adapter": "planned.imaging.lung",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": null,
+      "device": "auto",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg",
+        "application/dicom",
+        "application/nifti"
+      ],
+      "supported_classes": [],
+      "status": "WEIGHTS_MISSING",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "No verified label contract or trained checkpoint is registered.",
+        "Dataset folder names are not treated as ground truth."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": null,
+        "label_definition": null,
+        "preprocessing_version": null,
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "CT",
+        "XRAY"
+      ]
+    },
+    {
+      "model_id": "gi_endoscopy_adapter",
+      "display_name": "Gastrointestinal endoscopy inference adapter",
+      "domain": "gastrointestinal_imaging",
+      "task": "unselected",
+      "anatomy": "gastrointestinal_tract",
+      "framework": "pytorch_monai",
+      "adapter": "planned.imaging.gastrointestinal",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": null,
+      "device": "auto",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "supported_classes": [],
+      "status": "WEIGHTS_MISSING",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "Kvasir/Gastrovision data require license and split verification.",
+        "No checkpoint, calibration, or held-out evaluation is registered."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": null,
+        "label_definition": null,
+        "preprocessing_version": null,
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "ENDOSCOPY"
+      ]
+    },
+    {
+      "model_id": "deepsa_angiography_adapter",
+      "display_name": "Coronary angiography vessel-segmentation adapter (external weights unavailable)",
+      "domain": "coronary_angiography",
+      "task": "lesion_and_vessel_analysis",
+      "anatomy": "coronary_vessels",
+      "framework": "unknown",
+      "adapter": "planned.deepsa",
+      "source_repository": "research_document_only",
+      "dependency_environment": "unresolved",
+      "weights_path": null,
+      "device": "auto",
+      "supported_inputs": [],
+      "supported_classes": [],
+      "status": "UNSUPPORTED",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "No executable, weights, or validated dataset contract is registered.",
+        "Sliding-window coverage and severity-threshold inconsistencies require independent reproduction."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": null,
+        "label_definition": null,
+        "preprocessing_version": null,
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "ANGIOGRAPHY"
+      ],
+      "source_display_name": "DeepSA angiography adapter"
+    },
+    {
+      "model_id": "gi_kvasir_v2_classifier",
+      "display_name": "GI endoscopy finding classifier, 8 classes (research)",
+      "domain": "medical_imaging",
+      "task": "image_classification",
+      "anatomy": "intestines",
+      "framework": "torchvision resnet18",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/gi_kvasir_v2_classifier-20261024T151359Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/jpeg",
+        "image/png"
+      ],
+      "supported_modalities": [
+        "ENDOSCOPY"
+      ],
+      "supported_classes": [
+        "dyed-lifted-polyps",
+        "dyed-resection-margins",
+        "esophagitis",
+        "normal-cecum",
+        "normal-pylorus",
+        "normal-z-line",
+        "polyps",
+        "ulcerative-colitis"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "limitations": [
+        "The registry found no identifiers in sampled metadata, but the source provides no patient IDs; patient-level separation cannot be verified. Splits keep confirmed near-duplicate groups together.",
+        "Internal held-out test from the same source distribution; no external validation.",
+        "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "f3eedd730fe4a33d30048a69e1cfe9af3aeae4804b5c20f552bda11450c22cf5",
+        "dataset_license": "Kvasir terms of use: research and educational purposes only; commercial use requires written permission; cite the dataset paper",
+        "split_manifest_path": "_derived/datasets/kvasir-v2-8class/samples.csv",
+        "task_definition": "8 Kvasir findings/landmarks per image",
+        "label_definition": {
+          "source": "publisher class folders",
+          "classes": [
+            "dyed-lifted-polyps",
+            "dyed-resection-margins",
+            "esophagitis",
+            "normal-cecum",
+            "normal-pylorus",
+            "normal-z-line",
+            "polyps",
+            "ulcerative-colitis"
+          ]
+        },
+        "preprocessing_version": "rgb-resize114-centercrop-imagenetnorm-v1",
+        "checkpoint_path": "artifacts/training/gi_kvasir_v2_classifier-20261024T151359Z/model.pt",
+        "checkpoint_sha256": "6d7494d19e52c0b5462f90637e35f474d9db1950217e5a40e95cda4bec27a8e4",
+        "calibration": {
+          "method": "temperature_scaling",
+          "parameters": {
+            "temperature": 1.0775630474090576
+          }
+        },
+        "decision_thresholds": {
+          "rule": "argmax over temperature-scaled softmax"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/gi_kvasir_v2_classifier-20261024T151359Z/predictions_test.csv",
+        "evaluation_input": {
+          "evaluation_task": "multiclass",
+          "split": "test",
+          "artifact_path": "artifacts/training/gi_kvasir_v2_classifier-20261024T151359Z/predictions_test.csv",
+          "sha256": "23a9c7439914170a466925b700c7f726da49a41eb3adde6fba9edd02eda3456a",
+          "bytes": 233051,
+          "media_type": "text/csv",
+          "format": "MEDTWIN_MULTICLASS_CSV_V1",
+          "digest_scheme": "SHA256_RAW_BYTES_V1",
+          "required_columns": [
+            "y_true",
+            "y_pred"
+          ],
+          "row_count": 1202
+        },
+        "evaluation_report_path": "docs/validation/models/gi_kvasir_v2_classifier.json",
+        "model_card_path": "docs/models/gi_kvasir_v2_classifier.md"
+      },
+      "source_display_name": "Kvasir v2 8-class GI endoscopy classifier (research)"
+    },
+    {
+      "model_id": "angiography_stenosis_detector",
+      "display_name": "Coronary angiography stenosis detector (research)",
+      "domain": "medical_imaging",
+      "task": "object_detection",
+      "anatomy": "heart",
+      "framework": "torchvision fasterrcnn_resnet50_fpn_v2",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "supported_modalities": [
+        "ANGIOGRAPHY"
+      ],
+      "supported_classes": [
+        "stenosis"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "limitations": [
+        "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+        "Internal test split from the same source; no external validation.",
+        "Detection scores are not probabilities and are not calibrated.",
+        "Research-only output; not validated for clinical use.",
+        "The conservative duplicate sensitivity analysis excludes every test image in a transitive near-duplicate component spanning publisher splits; it is a post-hoc subset analysis, while the official publisher test result remains unchanged.",
+        "No held-out reference mask exists for segment 10a; its per-segment Dice is undefined.",
+        "Held-out support is below 20 images for segment 10; its per-segment estimate is unstable."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "2b1fbdaf7fe5431febcddff60f00b542b2ae4def1605941e532ee195d1229a93",
+        "dataset_license": "CC0 1.0",
+        "split_manifest_path": "_derived/datasets/arcade-stenosis-detection/samples.csv",
+        "task_definition": "stenosis regions (COCO boxes, category 'stenosis')",
+        "label_definition": {
+          "source": "COCO",
+          "category": "stenosis"
+        },
+        "preprocessing_version": "rgb-to-tensor-model-resize-v1",
+        "checkpoint_path": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/model.pt",
+        "checkpoint_sha256": "d06224b406d7e9104f25c03921fcbe78c2aedae0752ce74e9bcbfefae49c05b8",
+        "calibration": null,
+        "decision_thresholds": {
+          "display_score_threshold": 0.75,
+          "chosen_on": "validation max F1 at IoU 0.5"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/predictions_test.json",
+        "evaluation_report_path": "docs/validation/models/angiography_stenosis_detector.json",
+        "model_card_path": "docs/models/angiography_stenosis_detector.md"
+      },
+      "dataset_version_lineage": {
+        "trained_and_evaluated_on": "2b1fbdaf7fe5431febcddff60f00b542b2ae4def1605941e532ee195d1229a93",
+        "current_audit_manifest_prefix": "e4e58c7c8ade713a",
+        "difference": "Only the cross_split_duplicate column changed: the audit now flags whole near-duplicate components (54 images) instead of the endpoints of pixel-confirmed cross-split pairs (41 images). Entries, paths, publisher splits, group ids and labels are identical.",
+        "verification": "The training-time hash was reproduced bit for bit from the current manifest with the earlier flag rule.",
+        "effect": "Headline test metrics unchanged; only the 'without cross-split duplicates' sensitivity subset differs.",
+        "verified_on": "2026-10-25"
+      },
+      "source_display_name": "ARCADE coronary stenosis detector (research)"
+    },
+    {
+      "model_id": "kidney_stone_detector",
+      "display_name": "Renal calculus detector on CT slices (research)",
+      "domain": "medical_imaging",
+      "task": "object_detection",
+      "anatomy": "kidneys",
+      "framework": "torchvision fasterrcnn_resnet50_fpn_v2",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/kidney_stone_detector-20261024T161540Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "supported_modalities": [
+        "CT"
+      ],
+      "supported_classes": [
+        "kidney_stone"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "limitations": [
+        "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+        "Internal test split from the same source; no external validation.",
+        "Detection scores are not probabilities and are not calibrated.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "5085472ca7ecf856a18fb95240da90e16f81462283b0317295ca9cdedd38a7f6",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "_derived/datasets/tez-kidney-stone-detection/samples.csv",
+        "task_definition": "kidney stone boxes (class Tas_Var)",
+        "label_definition": {
+          "source": "YOLO",
+          "category": "kidney_stone"
+        },
+        "preprocessing_version": "rgb-to-tensor-model-resize-v1",
+        "checkpoint_path": "artifacts/training/kidney_stone_detector-20261024T161540Z/model.pt",
+        "checkpoint_sha256": "e9267f9a6e9fb36cc08fd27a888096209febf023ce2f140c5f7d38f6839b9fcb",
+        "calibration": null,
+        "decision_thresholds": {
+          "display_score_threshold": 0.85,
+          "chosen_on": "validation max F1 at IoU 0.5"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/kidney_stone_detector-20261024T161540Z/predictions_test.json",
+        "evaluation_report_path": "docs/validation/models/kidney_stone_detector.json",
+        "model_card_path": "docs/models/kidney_stone_detector.md"
+      },
+      "source_display_name": "TEZ kidney stone detector on CT slices (research)"
+    },
+    {
+      "model_id": "angiography_syntax_segmenter",
+      "display_name": "Coronary artery segment segmenter, SYNTAX segments (research)",
+      "domain": "medical_imaging",
+      "task": "semantic_segmentation",
+      "anatomy": "heart",
+      "framework": "MONAI UNet 2D",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/ml_training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "supported_modalities": [
+        "ANGIOGRAPHY"
+      ],
+      "supported_classes": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "9a",
+        "10",
+        "10a",
+        "11",
+        "12",
+        "12a",
+        "13",
+        "14",
+        "14a",
+        "15",
+        "16",
+        "16a",
+        "16b",
+        "16c",
+        "12b",
+        "14b"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "limitations": [
+        "Evaluated at the model's 512x512 working resolution; distances are in those pixels, not millimetres.",
+        "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+        "Internal test split from the same source; no external validation.",
+        "Research-only output; not validated for clinical use.",
+        "The conservative duplicate sensitivity analysis excludes every test image in a transitive near-duplicate component spanning publisher splits; it is a post-hoc subset analysis, while the official publisher test result remains unchanged."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "c21bee6dc5bd0a4ef91711802b7a606cec4d6c08b686ed0af0db7f9c959486ba",
+        "dataset_license": "CC0 1.0",
+        "split_manifest_path": "_derived/datasets/arcade-syntax-segmentation/samples.csv",
+        "task_definition": "25 SYNTAX coronary segments (COCO polygons)",
+        "label_definition": {
+          "source": "COCO polygons rasterised to class indices",
+          "classes": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "9a",
+            "10",
+            "10a",
+            "11",
+            "12",
+            "12a",
+            "13",
+            "14",
+            "14a",
+            "15",
+            "16",
+            "16a",
+            "16b",
+            "16c",
+            "12b",
+            "14b"
+          ]
+        },
+        "preprocessing_version": "gray-resize512-standardise-v1",
+        "checkpoint_path": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/model.pt",
+        "checkpoint_sha256": "3a3882071f72192edaec39a3cfd2449faf6d93f367d11dccf3455ba8824ab0a0",
+        "calibration": null,
+        "decision_thresholds": {
+          "rule": "argmax over softmax per pixel"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/test_masks",
+        "evaluation_report_path": "docs/validation/models/angiography_syntax_segmenter.json",
+        "model_card_path": "docs/models/angiography_syntax_segmenter.md"
+      },
+      "dataset_version_lineage": {
+        "trained_and_evaluated_on": "c21bee6dc5bd0a4ef91711802b7a606cec4d6c08b686ed0af0db7f9c959486ba",
+        "current_audit_manifest_prefix": "0e3c2dec8df98b7a",
+        "difference": "Only the cross_split_duplicate column changed: the audit now flags whole near-duplicate components (6 images) instead of the endpoints of pixel-confirmed cross-split pairs (5 images). Entries, paths, publisher splits, group ids and labels are identical.",
+        "verification": "The training-time hash was reproduced bit for bit from the current manifest with the earlier flag rule.",
+        "effect": "Headline test metrics unchanged; only the 'without cross-split duplicates' sensitivity subset differs.",
+        "verified_on": "2026-10-25"
+      },
+      "source_display_name": "ARCADE SYNTAX coronary segment segmenter (research)"
+    },
+    {
+      "model_id": "gi_gastrovision_27class_classifier",
+      "display_name": "GI endoscopy finding classifier, 27 classes (exploratory research)",
+      "domain": "medical_imaging",
+      "task": "image_classification",
+      "anatomy": "intestines",
+      "framework": "torchvision efficientnet_b0",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/gi_gastrovision_27class_classifier-20261024T173442Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/jpeg",
+        "image/png"
+      ],
+      "supported_modalities": [
+        "ENDOSCOPY"
+      ],
+      "supported_classes": [
+        "Accessory tools",
+        "Angiectasia",
+        "Barretts esophagus",
+        "Blood in lumen",
+        "Cecum",
+        "Colon diverticula",
+        "Colon polyps",
+        "Colorectal cancer",
+        "Duodenal bulb",
+        "Dyed-lifted-polyps",
+        "Dyed-resection-margins",
+        "Erythema",
+        "Esophageal varices",
+        "Esophagitis",
+        "Gastric polyps",
+        "Gastroesophageal_junction_normal z-line",
+        "Ileocecal valve",
+        "Mucosal inflammation large bowel",
+        "Normal esophagus",
+        "Normal mucosa and vascular pattern in the large bowel",
+        "Normal stomach",
+        "Pylorus",
+        "Resected polyps",
+        "Resection margins",
+        "Retroflex rectum",
+        "Small bowel_terminal ileum",
+        "Ulcer"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "EXPLORATORY_TRAINING_ONLY",
+        "run_scope": "EXPLORATORY_ONLY",
+        "minimum_samples_per_class": 20,
+        "classes_below_minimum": [
+          {
+            "class": "Angiectasia",
+            "total": 17,
+            "train": 11,
+            "val": 2,
+            "test": 4,
+            "minimum_required": 20
+          },
+          {
+            "class": "Erythema",
+            "total": 15,
+            "train": 10,
+            "val": 2,
+            "test": 3,
+            "minimum_required": 20
+          },
+          {
+            "class": "Esophageal varices",
+            "total": 7,
+            "train": 4,
+            "val": 1,
+            "test": 2,
+            "minimum_required": 20
+          },
+          {
+            "class": "Ulcer",
+            "total": 6,
+            "train": 4,
+            "val": 1,
+            "test": 1,
+            "minimum_required": 20
+          }
+        ],
+        "source_flags": [
+          "TASK_SUPPORTED_BY_LABELS",
+          "LEAKAGE_RISK",
+          "INSUFFICIENT_SAMPLES"
+        ],
+        "effective_flags": [
+          "TASK_SUPPORTED_BY_LABELS",
+          "LEAKAGE_RISK",
+          "INSUFFICIENT_SAMPLES"
+        ]
+      },
+      "class_distribution": {
+        "per_split": {
+          "train": {
+            "Accessory tools": 886,
+            "Angiectasia": 11,
+            "Barretts esophagus": 66,
+            "Blood in lumen": 119,
+            "Cecum": 79,
+            "Colon diverticula": 20,
+            "Colon polyps": 574,
+            "Colorectal cancer": 97,
+            "Duodenal bulb": 143,
+            "Dyed-lifted-polyps": 98,
+            "Dyed-resection-margins": 172,
+            "Erythema": 10,
+            "Esophageal varices": 4,
+            "Esophagitis": 74,
+            "Gastric polyps": 44,
+            "Gastroesophageal_junction_normal z-line": 230,
+            "Ileocecal valve": 140,
+            "Mucosal inflammation large bowel": 20,
+            "Normal esophagus": 98,
+            "Normal mucosa and vascular pattern in the large bowel": 1026,
+            "Normal stomach": 678,
+            "Pylorus": 275,
+            "Resected polyps": 64,
+            "Resection margins": 17,
+            "Retroflex rectum": 46,
+            "Small bowel_terminal ileum": 592,
+            "Ulcer": 4
+          },
+          "val": {
+            "Accessory tools": 189,
+            "Angiectasia": 2,
+            "Barretts esophagus": 14,
+            "Blood in lumen": 25,
+            "Cecum": 16,
+            "Colon diverticula": 4,
+            "Colon polyps": 123,
+            "Colorectal cancer": 20,
+            "Duodenal bulb": 30,
+            "Dyed-lifted-polyps": 21,
+            "Dyed-resection-margins": 36,
+            "Erythema": 2,
+            "Esophageal varices": 1,
+            "Esophagitis": 16,
+            "Gastric polyps": 10,
+            "Gastroesophageal_junction_normal z-line": 49,
+            "Ileocecal valve": 30,
+            "Mucosal inflammation large bowel": 4,
+            "Normal esophagus": 20,
+            "Normal mucosa and vascular pattern in the large bowel": 220,
+            "Normal stomach": 145,
+            "Pylorus": 58,
+            "Resected polyps": 13,
+            "Resection margins": 3,
+            "Retroflex rectum": 10,
+            "Small bowel_terminal ileum": 126,
+            "Ulcer": 1
+          },
+          "test": {
+            "Accessory tools": 191,
+            "Angiectasia": 4,
+            "Barretts esophagus": 15,
+            "Blood in lumen": 27,
+            "Cecum": 18,
+            "Colon diverticula": 5,
+            "Colon polyps": 123,
+            "Colorectal cancer": 22,
+            "Duodenal bulb": 32,
+            "Dyed-lifted-polyps": 22,
+            "Dyed-resection-margins": 38,
+            "Erythema": 3,
+            "Esophageal varices": 2,
+            "Esophagitis": 17,
+            "Gastric polyps": 11,
+            "Gastroesophageal_junction_normal z-line": 51,
+            "Ileocecal valve": 30,
+            "Mucosal inflammation large bowel": 5,
+            "Normal esophagus": 22,
+            "Normal mucosa and vascular pattern in the large bowel": 221,
+            "Normal stomach": 146,
+            "Pylorus": 60,
+            "Resected polyps": 15,
+            "Resection margins": 5,
+            "Retroflex rectum": 11,
+            "Small bowel_terminal ileum": 128,
+            "Ulcer": 1
+          }
+        },
+        "total": {
+          "Accessory tools": 1266,
+          "Angiectasia": 17,
+          "Barretts esophagus": 95,
+          "Blood in lumen": 171,
+          "Cecum": 113,
+          "Colon diverticula": 29,
+          "Colon polyps": 820,
+          "Colorectal cancer": 139,
+          "Duodenal bulb": 205,
+          "Dyed-lifted-polyps": 141,
+          "Dyed-resection-margins": 246,
+          "Erythema": 15,
+          "Esophageal varices": 7,
+          "Esophagitis": 107,
+          "Gastric polyps": 65,
+          "Gastroesophageal_junction_normal z-line": 330,
+          "Ileocecal valve": 200,
+          "Mucosal inflammation large bowel": 29,
+          "Normal esophagus": 140,
+          "Normal mucosa and vascular pattern in the large bowel": 1467,
+          "Normal stomach": 969,
+          "Pylorus": 393,
+          "Resected polyps": 92,
+          "Resection margins": 25,
+          "Retroflex rectum": 67,
+          "Small bowel_terminal ileum": 846,
+          "Ulcer": 6
+        }
+      },
+      "class_imbalance": {
+        "strategy": "inverse_frequency",
+        "enabled": true,
+        "formula": "w_c = N_train / (K * n_train,c)",
+        "computed_from": "training split only",
+        "training_counts": {
+          "Accessory tools": 886,
+          "Angiectasia": 11,
+          "Barretts esophagus": 66,
+          "Blood in lumen": 119,
+          "Cecum": 79,
+          "Colon diverticula": 20,
+          "Colon polyps": 574,
+          "Colorectal cancer": 97,
+          "Duodenal bulb": 143,
+          "Dyed-lifted-polyps": 98,
+          "Dyed-resection-margins": 172,
+          "Erythema": 10,
+          "Esophageal varices": 4,
+          "Esophagitis": 74,
+          "Gastric polyps": 44,
+          "Gastroesophageal_junction_normal z-line": 230,
+          "Ileocecal valve": 140,
+          "Mucosal inflammation large bowel": 20,
+          "Normal esophagus": 98,
+          "Normal mucosa and vascular pattern in the large bowel": 1026,
+          "Normal stomach": 678,
+          "Pylorus": 275,
+          "Resected polyps": 64,
+          "Resection margins": 17,
+          "Retroflex rectum": 46,
+          "Small bowel_terminal ileum": 592,
+          "Ulcer": 4
+        },
+        "weights_by_class": {
+          "Accessory tools": 0.23355070646267034,
+          "Angiectasia": 18.811447811447813,
+          "Barretts esophagus": 3.1352413019079686,
+          "Blood in lumen": 1.7388733271086212,
+          "Cecum": 2.6193155180496954,
+          "Colon diverticula": 10.346296296296297,
+          "Colon polyps": 0.3604981287908117,
+          "Colorectal cancer": 2.1332569683085145,
+          "Duodenal bulb": 1.447034447034447,
+          "Dyed-lifted-polyps": 2.1114890400604684,
+          "Dyed-resection-margins": 1.2030577088716623,
+          "Erythema": 20.692592592592593,
+          "Esophageal varices": 51.73148148148148,
+          "Esophagitis": 2.7962962962962963,
+          "Gastric polyps": 4.702861952861953,
+          "Gastroesophageal_junction_normal z-line": 0.8996779388083735,
+          "Ileocecal valve": 1.478042328042328,
+          "Mucosal inflammation large bowel": 10.346296296296297,
+          "Normal esophagus": 2.1114890400604684,
+          "Normal mucosa and vascular pattern in the large bowel": 0.2016821890116237,
+          "Normal stomach": 0.3052004807167049,
+          "Pylorus": 0.7524579124579125,
+          "Resected polyps": 3.2332175925925926,
+          "Resection margins": 12.172113289760349,
+          "Retroflex rectum": 4.498389694041868,
+          "Small bowel_terminal ileum": 0.34953703703703703,
+          "Ulcer": 51.73148148148148
+        },
+        "normalization": "equal aggregate training-loss contribution per observed class"
+      },
+      "limitations": [
+        "INSUFFICIENT_SAMPLES: classes below the declared minimum of 20: Angiectasia (total=17, train=11, val=2, test=4); Erythema (total=15, train=10, val=2, test=3); Esophageal varices (total=7, train=4, val=1, test=2); Ulcer (total=6, train=4, val=1, test=1). This run was explicitly exploratory; rare-class estimates are unstable and are not validation-ready.",
+        "Training used inverse-frequency weighted cross-entropy computed from the training split only. Weighting changes optimisation but does not create rare-class evidence or correct evaluation uncertainty.",
+        "The registry found no identifiers in sampled metadata, but the source provides no patient IDs; patient-level separation cannot be verified. Splits keep confirmed near-duplicate groups together.",
+        "Internal held-out test from the same source distribution; no external validation.",
+        "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "1f2d40f8aa2a284d1776b8e877d116873533757c1199359a1ab1412c5dc047d5",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "_derived/datasets/gastrovision-27class/samples.csv",
+        "task_definition": "27 GastroVision classes per image",
+        "label_definition": {
+          "source": "publisher class folders",
+          "classes": [
+            "Accessory tools",
+            "Angiectasia",
+            "Barretts esophagus",
+            "Blood in lumen",
+            "Cecum",
+            "Colon diverticula",
+            "Colon polyps",
+            "Colorectal cancer",
+            "Duodenal bulb",
+            "Dyed-lifted-polyps",
+            "Dyed-resection-margins",
+            "Erythema",
+            "Esophageal varices",
+            "Esophagitis",
+            "Gastric polyps",
+            "Gastroesophageal_junction_normal z-line",
+            "Ileocecal valve",
+            "Mucosal inflammation large bowel",
+            "Normal esophagus",
+            "Normal mucosa and vascular pattern in the large bowel",
+            "Normal stomach",
+            "Pylorus",
+            "Resected polyps",
+            "Resection margins",
+            "Retroflex rectum",
+            "Small bowel_terminal ileum",
+            "Ulcer"
+          ]
+        },
+        "preprocessing_version": "rgb-resize114-centercrop-imagenetnorm-v1",
+        "checkpoint_path": "artifacts/training/gi_gastrovision_27class_classifier-20261024T173442Z/model.pt",
+        "checkpoint_sha256": "464986a86033a6415af2870ac26a75d06c787e86caf3b9f74b865e4f5ba757f9",
+        "calibration": {
+          "method": "temperature_scaling",
+          "parameters": {
+            "temperature": 1.1170016527175903
+          }
+        },
+        "decision_thresholds": {
+          "rule": "argmax over temperature-scaled softmax"
+        },
+        "abstention_thresholds": null,
+        "validation_readiness": {
+          "validation_ready": false,
+          "readiness": "EXPLORATORY_TRAINING_ONLY",
+          "run_scope": "EXPLORATORY_ONLY",
+          "minimum_samples_per_class": 20,
+          "classes_below_minimum": [
+            {
+              "class": "Angiectasia",
+              "total": 17,
+              "train": 11,
+              "val": 2,
+              "test": 4,
+              "minimum_required": 20
+            },
+            {
+              "class": "Erythema",
+              "total": 15,
+              "train": 10,
+              "val": 2,
+              "test": 3,
+              "minimum_required": 20
+            },
+            {
+              "class": "Esophageal varices",
+              "total": 7,
+              "train": 4,
+              "val": 1,
+              "test": 2,
+              "minimum_required": 20
+            },
+            {
+              "class": "Ulcer",
+              "total": 6,
+              "train": 4,
+              "val": 1,
+              "test": 1,
+              "minimum_required": 20
+            }
+          ],
+          "source_flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK",
+            "INSUFFICIENT_SAMPLES"
+          ],
+          "effective_flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK",
+            "INSUFFICIENT_SAMPLES"
+          ]
+        },
+        "class_distribution": {
+          "per_split": {
+            "train": {
+              "Accessory tools": 886,
+              "Angiectasia": 11,
+              "Barretts esophagus": 66,
+              "Blood in lumen": 119,
+              "Cecum": 79,
+              "Colon diverticula": 20,
+              "Colon polyps": 574,
+              "Colorectal cancer": 97,
+              "Duodenal bulb": 143,
+              "Dyed-lifted-polyps": 98,
+              "Dyed-resection-margins": 172,
+              "Erythema": 10,
+              "Esophageal varices": 4,
+              "Esophagitis": 74,
+              "Gastric polyps": 44,
+              "Gastroesophageal_junction_normal z-line": 230,
+              "Ileocecal valve": 140,
+              "Mucosal inflammation large bowel": 20,
+              "Normal esophagus": 98,
+              "Normal mucosa and vascular pattern in the large bowel": 1026,
+              "Normal stomach": 678,
+              "Pylorus": 275,
+              "Resected polyps": 64,
+              "Resection margins": 17,
+              "Retroflex rectum": 46,
+              "Small bowel_terminal ileum": 592,
+              "Ulcer": 4
+            },
+            "val": {
+              "Accessory tools": 189,
+              "Angiectasia": 2,
+              "Barretts esophagus": 14,
+              "Blood in lumen": 25,
+              "Cecum": 16,
+              "Colon diverticula": 4,
+              "Colon polyps": 123,
+              "Colorectal cancer": 20,
+              "Duodenal bulb": 30,
+              "Dyed-lifted-polyps": 21,
+              "Dyed-resection-margins": 36,
+              "Erythema": 2,
+              "Esophageal varices": 1,
+              "Esophagitis": 16,
+              "Gastric polyps": 10,
+              "Gastroesophageal_junction_normal z-line": 49,
+              "Ileocecal valve": 30,
+              "Mucosal inflammation large bowel": 4,
+              "Normal esophagus": 20,
+              "Normal mucosa and vascular pattern in the large bowel": 220,
+              "Normal stomach": 145,
+              "Pylorus": 58,
+              "Resected polyps": 13,
+              "Resection margins": 3,
+              "Retroflex rectum": 10,
+              "Small bowel_terminal ileum": 126,
+              "Ulcer": 1
+            },
+            "test": {
+              "Accessory tools": 191,
+              "Angiectasia": 4,
+              "Barretts esophagus": 15,
+              "Blood in lumen": 27,
+              "Cecum": 18,
+              "Colon diverticula": 5,
+              "Colon polyps": 123,
+              "Colorectal cancer": 22,
+              "Duodenal bulb": 32,
+              "Dyed-lifted-polyps": 22,
+              "Dyed-resection-margins": 38,
+              "Erythema": 3,
+              "Esophageal varices": 2,
+              "Esophagitis": 17,
+              "Gastric polyps": 11,
+              "Gastroesophageal_junction_normal z-line": 51,
+              "Ileocecal valve": 30,
+              "Mucosal inflammation large bowel": 5,
+              "Normal esophagus": 22,
+              "Normal mucosa and vascular pattern in the large bowel": 221,
+              "Normal stomach": 146,
+              "Pylorus": 60,
+              "Resected polyps": 15,
+              "Resection margins": 5,
+              "Retroflex rectum": 11,
+              "Small bowel_terminal ileum": 128,
+              "Ulcer": 1
+            }
+          },
+          "total": {
+            "Accessory tools": 1266,
+            "Angiectasia": 17,
+            "Barretts esophagus": 95,
+            "Blood in lumen": 171,
+            "Cecum": 113,
+            "Colon diverticula": 29,
+            "Colon polyps": 820,
+            "Colorectal cancer": 139,
+            "Duodenal bulb": 205,
+            "Dyed-lifted-polyps": 141,
+            "Dyed-resection-margins": 246,
+            "Erythema": 15,
+            "Esophageal varices": 7,
+            "Esophagitis": 107,
+            "Gastric polyps": 65,
+            "Gastroesophageal_junction_normal z-line": 330,
+            "Ileocecal valve": 200,
+            "Mucosal inflammation large bowel": 29,
+            "Normal esophagus": 140,
+            "Normal mucosa and vascular pattern in the large bowel": 1467,
+            "Normal stomach": 969,
+            "Pylorus": 393,
+            "Resected polyps": 92,
+            "Resection margins": 25,
+            "Retroflex rectum": 67,
+            "Small bowel_terminal ileum": 846,
+            "Ulcer": 6
+          }
+        },
+        "class_imbalance": {
+          "strategy": "inverse_frequency",
+          "enabled": true,
+          "formula": "w_c = N_train / (K * n_train,c)",
+          "computed_from": "training split only",
+          "training_counts": {
+            "Accessory tools": 886,
+            "Angiectasia": 11,
+            "Barretts esophagus": 66,
+            "Blood in lumen": 119,
+            "Cecum": 79,
+            "Colon diverticula": 20,
+            "Colon polyps": 574,
+            "Colorectal cancer": 97,
+            "Duodenal bulb": 143,
+            "Dyed-lifted-polyps": 98,
+            "Dyed-resection-margins": 172,
+            "Erythema": 10,
+            "Esophageal varices": 4,
+            "Esophagitis": 74,
+            "Gastric polyps": 44,
+            "Gastroesophageal_junction_normal z-line": 230,
+            "Ileocecal valve": 140,
+            "Mucosal inflammation large bowel": 20,
+            "Normal esophagus": 98,
+            "Normal mucosa and vascular pattern in the large bowel": 1026,
+            "Normal stomach": 678,
+            "Pylorus": 275,
+            "Resected polyps": 64,
+            "Resection margins": 17,
+            "Retroflex rectum": 46,
+            "Small bowel_terminal ileum": 592,
+            "Ulcer": 4
+          },
+          "weights_by_class": {
+            "Accessory tools": 0.23355070646267034,
+            "Angiectasia": 18.811447811447813,
+            "Barretts esophagus": 3.1352413019079686,
+            "Blood in lumen": 1.7388733271086212,
+            "Cecum": 2.6193155180496954,
+            "Colon diverticula": 10.346296296296297,
+            "Colon polyps": 0.3604981287908117,
+            "Colorectal cancer": 2.1332569683085145,
+            "Duodenal bulb": 1.447034447034447,
+            "Dyed-lifted-polyps": 2.1114890400604684,
+            "Dyed-resection-margins": 1.2030577088716623,
+            "Erythema": 20.692592592592593,
+            "Esophageal varices": 51.73148148148148,
+            "Esophagitis": 2.7962962962962963,
+            "Gastric polyps": 4.702861952861953,
+            "Gastroesophageal_junction_normal z-line": 0.8996779388083735,
+            "Ileocecal valve": 1.478042328042328,
+            "Mucosal inflammation large bowel": 10.346296296296297,
+            "Normal esophagus": 2.1114890400604684,
+            "Normal mucosa and vascular pattern in the large bowel": 0.2016821890116237,
+            "Normal stomach": 0.3052004807167049,
+            "Pylorus": 0.7524579124579125,
+            "Resected polyps": 3.2332175925925926,
+            "Resection margins": 12.172113289760349,
+            "Retroflex rectum": 4.498389694041868,
+            "Small bowel_terminal ileum": 0.34953703703703703,
+            "Ulcer": 51.73148148148148
+          },
+          "normalization": "equal aggregate training-loss contribution per observed class"
+        },
+        "held_out_predictions_path": "artifacts/training/gi_gastrovision_27class_classifier-20261024T173442Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/gi_gastrovision_27class_classifier.json",
+        "model_card_path": "docs/models/gi_gastrovision_27class_classifier.md"
+      },
+      "source_display_name": "GastroVision 27-class GI endoscopy classifier (exploratory research)"
+    },
+    {
+      "model_id": "ptbxl_ecg_baseline",
+      "display_name": "12-lead ECG diagnostic-superclass classifier (research)",
+      "domain": "cardiology",
+      "task": "multilabel_ecg_classification",
+      "anatomy": "heart",
+      "framework": "pytorch",
+      "adapter": "ml_training.ecg",
+      "source_repository": "medtwin (ml_training/ecg.py)",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/ptbxl_ecg_baseline-20261025T072058Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "application/wfdb (100 Hz, 12-lead, 10 s)"
+      ],
+      "supported_modalities": [
+        "ECG"
+      ],
+      "inference_input": "ecg_12lead",
+      "supported_classes": [
+        "NORM",
+        "MI",
+        "STTC",
+        "CD",
+        "HYP"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Single-source internal evaluation (PTB-XL, Physikalisch-Technische Bundesanstalt, recordings 1989-1996); no external validation.",
+        "Superclass labels aggregate cardiologist SCP statements; they are not adjudicated clinical diagnoses.",
+        "Only 100 Hz, 10-second, 12-lead resting ECGs in the PTB-XL lead order are in scope; other devices, sampling rates or lead sets are out of distribution.",
+        "Platt calibration was fitted on the validation fold of the same source; probabilities are not calibrated for any clinical population.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "a1f01931077bf242b541169497def6401e190b30a1408c371fef8eb15a44e104",
+        "dataset_license": "CC BY 4.0 (Creative Commons Attribution 4.0 International)",
+        "split_manifest_path": "docs/validation/models/ptbxl_ecg_baseline.json",
+        "task_definition": "Multi-label PTB-XL diagnostic superclasses from SCP statements with diagnostic == 1",
+        "label_definition": {
+          "source": "scp_statements.csv diagnostic_class",
+          "classes": [
+            "NORM",
+            "MI",
+            "STTC",
+            "CD",
+            "HYP"
+          ]
+        },
+        "preprocessing_version": "wfdb16-100hz-10s-leadstd-v1",
+        "checkpoint_path": "artifacts/training/ptbxl_ecg_baseline-20261025T072058Z/model.pt",
+        "checkpoint_sha256": "687f69a2ff1cb50dcd0c5a26759f2d2154090c71746518db150c7638d9efb067",
+        "calibration": {
+          "method": "per-class Platt scaling (validation fold)"
+        },
+        "decision_thresholds": {
+          "rule": "per-class max F1 (validation fold)",
+          "values": {
+            "NORM": 0.3506999909877777,
+            "MI": 0.36250001192092896,
+            "STTC": 0.45339998602867126,
+            "CD": 0.42179998755455017,
+            "HYP": 0.30149999260902405
+          }
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/ptbxl_ecg_baseline-20261025T072058Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/ptbxl_ecg_baseline.json",
+        "model_card_path": "docs/models/ptbxl_ecg_baseline.md"
+      },
+      "source_display_name": "PTB-XL 12-lead ECG diagnostic-superclass classifier (research)"
+    },
+    {
+      "model_id": "heart_failure_survival_cox",
+      "display_name": "Heart-failure mortality Cox model (exploratory research)",
+      "domain": "prognosis",
+      "task": "survival_prediction",
+      "anatomy": "heart",
+      "framework": "numpy (ml_training/survival.py)",
+      "adapter": "ml_training.survival",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/heart_failure_survival_cox-20261025T072515Z/model.pt",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular covariates: age, anaemia, log_creatinine_phosphokinase, diabetes, ejection_fraction, high_blood_pressure, log_platelets, log_serum_creatinine, serum_sodium, sex, smoking"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_survival",
+      "supported_classes": [
+        "time_to_death"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: 299 heart-failure patients with LVEF <= 45% (NYHA III-IV), Faisalabad Institute of Cardiology and Allied Hospital, Pakistan, April-December 2015 (Ahmad et al., PLoS ONE 2017). Predictions do not transfer to other populations without external validation.",
+        "Cox proportional-hazards assumption not formally tested; small held-out cohort, so confidence intervals are wide.",
+        "Research-only survival estimates; not validated for clinical decision-making."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "NO_HELD_OUT_BRIER_SKILL_OVER_KAPLAN_MEIER",
+        "run_scope": "EXPLORATORY_ONLY",
+        "evidence": {
+          "harrell_c": 0.6708791208791208,
+          "integrated_brier_skill": -0.06526333754966007
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "9c73cea7468ff5d517801ec050fe9993da5912fce4b56f296f8df3b38dd75912",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/heart_failure_survival_cox.json",
+        "task_definition": "Time to all-cause death; censored at end of follow-up",
+        "label_definition": {
+          "event": "death",
+          "time_unit": "days"
+        },
+        "preprocessing_version": "heart-failure-cox-v1",
+        "checkpoint_path": "artifacts/training/heart_failure_survival_cox-20261025T072515Z/model.pt",
+        "checkpoint_sha256": "0073a7eba793269e70640a4b52f469ad3e61235b21b1c2a895a81b5b26b162ed",
+        "calibration": {
+          "method": "Breslow baseline hazard"
+        },
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/heart_failure_survival_cox-20261025T072515Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/heart_failure_survival_cox.json",
+        "model_card_path": "docs/models/heart_failure_survival_cox.md"
+      },
+      "source_display_name": "Heart-failure mortality Cox model (research; UCI heart failure clinical records)"
+    },
+    {
+      "model_id": "pbc_mayo_survival_cox",
+      "display_name": "Primary biliary cholangitis mortality Cox model (research)",
+      "domain": "prognosis",
+      "task": "survival_prediction",
+      "anatomy": "liver",
+      "framework": "numpy (ml_training/survival.py)",
+      "adapter": "ml_training.survival",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/pbc_mayo_survival_cox-20261025T072517Z/model.pt",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular covariates: age_years, log_bilirubin, log_albumin, log_prothrombin, edema"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_survival",
+      "supported_classes": [
+        "time_to_death"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: Mayo Clinic primary biliary cirrhosis patients 1974-1984: 312 randomized trial patients (development) and 106 consenting non-randomized patients (hold-out). Predictions do not transfer to other populations without external validation.",
+        "Liver transplantation is a competing risk censored at transplant; mortality risk may be underestimated.",
+        "Cox proportional-hazards assumption not formally tested; small held-out cohort, so confidence intervals are wide.",
+        "Research-only survival estimates; not validated for clinical decision-making."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH",
+        "evidence": {
+          "harrell_c": 0.7859437751004016,
+          "integrated_brier_skill": 0.28060030262762947
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "24ae2d5bedbc59898e536b98b152da35bbbb0ed70a2afef0adac8b7c5c8c6d54",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/pbc_mayo_survival_cox.json",
+        "task_definition": "Time to all-cause death; transplant censored",
+        "label_definition": {
+          "event": "death",
+          "time_unit": "days"
+        },
+        "preprocessing_version": "pbc-cox-v1",
+        "checkpoint_path": "artifacts/training/pbc_mayo_survival_cox-20261025T072517Z/model.pt",
+        "checkpoint_sha256": "3d86d29f24382b8d1cac71361eebbbf66ee90237d8b0261fc95077bfcc281af9",
+        "calibration": {
+          "method": "Breslow baseline hazard"
+        },
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/pbc_mayo_survival_cox-20261025T072517Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/pbc_mayo_survival_cox.json",
+        "model_card_path": "docs/models/pbc_mayo_survival_cox.md"
+      },
+      "source_display_name": "Primary biliary cirrhosis mortality Cox model, Mayo covariates (research)"
+    },
+    {
+      "model_id": "gi_kvasir_seg_polyp_segmenter",
+      "display_name": "Colorectal polyp segmenter, endoscopy (research)",
+      "domain": "medical_imaging",
+      "task": "semantic_segmentation",
+      "anatomy": "intestines",
+      "framework": "MONAI UNet 2D",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/ml_training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/gi_kvasir_seg_polyp_segmenter-20261025T080312Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "supported_modalities": [
+        "ENDOSCOPY"
+      ],
+      "supported_classes": [
+        "polyp"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "limitations": [
+        "Evaluated at the model's 352x352 working resolution; distances are in those pixels, not millimetres.",
+        "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+        "Internal test split from the same source; no external validation.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "4c97d0496ca08a60e9de783bf16eb8eb576393e16a4c70953ca5b8f3a2c36abb",
+        "dataset_license": "Kvasir-SEG terms of use: research and educational purposes only; commercial use forbidden without prior written permission; cite the dataset paper",
+        "split_manifest_path": "_derived/datasets/kvasir-seg-polyp-segmentation/samples.csv",
+        "task_definition": "binary polyp masks",
+        "label_definition": {
+          "source": "publisher binary masks thresholded at 127",
+          "classes": [
+            "polyp"
+          ]
+        },
+        "preprocessing_version": "rgb-resize352-standardise-v1",
+        "checkpoint_path": "artifacts/training/gi_kvasir_seg_polyp_segmenter-20261025T080312Z/model.pt",
+        "checkpoint_sha256": "a5a2c88dc5af67a8993210ca8a3d40ea79b9cd5e0a7cd5f422c1356828115c36",
+        "calibration": null,
+        "decision_thresholds": {
+          "rule": "argmax over softmax per pixel"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/gi_kvasir_seg_polyp_segmenter-20261025T080312Z/test_masks",
+        "evaluation_report_path": "docs/validation/models/gi_kvasir_seg_polyp_segmenter.json",
+        "model_card_path": "docs/models/gi_kvasir_seg_polyp_segmenter.md"
+      },
+      "source_display_name": "Kvasir-SEG polyp segmenter (research)"
+    },
+    {
+      "model_id": "hematology_cnmc_all_classifier",
+      "display_name": "Leukaemic blast vs normal cell classifier, microscopy (research)",
+      "domain": "medical_imaging",
+      "task": "image_classification",
+      "anatomy": "blood",
+      "framework": "torchvision efficientnet_b0",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/hematology_cnmc_all_classifier-20261025T082713Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/jpeg",
+        "image/png"
+      ],
+      "supported_modalities": [
+        "MICROSCOPY"
+      ],
+      "supported_classes": [
+        "all",
+        "hem"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "validation_readiness": {
+        "validation_ready": true,
+        "readiness": "READY_FOR_TRAINING",
+        "run_scope": "STANDARD_INTERNAL_EVALUATION",
+        "minimum_samples_per_class": null,
+        "classes_below_minimum": [],
+        "source_flags": [
+          "TASK_SUPPORTED_BY_LABELS"
+        ],
+        "effective_flags": [
+          "TASK_SUPPORTED_BY_LABELS"
+        ]
+      },
+      "class_distribution": {
+        "per_split": {
+          "train": {
+            "all": 5272,
+            "hem": 2885
+          },
+          "val": {
+            "all": 926,
+            "hem": 504
+          },
+          "test": {
+            "all": 1219,
+            "hem": 648
+          }
+        },
+        "total": {
+          "all": 7417,
+          "hem": 4037
+        }
+      },
+      "class_imbalance": {
+        "strategy": "inverse_frequency",
+        "enabled": true,
+        "formula": "w_c = N_train / (K * n_train,c)",
+        "computed_from": "training split only",
+        "training_counts": {
+          "all": 5272,
+          "hem": 2885
+        },
+        "weights_by_class": {
+          "all": 0.7736153262518968,
+          "hem": 1.4136915077989602
+        },
+        "normalization": "equal aggregate training-loss contribution per observed class"
+      },
+      "limitations": [
+        "Training used inverse-frequency weighted cross-entropy computed from the training split only. Weighting changes optimisation but does not create rare-class evidence or correct evaluation uncertainty.",
+        "Subject ids come from the publisher's file names. Identical images occur under different subject ids, so subjects sharing an image were joined into clusters, training subjects linked to the test set were removed, and the bootstrap resamples clusters; whether an id denotes one patient cannot be verified.",
+        "Internal held-out test from the same source distribution; no external validation.",
+        "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "6d29f9139eccdb722b2b625f87c8d81360923eef0fb91e6ce7246055e8c1ba16",
+        "dataset_license": "CC BY 3.0 (TCIA Data Usage Policy; citation required)",
+        "split_manifest_path": "_derived/datasets/cnmc-all-vs-normal/samples.csv",
+        "task_definition": "ALL blast vs normal B-lymphoid precursor cell",
+        "label_definition": {
+          "source": "publisher class folders",
+          "classes": [
+            "all",
+            "hem"
+          ]
+        },
+        "preprocessing_version": "rgb-resize114-centercrop-imagenetnorm-v1",
+        "checkpoint_path": "artifacts/training/hematology_cnmc_all_classifier-20261025T082713Z/model.pt",
+        "checkpoint_sha256": "f5ea1fafc826ae524c8d335a5e32019243c58dcd0bda19ef0e9722823ca82736",
+        "calibration": {
+          "method": "temperature_scaling",
+          "parameters": {
+            "temperature": 3.1912505626678467
+          }
+        },
+        "decision_thresholds": {
+          "rule": "argmax over temperature-scaled softmax"
+        },
+        "abstention_thresholds": null,
+        "validation_readiness": {
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "run_scope": "STANDARD_INTERNAL_EVALUATION",
+          "minimum_samples_per_class": null,
+          "classes_below_minimum": [],
+          "source_flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "effective_flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ]
+        },
+        "class_distribution": {
+          "per_split": {
+            "train": {
+              "all": 5272,
+              "hem": 2885
+            },
+            "val": {
+              "all": 926,
+              "hem": 504
+            },
+            "test": {
+              "all": 1219,
+              "hem": 648
+            }
+          },
+          "total": {
+            "all": 7417,
+            "hem": 4037
+          }
+        },
+        "class_imbalance": {
+          "strategy": "inverse_frequency",
+          "enabled": true,
+          "formula": "w_c = N_train / (K * n_train,c)",
+          "computed_from": "training split only",
+          "training_counts": {
+            "all": 5272,
+            "hem": 2885
+          },
+          "weights_by_class": {
+            "all": 0.7736153262518968,
+            "hem": 1.4136915077989602
+          },
+          "normalization": "equal aggregate training-loss contribution per observed class"
+        },
+        "held_out_predictions_path": "artifacts/training/hematology_cnmc_all_classifier-20261025T082713Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/hematology_cnmc_all_classifier.json",
+        "model_card_path": "docs/models/hematology_cnmc_all_classifier.md"
+      },
+      "source_display_name": "C-NMC ALL vs normal cell classifier (research)"
+    },
+    {
+      "model_id": "acdc_cardiac_mri_3d_unet",
+      "display_name": "Cardiac cine-MRI ventricular segmenter, 3-D (research)",
+      "domain": "medical_imaging",
+      "task": "volumetric_semantic_segmentation",
+      "anatomy": "heart",
+      "framework": "MONAI PyTorch 3-D U-Net",
+      "adapter": "ml_training.volumetric",
+      "source_repository": "medtwin/ml_training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/acdc_cardiac_mri_3d_unet-20261025T132755Z/best.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "application/x-nifti",
+        "application/gzip"
+      ],
+      "supported_modalities": [
+        "MRI"
+      ],
+      "supported_classes": [
+        "background",
+        "right_ventricular_cavity",
+        "myocardium",
+        "left_ventricular_cavity"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "limitations": [
+        "Internal held-out evaluation on the publisher's test patients from one centre; no external or clinical validation.",
+        "Cardiac indices are compared with indices from the publisher's reference masks, not with clinically reported values.",
+        "Native acquisition grid without resampling; slice thickness (5-10 mm) limits through-plane accuracy, and HD95 is dominated by it.",
+        "No connected-component post-processing was prespecified; predicted regions away from the heart inflate volumes and HD95, so volumes, ejection fractions and myocardial mass carry large biases and wide limits of agreement.",
+        "Evaluation and training used float16 autocast on CUDA; CUDA cross-entropy is not deterministic, so a rerun can differ slightly.",
+        "Research-only output; there is no upload inference path, and nothing here is a patient measurement."
+      ],
+      "pipeline": {
+        "manifest_builder": "python -m ml_training.volumetric_manifest",
+        "trainer": "python -m ml_training.volumetric train",
+        "synthetic_smoke": "python -m ml_training.volumetric smoke",
+        "acdc_manifest_dataset_version": "c0fa24d113128f2d33975747fa82c3d13eea27577c08de895346094544afebcd",
+        "acdc_manifest_validation": "PASSED_298_RETAINED_CASES_149_PATIENTS_PUBLISHER_TEST_FROZEN_ONE_DEVELOPMENT_PATIENT_EXCLUDED_FOR_DUPLICATE_IMAGES",
+        "real_data_training_executed": true,
+        "run_id": "acdc_cardiac_mri_3d_unet-20261025T132755Z",
+        "report_builder": "python -m ml_training.volumetric_report"
+      },
+      "artifact_bundle": {
+        "dataset_version": "c0fa24d113128f2d33975747fa82c3d13eea27577c08de895346094544afebcd",
+        "dataset_license": "CREATIS ACDC public research release; mandatory citation; explicit licence terms not published",
+        "split_manifest_path": "_derived/datasets/acdc-cardiac-segmentation/manifest.json",
+        "task_definition": "Patient-grouped ED/ES cardiac MRI segmentation of right ventricular cavity, myocardium, and left ventricular cavity.",
+        "label_definition": {
+          "source": "ACDC challenge integer-mask convention",
+          "classes": {
+            "0": "background",
+            "1": "right_ventricular_cavity",
+            "2": "myocardium",
+            "3": "left_ventricular_cavity"
+          }
+        },
+        "preprocessing_version": "nifti-native-grid-nonzero-zscore-v1",
+        "checkpoint_path": "artifacts/training/acdc_cardiac_mri_3d_unet-20261025T132755Z/best.pt",
+        "checkpoint_sha256": "b18afcf66effbfd8c8db515958e798cb7b03f322b4a1da354d41edb5edc2d60e",
+        "calibration": null,
+        "decision_thresholds": {
+          "rule": "argmax over softmax per voxel"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/acdc_cardiac_mri_3d_unet-20261025T132755Z/held_out_predictions",
+        "evaluation_report_path": "docs/validation/models/acdc_cardiac_mri_3d_unet.json",
+        "model_card_path": "docs/models/acdc_cardiac_mri_3d_unet.md"
+      },
+      "source_display_name": "ACDC cardiac MRI 3-D U-Net (blocked placeholder)",
+      "inference_input": "volume_nifti",
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH"
+      }
+    }
+  ]
+}

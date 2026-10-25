@@ -1,0 +1,45 @@
+{
+  "listed_name": "archive (60).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (60).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "d95a96e1e8a4d035ae8f326d1e7498ff69fefa15c1bb072521cf596d542f2588",
+  "size_bytes": 3374985543,
+  "entries": 40013,
+  "files": 40013,
+  "directories": 0,
+  "uncompressed_bytes": 3371262938,
+  "overall_ratio": 1.0,
+  "max_entry_ratio": 22.2,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (40013 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 40009,
+    "tabular": 4
+  },
+  "extensions": {
+    ".png": 40009,
+    ".csv": 4
+  },
+  "top_level": {
+    "MURA-v1.1/": 40013
+  },
+  "second_level": {
+    "MURA-v1.1/train/": 36812,
+    "MURA-v1.1/valid/": 3197
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_60.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 112.1,
+  "notes": []
+}

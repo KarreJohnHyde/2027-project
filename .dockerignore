@@ -1,0 +1,48 @@
+**
+
+# The root build context is only for the React production image.
+!package.json
+!package-lock.json
+!index.html
+!vite.config.ts
+!tsconfig.json
+!tsconfig.app.json
+!tsconfig.node.json
+!.oxlintrc.json
+!Dockerfile.frontend
+!nginx.conf
+
+!.figma/
+!.figma/make/
+!.figma/make/site.json
+
+!src/
+!src/**
+!public/
+!public/**
+# Original source GLBs stay in the repository but are not served: the viewer loads
+# the verified derivatives in public/anatomy/derived (regenerate with tools/asset-pipeline).
+public/models/
+
+# The backend image shares this context so it can include the single generated
+# dataset evidence registry without duplicating it under backend source.
+!backend/
+!backend/Dockerfile
+!backend/requirements.txt
+!backend/requirements-ml.txt
+!backend/app/
+!backend/app/**
+!dataset_registry/
+!dataset_registry/datasets.json
+!model_registry/
+!model_registry/**
+!docs/
+!docs/research/
+!docs/research/traceability.json
+!docs/validation/
+!docs/validation/**
+!docs/anatomy/
+!docs/anatomy/derivatives.json
+!benchmarks/
+!benchmarks/results/
+!benchmarks/results/*.json

@@ -1,0 +1,44 @@
+{
+  "listed_name": "archive (7).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (7).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "cc646fa9d61ee03baecef51019bccce07a3edfae6af8e841690a91fd51419e27",
+  "size_bytes": 329951048,
+  "entries": 2274,
+  "files": 2274,
+  "directories": 0,
+  "uncompressed_bytes": 332045761,
+  "overall_ratio": 1.01,
+  "max_entry_ratio": 1.4,
+  "project_copy": "D:\\project\\archive (7).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (2274 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 2274
+  },
+  "extensions": {
+    ".png": 1185,
+    ".jpg": 1089
+  },
+  "top_level": {
+    "LungcancerDataSet/": 2274
+  },
+  "second_level": {
+    "LungcancerDataSet/Data/": 2077,
+    "LungcancerDataSet/Test cases/": 197
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_07.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 6.3,
+  "notes": []
+}

@@ -1,0 +1,17 @@
+﻿{
+    "generated_at":  "2026-10-24T11:54:35Z",
+    "models":  [
+                   {
+                       "url":  "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz",
+                       "name":  "en_core_sci_sm",
+                       "version":  "0.5.4",
+                       "sha256":  "a54a114ee11dab7cf6db8cf69ef485145011537f45f3c16c71338c48fd6f070b"
+                   },
+                   {
+                       "url":  "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_ner_bc5cdr_md-0.5.4.tar.gz",
+                       "name":  "en_ner_bc5cdr_md",
+                       "version":  "0.5.4",
+                       "sha256":  "ffc73130a710edf851206199720cb2c744a043e032f5da6ba4bb36863deca778"
+                   }
+               ]
+}

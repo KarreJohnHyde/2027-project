@@ -1,0 +1,11 @@
+SYNTHETIC DE-IDENTIFIED REPORT — FOR SOFTWARE ACCEPTANCE TESTING ONLY
+
+Examination date: 2026-10-23
+Heart rate: 72 bpm.
+Blood pressure: 118/76 mmHg.
+Oxygen saturation: 98%.
+Hemoglobin: 13.8 g/dL.
+Creatinine: 0.9 mg/dL.
+No chest pain is reported.
+
+This fixture contains no real patient information and must not be used for clinical care.

@@ -1,0 +1,526 @@
+{
+  "model_id": "angiography_syntax_segmenter",
+  "run_id": "angiography_syntax_segmenter-20261024T170738Z",
+  "task_id": "arcade-syntax-segmentation",
+  "dataset": "ARCADE coronary X-ray angiography",
+  "dataset_id": "arcade",
+  "dataset_version": "c21bee6dc5bd0a4ef91711802b7a606cec4d6c08b686ed0af0db7f9c959486ba",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "CC0 1.0",
+    "source": "https://zenodo.org/records/10390295",
+    "verified_on": "2026-10-24",
+    "citation": "Popov et al., Dataset for Automatic Region-based Coronary Artery Disease Diagnostics Using X-Ray Angiography Images, Scientific Data 2024."
+  },
+  "split_method": "publisher splits kept",
+  "split_counts": {
+    "train": 1000,
+    "val": 200,
+    "test": 300
+  },
+  "leakage_check": {
+    "near_duplicate_groups_crossing_splits": 2,
+    "images_in_crossing_groups": 5,
+    "test_images_with_cross_split_duplicate": 1,
+    "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+    "near_duplicate_components_crossing_splits": 2,
+    "images_in_crossing_components": 6,
+    "test_images_in_crossing_components": 2,
+    "exclusion_rule": "exclude every test image in a transitive near-duplicate component that spans publisher splits"
+  },
+  "classes": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "9a",
+    "10",
+    "10a",
+    "11",
+    "12",
+    "12a",
+    "13",
+    "14",
+    "14a",
+    "15",
+    "16",
+    "16a",
+    "16b",
+    "16c",
+    "12b",
+    "14b"
+  ],
+  "selection": {
+    "criterion": "validation mean foreground Dice per image",
+    "best_epoch": 18,
+    "val_mean_dice": 0.35814221073224145
+  },
+  "test": {
+    "n_images": 300,
+    "mean_foreground_dice_per_image": 0.30704956064824246,
+    "macro_segment_dice": 0.2006911961971082,
+    "vessel_dice": 0.6828798110705859,
+    "vessel_iou": 0.5351903824866634,
+    "vessel_hd95_px_at_model_resolution": 80.45497298335574,
+    "per_segment": [
+      {
+        "segment": "1",
+        "images": 110,
+        "mean_dice": 0.5817241342406254
+      },
+      {
+        "segment": "2",
+        "images": 115,
+        "mean_dice": 0.5762979280041053
+      },
+      {
+        "segment": "3",
+        "images": 138,
+        "mean_dice": 0.4597426307654909
+      },
+      {
+        "segment": "4",
+        "images": 134,
+        "mean_dice": 0.2687888974471375
+      },
+      {
+        "segment": "5",
+        "images": 213,
+        "mean_dice": 0.6444270108195886
+      },
+      {
+        "segment": "6",
+        "images": 230,
+        "mean_dice": 0.46530028876724155
+      },
+      {
+        "segment": "7",
+        "images": 196,
+        "mean_dice": 0.24434791153807156
+      },
+      {
+        "segment": "8",
+        "images": 155,
+        "mean_dice": 0.25203495173716745
+      },
+      {
+        "segment": "9",
+        "images": 125,
+        "mean_dice": 0.108235087221857
+      },
+      {
+        "segment": "9a",
+        "images": 54,
+        "mean_dice": 0.013270115486908861
+      },
+      {
+        "segment": "10",
+        "images": 14,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "10a",
+        "images": 0,
+        "mean_dice": null
+      },
+      {
+        "segment": "11",
+        "images": 187,
+        "mean_dice": 0.43211770046453973
+      },
+      {
+        "segment": "12",
+        "images": 100,
+        "mean_dice": 0.019440993099674116
+      },
+      {
+        "segment": "12a",
+        "images": 200,
+        "mean_dice": 0.019850393502196813
+      },
+      {
+        "segment": "13",
+        "images": 166,
+        "mean_dice": 0.24055162111555314
+      },
+      {
+        "segment": "14",
+        "images": 138,
+        "mean_dice": 0.03234116264859303
+      },
+      {
+        "segment": "14a",
+        "images": 29,
+        "mean_dice": 0.0003619115324631877
+      },
+      {
+        "segment": "15",
+        "images": 33,
+        "mean_dice": 0.007894036919686601
+      },
+      {
+        "segment": "16",
+        "images": 104,
+        "mean_dice": 0.3843020673205902
+      },
+      {
+        "segment": "16a",
+        "images": 52,
+        "mean_dice": 0.007910165241306211
+      },
+      {
+        "segment": "16b",
+        "images": 36,
+        "mean_dice": 0.013054891247522073
+      },
+      {
+        "segment": "16c",
+        "images": 25,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "12b",
+        "images": 73,
+        "mean_dice": 4.7224521733847694e-05
+      },
+      {
+        "segment": "14b",
+        "images": 64,
+        "mean_dice": 0.04454758508854374
+      }
+    ],
+    "confidence_intervals_95": {
+      "mean_foreground_dice_per_image": {
+        "status": "COMPUTED",
+        "low": 0.29116611905035095,
+        "high": 0.3224857754550668,
+        "resamples": 1000,
+        "unit": "near-duplicate group"
+      },
+      "vessel_dice": {
+        "status": "COMPUTED",
+        "low": 0.6650301340628155,
+        "high": 0.6988092558140778,
+        "resamples": 1000,
+        "unit": "near-duplicate group"
+      }
+    }
+  },
+  "test_without_cross_split_duplicates": {
+    "n_images": 298,
+    "mean_foreground_dice_per_image": 0.3079512464376884,
+    "macro_segment_dice": 0.2008165571492643,
+    "vessel_dice": 0.6831018232210625,
+    "vessel_iou": 0.5355465925548452,
+    "vessel_hd95_px_at_model_resolution": 80.46768878421828,
+    "per_segment": [
+      {
+        "segment": "1",
+        "images": 110,
+        "mean_dice": 0.5817241342406254
+      },
+      {
+        "segment": "2",
+        "images": 115,
+        "mean_dice": 0.5762979280041053
+      },
+      {
+        "segment": "3",
+        "images": 137,
+        "mean_dice": 0.46309841639151633
+      },
+      {
+        "segment": "4",
+        "images": 133,
+        "mean_dice": 0.2708098666008754
+      },
+      {
+        "segment": "5",
+        "images": 211,
+        "mean_dice": 0.6462729663620586
+      },
+      {
+        "segment": "6",
+        "images": 228,
+        "mean_dice": 0.4667587069096314
+      },
+      {
+        "segment": "7",
+        "images": 195,
+        "mean_dice": 0.2456009777510873
+      },
+      {
+        "segment": "8",
+        "images": 154,
+        "mean_dice": 0.2536715423328633
+      },
+      {
+        "segment": "9",
+        "images": 124,
+        "mean_dice": 0.10910795082848487
+      },
+      {
+        "segment": "9a",
+        "images": 53,
+        "mean_dice": 0.013520495024397708
+      },
+      {
+        "segment": "10",
+        "images": 14,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "10a",
+        "images": 0,
+        "mean_dice": null
+      },
+      {
+        "segment": "11",
+        "images": 185,
+        "mean_dice": 0.4287871153719132
+      },
+      {
+        "segment": "12",
+        "images": 98,
+        "mean_dice": 0.019837748060891957
+      },
+      {
+        "segment": "12a",
+        "images": 198,
+        "mean_dice": 0.018934891082821585
+      },
+      {
+        "segment": "13",
+        "images": 164,
+        "mean_dice": 0.23735955151783875
+      },
+      {
+        "segment": "14",
+        "images": 136,
+        "mean_dice": 0.03272259482200237
+      },
+      {
+        "segment": "14a",
+        "images": 29,
+        "mean_dice": 0.0003619115324631877
+      },
+      {
+        "segment": "15",
+        "images": 31,
+        "mean_dice": 0.0076654000437481875
+      },
+      {
+        "segment": "16",
+        "images": 104,
+        "mean_dice": 0.3843020673205902
+      },
+      {
+        "segment": "16a",
+        "images": 52,
+        "mean_dice": 0.007910165241306211
+      },
+      {
+        "segment": "16b",
+        "images": 36,
+        "mean_dice": 0.013054891247522073
+      },
+      {
+        "segment": "16c",
+        "images": 25,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "12b",
+        "images": 71,
+        "mean_dice": 4.855478995170256e-05
+      },
+      {
+        "segment": "14b",
+        "images": 62,
+        "mean_dice": 0.04174949610564895
+      }
+    ],
+    "selection_rule": "exclude every test image in a transitive near-duplicate component that spans publisher splits",
+    "post_hoc_rescore": true,
+    "source_predictions": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/test_masks",
+    "independent_crosscheck": "docs/validation/models/angiography_syntax_segmenter.component_rescore.json"
+  },
+  "evaluated_at_resolution": "512x512",
+  "empty_mask_convention": "A segment absent from both prediction and reference is not scored for that image; whole-vessel Dice uses Dice = 1 when both are empty.",
+  "checkpoint": {
+    "path": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/model.pt",
+    "sha256": "3a3882071f72192edaec39a3cfd2449faf6d93f367d11dccf3455ba8824ab0a0"
+  },
+  "held_out_predictions": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/test_masks",
+  "training_seconds": 1165.8,
+  "config": {
+    "task_id": "arcade-syntax-segmentation",
+    "model_id": "angiography_syntax_segmenter",
+    "display_name": "ARCADE SYNTAX coronary segment segmenter (research)",
+    "modality": "ANGIOGRAPHY",
+    "anatomy": "heart",
+    "size": 512,
+    "epochs": 40,
+    "batch_size": 8,
+    "lr": 0.001,
+    "workers": 4,
+    "seed": 20261024
+  },
+  "reporting_context": {
+    "dataset": "ARCADE coronary X-ray angiography",
+    "dataset_version": "c21bee6dc5bd0a4e",
+    "split": "test",
+    "checkpoint": "sha256:3a3882071f72192edaec39a3cfd2449faf6d93f367d11dccf3455ba8824ab0a0"
+  },
+  "limitations": [
+    "Evaluated at the model's 512x512 working resolution; distances are in those pixels, not millimetres.",
+    "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+    "Internal test split from the same source; no external validation.",
+    "Research-only output; not validated for clinical use.",
+    "The conservative duplicate sensitivity analysis excludes every test image in a transitive near-duplicate component spanning publisher splits; it is a post-hoc subset analysis, while the official publisher test result remains unchanged.",
+    "No held-out reference mask exists for segment(s) 10a; their per-segment Dice is undefined.",
+    "Held-out support is below 20 images for segment(s) 10; their per-segment estimates are unstable."
+  ],
+  "legacy_test_without_direct_cross_split_duplicate_endpoints": {
+    "n_images": 299,
+    "mean_foreground_dice_per_image": 0.3075053101073601,
+    "macro_segment_dice": 0.20060908191382665,
+    "vessel_dice": 0.6830987817564828,
+    "vessel_iou": 0.5354868121780971,
+    "vessel_hd95_px_at_model_resolution": 80.4185353537411,
+    "per_segment": [
+      {
+        "segment": "1",
+        "images": 110,
+        "mean_dice": 0.5817241342406254
+      },
+      {
+        "segment": "2",
+        "images": 115,
+        "mean_dice": 0.5762979280041053
+      },
+      {
+        "segment": "3",
+        "images": 138,
+        "mean_dice": 0.4597426307654909
+      },
+      {
+        "segment": "4",
+        "images": 134,
+        "mean_dice": 0.2687888974471375
+      },
+      {
+        "segment": "5",
+        "images": 212,
+        "mean_dice": 0.6474325178134043
+      },
+      {
+        "segment": "6",
+        "images": 229,
+        "mean_dice": 0.46733216775749153
+      },
+      {
+        "segment": "7",
+        "images": 196,
+        "mean_dice": 0.24434791153807156
+      },
+      {
+        "segment": "8",
+        "images": 155,
+        "mean_dice": 0.25203495173716745
+      },
+      {
+        "segment": "9",
+        "images": 125,
+        "mean_dice": 0.108235087221857
+      },
+      {
+        "segment": "9a",
+        "images": 54,
+        "mean_dice": 0.013270115486908861
+      },
+      {
+        "segment": "10",
+        "images": 14,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "10a",
+        "images": 0,
+        "mean_dice": null
+      },
+      {
+        "segment": "11",
+        "images": 186,
+        "mean_dice": 0.43134498543139627
+      },
+      {
+        "segment": "12",
+        "images": 99,
+        "mean_dice": 0.019637366767347588
+      },
+      {
+        "segment": "12a",
+        "images": 199,
+        "mean_dice": 0.018839740876375247
+      },
+      {
+        "segment": "13",
+        "images": 165,
+        "mean_dice": 0.23820134005510238
+      },
+      {
+        "segment": "14",
+        "images": 137,
+        "mean_dice": 0.03248374376490746
+      },
+      {
+        "segment": "14a",
+        "images": 29,
+        "mean_dice": 0.0003619115324631877
+      },
+      {
+        "segment": "15",
+        "images": 32,
+        "mean_dice": 0.008140725573426807
+      },
+      {
+        "segment": "16",
+        "images": 104,
+        "mean_dice": 0.3843020673205902
+      },
+      {
+        "segment": "16a",
+        "images": 52,
+        "mean_dice": 0.007910165241306211
+      },
+      {
+        "segment": "16b",
+        "images": 36,
+        "mean_dice": 0.013054891247522073
+      },
+      {
+        "segment": "16c",
+        "images": 25,
+        "mean_dice": 0.0
+      },
+      {
+        "segment": "12b",
+        "images": 72,
+        "mean_dice": 4.7880417869040025e-05
+      },
+      {
+        "segment": "14b",
+        "images": 63,
+        "mean_dice": 0.04108680569127357
+      }
+    ],
+    "status": "SUPERSEDED_AS_CONSERVATIVE_SENSITIVITY_ANALYSIS",
+    "reason": "Direct endpoint filtering omitted other test members of transitive components spanning splits."
+  }
+}

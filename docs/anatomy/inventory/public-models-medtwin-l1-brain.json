@@ -1,0 +1,217 @@
+{
+  "asset_id": "public-models-medtwin-l1-brain",
+  "relative_path": "public/models/medtwin_l1_brain.glb",
+  "source_group": "public_models",
+  "bytes": 228360,
+  "sha256": "b210f11737239cb7b631a7a11654695df1ad9d6fc2339c8d791c8891479196c7",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2608
+      },
+      {
+        "type": "BIN",
+        "byteLength": 225724
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 12606,
+    "validator_vertex_count": 6876
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 12606,
+    "rendered_triangles": 12606,
+    "unique_vertices": 6876,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 139,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.01082,
+    "degenerate_triangles_measured": 2,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.049125,
+        1.539233,
+        -0.026247
+      ],
+      "max": [
+        0.048699,
+        1.648337,
+        0.088003
+      ],
+      "size": [
+        0.097824,
+        0.109104,
+        0.11425
+      ],
+      "center": [
+        -0.000213,
+        1.593785,
+        0.030878
+      ],
+      "diagonal": 0.185813
+    },
+    "bounds_finite": true,
+    "tallest_axis": "z",
+    "aspect_ratio": 1.168,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "nervous.brain",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "nervous.brain"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "nervous.brain"
+    ]
+  },
+  "inspection_ms": 25,
+  "nodes": [
+    {
+      "path": "nervous.brain",
+      "name": "nervous.brain",
+      "semantic_name": "nervous.brain",
+      "depth": 0,
+      "mesh": "nervous.brain",
+      "material": null,
+      "triangles": 12606,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.049125,
+          1.539233,
+          -0.026247
+        ],
+        "max": [
+          0.048699,
+          1.648337,
+          0.088003
+        ],
+        "size": [
+          0.097824,
+          0.109104,
+          0.11425
+        ],
+        "center": [
+          -0.000213,
+          1.593785,
+          0.030878
+        ],
+        "diagonal": 0.185813
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "nervous.brain",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 6876,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 12606,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 6609,
+            "connected_components": 139,
+            "boundary_edge_fraction": 0.01082,
+            "non_manifold_edge_fraction": 0.00607,
+            "degenerate_triangles": 2,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 12606,
+      "points": 0,
+      "lines": 0,
+      "vertices": 6876
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

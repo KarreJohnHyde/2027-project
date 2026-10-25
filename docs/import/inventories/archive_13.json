@@ -1,0 +1,42 @@
+{
+  "listed_name": "archive (13).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (13).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "2e6a2839916ea32749b4a49cfa01f4a6a495b0f9261700b611cdbd781a11038d",
+  "size_bytes": 68754755,
+  "entries": 4054,
+  "files": 4054,
+  "directories": 0,
+  "uncompressed_bytes": 67851981,
+  "overall_ratio": 1.0,
+  "max_entry_ratio": 1.3,
+  "project_copy": "D:\\project\\archive (13).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (4054 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 4054
+  },
+  "extensions": {
+    ".png": 4054
+  },
+  "top_level": {
+    "2d segmentation dataset/": 4054
+  },
+  "second_level": {
+    "2d segmentation dataset/2d segmentation dataset/": 4054
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_13.entries.csv",
+  "mask_like_files": 4054,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 9.5,
+  "notes": []
+}

@@ -1,0 +1,43 @@
+{
+  "listed_name": "archive (57).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (57).zip",
+  "role": "SUPPLEMENTARY",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "8827db3d2312a4fec029dabfb27381d09c5ffaed440b38df03a7d806676cbc3b",
+  "size_bytes": 813090719,
+  "entries": 16520,
+  "files": 16520,
+  "directories": 0,
+  "uncompressed_bytes": 836929018,
+  "overall_ratio": 1.03,
+  "max_entry_ratio": 1.3,
+  "project_copy": "",
+  "project_copy_identical": null,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (16520 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 16520
+  },
+  "extensions": {
+    ".png": 16520
+  },
+  "top_level": {
+    "Dataset/": 16520
+  },
+  "second_level": {
+    "Dataset/Thermal Images/": 8260,
+    "Dataset/X-Ray  Images/": 8260
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_57.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 39.6,
+  "notes": []
+}

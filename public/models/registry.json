@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "representation_level": "L1_GENERIC",
+  "release": "Svitylo 3D Anatomy Atlas data 1.2.0 preview",
+  "upstream_audit_status": "pending",
+  "assets": [
+    {
+      "id": "heart",
+      "name": "Cardiovascular / heart reference",
+      "system": "Cardiovascular",
+      "path": "/models/medtwin_l1_heart.glb",
+      "source_path": "economy/cardiovascular/arterial_system.glb",
+      "bytes": 279576,
+      "sha256": "fb04110e11ae21cb8cdb8e65bc17811a25002a87f9e690cf23b5c812daa475bd",
+      "license": "CC BY-SA 4.0",
+      "patient_specific": false
+    },
+    {
+      "id": "respiratory",
+      "name": "Respiratory and endocrine reference",
+      "system": "Respiratory / Endocrine",
+      "path": "/models/medtwin_l1_respiratory.glb",
+      "source_path": "economy/visceral/endocrine_glands--respiratory_system.glb",
+      "bytes": 276040,
+      "sha256": "b9629707a3fc5fa30ba74e5298acfbcc24fe429e7de65199f367c4c001cca15d",
+      "license": "CC BY-SA 4.0",
+      "patient_specific": false
+    },
+    {
+      "id": "brain",
+      "name": "Brain reference",
+      "system": "Nervous",
+      "path": "/models/medtwin_l1_brain.glb",
+      "source_path": "economy/nervous/brain.glb",
+      "bytes": 228360,
+      "sha256": "b210f11737239cb7b631a7a11654695df1ad9d6fc2339c8d791c8891479196c7",
+      "license": "CC BY-SA 3.0 / CC BY-SA 4.0 adaptations",
+      "patient_specific": false
+    },
+    {
+      "id": "digestive",
+      "name": "Digestive-system reference",
+      "system": "Gastrointestinal",
+      "path": "/models/medtwin_l1_digestive.glb",
+      "source_path": "economy/visceral/digestive_system.glb",
+      "bytes": 402456,
+      "sha256": "8d05455e05377241e0315e45c7483242cca5271b8d3a65f3432ef76e8a09cb4b",
+      "license": "CC BY-SA 4.0",
+      "patient_specific": false
+    }
+  ]
+}

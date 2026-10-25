@@ -1,0 +1,40 @@
+{
+  "listed_name": "anatomy-of-the-airways.zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\anatomy-of-the-airways.zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "000c6781ce805a8893ff1f8bd633e7a7e96e762aa7ece4feb27193a9df9f2857",
+  "size_bytes": 6562010,
+  "entries": 1,
+  "files": 1,
+  "directories": 0,
+  "uncompressed_bytes": 6561840,
+  "overall_ratio": 1.0,
+  "max_entry_ratio": 1.0,
+  "project_copy": "D:\\project\\anatomy-of-the-airways.zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (1 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "anatomy_3d": 1
+  },
+  "extensions": {
+    ".fbx": 1
+  },
+  "top_level": {
+    "source/": 1
+  },
+  "second_level": {},
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\anatomy-of-the-airways.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 0.0,
+  "notes": []
+}

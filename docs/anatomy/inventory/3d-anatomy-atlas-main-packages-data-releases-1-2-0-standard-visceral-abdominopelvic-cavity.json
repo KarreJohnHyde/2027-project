@@ -1,0 +1,215 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-visceral-abdominopelvic-cavity",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/visceral/abdominopelvic_cavity.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 76992,
+  "sha256": "fc200fa98664e7fc17e9af6cce4aad8c51279dc4a79d7833937445ecd7c39947",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2640
+      },
+      {
+        "type": "BIN",
+        "byteLength": 74324
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 4538,
+    "validator_vertex_count": 2277
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 4538,
+    "rendered_triangles": 4538,
+    "unique_vertices": 2277,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 4,
+    "closed_measured_primitives": 1,
+    "max_boundary_edge_fraction": 0,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.102561,
+        0.879924,
+        0.040855
+      ],
+      "max": [
+        0.109258,
+        1.200361,
+        0.141649
+      ],
+      "size": [
+        0.211819,
+        0.320437,
+        0.100795
+      ],
+      "center": [
+        0.003348,
+        1.040142,
+        0.091252
+      ],
+      "diagonal": 0.397123
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 3.179,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "visceral.abdominopelvic_cavity",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "visceral.abdominopelvic_cavity"
+    ],
+    "anatomically_named_mesh_nodes": 0,
+    "anatomical_names_sample": []
+  },
+  "inspection_ms": 8,
+  "nodes": [
+    {
+      "path": "visceral.abdominopelvic_cavity",
+      "name": "visceral.abdominopelvic_cavity",
+      "semantic_name": "visceral.abdominopelvic_cavity",
+      "depth": 0,
+      "mesh": "visceral.abdominopelvic_cavity",
+      "material": null,
+      "triangles": 4538,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.102561,
+          0.879924,
+          0.040855
+        ],
+        "max": [
+          0.109258,
+          1.200361,
+          0.141649
+        ],
+        "size": [
+          0.211819,
+          0.320437,
+          0.100795
+        ],
+        "center": [
+          0.003348,
+          1.040142,
+          0.091252
+        ],
+        "diagonal": 0.397123
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "visceral.abdominopelvic_cavity",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 2277,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 4538,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 2277,
+            "connected_components": 4,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 4538,
+      "points": 0,
+      "lines": 0,
+      "vertices": 2277
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

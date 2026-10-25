@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-nervous-peripheral-nervous-system",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/nervous/peripheral_nervous_system.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 822552,
+  "sha256": "6652c2606b30a5913c19a3a045d472f4c82e3c666d466cc4628ee822424e0e53",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2656
+      },
+      {
+        "type": "BIN",
+        "byteLength": 819868
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 46702,
+    "validator_vertex_count": 27009
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 46702,
+    "rendered_triangles": 46702,
+    "unique_vertices": 27009,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 297,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.00616,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.076215,
+        0.873635,
+        -0.033094
+      ],
+      "max": [
+        0.076215,
+        1.664805,
+        0.141694
+      ],
+      "size": [
+        0.152429,
+        0.79117,
+        0.174788
+      ],
+      "center": [
+        0,
+        1.26922,
+        0.0543
+      ],
+      "diagonal": 0.82446
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 5.19,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "nervous.peripheral_nervous_system",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "nervous.peripheral_nervous_system"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "nervous.peripheral_nervous_system"
+    ]
+  },
+  "inspection_ms": 58,
+  "nodes": [
+    {
+      "path": "nervous.peripheral_nervous_system",
+      "name": "nervous.peripheral_nervous_system",
+      "semantic_name": "nervous.peripheral_nervous_system",
+      "depth": 0,
+      "mesh": "nervous.peripheral_nervous_system",
+      "material": null,
+      "triangles": 46702,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.076215,
+          0.873635,
+          -0.033094
+        ],
+        "max": [
+          0.076215,
+          1.664805,
+          0.141694
+        ],
+        "size": [
+          0.152429,
+          0.79117,
+          0.174788
+        ],
+        "center": [
+          0,
+          1.26922,
+          0.0543
+        ],
+        "diagonal": 0.82446
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "nervous.peripheral_nervous_system",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 27009,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 46702,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 24074,
+            "connected_components": 297,
+            "boundary_edge_fraction": 0.00616,
+            "non_manifold_edge_fraction": 0.00084,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 46702,
+      "points": 0,
+      "lines": 0,
+      "vertices": 27009
+    }
+  ],
+  "materials": [],
+  "textures": []
+}

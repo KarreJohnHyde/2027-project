@@ -1,0 +1,1436 @@
+{
+  "asset_id": "human-brain-1",
+  "relative_path": "human_brain (1).glb",
+  "source_group": "workspace_root",
+  "bytes": 3978124,
+  "sha256": "4dd2e2f0e6c00ac467bdeeecf2dbf72cbb236de407eebc027e4ca6d9c1b8948a",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 14880
+      },
+      {
+        "type": "BIN",
+        "byteLength": 3963216
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "Sketchfab-12.68.0",
+    "copyright": null,
+    "asset_extras": {
+      "author": "Versal (https://sketchfab.com/versal)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/human-brain-49bcdf19c1904c76a456b31838b0d7ac",
+      "title": "Human Brain"
+    },
+    "extensions_used": [],
+    "extensions_required": []
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 16,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNUSED_OBJECT": 16
+    },
+    "draw_calls": 16,
+    "validator_triangle_count": 36708,
+    "validator_vertex_count": 110085
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 26,
+    "mesh_nodes": 16,
+    "meshes": 16,
+    "primitives": 16,
+    "materials": 3,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 36708,
+    "rendered_triangles": 36708,
+    "unique_vertices": 110085,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 0,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 16,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 56,
+    "closed_measured_primitives": 3,
+    "max_boundary_edge_fraction": 0.8,
+    "degenerate_triangles_measured": 0,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -123.273956,
+        -77.477585,
+        -86.000664
+      ],
+      "max": [
+        125.307228,
+        139.958099,
+        118.315407
+      ],
+      "size": [
+        248.581184,
+        217.435684,
+        204.316071
+      ],
+      "center": [
+        1.016636,
+        31.240257,
+        16.157372
+      ],
+      "diagonal": 388.350278
+    },
+    "bounds_finite": true,
+    "tallest_axis": "x",
+    "aspect_ratio": 1.217,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 2,
+    "largest_mesh_node": "Object_21",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 3,
+    "names": [
+      "MistyRo",
+      "Foregrou",
+      "Sketchy"
+    ]
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "brain1",
+      "brain1",
+      "brain1",
+      "cereb1",
+      "cereb1",
+      "cereb1",
+      "cereb1",
+      "frontal1",
+      "frontal1",
+      "frontal1",
+      "occipit1",
+      "pariet1",
+      "pariet1",
+      "pariet1",
+      "temp1",
+      "temp1"
+    ],
+    "anatomically_named_mesh_nodes": 6,
+    "anatomical_names_sample": [
+      "brain1",
+      "frontal1"
+    ]
+  },
+  "inspection_ms": 127,
+  "nodes": [
+    {
+      "path": "Sketchfab_model",
+      "name": "Sketchfab_model",
+      "semantic_name": null,
+      "depth": 0,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": true,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds",
+      "name": "2479715cb45743fea6f68476803cf93d.3ds",
+      "semantic_name": null,
+      "depth": 1,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model",
+      "name": "Model",
+      "semantic_name": "Model",
+      "depth": 2,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1",
+      "name": "brain_1_1",
+      "semantic_name": "brain_1_1",
+      "depth": 3,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1",
+      "name": "brain1",
+      "semantic_name": "brain1",
+      "depth": 4,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 8,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/Object_23",
+      "name": "Object_23",
+      "semantic_name": "brain1",
+      "depth": 5,
+      "mesh": "Object_13",
+      "material": "MistyRo",
+      "triangles": 224,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          22.316793,
+          -11.707177,
+          -1.478012
+        ],
+        "max": [
+          41.050629,
+          5.871627,
+          25.671406
+        ],
+        "size": [
+          18.733835,
+          17.578804,
+          27.149418
+        ],
+        "center": [
+          31.683711,
+          -2.917775,
+          12.096697
+        ],
+        "diagonal": 37.377291
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/Object_24",
+      "name": "Object_24",
+      "semantic_name": "brain1",
+      "depth": 5,
+      "mesh": "Object_14",
+      "material": "MistyRo",
+      "triangles": 3368,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -38.94006,
+          -77.477585,
+          -50.935707
+        ],
+        "max": [
+          60.039192,
+          81.550194,
+          75.126663
+        ],
+        "size": [
+          98.979252,
+          159.027779,
+          126.06237
+        ],
+        "center": [
+          10.549566,
+          2.036304,
+          12.095478
+        ],
+        "diagonal": 225.784074
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/Object_25",
+      "name": "Object_25",
+      "semantic_name": "brain1",
+      "depth": 5,
+      "mesh": "Object_15",
+      "material": "Sketchy",
+      "triangles": 194,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -48.062519,
+          7.176494,
+          3.993016
+        ],
+        "max": [
+          64.49295,
+          88.382286,
+          28.322714
+        ],
+        "size": [
+          112.55547,
+          81.205792,
+          24.329698
+        ],
+        "center": [
+          8.215216,
+          47.77939,
+          16.157865
+        ],
+        "diagonal": 140.907944
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/cereb1",
+      "name": "cereb1",
+      "semantic_name": "cereb1",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 4,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/cereb1/Object_6",
+      "name": "Object_6",
+      "semantic_name": "cereb1",
+      "depth": 6,
+      "mesh": "Object_0",
+      "material": "MistyRo",
+      "triangles": 4,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -31.947088,
+          -32.177353,
+          -30.138222
+        ],
+        "max": [
+          -3.483089,
+          -12.162686,
+          -0.833029
+        ],
+        "size": [
+          28.463999,
+          20.014667,
+          29.305193
+        ],
+        "center": [
+          -17.715089,
+          -22.17002,
+          -15.485625
+        ],
+        "diagonal": 45.492642
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/cereb1/Object_7",
+      "name": "Object_7",
+      "semantic_name": "cereb1",
+      "depth": 6,
+      "mesh": "Object_1",
+      "material": "MistyRo",
+      "triangles": 14284,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -89.375153,
+          -51.377922,
+          -70.053215
+        ],
+        "max": [
+          -1.514776,
+          20.069256,
+          94.242767
+        ],
+        "size": [
+          87.860376,
+          71.447178,
+          164.295982
+        ],
+        "center": [
+          -45.444964,
+          -15.654333,
+          12.094776
+        ],
+        "diagonal": 199.542764
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/cereb1/Object_8",
+      "name": "Object_8",
+      "semantic_name": "cereb1",
+      "depth": 6,
+      "mesh": "Object_2",
+      "material": "MistyRo",
+      "triangles": 38,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -51.156834,
+          13.752275,
+          -3.321069
+        ],
+        "max": [
+          -43.948765,
+          19.111168,
+          31.123508
+        ],
+        "size": [
+          7.208069,
+          5.358893,
+          34.444578
+        ],
+        "center": [
+          -47.552799,
+          16.431721,
+          13.90122
+        ],
+        "diagonal": 35.596389
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/cereb1/Object_9",
+      "name": "Object_9",
+      "semantic_name": "cereb1",
+      "depth": 6,
+      "mesh": "Object_3",
+      "material": "Foregrou",
+      "triangles": 50,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -64.488129,
+          -45.691765,
+          -61.278107
+        ],
+        "max": [
+          -17.124874,
+          -8.443529,
+          87.206566
+        ],
+        "size": [
+          47.363255,
+          37.248236,
+          148.484673
+        ],
+        "center": [
+          -40.806501,
+          -27.067647,
+          12.96423
+        ],
+        "diagonal": 160.244834
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/frontal1",
+      "name": "frontal1",
+      "semantic_name": "frontal1",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 3,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/frontal1/Object_11",
+      "name": "Object_11",
+      "semantic_name": "frontal1",
+      "depth": 6,
+      "mesh": "Object_4",
+      "material": "MistyRo",
+      "triangles": 3189,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -24.182451,
+          10.671468,
+          16.712872
+        ],
+        "max": [
+          125.306259,
+          139.958099,
+          111.368584
+        ],
+        "size": [
+          149.48871,
+          129.286632,
+          94.655712
+        ],
+        "center": [
+          50.561904,
+          75.314784,
+          64.040728
+        ],
+        "diagonal": 219.138339
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/frontal1/Object_12",
+      "name": "Object_12",
+      "semantic_name": "frontal1",
+      "depth": 6,
+      "mesh": "Object_5",
+      "material": "MistyRo",
+      "triangles": 3184,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -24.182102,
+          10.671468,
+          -79.052269
+        ],
+        "max": [
+          125.307228,
+          139.958099,
+          15.607542
+        ],
+        "size": [
+          149.48933,
+          129.286632,
+          94.659811
+        ],
+        "center": [
+          50.562563,
+          75.314784,
+          -31.722363
+        ],
+        "diagonal": 219.140532
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/frontal1/Object_13",
+      "name": "Object_13",
+      "semantic_name": "frontal1",
+      "depth": 6,
+      "mesh": "Object_6",
+      "material": "Foregrou",
+      "triangles": 16,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          106.773193,
+          63.150734,
+          -16.170284
+        ],
+        "max": [
+          114.674812,
+          68.579269,
+          18.480604
+        ],
+        "size": [
+          7.901619,
+          5.428535,
+          34.650888
+        ],
+        "center": [
+          110.724003,
+          65.865002,
+          1.15516
+        ],
+        "diagonal": 35.952589
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/occipit1",
+      "name": "occipit1",
+      "semantic_name": "occipit1",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 1,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/occipit1/Object_15",
+      "name": "Object_15",
+      "semantic_name": "occipit1",
+      "depth": 6,
+      "mesh": "Object_7",
+      "material": "MistyRo",
+      "triangles": 2663,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -123.273956,
+          -22.131908,
+          -77.967079
+        ],
+        "max": [
+          -52.255276,
+          73.421692,
+          110.279701
+        ],
+        "size": [
+          71.018681,
+          95.5536,
+          188.24678
+        ],
+        "center": [
+          -87.764616,
+          25.644892,
+          16.156311
+        ],
+        "diagonal": 222.735255
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/pariet1",
+      "name": "pariet1",
+      "semantic_name": "pariet1",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 3,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/pariet1/Object_17",
+      "name": "Object_17",
+      "semantic_name": "pariet1",
+      "depth": 6,
+      "mesh": "Object_8",
+      "material": "MistyRo",
+      "triangles": 1904,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -103.980957,
+          36.259159,
+          17.990257
+        ],
+        "max": [
+          11.704754,
+          136.118317,
+          112.174324
+        ],
+        "size": [
+          115.685711,
+          99.859158,
+          94.184067
+        ],
+        "center": [
+          -46.138102,
+          86.188738,
+          65.082291
+        ],
+        "diagonal": 179.515107
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/pariet1/Object_18",
+      "name": "Object_18",
+      "semantic_name": "pariet1",
+      "depth": 6,
+      "mesh": "Object_9",
+      "material": "MistyRo",
+      "triangles": 1904,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -103.980446,
+          36.259159,
+          -79.860352
+        ],
+        "max": [
+          11.708394,
+          136.118317,
+          14.323925
+        ],
+        "size": [
+          115.68884,
+          99.859158,
+          94.184277
+        ],
+        "center": [
+          -46.136026,
+          86.188738,
+          -32.768213
+        ],
+        "diagonal": 179.517233
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/pariet1/Object_19",
+      "name": "Object_19",
+      "semantic_name": "pariet1",
+      "depth": 6,
+      "mesh": "Object_10",
+      "material": "Foregrou",
+      "triangles": 10,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -66.32048,
+          51.192173,
+          -68.012535
+        ],
+        "max": [
+          -34.391716,
+          119.779663,
+          47.888294
+        ],
+        "size": [
+          31.928764,
+          68.58749,
+          115.900829
+        ],
+        "center": [
+          -50.356098,
+          85.485918,
+          -10.06212
+        ],
+        "diagonal": 138.407702
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/temp1",
+      "name": "temp1",
+      "semantic_name": "temp1",
+      "depth": 5,
+      "mesh": null,
+      "material": null,
+      "triangles": 0,
+      "children": 2,
+      "has_transform": false,
+      "world_bounds": null
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/temp1/Object_21",
+      "name": "Object_21",
+      "semantic_name": "temp1",
+      "depth": 6,
+      "mesh": "Object_11",
+      "material": "MistyRo",
+      "triangles": 2846,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -71.248215,
+          -17.816841,
+          -55.050655
+        ],
+        "max": [
+          76.313484,
+          55.40213,
+          118.315407
+        ],
+        "size": [
+          147.561699,
+          73.218971,
+          173.366062
+        ],
+        "center": [
+          2.532635,
+          18.792645,
+          31.632376
+        ],
+        "diagonal": 239.146951
+      }
+    },
+    {
+      "path": "Sketchfab_model/2479715cb45743fea6f68476803cf93d.3ds/Model/brain_1_1/brain1/temp1/Object_22",
+      "name": "Object_22",
+      "semantic_name": "temp1",
+      "depth": 6,
+      "mesh": "Object_12",
+      "material": "MistyRo",
+      "triangles": 2830,
+      "children": 0,
+      "has_transform": false,
+      "world_bounds": {
+        "min": [
+          -71.24601,
+          -17.816841,
+          -86.000664
+        ],
+        "max": [
+          76.316696,
+          55.40213,
+          13.144121
+        ],
+        "size": [
+          147.562706,
+          73.218971,
+          99.144785
+        ],
+        "center": [
+          2.535343,
+          18.792645,
+          -36.428271
+        ],
+        "diagonal": 192.264033
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 12,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 4,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 6,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 4,
+      "points": 0,
+      "lines": 0,
+      "vertices": 12
+    },
+    {
+      "name": "Object_1",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 42852,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 14284,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 7188,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.00837,
+            "non_manifold_edge_fraction": 0.00005,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 14284,
+      "points": 0,
+      "lines": 0,
+      "vertices": 42852
+    },
+    {
+      "name": "Object_2",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 114,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 38,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 34,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0.41667,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 38,
+      "points": 0,
+      "lines": 0,
+      "vertices": 114
+    },
+    {
+      "name": "Object_3",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 125,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Foregrou",
+          "morph_targets": 0,
+          "triangles": 50,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 100,
+            "connected_components": 25,
+            "boundary_edge_fraction": 0.8,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 50,
+      "points": 0,
+      "lines": 0,
+      "vertices": 125
+    },
+    {
+      "name": "Object_4",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 9565,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 3189,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1637,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.01966,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 3189,
+      "points": 0,
+      "lines": 0,
+      "vertices": 9565
+    },
+    {
+      "name": "Object_5",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 9552,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 3184,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1636,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.02072,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 3184,
+      "points": 0,
+      "lines": 0,
+      "vertices": 9552
+    },
+    {
+      "name": "Object_6",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 42,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Foregrou",
+          "morph_targets": 0,
+          "triangles": 16,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 31,
+            "connected_components": 7,
+            "boundary_edge_fraction": 0.8,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 16,
+      "points": 0,
+      "lines": 0,
+      "vertices": 42
+    },
+    {
+      "name": "Object_7",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 7989,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 2663,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1410,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0.03806,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 2663,
+      "points": 0,
+      "lines": 0,
+      "vertices": 7989
+    },
+    {
+      "name": "Object_8",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 5712,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 1904,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1036,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.05912,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 1904,
+      "points": 0,
+      "lines": 0,
+      "vertices": 5712
+    },
+    {
+      "name": "Object_9",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 5712,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 1904,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1036,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.05978,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 1904,
+      "points": 0,
+      "lines": 0,
+      "vertices": 5712
+    },
+    {
+      "name": "Object_10",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 27,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Foregrou",
+          "morph_targets": 0,
+          "triangles": 10,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 20,
+            "connected_components": 5,
+            "boundary_edge_fraction": 0.8,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 10,
+      "points": 0,
+      "lines": 0,
+      "vertices": 27
+    },
+    {
+      "name": "Object_11",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 8538,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 2846,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1482,
+            "connected_components": 3,
+            "boundary_edge_fraction": 0.02726,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 2846,
+      "points": 0,
+      "lines": 0,
+      "vertices": 8538
+    },
+    {
+      "name": "Object_12",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 8490,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 2830,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1462,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0.02282,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 2830,
+      "points": 0,
+      "lines": 0,
+      "vertices": 8490
+    },
+    {
+      "name": "Object_13",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 672,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 224,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 114,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 224,
+      "points": 0,
+      "lines": 0,
+      "vertices": 672
+    },
+    {
+      "name": "Object_14",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 10101,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "MistyRo",
+          "morph_targets": 0,
+          "triangles": 3368,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 1682,
+            "connected_components": 1,
+            "boundary_edge_fraction": 0,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 3368,
+      "points": 0,
+      "lines": 0,
+      "vertices": 10101
+    },
+    {
+      "name": "Object_15",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 582,
+          "indexed": true,
+          "attributes": [
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0"
+          ],
+          "has_normals": true,
+          "has_uv": true,
+          "material": "Sketchy",
+          "morph_targets": 0,
+          "triangles": 194,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 144,
+            "connected_components": 2,
+            "boundary_edge_fraction": 0.26786,
+            "non_manifold_edge_fraction": 0,
+            "degenerate_triangles": 0,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 194,
+      "points": 0,
+      "lines": 0,
+      "vertices": 582
+    }
+  ],
+  "materials": [
+    {
+      "name": "MistyRo",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Foregrou",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    },
+    {
+      "name": "Sketchy",
+      "alpha_mode": "OPAQUE",
+      "alpha_cutoff": null,
+      "base_color_alpha": 1,
+      "double_sided": true,
+      "textures": {
+        "base_color": false,
+        "normal": false,
+        "metallic_roughness": false,
+        "occlusion": false,
+        "emissive": false
+      },
+      "extensions": []
+    }
+  ],
+  "textures": []
+}

@@ -1,0 +1,44 @@
+{
+  "listed_name": "archive (9).zip",
+  "listed_path": "C:\\Users\\johnn\\Downloads\\archive (9).zip",
+  "role": "NAMED",
+  "status": "ALREADY_PRESENT_VERIFIED",
+  "sha256": "1c3a2cfaf51ced1b63df34a990744152c58332800b5f8c2d32217483e02570c4",
+  "size_bytes": 73539678,
+  "entries": 1411,
+  "files": 1411,
+  "directories": 0,
+  "uncompressed_bytes": 73525292,
+  "overall_ratio": 1.0,
+  "max_entry_ratio": 1.3,
+  "project_copy": "D:\\project\\archive (9).zip",
+  "project_copy_identical": true,
+  "duplicate_of_listed": "",
+  "already_present_roots": [
+    "D:/project (1411 files)"
+  ],
+  "extracted_to": "",
+  "skipped_entries": 0,
+  "unsafe_reasons": [],
+  "categories": {
+    "raster_image": 1411
+  },
+  "extensions": {
+    ".jpg": 1410,
+    ".jpeg": 1
+  },
+  "top_level": {
+    "DATASET/": 1411
+  },
+  "second_level": {
+    "DATASET/train/": 999,
+    "DATASET/test/": 412
+  },
+  "entry_manifest": "D:\\project\\_imports\\archives\\_manifests\\archive_09.entries.csv",
+  "mask_like_files": 0,
+  "coco_like_json": 0,
+  "yolo_like_label_files": 0,
+  "license_evidence": [],
+  "duration_seconds": 3.6,
+  "notes": []
+}

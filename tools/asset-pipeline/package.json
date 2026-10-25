@@ -1,0 +1,25 @@
+{
+  "name": "medtwin-asset-pipeline",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Inspection, validation and derivative generation for MedTwin anatomy GLB assets. Originals are read-only inputs.",
+  "type": "module",
+  "scripts": {
+    "inspect": "node inspect.mjs",
+    "optimize": "node optimize.mjs",
+    "manifest": "node build-manifest.mjs",
+    "all": "node inspect.mjs && node optimize.mjs && node build-manifest.mjs"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "dependencies": {
+    "@gltf-transform/core": "4.5.1",
+    "@gltf-transform/extensions": "4.5.1",
+    "@gltf-transform/functions": "4.5.1",
+    "draco3dgltf": "1.5.9",
+    "gltf-validator": "2.0.0-dev.3.10",
+    "meshoptimizer": "1.3.0",
+    "sharp": "0.35.5"
+  }
+}

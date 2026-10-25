@@ -1,0 +1,201 @@
+@import "tailwindcss" source(none);
+
+@source "./";
+@source "../index.html";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Chart and status values follow the validated reference
+ * palette (light surface #fcfcfb, dark surface #1a1a19). Components use the
+ * semantic Tailwind colours below (bg-surface, text-ink-2, border-line, ...),
+ * so the theme switches by redefining the variables only.
+ */
+:root {
+  color-scheme: light;
+  --mt-page: #f4f4f2;
+  --mt-surface: #fcfcfb;
+  --mt-surface-2: #f3f3f0;
+  --mt-surface-3: #e9e9e4;
+  --mt-sidebar: #f8f8f6;
+  --mt-line: rgba(11, 11, 11, 0.09);
+  --mt-line-strong: rgba(11, 11, 11, 0.18);
+  --mt-ink: #0b0b0b;
+  --mt-ink-2: #52514e;
+  --mt-ink-3: #77756f;
+  --mt-accent: #0f766e;
+  --mt-accent-fg: #ffffff;
+  --mt-accent-soft: #e3f2ef;
+  --mt-accent-text: #0b5f58;
+  --mt-focus: #2a78d6;
+
+  /* Status palette (fixed, never themed); *-text variants are readable on surfaces. */
+  --mt-good: #0ca30c;
+  --mt-good-text: #006300;
+  --mt-warning: #fab219;
+  --mt-warning-text: #7a5200;
+  --mt-serious: #ec835a;
+  --mt-serious-text: #9a3d14;
+  --mt-critical: #d03b3b;
+  --mt-critical-text: #b42323;
+  --mt-info-text: #1c5cab;
+  --mt-neutral-text: #52514e;
+
+  /* Model overlays are drawn on medical images (dark in both themes), so they are not themed;
+     the hues avoid the status palette. Values must match the RGBA used for mask rasters. */
+  --mt-overlay-model: #22d3ee;
+  --mt-overlay-highlight: #f472b6;
+
+  /* Categorical series slots (fixed order). */
+  --mt-series-1: #2a78d6;
+  --mt-series-2: #eb6834;
+  --mt-series-3: #1baf7a;
+  --mt-series-4: #eda100;
+
+  /* Anatomical mapping categories: ordinal blue ramp + muted grey. */
+  --mt-map-spatial: #184f95;
+  --mt-map-verified: #2a78d6;
+  --mt-map-schematic: #86b6ef;
+  --mt-map-unsupported: #898781;
+
+  --mt-grid: #e1e0d9;
+  --mt-axis: #c3c2b7;
+  --mt-viewport: #10171c;
+  --mt-shadow: 0 1px 2px rgba(11, 11, 11, 0.04), 0 8px 24px rgba(11, 11, 11, 0.04);
+}
+
+.dark {
+  color-scheme: dark;
+  --mt-page: #0d0d0d;
+  --mt-surface: #1a1a19;
+  --mt-surface-2: #222220;
+  --mt-surface-3: #2c2c2a;
+  --mt-sidebar: #131312;
+  --mt-line: rgba(255, 255, 255, 0.09);
+  --mt-line-strong: rgba(255, 255, 255, 0.18);
+  --mt-ink: #f0efec;
+  --mt-ink-2: #c3c2b7;
+  --mt-ink-3: #9c9a92;
+  --mt-accent: #2dd4bf;
+  --mt-accent-fg: #04201d;
+  --mt-accent-soft: rgba(45, 212, 191, 0.12);
+  --mt-accent-text: #5eead4;
+  --mt-focus: #5598e7;
+
+  --mt-good-text: #0ca30c;
+  --mt-warning-text: #fab219;
+  --mt-serious-text: #ec835a;
+  --mt-critical-text: #e66767;
+  --mt-info-text: #86b6ef;
+  --mt-neutral-text: #c3c2b7;
+
+  --mt-series-1: #3987e5;
+  --mt-series-2: #d95926;
+  --mt-series-3: #199e70;
+  --mt-series-4: #c98500;
+
+  --mt-map-spatial: #b7d3f6;
+  --mt-map-verified: #5598e7;
+  --mt-map-schematic: #256abf;
+  --mt-map-unsupported: #898781;
+
+  --mt-grid: #2c2c2a;
+  --mt-axis: #383835;
+  --mt-viewport: #0b1014;
+  --mt-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+@theme inline {
+  /* System faces only: the workspace makes no third-party requests and runs offline. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+  --color-page: var(--mt-page);
+  --color-surface: var(--mt-surface);
+  --color-surface-2: var(--mt-surface-2);
+  --color-surface-3: var(--mt-surface-3);
+  --color-sidebar: var(--mt-sidebar);
+  --color-line: var(--mt-line);
+  --color-line-strong: var(--mt-line-strong);
+  --color-ink: var(--mt-ink);
+  --color-ink-2: var(--mt-ink-2);
+  --color-ink-3: var(--mt-ink-3);
+  --color-accent: var(--mt-accent);
+  --color-accent-fg: var(--mt-accent-fg);
+  --color-accent-soft: var(--mt-accent-soft);
+  --color-accent-text: var(--mt-accent-text);
+  --color-good: var(--mt-good);
+  --color-good-text: var(--mt-good-text);
+  --color-warning: var(--mt-warning);
+  --color-warning-text: var(--mt-warning-text);
+  --color-serious: var(--mt-serious);
+  --color-serious-text: var(--mt-serious-text);
+  --color-critical: var(--mt-critical);
+  --color-critical-text: var(--mt-critical-text);
+  --color-info-text: var(--mt-info-text);
+  --color-neutral-text: var(--mt-neutral-text);
+  --color-map-spatial: var(--mt-map-spatial);
+  --color-map-verified: var(--mt-map-verified);
+  --color-map-schematic: var(--mt-map-schematic);
+  --color-map-unsupported: var(--mt-map-unsupported);
+  --color-viewport: var(--mt-viewport);
+  --shadow-card: var(--mt-shadow);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    background: var(--mt-page);
+    color: var(--mt-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--mt-accent) 28%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--mt-focus);
+    outline-offset: 2px;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+  code,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--mt-line-strong) transparent;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Texture fill for UNAVAILABLE regions: 45-degree hairlines, never decorative. */
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--mt-ink-3) 26%, transparent) 0 1px,
+    transparent 1px 7px
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

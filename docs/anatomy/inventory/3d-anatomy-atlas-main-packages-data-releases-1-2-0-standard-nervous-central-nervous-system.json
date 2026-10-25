@@ -1,0 +1,217 @@
+{
+  "asset_id": "3d-anatomy-atlas-main-packages-data-releases-1-2-0-standard-nervous-central-nervous-system",
+  "relative_path": "3d-anatomy-atlas-main/packages/data/releases/1.2.0/standard/nervous/central_nervous_system.glb",
+  "source_group": "z_anatomy_atlas_1_2_0_standard",
+  "bytes": 1109992,
+  "sha256": "668fd33fad3814f38f67055fe9d856039c25a90d76737a3b882dbc12a799bca0",
+  "container": {
+    "valid": true,
+    "chunks": [
+      {
+        "type": "JSON",
+        "byteLength": 2672
+      },
+      {
+        "type": "BIN",
+        "byteLength": 1107292
+      }
+    ],
+    "problems": []
+  },
+  "gltf": {
+    "version": "2.0",
+    "generator": "svitylo-atlas-tools",
+    "copyright": null,
+    "asset_extras": null,
+    "extensions_used": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ],
+    "extensions_required": [
+      "EXT_meshopt_compression",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "validation": {
+    "status": "VALID",
+    "validator_version": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 0,
+    "infos": 4,
+    "hints": 0,
+    "truncated": false,
+    "issue_codes": {
+      "INFO:UNSUPPORTED_EXTENSION": 1,
+      "INFO:UNUSED_OBJECT": 3
+    },
+    "draw_calls": 1,
+    "validator_triangle_count": 47792,
+    "validator_vertex_count": 41256
+  },
+  "load": {
+    "status": "LOADED"
+  },
+  "counts": {
+    "scenes": 1,
+    "nodes": 1,
+    "mesh_nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "materials": 0,
+    "textures": 0,
+    "animations": 0,
+    "skins": 0,
+    "cameras": 0
+  },
+  "geometry": {
+    "unique_triangles": 47792,
+    "rendered_triangles": 47792,
+    "unique_vertices": 41256,
+    "points": 0,
+    "primitive_modes": [
+      "TRIANGLES"
+    ],
+    "primitives_without_normals": 0,
+    "primitives_without_uv": 1,
+    "unindexed_primitives": 0,
+    "morph_target_primitives": 0,
+    "topology_measured_primitives": 1,
+    "topology_skipped_primitives": 0,
+    "connected_components_measured": 42,
+    "closed_measured_primitives": 0,
+    "max_boundary_edge_fraction": 0.01411,
+    "degenerate_triangles_measured": 7,
+    "non_finite_positions_measured": 0
+  },
+  "spatial": {
+    "scene_bounds": {
+      "min": [
+        -0.064858,
+        1.055121,
+        -0.043334
+      ],
+      "max": [
+        0.060202,
+        1.700957,
+        0.132064
+      ],
+      "size": [
+        0.12506,
+        0.645836,
+        0.175399
+      ],
+      "center": [
+        -0.002328,
+        1.378039,
+        0.044365
+      ],
+      "diagonal": 0.680815
+    },
+    "bounds_finite": true,
+    "tallest_axis": "y",
+    "aspect_ratio": 5.164,
+    "root_transform_present": true,
+    "nested_mesh_nodes_inside_largest": 0,
+    "largest_mesh_node": "nervous.central_nervous_system",
+    "unit_note": "glTF declares metres; source authoring units are not verifiable from the file."
+  },
+  "materials_summary": {
+    "blend": 0,
+    "mask": 0,
+    "transmission": 0,
+    "unlit": 0,
+    "double_sided": 0,
+    "names": []
+  },
+  "textures_summary": {
+    "count": 0,
+    "total_bytes": 0,
+    "max_edge_px": 0,
+    "mime_types": []
+  },
+  "naming": {
+    "mesh_node_names_sample": [
+      "nervous.central_nervous_system"
+    ],
+    "anatomically_named_mesh_nodes": 1,
+    "anatomical_names_sample": [
+      "nervous.central_nervous_system"
+    ]
+  },
+  "inspection_ms": 66,
+  "nodes": [
+    {
+      "path": "nervous.central_nervous_system",
+      "name": "nervous.central_nervous_system",
+      "semantic_name": "nervous.central_nervous_system",
+      "depth": 0,
+      "mesh": "nervous.central_nervous_system",
+      "material": null,
+      "triangles": 47792,
+      "children": 0,
+      "has_transform": true,
+      "world_bounds": {
+        "min": [
+          -0.064858,
+          1.055121,
+          -0.043334
+        ],
+        "max": [
+          0.060202,
+          1.700957,
+          0.132064
+        ],
+        "size": [
+          0.12506,
+          0.645836,
+          0.175399
+        ],
+        "center": [
+          -0.002328,
+          1.378039,
+          0.044365
+        ],
+        "diagonal": 0.680815
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "nervous.central_nervous_system",
+      "primitives": [
+        {
+          "mode": "TRIANGLES",
+          "vertex_count": 41256,
+          "indexed": true,
+          "attributes": [
+            "_ID",
+            "POSITION",
+            "NORMAL"
+          ],
+          "has_normals": true,
+          "has_uv": false,
+          "material": null,
+          "morph_targets": 0,
+          "triangles": 47792,
+          "points": 0,
+          "lines": 0,
+          "topology": {
+            "status": "MEASURED",
+            "welded_vertex_count": 24121,
+            "connected_components": 42,
+            "boundary_edge_fraction": 0.01411,
+            "non_manifold_edge_fraction": 0.00806,
+            "degenerate_triangles": 7,
+            "non_finite_positions": 0
+          }
+        }
+      ],
+      "triangles": 47792,
+      "points": 0,
+      "lines": 0,
+      "vertices": 41256
+    }
+  ],
+  "materials": [],
+  "textures": []
+}
