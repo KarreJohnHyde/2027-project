@@ -1,7 +1,26 @@
 # PHI release blocker: patient identifiers in Git history
 
-**Status: OPEN — RELEASE AND SHARING BLOCKED pending the repository owner's authorization to sanitize history.**
+**Status: OPEN for this local repository's history. Publication happens only through a separate history-free snapshot repository; this repository and its Git metadata must never be pushed or shared until the history is sanitized.**
 This document is deliberately redacted: it contains no names, ages, report numbers or other identifiers.
+
+## Publication of a history-free snapshot (2026-10-25)
+
+The repository owner asked for the work to be committed to `https://github.com/KarreJohnHyde/2027-project`.
+The PHI-bearing history was **not** pushed. Instead:
+
+- A separate clone of the GitHub repository (`D:\mtwin-publish`; it held only the owner's
+  "Initial commit" `3ee476f` with an MIT `LICENSE`) received a copy of the files of local
+  commit `3e60b8b`, staged so every blob id matched that commit (588 files, 0 missing or
+  different), and was committed as `45c25ce` "MedTwin 2.0 research platform".
+- Before pushing, `scripts/privacy_scan.py --repo D:\mtwin-publish --history` and `--tree`
+  both exited 0 (590 blobs, 2 commit messages). All 14 tracked screenshots were reviewed
+  visually: they show only the synthetic acceptance case and an illustrative fixture.
+- `git push origin main` fast-forwarded `3ee476f..45c25ce`. A fresh clone from GitHub was
+  verified: 2 commits, the same 588 files, real Git LFS content, and no `.env.local`,
+  database, datasets or checkpoints.
+- This local repository still holds the PHI-bearing blob in `bfb7988` and `ba7eb13`; its
+  pre-push guard still blocks every push from it. Further publication must repeat the
+  snapshot procedure (copy committed files into the publish clone, verify, scan, push).
 
 ## Current release decision (revalidated 2026-10-24)
 

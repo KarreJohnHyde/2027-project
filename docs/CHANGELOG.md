@@ -1,6 +1,6 @@
 # MedTwin change log
 
-All work is on branch `feature/medtwin-2-integration`. Nothing has been pushed; the repository has no remote.
+All work is on branch `feature/medtwin-2-integration`. This repository has no remote and its history has never been pushed. A history-free snapshot of commit `3e60b8b` was published on 2026-10-25 as `45c25ce` in `https://github.com/KarreJohnHyde/2027-project` (see `docs/security/PHI_RELEASE_BLOCKER.md`).
 
 | Commit | Date | Summary |
 | --- | --- | --- |

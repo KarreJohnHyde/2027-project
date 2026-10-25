@@ -12,6 +12,10 @@ verified work table at the end and do not reopen scientific claims without new e
    `scripts/purge_phi_history.ps1 -Authorization "I AUTHORIZE REWRITING MEDTWIN GIT HISTORY" -BackupDir "X:\approved-encrypted-evidence" -SecureBackupApproved`.
    Do not push, publish, attach, bundle, clone for transfer, or otherwise share this
    repository or its Git metadata until remediation and a clean history scan complete.
+   The public code is a separate history-free snapshot (`45c25ce`,
+   `https://github.com/KarreJohnHyde/2027-project`, working copy `D:\mtwin-publish`); to
+   publish later changes, repeat the copy/verify/scan/push procedure in
+   `docs/security/PHI_RELEASE_BLOCKER.md`, never a push from this repository.
 2. **Choose the disposition of the local development transcript containing report text**
    (`BLOCKED`). Its scope is recorded only in `docs/security/PHI_RELEASE_BLOCKER.md`.
 3. **Complete privacy review of `archive (5).zip`** (`BLOCKED`). Its real-looking DICOM

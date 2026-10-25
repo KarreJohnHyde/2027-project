@@ -1,9 +1,12 @@
 # MedTwin 2.0 - final report for this session
 
-Date 2026-10-25, branch `feature/medtwin-2-integration` (local only; no remote;
-nothing pushed or published). The local research application is implemented and tested
-in the scopes below, but the full directive is **not complete**, the repository is not
-safe to share, and no model is clinically validated or activatable.
+Date 2026-10-25, branch `feature/medtwin-2-integration` (local commits `1aedb23`,
+`3e60b8b`; this repository has no remote and its history was never pushed). A
+history-free snapshot of `3e60b8b` is published as `45c25ce` in
+`https://github.com/KarreJohnHyde/2027-project`. The research application is implemented
+and tested in the scopes below, but the full directive is **not complete**, this local
+repository's history is not safe to share, and no model is clinically validated or
+activatable.
 
 ## Final evidence snapshot
 
@@ -38,7 +41,7 @@ actions: `docs/development/NEXT_ACTIONS.md`; executed tests:
 | Prognosis interface | `IMPLEMENTED_TESTED` | `/prognosis-studio` is independent from Anatomy and returns reason-coded abstention. The final browser receipt contains zero numeric risk statements. |
 | Prognostic/treatment estimation | `BLOCKED` | PBC and heart-failure baselines are event/censor evaluations, not repeated longitudinal patient forecasts or causal treatment models. Required longitudinal cohorts, temporal validation, estimands, activation, and clinical evidence are absent. |
 | IEEE research traceability | `IMPLEMENTED_TESTED` | Exactly 56 claims are reconciled: 28 tested, 18 partial, 5 implemented-not-validated, 3 proposed-only, 2 unsupported. Revised Eq. (1)-(12) remains separate from the earlier Eq. (1)-(16). |
-| Repository security/release | `BLOCKED` | Current-tree privacy scanning passes, but PHI remains in reachable Git history. Do not push, publish, bundle, clone for transfer, or share Git metadata until an authorized purge/new sanitized repository and clean history scan exist. |
+| Repository security/release | `BLOCKED` (local history) | Published as a history-free snapshot: the snapshot repository's history and tree scans exited 0, all 14 screenshots were reviewed as synthetic, and a fresh clone of GitHub matched the local commit file-for-file with 2 commits. PHI remains in this repository's reachable history, so it must never be pushed, bundled or shared; further publication repeats the snapshot procedure in `docs/security/PHI_RELEASE_BLOCKER.md`. |
 | Docker | `BLOCKED` | Docker client 29.9.2 and Compose 5.6.1 are installed; base/worker Compose configurations pass. The Linux engine is unavailable, so images and containers were not built or run. |
 
 ## Internal research results
