@@ -18,6 +18,8 @@ from app.models.entities import (
 from app.schemas.entities import CaseCreate, CaseResponse, ExaminationCreate, ExaminationResponse
 from app.services.auth import get_current_user, verify_case_access
 from app.services.audit_service import log_audit_event
+from app.services.effective_evidence import MEASUREMENT_FIELDS, STATEMENT_FIELDS, correction_index, effective_record
+from app.services.measurement_identity import duplicate_map, occurrences
 from app.services import upload_store
 
 router = APIRouter(prefix="/cases", tags=["Case Management"])
@@ -281,6 +283,43 @@ def get_case_stats(
     }
 
 
+@router.get("/{case_id}/effective-evidence")
+def get_case_effective_evidence(
+    case_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Reviewed view: every extracted statement and measurement with its original values,
+    the values after an approved, independently decided correction, and the correction state.
+    Source rows are never modified; unapproved proposals do not change effective values."""
+    case = verify_case_access(case_id, current_user, db, access="read")
+    measurement_corrections, statement_corrections = correction_index(db, case.id)
+    measurements = (
+        db.query(MedicalMeasurement)
+        .filter(MedicalMeasurement.case_id == case.id)
+        .order_by(MedicalMeasurement.id.asc())
+        .all()
+    )
+    statements = (
+        db.query(ClinicalReportStatement)
+        .filter(ClinicalReportStatement.case_id == case.id)
+        .order_by(ClinicalReportStatement.id.asc())
+        .all()
+    )
+    return {
+        "case_id": case.id,
+        "measurements": [
+            {"measurement_id": item.id, **effective_record(serialize_measurement(item), measurement_corrections.get(item.id, []), MEASUREMENT_FIELDS)}
+            for item in measurements
+        ],
+        "statements": [
+            {"statement_id": item.id, **effective_record(serialize_statement(item), statement_corrections.get(item.id, []), STATEMENT_FIELDS)}
+            for item in statements
+        ],
+        "notice": "Effective values reflect approved corrections only; original extraction and source text are unchanged.",
+    }
+
+
 @router.get("/{case_id}/statements")
 def get_case_statements(
     case_id: int,
@@ -335,7 +374,8 @@ def documented_range_position(item: MedicalMeasurement) -> str:
     if (item.result_operator or "=") != "=":
         return "INDETERMINATE_CENSORED_RESULT"
     if item.reference_low is None and item.reference_high is None:
-        return "NO_DOCUMENTED_INTERVAL"
+        # Printed strata that do not resolve to one interval for this patient stay indeterminate.
+        return "INDETERMINATE_PRINTED_STRATA" if item.reference_options else "NO_DOCUMENTED_INTERVAL"
     if item.reference_low is not None and item.value < item.reference_low:
         return "BELOW_DOCUMENTED_INTERVAL"
     if item.reference_high is not None and item.value > item.reference_high:
@@ -377,6 +417,9 @@ def serialize_measurement(item: MedicalMeasurement) -> Dict[str, Any]:
         "reference_text": item.reference_text,
         "reference_source": item.reference_source,
         "documented_flag": item.documented_flag,
+        "reference_options": item.reference_options or [],
+        "reference_selection": item.reference_selection,
+        "documented_category": item.documented_category,
         "documented_range_position": documented_range_position(item),
         "conversion_status": item.conversion_status or "AS_DOCUMENTED",
         "documented_date": item.documented_date,
@@ -406,7 +449,15 @@ def get_case_measurements(
         .order_by(MedicalMeasurement.created_at.asc(), MedicalMeasurement.id.asc())
         .all()
     )
-    return [serialize_measurement(item) for item in measurements]
+    duplicates = duplicate_map(measurements)
+    grouped = occurrences(measurements)
+    serialized = []
+    for item in measurements:
+        record = serialize_measurement(item)
+        record["duplicate_of_measurement_id"] = duplicates.get(item.id)
+        record["source_occurrences"] = grouped.get(item.id, []) if item.id not in duplicates else []
+        serialized.append(record)
+    return serialized
 
 
 @router.get("/{case_id}/attributes")

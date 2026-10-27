@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Badge, Card, KeyValue, Metric, PageHeader, StatusBadge } from "../components/ui";
+import { Badge, Card, KeyValue, Metric, PageHeader, Segmented, StatusBadge, Table } from "../components/ui";
 import type { ModelRegistryRecord } from "../services/api";
 import { frameworkLabel, publicText, runtimeLabel } from "../lib/displayNames";
 import { formatNumber, humanize } from "../lib/format";
@@ -8,6 +8,33 @@ import { useWorkspace } from "../state/workspace";
 function declared(value: unknown): string {
   if (value === null || value === undefined || value === "" || (typeof value === "object" && Object.keys(value as object).length === 0)) return "Not declared";
   return typeof value === "object" ? JSON.stringify(value) : String(value);
+}
+
+type RegistryView = "evidence" | "cards";
+
+function isRecorded(value: unknown): boolean {
+  return value !== null && value !== undefined && value !== "" && value !== "UNKNOWN" && value !== "UNVERIFIED";
+}
+
+function externalEvaluationRecorded(model: ModelRegistryRecord): boolean {
+  const bundle = model.artifact_bundle as Record<string, unknown>;
+  const extended = model as ModelRegistryRecord & { external_evaluation?: unknown; external_validation?: unknown };
+  return Boolean(
+    bundle.external_evaluation_path
+    || bundle.external_validation_report_path
+    || extended.external_evaluation
+    || extended.external_validation,
+  );
+}
+
+function Facet({ value, yes = "Recorded", no = "Not recorded", yesStatus = "RECORDED", noStatus = "NOT_RECORDED" }: {
+  value: boolean;
+  yes?: string;
+  no?: string;
+  yesStatus?: string;
+  noStatus?: string;
+}) {
+  return <StatusBadge status={value ? yesStatus : noStatus} label={value ? yes : no} />;
 }
 
 function ModelCard({ model }: { model: ModelRegistryRecord }) {
@@ -63,27 +90,127 @@ function ModelCard({ model }: { model: ModelRegistryRecord }) {
   );
 }
 
+function EvidenceMatrix({ models }: { models: ModelRegistryRecord[] }) {
+  return (
+    <>
+      <Card title="How to read this matrix" eyebrow="Separate facts, never a single readiness score" className="mb-4">
+        <p className="text-sm leading-6 text-ink-2">
+          A registry entry, dataset citation, installed dependency, checkpoint, runnable research path, internal evaluation, external evaluation,
+          and clinical activation are different claims. A green cell in one column never upgrades another column. “Not recorded” means this
+          registry response contains no evidence for that facet.
+        </p>
+      </Card>
+      <Card title="Model evidence facets" eyebrow="Current authenticated registry response" padded={false}>
+        <Table headers={["Model", "Registry state", "Dataset + licence", "Dependency", "Checkpoint hash", "Research gate", "Internal evaluation", "External evaluation", "Clinical activation"]} dense>
+          {models.map((model) => {
+            const bundle = model.artifact_bundle as Record<string, unknown>;
+            const datasetRecorded = isRecorded(bundle.dataset_version) && isRecorded(bundle.dataset_license);
+            const dependencyBlocked = model.status === "DEPENDENCY_MISSING" || model.status === "NOT_INSTALLED";
+            const internalEvaluation = isRecorded(bundle.evaluation_report_path) && Boolean(model.held_out_evaluation);
+            return (
+              <tr key={model.model_id}>
+                <td className="min-w-56">
+                  <p className="font-medium text-ink">{model.display_name}</p>
+                  <p className="mt-0.5 font-mono text-[10px] text-ink-3">{model.model_id}</p>
+                </td>
+                <td><StatusBadge status={model.registry_state} /></td>
+                <td><Facet value={datasetRecorded} /></td>
+                <td>
+                  <Facet
+                    value={!dependencyBlocked}
+                    yes="No block recorded"
+                    no="Blocked"
+                    yesStatus="AVAILABLE"
+                    noStatus="DEPENDENCY_MISSING"
+                  />
+                </td>
+                <td>
+                  <Facet
+                    value={model.activation.checkpoint_hash_matches}
+                    yes="Hash matched"
+                    no={isRecorded(bundle.checkpoint_path) ? "Not matched" : "No checkpoint"}
+                    yesStatus="VERIFIED"
+                    noStatus="CHECKPOINT_MISSING"
+                  />
+                </td>
+                <td>
+                  <Facet
+                    value={model.research_gate?.allowed === true}
+                    yes="Runnable"
+                    no="Blocked / not routed"
+                    yesStatus="RESEARCH_ONLY_UNVALIDATED"
+                    noStatus="BLOCKED"
+                  />
+                </td>
+                <td><Facet value={internalEvaluation} yes="Held-out report" no="Not recorded" yesStatus="INTERNALLY_EVALUATED" /></td>
+                <td><Facet value={externalEvaluationRecorded(model)} yes="Recorded" no="Not recorded" yesStatus="EXTERNALLY_EVALUATED" /></td>
+                <td>
+                  <Facet
+                    value={model.activation.eligible}
+                    yes="Eligible"
+                    no="Not eligible"
+                    yesStatus="CLINICALLY_VALIDATED"
+                    noStatus="CLINICALLY_UNVALIDATED"
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </Table>
+      </Card>
+    </>
+  );
+}
+
 export default function ModelRegistryPage() {
   const models = useWorkspace((state) => state.models);
   const [state, setState] = useState("ALL");
+  const [view, setView] = useState<RegistryView>("evidence");
   const states = [...new Set(models.map((model) => model.registry_state))].sort();
   const shown = models.filter((model) => state === "ALL" || model.registry_state === state);
+  const internalEvaluated = models.filter((model) => {
+    const bundle = model.artifact_bundle as Record<string, unknown>;
+    return isRecorded(bundle.evaluation_report_path) && Boolean(model.held_out_evaluation);
+  }).length;
+  const externalEvaluated = models.filter(externalEvaluationRecorded).length;
   return (
     <>
-      <PageHeader eyebrow="Model Registry" title="Models and activation gates" description="A model's ability to run is not evidence that it is reliable. Activation requires a complete artifact bundle: licensed dataset and version, patient-level split, task and label definitions, preprocessing, hashed checkpoint, calibration, thresholds, held-out predictions, evaluation report and model card." />
-      <div className="grid gap-3 sm:grid-cols-3">
+      <PageHeader
+        eyebrow="Model Registry"
+        title="Models and activation gates"
+        description="A model's ability to run is not evidence that it is reliable. Activation requires a complete artifact bundle: licensed dataset and version, patient-level split, task and label definitions, preprocessing, hashed checkpoint, calibration, thresholds, held-out predictions, evaluation report and model card."
+        actions={
+          <Segmented
+            label="Model registry view"
+            value={view}
+            onChange={setView}
+            options={[
+              { value: "evidence", label: "Evidence matrix" },
+              { value: "cards", label: "Model cards" },
+            ]}
+          />
+        }
+      />
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <Metric label="Registered models" value={models.length} />
-        <Metric label="Activation eligible" value={models.filter((model) => model.activation.eligible).length} note="Validated with a complete bundle" />
-        <Metric label="Processor-only baselines" value={models.filter((model) => model.processor_only).length} note="Transparent rules, not learned models" />
+        <Metric label="Internal evaluation recorded" value={internalEvaluated} note="Not external or clinical validation" />
+        <Metric label="External evaluation recorded" value={externalEvaluated} note="Independent evidence only" />
+        <Metric label="Clinical activation eligible" value={models.filter((model) => model.activation.eligible).length} note="Validated with a complete bundle" />
       </div>
-      <div className="my-4 flex flex-wrap gap-1.5">
-        {["ALL", ...states].map((value) => (
-          <button key={value} type="button" onClick={() => setState(value)} aria-pressed={state === value}>
-            <Badge tone={state === value ? "accent" : "neutral"} icon={false}>{value === "ALL" ? `All (${models.length})` : `${humanize(value)} (${models.filter((model) => model.registry_state === value).length})`}</Badge>
-          </button>
-        ))}
-      </div>
-      <div className="grid gap-4 xl:grid-cols-2">{shown.map((model) => <ModelCard key={model.model_id} model={model} />)}</div>
+      {view === "evidence" ? (
+        <div className="mt-4"><EvidenceMatrix models={models} /></div>
+      ) : (
+        <>
+          <div className="my-4 flex flex-wrap gap-1.5">
+            {["ALL", ...states].map((value) => (
+              <button key={value} type="button" onClick={() => setState(value)} aria-pressed={state === value}>
+                <Badge tone={state === value ? "accent" : "neutral"} icon={false}>{value === "ALL" ? `All (${models.length})` : `${humanize(value)} (${models.filter((model) => model.registry_state === value).length})`}</Badge>
+              </button>
+            ))}
+          </div>
+          <div className="grid gap-4 xl:grid-cols-2">{shown.map((model) => <ModelCard key={model.model_id} model={model} />)}</div>
+        </>
+      )}
     </>
   );
 }

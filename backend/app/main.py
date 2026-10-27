@@ -27,7 +27,14 @@ from app.config import (
 )
 from app.database import Base, SessionLocal, engine, get_db
 from app.migrations import run_migrations
-from app.models.entities import AnatomicalAsset, Case, RepresentationLevel, User, UserRole
+from app.models.entities import (
+    AnatomicalAsset,
+    Case,
+    RepresentationLevel,
+    User,
+    UserRole,
+    VerificationStatus,
+)
 from app.routers import (
     analysis,
     anatomy,
@@ -115,6 +122,11 @@ def seed_development_data(db: Session) -> None:
             hashed_password=get_password_hash(DEV_SEED_PASSWORD),
             full_name=DEV_SEED_FULL_NAME,
             role=role,
+            verification_status=(
+                VerificationStatus.UNVERIFIED
+                if role == UserRole.PUBLIC
+                else VerificationStatus.VERIFIED
+            ),
             is_active=True,
         )
         db.add(user)

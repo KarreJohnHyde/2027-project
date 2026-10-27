@@ -52,8 +52,11 @@ verified work table at the end and do not reopen scientific claims without new e
    encrypted PostgreSQL deployment and verify migration, backup/restore, key rotation,
    recovery, and operational key custody.
 2. **Add objective image-quality/applicability/OOD gates for all seven 2-D upload models**
-   (`NOT_STARTED`). User attestation and modality checks do not establish acquisition or
-   population compatibility.
+   (`PARTIAL`). A document-photograph content gate now refuses printed report pages
+   (0/175 in-domain held-out frames refused; `docs/validation/DOCUMENT_PHOTO_GATE.md`).
+   Photographs of printed films and ultrasound montages still pass it. Next: a per-model
+   feature-space (penultimate-layer Mahalanobis) distance with its threshold fitted on that
+   model's validation split only.
 3. **Run the existing OCR and Clinical NLP evaluators on lawful independent gold data**
    (`BLOCKED` on input). Preserve immutable byte digests, independent-gold and
    de-identification attestations, adjudication records, and error categories.
@@ -84,7 +87,17 @@ verified work table at the end and do not reopen scientific claims without new e
     Only the browser client is configured; no data is sent. Any use needs a
     data-protection assessment, row-level security policies and a de-identification rule;
     patient evidence must not leave the deployment by default.
-13. **Rerun the relevant gate after any prerequisite or bundle changes**: dataset audit
+13. **Install medspaCy in its own WSL environment** (`BLOCKED` in the shared one: 1.3.1 upgrades
+    spaCy to 3.8 and would break scispaCy 0.5.5). Commands are in
+    `docs/verification/REPOSITORY_INVENTORY.md`; then add a fail-closed second-opinion
+    assertion adapter that reports disagreements with the rule engine for review.
+14. **Use OCR layout geometry for table rows** (`NOT_STARTED`). Text-order parsing cannot
+    recover a result row whose label OCR missed, or a scrambled reading order; line boxes
+    are already stored per page.
+15. **Separate printed demographics from report text** (`NOT_STARTED`). When OCR misses a
+    page's sex/age header, stratified intervals stay indeterminate. A reviewer-entered case
+    sex and date of birth, audited and never inferred, would let strata resolve.
+16. **Rerun the relevant gate after any prerequisite or bundle changes**: dataset audit
     before training; internal plus external evaluation before activation; all seven
     image workflows after model changes; 43/43 anatomy after viewer/assets; and full
     build/start/health/worker checks when Docker becomes available.

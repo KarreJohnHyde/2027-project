@@ -53,7 +53,9 @@ function Sidebar({ onNavigate }: { onNavigate: () => void }) {
             <div className="grid h-8 w-8 place-items-center rounded-full bg-surface-3 text-[11px] font-semibold text-ink-2">{(user.full_name || user.username).slice(0, 2).toUpperCase()}</div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-medium text-ink">{user.full_name || user.username}</p>
-              <p className="text-[11px] capitalize text-ink-3">{user.role}</p>
+              <p className="text-[11px] text-ink-3">
+                <span className="capitalize">{user.role}</span> · {user.verification_status.toLowerCase()}
+              </p>
             </div>
             <IconButton label="Sign out" icon={LogOut} onClick={logout} />
           </div>

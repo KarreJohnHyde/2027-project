@@ -32,7 +32,8 @@ const configuredOrigin = (import.meta.env.VITE_MEDTWIN_API_URL as string | undef
 export const API_V1_BASE = configuredOrigin ? `${configuredOrigin}/api/v1` : '/api/v1';
 
 export type ResourceId = number | string;
-export type UserRole = 'admin' | 'clinician' | 'researcher';
+export type UserRole = 'public' | 'admin' | 'clinician' | 'researcher';
+export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'SUSPENDED';
 export type Modality = 'IMAGE' | 'ECG' | 'REPORT' | 'MULTIMODAL';
 export type EvidenceStatus =
   | 'COMPLETED'
@@ -52,6 +53,7 @@ export interface AuthToken {
   user_id: number;
   username: string;
   role: UserRole;
+  verification_status: VerificationStatus;
 }
 
 export interface User {
@@ -60,12 +62,20 @@ export interface User {
   email: string;
   full_name: string | null;
   role: UserRole;
+  verification_status: VerificationStatus;
   is_active: boolean;
   created_at: string;
 }
 
 export interface AuthenticatedSession extends AuthToken {
   user: User;
+}
+
+export interface RegisterUserInput {
+  username: string;
+  email: string;
+  password: string;
+  full_name?: string;
 }
 
 export interface Examination {
@@ -112,6 +122,11 @@ export interface UploadedFile {
   modality: Exclude<Modality, 'MULTIMODAL'>;
   is_associated: boolean;
   association_notes: string | null;
+  version_number?: number;
+  supersedes_file_id?: number | null;
+  superseded_by_file_id?: number | null;
+  withdrawn_at?: string | null;
+  withdrawal_reason?: string | null;
   created_at: string;
 }
 
@@ -276,6 +291,9 @@ export interface ReportStatement {
   created_at: string;
 }
 
+/** "~" marks a value the report prints as approximate; it is never treated as exact. */
+export type ResultOperator = '=' | '<' | '>' | '<=' | '>=' | '~';
+
 export interface MedicalMeasurement {
   id: number;
   case_id: number;
@@ -285,7 +303,7 @@ export interface MedicalMeasurement {
   name: string;
   display_name: string;
   value: number;
-  result_operator: '=' | '<' | '>' | '<=' | '>=';
+  result_operator: ResultOperator;
   unit: string;
   raw_value: string;
   raw_unit: string;
@@ -309,6 +327,14 @@ export interface MedicalMeasurement {
   reference_text: string | null;
   reference_source: string | null;
   documented_flag: string | null;
+  /** Every stratum printed in the reference column; one is selected only from documented sex/age. */
+  reference_options?: ReferenceOption[];
+  reference_selection?: string | null;
+  /** Category band printed by the laboratory that contains the value, e.g. "Fair Control". */
+  documented_category?: string | null;
+  /** Set when this row reprints an earlier occurrence of the same measurement. */
+  duplicate_of_measurement_id?: number | null;
+  source_occurrences?: { measurement_id: number; source_file_id: number; source_page: number | null }[];
   documented_range_position: string;
   conversion_status: string;
   documented_date: string | null;
@@ -321,6 +347,19 @@ export interface MedicalMeasurement {
   source_hash: string | null;
   extraction_uncertainty: string;
   created_at: string;
+}
+
+export interface ReferenceOption {
+  label: string | null;
+  text: string;
+  low: number | null;
+  high: number | null;
+  low_inclusive: boolean | null;
+  high_inclusive: boolean | null;
+  sex: string | null;
+  pregnancy: boolean;
+  category_band: boolean;
+  age_years: [number, number | null] | null;
 }
 
 export interface DocumentedAttribute {
@@ -995,6 +1034,17 @@ export interface HumanReview {
   correction_payload: HumanReviewCorrectionPayload | null;
   original_output_preserved: boolean;
   reviewed_at: string;
+  /** Independent second-reviewer decision; only APPROVED changes the effective (reviewed) view. */
+  decision?: CorrectionDecision | null;
+}
+
+export interface CorrectionDecision {
+  id: number;
+  review_id: number;
+  decided_by_id: number | null;
+  decision: 'APPROVED' | 'REJECTED';
+  rationale: string;
+  decided_at: string;
 }
 
 export interface ProvenanceEvent {
@@ -1324,6 +1374,14 @@ class ApiClient {
     }
   }
 
+  register(input: RegisterUserInput): Promise<User> {
+    return this.request<User>(
+      '/auth/register',
+      { method: 'POST', body: JSON.stringify(input) },
+      false,
+    );
+  }
+
   logout(): void {
     this.setToken(null);
   }
@@ -1431,6 +1489,23 @@ class ApiClient {
 
   getUploadContentUrl(uploadId: ResourceId): string {
     return `${API_V1_BASE}/uploads/${resourcePath(uploadId)}/content`;
+  }
+
+  /** Replace a file with a new version; the earlier version keeps its bytes and is marked superseded. */
+  uploadFileVersion(uploadId: ResourceId, file: File, reason: string): Promise<UploadedFile> {
+    const form = new FormData();
+    form.append('file', file);
+    form.append('reason', reason);
+    form.append('deidentified', 'true');
+    return this.request<UploadedFile>(`/uploads/${resourcePath(uploadId)}/versions`, { method: 'POST', body: form });
+  }
+
+  /** Withdraw a file with a reason: an audited tombstone; bytes are kept for retention. */
+  withdrawFile(uploadId: ResourceId, reason: string): Promise<UploadedFile> {
+    return this.request<UploadedFile>(`/uploads/${resourcePath(uploadId)}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ reason }),
+    });
   }
 
   uploadFile(caseId: ResourceId, file: File, options: UploadOptions): Promise<UploadedFile> {
@@ -1576,6 +1651,14 @@ class ApiClient {
 
   getFindingReviews(findingId: ResourceId): Promise<HumanReview[]> {
     return this.request<HumanReview[]>(`/reviews/${resourcePath(findingId)}`);
+  }
+
+  /** Approve or reject another reviewer's proposed correction (four-eyes rule). */
+  decideCorrection(reviewId: number, decision: 'APPROVED' | 'REJECTED', rationale: string): Promise<CorrectionDecision> {
+    return this.request<CorrectionDecision>(`/reviews/corrections/${reviewId}/decision`, {
+      method: 'POST',
+      body: JSON.stringify({ decision, rationale }),
+    });
   }
 
   submitFindingReview(

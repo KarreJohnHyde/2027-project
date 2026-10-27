@@ -1471,8 +1471,8 @@
           "trainer": "python -m ml_training.volumetric train",
           "manifest_builder": "python -m ml_training.volumetric_manifest acdc",
           "pipeline_verification": {
-            "status": "IMPLEMENTED_TESTED_ON_SYNTHETIC_FIXTURE",
-            "real_data_training_executed": false,
+            "status": "IMPLEMENTED_AND_REAL_DATA_TRAINING_EXECUTED_INTERNAL_HELD_OUT_ONLY",
+            "real_data_training_executed": true,
             "acdc_manifest_validation": {
               "dataset_version": "c0fa24d113128f2d33975747fa82c3d13eea27577c08de895346094544afebcd",
               "discovered_cases": 300,
@@ -1499,7 +1499,7 @@
               ],
               "geometry_and_affine_checks": "PASSED"
             },
-            "license_gate": "REFUSED_REAL_ACDC_BEFORE_OUTPUT_CREATION (before the owner's authorization of 2026-10-25)"
+            "license_gate": "OWNER_AUTHORIZATION_RECORDED_2026-10-25; explicit published licence terms remain unavailable"
           },
           "validation_ready": true,
           "readiness": "READY_FOR_TRAINING",
@@ -2296,11 +2296,11 @@
     {
       "id": "ultrasound-fetus",
       "archive": "archive_46",
-      "title": "Ultrasound fetus dataset (PNG + CSV; contains an untrusted .pth file that is never loaded)",
+      "title": "Fetal ultrasound image bundle (class semantics unverified)",
       "modality": "ULTRASOUND",
       "system": null,
-      "identity": "no licence file",
-      "labels": "UNCLEAR",
+      "identity": "fetal ultrasound PNGs and annotation-like PNGs plus a copied fetal-health CSV and an untrusted .pth file that is never loaded; provenance, class semantics and patient grouping are unverified",
+      "labels": "MIXED_UNVERIFIED",
       "official_splits": false,
       "patient_ids": "NONE_AVAILABLE",
       "source_archive": "archive (46).zip",

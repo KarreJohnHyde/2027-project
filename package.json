@@ -6,10 +6,13 @@
   "scripts": {
     "dev": "node scripts/start-vite.mjs",
     "build": "vite build",
+    "build:check": "vite build --mode check",
+    "supabase:login": "npx --yes supabase@2.122.0 login",
+    "supabase:link": "npx --yes supabase@2.122.0 link --project-ref taryyyviljuxsdtrvtof",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint src vite.config.ts",
-    "check": "npm run typecheck && npm run lint && npm run build",
+    "check": "npm run typecheck && npm run lint && npm run build:check",
     "format": "oxfmt .",
     "format:check": "oxfmt --check ."
   },

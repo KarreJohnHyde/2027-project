@@ -48,6 +48,7 @@ export default function SettingsPage() {
           <KeyValue items={[
             { label: "User", value: user?.full_name || user?.username },
             { label: "Role", value: user ? humanize(user.role) : "—" },
+            { label: "Verification", value: user ? <StatusBadge status={user.verification_status} /> : "—" },
             { label: "API version", value: health?.version ?? "—" },
             { label: "Health scope", value: humanize(health?.health_scope) },
           ]} />

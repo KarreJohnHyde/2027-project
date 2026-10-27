@@ -114,12 +114,28 @@ class ComparisonService:
             .all()
         )
         if len(exams) < 2:
+            # Same response contract as a resolved pair, with every comparison abstaining.
             return {
                 "status": "NOT_COMPARABLE",
                 "reason": "At least two dated examinations are required for longitudinal comparison.",
                 "case_id": case.id,
                 "case_pseudonym": case.pseudonymous_id,
                 "examinations_count": len(exams),
+                "interval_days": None,
+                "semantic_report_diff": [],
+                "semantic_comparison_blockers": ["FEWER_THAN_TWO_DATED_EXAMINATIONS"],
+                "numeric_deltas": [],
+                "numeric_comparison_blockers": ["FEWER_THAN_TWO_DATED_EXAMINATIONS"],
+                "image_comparison": {
+                    "status": "NOT_RUN",
+                    "is_comparable": False,
+                    "reason": "At least two dated examinations are required before images can be compared.",
+                },
+                "twin_state_delta": {
+                    "status": "MAPPING_UNSUPPORTED",
+                    "representation_level": "L1",
+                    "reason": "No held-out landmark registration supports an L2 anatomical comparison.",
+                },
             }
 
         prior_exam = next((exam for exam in exams if exam.id == prior_exam_id), None) if prior_exam_id else exams[0]

@@ -20,6 +20,7 @@ import type {
 import { datasetName, licenceLabel, licenceStatusLabel, publicText, taskName } from "../lib/displayNames";
 import { formatBytes, formatCount, humanize } from "../lib/format";
 import { useWorkspace } from "../state/workspace";
+import { DATASET_CANDIDATES, LABEL_BOUNDARIES, SYSTEM_COVERAGE, type RoadmapPriority } from "../data/expansionRoadmap";
 
 type AuditedRecord = DatasetRegistryRecord & {
   file_inventory?: { extension_counts?: Record<string, number>; total_bytes?: number; scan_truncated?: boolean };
@@ -32,7 +33,7 @@ type AuditedRecord = DatasetRegistryRecord & {
   bounded_readability_probes?: { images?: { readable: number; checked: number } };
 };
 
-type RegistryView = "discovery" | "task-audit";
+type RegistryView = "discovery" | "task-audit" | "roadmap";
 type TaskRow = { key: string; dataset: DatasetTaskAuditDataset; task: DatasetTaskAuditTask | null };
 
 function DiscoveryDetail({ dataset }: { dataset: AuditedRecord }) {
@@ -327,6 +328,102 @@ function TaskAudit({ audit, discoveryEligible }: { audit: DatasetTaskAuditRespon
   );
 }
 
+function ExpansionRoadmap() {
+  const [priority, setPriority] = useState<"ALL" | RoadmapPriority>("ALL");
+  const shownCandidates = DATASET_CANDIDATES.filter((candidate) => priority === "ALL" || candidate.priority === priority);
+  const verifyFirst = SYSTEM_COVERAGE.filter((row) => row.action === "VERIFY_FIRST").length;
+  const additions = SYSTEM_COVERAGE.filter((row) => row.action === "ADD").length;
+
+  return (
+    <>
+      <Card title="Decision rule" eyebrow="Keep · add · verify first" className="mb-4">
+        <div className="grid gap-3 text-sm leading-6 text-ink-2 md:grid-cols-3">
+          <div className="rounded-lg border border-line bg-surface-2 p-3">
+            <StatusBadge status="KEEP" label="Keep" />
+            <p className="mt-2">Preserve existing sources and task definitions where they already cover the intended capability.</p>
+          </div>
+          <div className="rounded-lg border border-line bg-surface-2 p-3">
+            <StatusBadge status="ADD" label="Add" />
+            <p className="mt-2">Add only a genuinely new disease, modality, annotation type, or anatomical region.</p>
+          </div>
+          <div className="rounded-lg border border-line bg-surface-2 p-3">
+            <StatusBadge status="VERIFY_FIRST" label="Verify first" />
+            <p className="mt-2">Withhold training when provenance, rights, labels, pairing, or patient-level splits are uncertain.</p>
+          </div>
+        </div>
+        <p className="mt-3 text-xs leading-5 text-ink-3">
+          This roadmap is a planning layer, not proof that a dataset is present or eligible. Only the generated discovery and task-audit views report local evidence.
+        </p>
+      </Card>
+
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <Metric label="Anatomical systems" value={SYSTEM_COVERAGE.length} note="Programme-level gap review" />
+        <Metric label="Verify before expansion" value={verifyFirst} status="VERIFY_FIRST" note="Reconcile existing local evidence" />
+        <Metric label="New capability gaps" value={additions} status="ADD" note="No activation implied" />
+        <Metric label="Critical candidates" value={DATASET_CANDIDATES.filter((item) => item.priority === "CRITICAL").length} note="Every item still has an evidence gate" />
+      </div>
+
+      <Card title="Coverage by anatomical system" eyebrow="Reported coverage and remaining research gap" padded={false} className="mt-4">
+        <Table headers={["System", "Current coverage", "Important gap", "Recommendation", "Action"]} dense>
+          {SYSTEM_COVERAGE.map((row) => (
+            <tr key={row.system}>
+              <td className="whitespace-nowrap font-medium text-ink">{row.system}</td>
+              <td className="min-w-56 text-xs leading-5 text-ink-2">{row.currentCoverage}</td>
+              <td className="min-w-56 text-xs leading-5 text-ink-2">{row.remainingGap}</td>
+              <td className="min-w-64 text-xs leading-5 text-ink">{row.recommendation}</td>
+              <td><StatusBadge status={row.action} /></td>
+            </tr>
+          ))}
+        </Table>
+      </Card>
+
+      <Card title="Claim boundaries" eyebrow="What the labels can and cannot establish" padded={false} className="mt-4">
+        <Table headers={["Source", "Supported interpretation", "Do not claim"]} dense>
+          {LABEL_BOUNDARIES.map((boundary) => (
+            <tr key={boundary.source}>
+              <td className="whitespace-nowrap font-medium text-ink">{boundary.source}</td>
+              <td className="min-w-64 text-xs leading-5 text-ink-2">{boundary.supportedClaim}</td>
+              <td className="min-w-72 text-xs leading-5 text-danger">{boundary.unsupportedClaim}</td>
+            </tr>
+          ))}
+        </Table>
+      </Card>
+
+      <Card
+        title="Candidate intake queue"
+        eyebrow="Capability additions, not download authorization"
+        padded={false}
+        className="mt-4"
+        actions={
+          <Segmented
+            label="Candidate priority"
+            value={priority}
+            onChange={setPriority}
+            options={[
+              { value: "ALL", label: "All" },
+              { value: "CRITICAL", label: "Critical" },
+              { value: "HIGH", label: "High" },
+              { value: "OPTIONAL", label: "Optional" },
+            ]}
+          />
+        }
+      >
+        <Table headers={["Priority", "Candidate", "System", "Capability gained", "Required gate"]} dense>
+          {shownCandidates.map((candidate) => (
+            <tr key={candidate.name}>
+              <td><StatusBadge status={candidate.priority} /></td>
+              <td className="min-w-44 font-medium text-ink">{candidate.name}</td>
+              <td className="whitespace-nowrap text-xs text-ink-2">{candidate.system}</td>
+              <td className="min-w-56 text-xs leading-5 text-ink-2">{candidate.capability}</td>
+              <td className="min-w-72 text-xs leading-5 text-ink">{candidate.gate}</td>
+            </tr>
+          ))}
+        </Table>
+      </Card>
+    </>
+  );
+}
+
 export default function DatasetRegistryPage() {
   const registry = useWorkspace((state) => state.datasets);
   const taskAudit = useWorkspace((state) => state.datasetTaskAudit);
@@ -346,15 +443,14 @@ export default function DatasetRegistryPage() {
             options={[
               { value: "discovery", label: "Discovery registry" },
               { value: "task-audit", label: "Task audit" },
+              { value: "roadmap", label: "Expansion roadmap" },
             ]}
           />
         }
       />
-      {view === "discovery" ? (
-        <DiscoveryRegistry registry={registry} />
-      ) : (
-        <TaskAudit audit={taskAudit} discoveryEligible={discoveryEligible} />
-      )}
+      {view === "discovery" && <DiscoveryRegistry registry={registry} />}
+      {view === "task-audit" && <TaskAudit audit={taskAudit} discoveryEligible={discoveryEligible} />}
+      {view === "roadmap" && <ExpansionRoadmap />}
     </>
   );
 }

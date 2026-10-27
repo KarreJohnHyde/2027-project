@@ -6,7 +6,13 @@ Strict type validation, safety guarantees, and complete metadata.
 from datetime import datetime
 from typing import Optional, List, Dict, Any, Literal
 from pydantic import BaseModel, Field, ConfigDict, field_validator, model_validator
-from app.models.entities import UserRole, EvidenceStatus, RepresentationLevel, ModalityType
+from app.models.entities import (
+    EvidenceStatus,
+    ModalityType,
+    RepresentationLevel,
+    UserRole,
+    VerificationStatus,
+)
 
 
 # ---------------- Auth Schemas ----------------
@@ -16,11 +22,13 @@ class Token(BaseModel):
     user_id: int
     username: str
     role: UserRole
+    verification_status: VerificationStatus
 
 
 class TokenData(BaseModel):
     username: Optional[str] = None
     role: Optional[UserRole] = None
+    verification_status: Optional[VerificationStatus] = None
 
 
 class UserCreate(BaseModel):
@@ -45,6 +53,7 @@ class UserResponse(BaseModel):
     email: str
     full_name: Optional[str]
     role: UserRole
+    verification_status: VerificationStatus
     is_active: bool
     created_at: datetime
 
@@ -101,9 +110,20 @@ class FileUploadResponse(BaseModel):
     modality: ModalityType
     is_associated: bool
     association_notes: Optional[str]
+    version_number: int = 1
+    supersedes_file_id: Optional[int] = None
+    superseded_by_file_id: Optional[int] = None
+    withdrawn_at: Optional[datetime] = None
+    withdrawal_reason: Optional[str] = None
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class FileWithdrawal(BaseModel):
+    reason: str = Field(..., min_length=3, max_length=256)
+
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
 
 # ---------------- Finding & Report Statements ----------------
@@ -413,8 +433,32 @@ class HumanReviewResponse(BaseModel):
     correction_payload: Optional[HumanReviewCorrectionPayload]
     original_output_preserved: bool
     reviewed_at: datetime
+    decision: Optional["CorrectionDecisionResponse"] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class CorrectionDecisionCreate(BaseModel):
+    """An independent reviewer's decision on a proposed correction (four-eyes rule)."""
+
+    decision: Literal["APPROVED", "REJECTED"]
+    rationale: str = Field(..., min_length=3, max_length=2000)
+
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+
+class CorrectionDecisionResponse(BaseModel):
+    id: int
+    review_id: int
+    decided_by_id: Optional[int]
+    decision: str
+    rationale: str
+    decided_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+HumanReviewResponse.model_rebuild()
 
 
 class AuditEventResponse(BaseModel):

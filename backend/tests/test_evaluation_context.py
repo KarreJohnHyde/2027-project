@@ -23,6 +23,17 @@ INPUT_SHA256 = "23a9c7439914170a466925b700c7f726da49a41eb3adde6fba9edd02eda3456a
 INPUT_PATH = PROJECT_ROOT / "artifacts" / "training" / "gi_kvasir_v2_classifier-20261024T151359Z" / "predictions_test.csv"
 
 
+def _registered_input_bytes() -> bytes:
+    """Skip artifact-backed assertions only when the local artifact is absent."""
+    try:
+        return INPUT_PATH.read_bytes()
+    except FileNotFoundError:
+        pytest.skip(
+            "requires the untracked registered held-out prediction artifact: "
+            f"{INPUT_PATH}"
+        )
+
+
 @pytest.fixture(autouse=True)
 def stable_revision(monkeypatch):
     monkeypatch.setattr(
@@ -153,6 +164,7 @@ def test_evaluator_must_match_the_registered_model_label_contract():
 
 
 def test_exact_registered_tuple_is_internal_research_reporting_evidence_only():
+    _registered_input_bytes()
     context = _resolve()
 
     assert context["reporting_status"] == "ELIGIBLE_FOR_REPORTING"
@@ -189,7 +201,7 @@ def test_multiclass_endpoint_binds_reportability_to_exact_registered_bytes(
         "split": "test",
         "checkpoint": CHECKPOINT,
     }
-    registered_bytes = Path(INPUT_PATH).read_bytes()
+    registered_bytes = _registered_input_bytes()
 
     exact = client.post(
         "/api/v1/evaluation/multiclass",

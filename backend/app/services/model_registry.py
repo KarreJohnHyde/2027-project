@@ -60,11 +60,28 @@ class RegistryConfigurationError(RuntimeError):
     """Raised when a source-controlled registry manifest is internally invalid."""
 
 
-def _artifact_path_exists(value: str) -> bool:
+def _artifact_path_exists(value: str, *, prediction_task: str | None = None) -> bool:
     candidate = Path(value)
     if not candidate.is_absolute():
         candidate = PROJECT_ROOT / candidate
-    return candidate.exists() and candidate.is_file()
+    if candidate.is_file():
+        return True
+    # Segmentation pipelines store one prediction mask per held-out example.
+    # Only their prediction field may be a directory; checkpoint, report,
+    # manifest and model-card fields must remain files.
+    extensions = {
+        "semantic_segmentation": (".png",),
+        "volumetric_semantic_segmentation": (".nii", ".nii.gz"),
+    }.get(prediction_task or "")
+    if not extensions or not candidate.is_dir():
+        return False
+    try:
+        return any(
+            item.is_file() and item.name.lower().endswith(extensions) and item.stat().st_size > 0
+            for item in candidate.iterdir()
+        )
+    except OSError:
+        return False
 
 
 def _resolve_artifact_path(value: str) -> Path:
@@ -128,7 +145,10 @@ def activation_gate(model: dict[str, Any]) -> dict[str, Any]:
     missing_artifacts = [
         field
         for field in ARTIFACT_PATH_FIELDS
-        if bundle.get(field) and not _artifact_path_exists(str(bundle[field]))
+        if bundle.get(field) and not _artifact_path_exists(
+            str(bundle[field]),
+            prediction_task=model.get("task") if field == "held_out_predictions_path" else None,
+        )
     ]
     checkpoint_hash = bundle.get("checkpoint_sha256")
     hash_valid = bool(

@@ -18,9 +18,17 @@ def utc_now():
 
 
 class UserRole(str, enum.Enum):
+    PUBLIC = "public"
     ADMIN = "admin"
     CLINICIAN = "clinician"
     RESEARCHER = "researcher"
+
+
+class VerificationStatus(str, enum.Enum):
+    UNVERIFIED = "UNVERIFIED"
+    PENDING = "PENDING"
+    VERIFIED = "VERIFIED"
+    SUSPENDED = "SUSPENDED"
 
 
 class EvidenceStatus(str, enum.Enum):
@@ -56,7 +64,12 @@ class User(Base):
     email = Column(String(128), unique=True, index=True, nullable=False)
     hashed_password = Column(String(256), nullable=False)
     full_name = Column(String(128), nullable=True)
-    role = Column(SQLEnum(UserRole), default=UserRole.CLINICIAN, nullable=False)
+    role = Column(SQLEnum(UserRole), default=UserRole.PUBLIC, nullable=False)
+    verification_status = Column(
+        SQLEnum(VerificationStatus),
+        default=VerificationStatus.UNVERIFIED,
+        nullable=False,
+    )
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=utc_now, nullable=False)
 
@@ -118,6 +131,14 @@ class UploadedFile(Base):
     modality = Column(SQLEnum(ModalityType), nullable=False)
     is_associated = Column(Boolean, default=True, nullable=False)
     association_notes = Column(String(256), nullable=True)
+    # Versioning and withdrawal change metadata only; stored bytes are never altered or erased
+    # here (permanent erasure is the case retention workflow).
+    version_number = Column(Integer, default=1, nullable=False)
+    supersedes_file_id = Column(Integer, ForeignKey("uploaded_files.id", ondelete="SET NULL"), nullable=True)
+    superseded_by_file_id = Column(Integer, ForeignKey("uploaded_files.id", ondelete="SET NULL"), nullable=True)
+    withdrawn_at = Column(DateTime, nullable=True)
+    withdrawn_by_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    withdrawal_reason = Column(String(256), nullable=True)
     created_at = Column(DateTime, default=utc_now, nullable=False)
 
     case = relationship("Case", back_populates="files")
@@ -256,6 +277,9 @@ class MedicalMeasurement(Base):
     laboratory_name = Column(String(128), nullable=True)
     reference_low_inclusive = Column(Boolean, nullable=True)
     reference_high_inclusive = Column(Boolean, nullable=True)
+    reference_options = Column(JSON, nullable=True) # every printed stratum: label, bounds, sex, age band
+    reference_selection = Column(String(48), nullable=True) # how one stratum was selected, or why none applies
+    documented_category = Column(String(64), nullable=True) # band printed by the laboratory, e.g. "Fair Control"
     extractor_version = Column(String(32), nullable=True)
     created_at = Column(DateTime, default=utc_now, nullable=False)
 
@@ -373,6 +397,25 @@ class HumanReview(Base):
 
     finding = relationship("Finding", back_populates="reviews")
     reviewer = relationship("User", back_populates="reviews")
+    decision = relationship("CorrectionDecision", back_populates="review", uselist=False, cascade="all, delete-orphan")
+
+
+class CorrectionDecision(Base):
+    """A second, independent reviewer's decision on a proposed correction.
+
+    Only an APPROVED decision makes a correction part of the effective (reviewed) view;
+    the extracted statement or measurement row itself is never modified. One decision per
+    proposal: a different correction needs a new proposal."""
+    __tablename__ = "correction_decisions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    review_id = Column(Integer, ForeignKey("human_reviews.id", ondelete="CASCADE"), nullable=False, unique=True, index=True)
+    decided_by_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    decision = Column(String(16), nullable=False) # APPROVED or REJECTED
+    rationale = Column(Text, nullable=False)
+    decided_at = Column(DateTime, default=utc_now, nullable=False)
+
+    review = relationship("HumanReview", back_populates="decision")
 
 
 class AuditEvent(Base):

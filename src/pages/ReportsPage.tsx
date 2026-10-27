@@ -3,6 +3,7 @@ import { Download, Printer } from "lucide-react";
 import { Button, Card, ErrorBlock, PageHeader, StatusBadge, Table } from "../components/ui";
 import { api } from "../services/api";
 import { errorMessage, formatDate, formatNumber, humanize } from "../lib/format";
+import { distinctMeasurements, documentedValue, intervalText, occurrenceNote } from "../lib/measurements";
 import { useAsync } from "../lib/useAsync";
 import { useSelectedCase, useWorkspace } from "../state/workspace";
 
@@ -103,7 +104,15 @@ export default function ReportsPage() {
 
         <Card title="Documented measurements" padded={false}>
           <Table headers={["Measurement", "Value", "Documented interval", "Date", "Source span"]} dense>
-            {evidence.measurements.map((measurement) => <tr key={measurement.id}><td>{measurement.display_name}</td><td className="whitespace-nowrap">{formatNumber(measurement.value, 4)} {measurement.unit}</td><td>{measurement.reference_text ?? "—"}</td><td>{measurement.documented_date ? formatDate(measurement.documented_date) : "—"}</td><td className="max-w-md">“{measurement.source_span}”</td></tr>)}
+            {distinctMeasurements(evidence.measurements).map((measurement) => (
+              <tr key={measurement.id}>
+                <td>{measurement.display_name}</td>
+                <td className="whitespace-nowrap">{documentedValue(measurement)}{measurement.documented_category && <span className="block text-[11px] text-ink-3">Printed category: {measurement.documented_category}</span>}</td>
+                <td className="max-w-xs">{intervalText(measurement)}</td>
+                <td>{measurement.documented_date ? formatDate(measurement.documented_date) : "—"}</td>
+                <td className="max-w-md">“{measurement.source_span}”{occurrenceNote(measurement) && <span className="block text-[11px] text-ink-3">{occurrenceNote(measurement)}</span>}</td>
+              </tr>
+            ))}
           </Table>
         </Card>
 

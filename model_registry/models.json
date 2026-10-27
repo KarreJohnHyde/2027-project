@@ -78,7 +78,7 @@
       "validated": false,
       "processor_only": false,
       "limitations": [
-        "MURA data and a patient-aware split manifest are not registered locally.",
+        "MURA v1.1 data are present locally, but individual Stanford permission is unverified and no patient-aware training split manifest is registered.",
         "No checkpoint, calibration, held-out predictions, or evaluation report exists.",
         "MURA labels do not support detection or segmentation claims."
       ],
@@ -586,9 +586,7 @@
         "Internal test split from the same source; no external validation.",
         "Detection scores are not probabilities and are not calibrated.",
         "Research-only output; not validated for clinical use.",
-        "The conservative duplicate sensitivity analysis excludes every test image in a transitive near-duplicate component spanning publisher splits; it is a post-hoc subset analysis, while the official publisher test result remains unchanged.",
-        "No held-out reference mask exists for segment 10a; its per-segment Dice is undefined.",
-        "Held-out support is below 20 images for segment 10; its per-segment estimate is unstable."
+        "The conservative duplicate sensitivity analysis excludes every test image in a transitive near-duplicate component spanning publisher splits; it is a post-hoc subset analysis, while the official publisher test result remains unchanged."
       ],
       "artifact_bundle": {
         "dataset_version": "2b1fbdaf7fe5431febcddff60f00b542b2ae4def1605941e532ee195d1229a93",
@@ -1865,7 +1863,7 @@
         "evaluation_report_path": "docs/validation/models/acdc_cardiac_mri_3d_unet.json",
         "model_card_path": "docs/models/acdc_cardiac_mri_3d_unet.md"
       },
-      "source_display_name": "ACDC cardiac MRI 3-D U-Net (blocked placeholder)",
+      "source_display_name": "ACDC cardiac MRI 3-D U-Net (research)",
       "inference_input": "volume_nifti",
       "validation_readiness": {
         "validation_ready": false,

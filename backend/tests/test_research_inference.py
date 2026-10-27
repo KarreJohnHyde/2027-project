@@ -243,6 +243,38 @@ def test_tampered_bytes_are_refused_even_after_the_gate(research_registry):
         model_inference._load(MODEL_ID, str(research_registry["checkpoint"]), model["artifact_bundle"]["checkpoint_sha256"])
 
 
+def test_serving_cache_releases_replaced_network_and_duplicate_weights(research_registry):
+    import gc
+    import weakref
+
+    model = model_inference.get_model(MODEL_ID)
+    first, metadata, device = model_inference.load_model(model)
+    assert MODEL_ID in model_inference.resident_model_ids()
+    assert "state_dict" not in metadata, "cached metadata must not retain a second full copy of network weights"
+    assert metadata["classes"] == ["a", "b", "c"] and metadata["temperature"] == 1.5
+    assert sum(parameter.numel() for parameter in first.parameters()) > 0
+    first_reference = weakref.ref(first)
+    # A different registry identity replaces the resident model. Checkpoints
+    # are synthetic fixtures; this exercises release, without downloading data.
+    model_inference.load_model({**model, "model_id": "replacement_test_classifier"})
+    del first
+    gc.collect()
+    assert first_reference() is None, "an evicted network must not stay resident through the serving cache"
+    assert MODEL_ID not in model_inference.resident_model_ids()
+    assert "replacement_test_classifier" in model_inference.resident_model_ids()
+    model_inference._load.cache_clear()
+    gc.collect()
+    assert "replacement_test_classifier" not in model_inference.resident_model_ids()
+
+
+def test_gpu_telemetry_reports_actual_process_residency(client, test_users, monkeypatch):
+    monkeypatch.setattr(model_inference, "resident_model_ids", lambda: ["fixture_live_network"])
+    response = client.get("/api/v1/system/gpu", headers=get_auth_headers(test_users["clinician_a"]))
+    assert response.status_code == 200
+    assert response.json()["loaded_models"] == ["fixture_live_network"]
+    assert response.json()["telemetry_scope"] == "API_PROCESS_ONLY"
+
+
 def test_applicability_gate_rejects_unsupported_inputs(client, test_users, research_registry):
     headers = get_auth_headers(test_users["clinician_a"])
     image_id = _upload(client, headers, pseudonym="CASE-RESEARCH-IMG")
@@ -288,3 +320,19 @@ def test_segmentation_mask_maps_back_to_source_geometry():
     columns = np.flatnonzero(decoded.any(axis=0))
     assert columns.min() == 0 and abs(columns.max() - 149) <= 3, "the left half of the model grid is the left half of the source image"
     assert segment["area_px"] == int(decoded.sum())
+
+
+def test_document_photograph_gate_refuses_printed_pages_before_any_model(monkeypatch, tmp_path):
+    """The content gate is independent of the declared modality and fails closed on printed pages."""
+    image_path = tmp_path / "upload.png"
+    Image.new("RGB", (64, 64), "white").save(image_path)
+
+    monkeypatch.setattr(model_inference, "printed_text_lines", lambda path: 12)
+    with pytest.raises(model_inference.InferenceNotPermitted, match="MODEL_INPUT_INCOMPATIBLE"):
+        model_inference.check_document_photograph(image_path)
+
+    monkeypatch.setattr(model_inference, "printed_text_lines", lambda path: 2)
+    assert model_inference.check_document_photograph(image_path)["status"] == "PASSED"
+
+    monkeypatch.setattr(model_inference, "printed_text_lines", lambda path: None)
+    assert model_inference.check_document_photograph(image_path)["status"] == "NOT_CHECKED_OCR_UNAVAILABLE"

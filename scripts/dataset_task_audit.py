@@ -200,7 +200,7 @@ DATASETS = [
                 "manifest_builder": "python -m ml_training.volumetric_manifest acdc",
                 "dataset_root": "database",
                 "pipeline_verification": {
-                    "status": "IMPLEMENTED_TESTED_ON_SYNTHETIC_FIXTURE", "real_data_training_executed": False,
+                    "status": "IMPLEMENTED_AND_REAL_DATA_TRAINING_EXECUTED_INTERNAL_HELD_OUT_ONLY", "real_data_training_executed": True,
                     "acdc_manifest_validation": {
                         "dataset_version": "c0fa24d113128f2d33975747fa82c3d13eea27577c08de895346094544afebcd",
                         "discovered_cases": 300, "retained_cases": 298, "retained_patients": 149,
@@ -210,7 +210,7 @@ DATASETS = [
                         "leakage_exclusion": "patient055 (two phase images identical to frozen-test patient118; masks differ)",
                         "observed_label_ids": [0, 1, 2, 3], "geometry_and_affine_checks": "PASSED",
                     },
-                    "license_gate": "REFUSED_REAL_ACDC_BEFORE_OUTPUT_CREATION (before the owner's authorization of 2026-10-25)",
+                    "license_gate": "OWNER_AUTHORIZATION_RECORDED_2026-10-25; explicit published licence terms remain unavailable",
                 }}]},
     {"archive": "archive_47", "id": "c-nmc-2019", "title": "C-NMC 2019 leukaemia cell images (TCIA)", "modality": "MICROSCOPY", "system": None,
      "identity": "15,114 segmented cell images, ALL vs normal (hem), subject ID in each file name", "license": "CNMC_TCIA", "labels": "CLASS_FOLDER",
@@ -262,7 +262,7 @@ DATASETS = [
         (43, "support2-csv", "SUPPORT2 seriously ill hospitalised adults (CSV)", "CLINICAL_TABULAR", None, "survival table; UCI page defers licensing to the original source, which was not verified", "UNCLEAR"),
         (44, "voc-images-root", "870 JPEG/XML pairs extracted flat into the workspace root (unidentified)", "UNKNOWN", None, "Pascal-VOC-style XML without a README", "UNCLEAR"),
         (45, "roboflow-train-folder", "7052 files added to the shared train/ folder (unidentified Roboflow export)", "UNKNOWN", None, "no data.yaml or README in the archive", "UNCLEAR"),
-        (46, "ultrasound-fetus", "Ultrasound fetus dataset (PNG + CSV; contains an untrusted .pth file that is never loaded)", "ULTRASOUND", None, "no licence file", "UNCLEAR"),
+        (46, "ultrasound-fetus", "Fetal ultrasound image bundle (class semantics unverified)", "ULTRASOUND", None, "fetal ultrasound PNGs and annotation-like PNGs plus a copied fetal-health CSV and an untrusted .pth file that is never loaded; provenance, class semantics and patient grouping are unverified", "MIXED_UNVERIFIED"),
         (48, "lymphoma-cll-fl-mcl", "Malignant lymphoma subtypes CLL/FL/MCL (TIFF)", "MICROSCOPY", None, "no licence file", "CLASS_FOLDER"),
         (49, "otoscopic-images", "Otoscopic images, 5 classes", "OTOSCOPY", None, "no licence file", "CLASS_FOLDER"),
         (50, "mtsamples", "MTSamples transcription samples (CSV)", "DOCUMENT", None, "unannotated clinical-note samples; terms not verified", "NONE"),

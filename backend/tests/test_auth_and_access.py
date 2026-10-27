@@ -5,14 +5,21 @@ and audit trail privacy preservation.
 """
 
 import pytest
+from sqlalchemy import create_engine, inspect, text
+
 from app.models.entities import (
     AuditEvent,
     Case,
     EvidenceStatus,
+    Finding,
     InferenceRun,
     ModalityType,
     UploadedFile,
+    User,
+    UserRole,
+    VerificationStatus,
 )
+from app.services.auth import get_password_hash
 from app.services.audit_service import log_audit_event
 from tests.conftest import get_auth_headers
 
@@ -29,6 +36,8 @@ def test_user_registration_and_login(client):
     assert res.status_code == 201
     data = res.json()
     assert data["username"] == "dr_watson"
+    assert data["role"] == "public"
+    assert data["verification_status"] == "UNVERIFIED"
     assert "hashed_password" not in data
 
     # 2. Login with credentials
@@ -37,6 +46,8 @@ def test_user_registration_and_login(client):
     token_data = login_res.json()
     assert "access_token" in token_data
     assert token_data["token_type"] == "bearer"
+    assert token_data["role"] == "public"
+    assert token_data["verification_status"] == "UNVERIFIED"
 
 
 def test_public_registration_cannot_self_assign_privileged_role(client):
@@ -55,6 +66,119 @@ def test_public_registration_cannot_self_assign_privileged_role(client):
         error.get("loc", [])[-1:] == ["role"]
         for error in res.json().get("detail", [])
     )
+
+
+def test_public_registrant_cannot_review_or_mutate_clinical_catalog(client, db_session):
+    registration = client.post(
+        "/api/v1/auth/register",
+        json={
+            "username": "public_account",
+            "email": "public-account@test.medtwin",
+            "password": "Password123!",
+        },
+    )
+    assert registration.status_code == 201, registration.text
+
+    login = client.post(
+        "/api/v1/auth/login",
+        json={"username": "public_account", "password": "Password123!"},
+    )
+    assert login.status_code == 200, login.text
+    headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
+
+    case_response = client.post(
+        "/api/v1/cases",
+        json={"pseudonymous_id": "CASE-PUBLIC-RBAC"},
+        headers=headers,
+    )
+    assert case_response.status_code == 201, case_response.text
+    case_id = case_response.json()["id"]
+
+    finding = Finding(
+        case_id=case_id,
+        modality=ModalityType.REPORT,
+        category="Synthetic authorization fixture",
+        label="No clinical assertion",
+        mapping_status="UNASSOCIATED",
+        is_demo=False,
+    )
+    db_session.add(finding)
+    db_session.commit()
+    db_session.refresh(finding)
+
+    review = client.post(
+        f"/api/v1/reviews/{finding.id}",
+        json={"review_status": "CONFIRMED"},
+        headers=headers,
+    )
+    order = client.post(
+        f"/api/v1/cases/{case_id}/orders",
+        json={"item_id": "PKG-GEN-01"},
+        headers=headers,
+    )
+    lab_report = client.post(
+        f"/api/v1/cases/{case_id}/lab-reports",
+        json={"results": [{"code": "NA", "value": 140.0}]},
+        headers=headers,
+    )
+
+    assert review.status_code == 403
+    assert order.status_code == 403
+    assert lab_report.status_code == 403
+
+
+def test_unverified_clinician_role_is_not_sufficient_for_privileged_access(
+    client, db_session
+):
+    user = User(
+        username="unverified_clinician",
+        email="unverified-clinician@test.medtwin",
+        hashed_password=get_password_hash("Password123!"),
+        role=UserRole.CLINICIAN,
+        verification_status=VerificationStatus.UNVERIFIED,
+        is_active=True,
+    )
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+
+    case = Case(pseudonymous_id="CASE-UNVERIFIED-CLINICIAN", created_by_id=user.id)
+    db_session.add(case)
+    db_session.commit()
+    db_session.refresh(case)
+
+    response = client.post(
+        f"/api/v1/cases/{case.id}/orders",
+        json={"item_id": "PKG-GEN-01"},
+        headers=get_auth_headers(user),
+    )
+
+    assert response.status_code == 403
+    assert response.json()["detail"] == "Professional privileges require a verified account."
+
+
+def test_verification_migration_marks_legacy_users_unverified():
+    from app.migrations import run_migrations
+
+    legacy_engine = create_engine("sqlite:///:memory:")
+    with legacy_engine.begin() as connection:
+        connection.execute(text(
+            "CREATE TABLE users ("
+            "id INTEGER PRIMARY KEY, username VARCHAR(64) NOT NULL, role VARCHAR(16) NOT NULL)"
+        ))
+        connection.execute(text(
+            "INSERT INTO users (id, username, role) VALUES (1, 'legacy_clinician', 'CLINICIAN')"
+        ))
+
+    run_migrations(legacy_engine)
+
+    columns = {column["name"] for column in inspect(legacy_engine).get_columns("users")}
+    assert "verification_status" in columns
+    with legacy_engine.connect() as connection:
+        status_value = connection.execute(
+            text("SELECT verification_status FROM users WHERE id = 1")
+        ).scalar_one()
+    assert status_value == "UNVERIFIED"
 
 
 def test_cross_case_access_isolation(client, db_session, test_users):

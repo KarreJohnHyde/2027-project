@@ -3,6 +3,7 @@ import {
   api,
   type AnalysisJob,
   type Finding,
+  type HumanReview,
   type HumanReviewCorrectionPayload,
   type HumanReviewDecision,
   type MedicalMeasurement,
@@ -13,6 +14,54 @@ import { useAsync } from "../lib/useAsync";
 import { useWorkspace } from "../state/workspace";
 import { Button, Disclosure, ErrorBlock, Field, KeyValue, SelectInput, StatusBadge, TextArea, TextInput } from "./ui";
 
+/** A second verified reviewer approves or rejects a proposed correction; the proposer cannot. */
+function CorrectionDecisionControls({ review, onDecided }: { review: HumanReview; onDecided: () => void }) {
+  const user = useWorkspace((state) => state.user);
+  const [rationale, setRationale] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  if (review.decision) {
+    const approved = review.decision.decision === "APPROVED";
+    return (
+      <p className="mt-2 text-xs text-ink-2">
+        <StatusBadge status={review.decision.decision} /> by reviewer #{review.decision.decided_by_id ?? "—"} · {formatDate(review.decision.decided_at, true)} ·{" "}
+        {approved ? "applied to the reviewed (effective) view; the extracted original is unchanged" : "not applied"}. Rationale: {review.decision.rationale}
+      </p>
+    );
+  }
+  const verified = user?.verification_status === "VERIFIED" && (user.role === "clinician" || user.role === "admin");
+  if (!verified || user?.id === review.reviewer_id) {
+    return <p className="mt-2 text-xs text-ink-3">Awaiting a decision by a second verified reviewer.</p>;
+  }
+
+  async function decide(decision: "APPROVED" | "REJECTED") {
+    setBusy(true);
+    setError(null);
+    try {
+      await api.decideCorrection(review.id, decision, rationale.trim());
+      onDecided();
+    } catch (err) {
+      setError(errorMessage(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="mt-2 space-y-2">
+      <Field label="Decision rationale" htmlFor={`decision-rationale-${review.id}`}>
+        <TextInput id={`decision-rationale-${review.id}`} value={rationale} maxLength={2000} onChange={(event) => setRationale(event.target.value)} />
+      </Field>
+      <div className="flex flex-wrap gap-2">
+        <Button size="sm" variant="primary" loading={busy} disabled={busy || rationale.trim().length < 3} onClick={() => decide("APPROVED")}>Approve correction</Button>
+        <Button size="sm" disabled={busy || rationale.trim().length < 3} onClick={() => decide("REJECTED")}>Reject correction</Button>
+      </div>
+      {error && <ErrorBlock message={error} />}
+    </div>
+  );
+}
+
 export function FindingCard({ finding, uploads, jobs, measurements }: { finding: Finding; uploads: UploadedFile[]; jobs: AnalysisJob[]; measurements: MedicalMeasurement[] }) {
   const user = useWorkspace((state) => state.user);
   const loadEvidence = useWorkspace((state) => state.loadEvidence);
@@ -20,7 +69,7 @@ export function FindingCard({ finding, uploads, jobs, measurements }: { finding:
   const job = jobs.find((item) => item.id === finding.inference_run_id);
   const upload = uploads.find((item) => item.id === job?.upload_id);
   const calibrated = finding.calibration_status.toUpperCase().startsWith("CALIBRATED") && finding.calibrated_confidence !== null;
-  const canReview = user?.role === "clinician" || user?.role === "admin";
+  const canReview = user?.verification_status === "VERIFIED" && (user.role === "clinician" || user.role === "admin");
   const [decision, setDecision] = useState<HumanReviewDecision>("CONFIRMED");
   const [comments, setComments] = useState("");
   const [correctionKind, setCorrectionKind] = useState<"ENTITY" | "MEASUREMENT">(finding.report_statements.length ? "ENTITY" : "MEASUREMENT");
@@ -222,11 +271,12 @@ export function FindingCard({ finding, uploads, jobs, measurements }: { finding:
                       })}
                     </div>
                     <div className="rounded-md border border-line bg-surface p-2.5">
-                      <p className="text-[11px] font-medium uppercase tracking-wide text-ink-3">Proposed correction · not applied</p>
+                      <p className="text-[11px] font-medium uppercase tracking-wide text-ink-3">{review.decision?.decision === "APPROVED" ? "Approved correction · applied to the reviewed view" : "Proposed correction · not applied"}</p>
                       <pre className="mt-1 max-h-48 overflow-auto whitespace-pre-wrap break-words font-mono text-[11px] leading-5 text-ink-2">{JSON.stringify(review.correction_payload, null, 2)}</pre>
                     </div>
                   </div>
                   {review.reviewer_comments && <p className="mt-2 text-xs text-ink-2">Rationale: {review.reviewer_comments}</p>}
+                  <CorrectionDecisionControls review={review} onDecided={reviews.reload} />
                 </div>
               ))}
             </div>

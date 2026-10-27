@@ -21,7 +21,11 @@ from typing import Any, Optional
 from sqlalchemy.orm import Session
 
 from app.models.entities import DocumentedAttribute, MedicalMeasurement
+from app.services.measurement_identity import duplicate_map
 from app.services.terminology import convert
+
+# Calculated and documented eGFR are compared only for review; neither replaces the other.
+EGFR_REVIEW_DIFFERENCE = 5.0  # mL/min/1.73 m², an arbitrary review prompt, not a clinical threshold
 
 CKD_EPI_2021 = {
     "equation_id": "CKD_EPI_2021_CREATININE",
@@ -58,6 +62,15 @@ def egfr_for_case(db: Session, case_id: int) -> dict[str, Any]:
         .order_by(MedicalMeasurement.id.asc())
         .all()
     )
+    # A reprinted page repeats one specimen's creatinine; it yields one calculation.
+    repeated = duplicate_map(creatinine)
+    creatinine = [row for row in creatinine if row.id not in repeated]
+    documented_egfr = (
+        db.query(MedicalMeasurement)
+        .filter(MedicalMeasurement.case_id == case_id, MedicalMeasurement.name == "egfr_documented")
+        .order_by(MedicalMeasurement.id.asc())
+        .all()
+    )
     attributes = db.query(DocumentedAttribute).filter(DocumentedAttribute.case_id == case_id).all()
     sexes = {row.value_text for row in _attribute(attributes, "sex") if row.value_text}
     results = []
@@ -77,11 +90,21 @@ def egfr_for_case(db: Session, case_id: int) -> dict[str, Any]:
             missing.append("AGE_BELOW_EQUATION_POPULATION")
         if len(sexes) != 1:
             missing.append("SEX_CONFLICTING" if sexes else "SEX_NOT_DOCUMENTED")
+        same_report = [
+            row for row in documented_egfr
+            if row.source_file_id == measurement.source_file_id and row.documented_date == measurement.documented_date
+        ]
         record: dict[str, Any] = {
             "creatinine_measurement_id": measurement.id,
             "source_file_id": measurement.source_file_id,
             "documented_creatinine": {"value": measurement.value, "unit": measurement.unit, "source_span": measurement.source_span},
             "documented_date": measurement.documented_date,
+            # The laboratory's own eGFR from the same report, kept separate (its equation is not stated).
+            "documented_egfr": (
+                {"measurement_id": same_report[0].id, "value": same_report[0].value, "unit": same_report[0].unit,
+                 "source_span": same_report[0].source_span, "status": "DOCUMENTED"}
+                if same_report else None
+            ),
         }
         if missing:
             record.update({"status": "INSUFFICIENT_EVIDENCE", "missing_or_invalid_inputs": missing, "value": None})
@@ -99,6 +122,14 @@ def egfr_for_case(db: Session, case_id: int) -> dict[str, Any]:
                 },
                 "interpretation": None,
             })
+            documented = record["documented_egfr"]
+            if documented and documented["unit"].lower().startswith("ml/min"):
+                difference = round(record["value"] - documented["value"], 1)
+                record["documented_comparison"] = {
+                    "calculated_minus_documented": difference,
+                    "status": "DISAGREEMENT_FOR_REVIEW" if abs(difference) > EGFR_REVIEW_DIFFERENCE else "CONSISTENT",
+                    "note": "Different equations (e.g. CKD-EPI 2009 or MDRD) or inputs can explain a difference; neither value overwrites the other.",
+                }
         results.append(record)
     return {
         "equation": CKD_EPI_2021,

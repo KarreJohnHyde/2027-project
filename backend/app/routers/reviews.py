@@ -8,8 +8,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.entities import Finding, HumanReview, User, UserRole, EvidenceStatus
-from app.schemas.entities import HumanReviewCreate, HumanReviewResponse
+from app.models.entities import CorrectionDecision, Finding, HumanReview, User, UserRole, EvidenceStatus
+from app.schemas.entities import CorrectionDecisionCreate, CorrectionDecisionResponse, HumanReviewCreate, HumanReviewResponse
 from app.services.auth import get_current_user, verify_case_access, require_role
 from app.services.audit_service import log_audit_event
 
@@ -88,6 +88,54 @@ def submit_human_review(
     )
 
     return review
+
+
+@router.post("/corrections/{review_id}/decision", response_model=CorrectionDecisionResponse, status_code=status.HTTP_201_CREATED)
+def decide_correction(
+    review_id: int,
+    decision_in: CorrectionDecisionCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role(UserRole.CLINICIAN, UserRole.ADMIN)),
+):
+    """
+    Approves or rejects a proposed correction. The decision must come from a verified
+    reviewer other than the proposer. Approval changes only the effective (reviewed) view;
+    the extracted statement or measurement and the original review stay unchanged.
+    """
+    review = db.query(HumanReview).filter(HumanReview.id == review_id).first()
+    if not review:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Review not found.")
+    verify_case_access(review.finding.case_id, current_user, db)
+    if review.review_status != "MODIFIED" or not review.correction_payload:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail={"code": "NO_CORRECTION_TO_DECIDE"})
+    if review.reviewer_id == current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail={"code": "FOUR_EYES_REQUIRED", "message": "A correction must be decided by a reviewer other than its proposer."})
+    if review.decision is not None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail={"code": "CORRECTION_ALREADY_DECIDED", "decision": review.decision.decision})
+
+    decision = CorrectionDecision(
+        review_id=review.id,
+        decided_by_id=current_user.id,
+        decision=decision_in.decision,
+        rationale=decision_in.rationale,
+    )
+    db.add(decision)
+    db.commit()
+    db.refresh(decision)
+    log_audit_event(
+        db=db,
+        action=f"CORRECTION_{decision_in.decision}",
+        resource_type="HUMAN_REVIEW",
+        resource_id=str(review.id),
+        user=current_user,
+        details={
+            "finding_id": review.finding_id,
+            "proposed_by_id": review.reviewer_id,
+            "original_output_preserved": True,
+            "applies_to": "EFFECTIVE_VIEW_ONLY" if decision_in.decision == "APPROVED" else "NONE",
+        },
+    )
+    return decision
 
 
 @router.get("/{finding_id}", response_model=List[HumanReviewResponse])

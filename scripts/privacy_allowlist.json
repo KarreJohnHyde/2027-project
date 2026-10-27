@@ -2,13 +2,75 @@
   "description": "Reviewed lines that match identifier or credential patterns but hold synthetic test fixtures. Keys are path#sha256(line); editing a line re-flags it for review. Never add a line holding real patient data or a real credential.",
   "reviewed_at": "2026-10-24",
   "entries": [
-    {"key": "backend/tests/test_auth_and_access.py#400bac8bd4aeade7d6c150dc2959271911f1b9ace5751e048ed1fed93c2f1884", "categories": ["EMAIL"], "reason": "Fictional test-user address."},
-    {"key": "backend/tests/test_auth_and_access.py#23d22b5ba171bcd46cd83a7f714b7dd6e788b05292b017007780750b36f3cef0", "categories": ["HARDCODED_SECRET"], "reason": "Test-user password for an ephemeral test database."},
-    {"key": "backend/tests/test_auth_and_access.py#fa6b217b0b0a1bb2deae793167e0c5be8c65ad5f83e82ad9d4ff6147d088c975", "categories": ["HARDCODED_SECRET"], "reason": "Test-user password for an ephemeral test database."},
-    {"key": "backend/tests/test_auth_and_access.py#ce123d78c3a145636b7c956d66a2f1fce690a49184fc4f90719509d87cf68bec", "categories": ["HARDCODED_SECRET"], "reason": "Test-user password for an ephemeral test database."},
-    {"key": "backend/tests/test_auth_and_access.py#2a40e1f101d7b224f619cdcfab32d0c44f11ea1fb0a69c8358a2050e4e66dc13", "categories": ["PATIENT_NAME_FIELD"], "reason": "Synthetic value used to prove audit logs redact clinical fields."},
-    {"key": "backend/tests/test_medtwin2_capabilities.py#57de3801246aaa8c36099ea30b631725ce3ce21ae3e1ef28f962dd4d355d4885", "categories": ["RECORD_NUMBER"], "reason": "Synthetic record number used to prove de-identification masks it."},
-    {"key": "backend/tests/test_new_features.py#6728bbf746cf6e025c305beafb237d7a13f454db2de9f466bb1212fead0c94a8", "categories": ["HARDCODED_SECRET"], "reason": "Test-user password for an ephemeral test database."},
-    {"key": "backend/tests/test_new_features.py#9dfa9baa034654402c49c07a52e2b2f6c55d51d93aaba2598006e925a511aa4c", "categories": ["HARDCODED_SECRET"], "reason": "Test-user password for an ephemeral test database."}
+    {
+      "key": "backend/tests/test_auth_and_access.py#400bac8bd4aeade7d6c150dc2959271911f1b9ace5751e048ed1fed93c2f1884",
+      "categories": [
+        "EMAIL"
+      ],
+      "reason": "Fictional test-user address."
+    },
+    {
+      "key": "backend/tests/test_auth_and_access.py#23d22b5ba171bcd46cd83a7f714b7dd6e788b05292b017007780750b36f3cef0",
+      "categories": [
+        "HARDCODED_SECRET"
+      ],
+      "reason": "Test-user password for an ephemeral test database."
+    },
+    {
+      "key": "backend/tests/test_auth_and_access.py#fa6b217b0b0a1bb2deae793167e0c5be8c65ad5f83e82ad9d4ff6147d088c975",
+      "categories": [
+        "HARDCODED_SECRET"
+      ],
+      "reason": "Test-user password for an ephemeral test database."
+    },
+    {
+      "key": "backend/tests/test_auth_and_access.py#ce123d78c3a145636b7c956d66a2f1fce690a49184fc4f90719509d87cf68bec",
+      "categories": [
+        "HARDCODED_SECRET"
+      ],
+      "reason": "Test-user password for an ephemeral test database."
+    },
+    {
+      "key": "backend/tests/test_auth_and_access.py#2a40e1f101d7b224f619cdcfab32d0c44f11ea1fb0a69c8358a2050e4e66dc13",
+      "categories": [
+        "PATIENT_NAME_FIELD"
+      ],
+      "reason": "Synthetic value used to prove audit logs redact clinical fields."
+    },
+    {
+      "key": "backend/tests/test_medtwin2_capabilities.py#57de3801246aaa8c36099ea30b631725ce3ce21ae3e1ef28f962dd4d355d4885",
+      "categories": [
+        "RECORD_NUMBER"
+      ],
+      "reason": "Synthetic record number used to prove de-identification masks it."
+    },
+    {
+      "key": "backend/tests/test_new_features.py#6728bbf746cf6e025c305beafb237d7a13f454db2de9f466bb1212fead0c94a8",
+      "categories": [
+        "HARDCODED_SECRET"
+      ],
+      "reason": "Test-user password for an ephemeral test database."
+    },
+    {
+      "key": "backend/tests/test_new_features.py#9dfa9baa034654402c49c07a52e2b2f6c55d51d93aaba2598006e925a511aa4c",
+      "categories": [
+        "HARDCODED_SECRET"
+      ],
+      "reason": "Test-user password for an ephemeral test database."
+    },
+    {
+      "key": "backend/tests/test_auth_and_access.py#63568caa95e1fb04265cea5bfceca1b83d9722f3dc4a12ed81e19fb312a91edc",
+      "categories": [
+        "HARDCODED_SECRET"
+      ],
+      "reason": "Fictional test-user password."
+    },
+    {
+      "key": "backend/tests/test_dicom_series.py#2f8de74f98ff4c43702a13859b7db58ce8dbe668ecfc4e8de9d4b220eab95434",
+      "categories": [
+        "PATIENT_NAME_FIELD"
+      ],
+      "reason": "Synthetic DICOM fixture name used to test name-only identifier reporting."
+    }
   ]
 }

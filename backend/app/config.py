@@ -46,7 +46,10 @@ DEV_SEED_ROLE: str = os.getenv("DEV_SEED_ROLE", "clinician").strip().lower()
 DEV_SEED_CASE_ENABLED: bool = os.getenv("DEV_SEED_CASE_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
 
 # Database Configuration
-DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'medtwin.db'}")
+_configured_database_url = os.getenv("DATABASE_URL", "").strip()
+if ENVIRONMENT == "test" and not _configured_database_url:
+    raise RuntimeError("DATABASE_URL must be explicitly set when ENVIRONMENT=test.")
+DATABASE_URL: str = _configured_database_url or f"sqlite:///{BASE_DIR / 'medtwin.db'}"
 
 # File Storage & Limits
 UPLOAD_DIR: Path = Path(os.getenv("UPLOAD_DIR", os.getenv("UPLOAD_DIRECTORY", str(BASE_DIR / "uploads"))))

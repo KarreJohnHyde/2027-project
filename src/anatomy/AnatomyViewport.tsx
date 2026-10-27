@@ -77,16 +77,11 @@ class LayerErrorBoundary extends Component<BoundaryProps, { failed: boolean; res
   }
 }
 
-function useRetained(urls: string[], scenes: THREE.Object3D[]) {
-  const latest = useLatest(scenes);
-  const signature = urls.join("|");
+function useRetained(url: string, scene: THREE.Object3D) {
   useEffect(() => {
-    // Capture the scenes this effect retained; by cleanup time `latest` may hold newer ones.
-    const retained = signature.split("|");
-    const captured = latest.current;
-    retained.forEach(retainAsset);
-    return () => retained.forEach((url, index) => releaseAsset(url, captured[index], (target) => useGLTF.clear(target)));
-  }, [signature, latest]);
+    retainAsset(url);
+    return () => releaseAsset(url, scene, (target) => useGLTF.clear(target));
+  }, [url, scene]);
 }
 
 function LayerGroup({ matrix, children }: { matrix?: THREE.Matrix4; children: ReactNode }) {
@@ -108,7 +103,7 @@ type PreparedCallback = (key: string, prepared: PreparedLayer | null) => void;
 function AssetLayerNode({ layer, onPrepared }: { layer: Extract<ViewportLayer, { kind: "asset" }>; onPrepared: PreparedCallback }) {
   const url = assetUrl(layer.url);
   const gltf = useGLTF(url, false, true);
-  useRetained([url], [gltf.scene]);
+  useRetained(url, gltf.scene);
   const prepared = useMemo(() => prepareAsset(gltf.scene, layer.key, layer.structures, layer.groupBy), [gltf.scene, layer.key, layer.structures, layer.groupBy]);
   useLayoutEffect(() => {
     onPrepared(layer.key, prepared);
@@ -124,26 +119,30 @@ function AssetLayerNode({ layer, onPrepared }: { layer: Extract<ViewportLayer, {
   );
 }
 
-function AtlasLayerNode({ layer, onPrepared }: { layer: Extract<ViewportLayer, { kind: "atlas" }>; onPrepared: PreparedCallback }) {
-  const urls = layer.chunks.map((chunk) => assetUrl(chunk.url));
-  const gltfs = useGLTF(urls, false, true);
-  useRetained(urls, gltfs.map((gltf) => gltf.scene));
-  const prepared = useMemo(() => {
-    const parts = gltfs.map((gltf) => prepareAtlasChunk(gltf.scene, layer.key, layer.structures, layer.palette));
-    const root = new THREE.Group();
-    parts.forEach((part) => root.add(part.root));
-    return { root, targets: parts.flatMap((part) => part.targets), dispose: () => parts.forEach((part) => part.dispose()) };
-  }, [gltfs, layer.key, layer.structures, layer.palette]);
+type AtlasLayer = Extract<ViewportLayer, { kind: "atlas" }>;
+
+function AtlasChunkNode({ layer, chunk, onPrepared }: { layer: AtlasLayer; chunk: AtlasLayer["chunks"][number]; onPrepared: PreparedCallback }) {
+  const url = assetUrl(chunk.url);
+  // A single URL gives the loader the same cache key used by releaseAsset.
+  // Array loads create a tuple cache that clearing individual URLs cannot evict.
+  const gltf = useGLTF(url, false, true);
+  useRetained(url, gltf.scene);
+  const preparedKey = `${layer.key}:chunk:${chunk.id}`;
+  const prepared = useMemo(() => prepareAtlasChunk(gltf.scene, layer.key, layer.structures, layer.palette), [gltf.scene, layer.key, layer.structures, layer.palette]);
   useLayoutEffect(() => {
-    onPrepared(layer.key, prepared);
+    onPrepared(preparedKey, prepared);
     return () => {
-      onPrepared(layer.key, null);
+      onPrepared(preparedKey, null);
       prepared.dispose();
     };
-  }, [prepared, layer.key, onPrepared]);
+  }, [prepared, preparedKey, onPrepared]);
+  return <primitive object={prepared.root} />;
+}
+
+function AtlasLayerNode({ layer, onPrepared }: { layer: AtlasLayer; onPrepared: PreparedCallback }) {
   return (
     <LayerGroup matrix={layer.matrix}>
-      <primitive object={prepared.root} />
+      {layer.chunks.map((chunk) => <AtlasChunkNode key={`${chunk.id}:${chunk.url}`} layer={layer} chunk={chunk} onPrepared={onPrepared} />)}
     </LayerGroup>
   );
 }

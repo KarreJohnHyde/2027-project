@@ -13,11 +13,17 @@ from sqlalchemy.orm import Session
 
 from app.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 from app.database import get_db
-from app.models.entities import User, UserRole, Case, CaseMembership
+from app.models.entities import Case, CaseMembership, User, UserRole, VerificationStatus
 from app.schemas.entities import TokenData
 
 # OAuth2 scheme
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+
+PRIVILEGED_ROLES = frozenset({
+    UserRole.ADMIN,
+    UserRole.CLINICIAN,
+    UserRole.RESEARCHER,
+})
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -69,12 +75,20 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
 
 def require_role(*allowed_roles: UserRole):
-    """Enforce role-based access control."""
+    """Enforce role and independently persisted professional verification."""
     def role_checker(current_user: User = Depends(get_current_user)) -> User:
         if current_user.role not in allowed_roles and current_user.role != UserRole.ADMIN:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Operation not permitted for role: {current_user.role}"
+            )
+        if (
+            current_user.role in PRIVILEGED_ROLES
+            and current_user.verification_status != VerificationStatus.VERIFIED
+        ):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Professional privileges require a verified account.",
             )
         return current_user
     return role_checker

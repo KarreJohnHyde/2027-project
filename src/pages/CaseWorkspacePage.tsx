@@ -71,6 +71,10 @@ export default function CaseWorkspacePage() {
   const setNotice = useWorkspace((state) => state.setNotice);
   const [examDialog, setExamDialog] = useState(false);
   const [busyUpload, setBusyUpload] = useState<number | null>(null);
+  const [versionTarget, setVersionTarget] = useState<number | null>(null);
+  const [versionReason, setVersionReason] = useState("");
+  const [withdrawTarget, setWithdrawTarget] = useState<number | null>(null);
+  const [withdrawReason, setWithdrawReason] = useState("");
   const examinations = [...selected.examinations].sort((left, right) => left.exam_date.localeCompare(right.exam_date));
   const jobsByUpload = new Map<number, number>();
   evidence.jobs.forEach((job) => jobsByUpload.set(job.upload_id, (jobsByUpload.get(job.upload_id) ?? 0) + 1));
@@ -80,6 +84,34 @@ export default function CaseWorkspacePage() {
   async function toggleAssociation(uploadId: number, associated: boolean) {
     try {
       await api.updateFileAssociation(uploadId, associated, associated ? "Re-associated by reviewer" : "Marked unassociated by reviewer");
+      await loadEvidence();
+    } catch (error) {
+      setNotice({ tone: "error", text: errorMessage(error) });
+    }
+  }
+
+  async function replaceVersion(uploadId: number, file: File | undefined) {
+    const reason = versionReason.trim();
+    if (!file || reason.length < 3) return;
+    try {
+      const replacement = await api.uploadFileVersion(uploadId, file, reason);
+      setNotice({ tone: "success", text: `Version ${replacement.version_number ?? 2} recorded; the earlier version is kept and marked superseded.` });
+      setVersionTarget(null);
+      setVersionReason("");
+      await loadEvidence();
+    } catch (error) {
+      setNotice({ tone: "error", text: errorMessage(error) });
+    }
+  }
+
+  async function withdraw(uploadId: number) {
+    const reason = withdrawReason.trim();
+    if (reason.length < 3) return;
+    try {
+      await api.withdrawFile(uploadId, reason);
+      setNotice({ tone: "success", text: "File withdrawn. Its record and derived evidence stay for provenance; its content is no longer served." });
+      setWithdrawTarget(null);
+      setWithdrawReason("");
       await loadEvidence();
     } catch (error) {
       setNotice({ tone: "error", text: errorMessage(error) });
@@ -131,7 +163,12 @@ export default function CaseWorkspacePage() {
                 const exam = selected.examinations.find((item) => item.id === upload.examination_id);
                 return (
                   <tr key={upload.id} data-testid="upload-record">
-                    <td className="max-w-[12rem]"><p className="truncate font-medium text-ink" title={upload.filename}>{upload.filename}</p><p className="text-[11px] text-ink-3">{formatBytes(upload.file_size_bytes)} · {formatDate(upload.created_at)}</p></td>
+                    <td className="max-w-[12rem]">
+                      <p className="truncate font-medium text-ink" title={upload.filename}>{upload.filename}</p>
+                      <p className="text-[11px] text-ink-3">{formatBytes(upload.file_size_bytes)} · {formatDate(upload.created_at)}{(upload.version_number ?? 1) > 1 ? ` · v${upload.version_number} of #${upload.supersedes_file_id}` : ""}</p>
+                      {upload.superseded_by_file_id && <p className="text-[11px] text-ink-3">Superseded by #{upload.superseded_by_file_id}; kept for provenance</p>}
+                      {upload.withdrawn_at && <p className="text-[11px] text-ink-3">Withdrawn {formatDate(upload.withdrawn_at)}: {upload.withdrawal_reason}</p>}
+                    </td>
                     <td><StatusBadge status={upload.modality} /></td>
                     <td><Hash value={upload.file_hash} /></td>
                     <td className="text-xs text-ink-2">{exam ? formatDate(exam.exam_date) : "—"}</td>
@@ -141,7 +178,27 @@ export default function CaseWorkspacePage() {
                         <option value="0">Unassociated</option>
                       </SelectInput>
                     </td>
-                    <td><Button size="sm" icon={Play} loading={busyUpload === upload.id} disabled={!upload.is_associated} onClick={() => void process(upload.id)}>{jobsByUpload.get(upload.id) ? "Re-run" : "Process"}</Button></td>
+                    <td className="space-y-1.5">
+                      <Button size="sm" icon={Play} loading={busyUpload === upload.id} disabled={!upload.is_associated} onClick={() => void process(upload.id)}>{jobsByUpload.get(upload.id) ? "Re-run" : "Process"}</Button>
+                      {!upload.withdrawn_at && !upload.superseded_by_file_id && (
+                        <div className="flex flex-wrap gap-1.5">
+                          <Button size="sm" variant="ghost" onClick={() => { setVersionTarget(versionTarget === upload.id ? null : upload.id); setWithdrawTarget(null); }}>New version</Button>
+                          <Button size="sm" variant="ghost" onClick={() => { setWithdrawTarget(withdrawTarget === upload.id ? null : upload.id); setVersionTarget(null); }}>Withdraw</Button>
+                        </div>
+                      )}
+                      {versionTarget === upload.id && (
+                        <div className="space-y-1.5">
+                          <TextInput aria-label={`Reason for a new version of ${upload.filename}`} placeholder="Reason (required)" value={versionReason} onChange={(event) => setVersionReason(event.target.value)} className="h-8 text-xs" />
+                          <input aria-label={`New version file for ${upload.filename}`} type="file" disabled={versionReason.trim().length < 3} className="block w-full text-xs" onChange={(event) => void replaceVersion(upload.id, event.target.files?.[0])} />
+                        </div>
+                      )}
+                      {withdrawTarget === upload.id && (
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <TextInput aria-label={`Reason for withdrawing ${upload.filename}`} placeholder="Reason (required)" value={withdrawReason} onChange={(event) => setWithdrawReason(event.target.value)} className="h-8 text-xs" />
+                          <Button size="sm" variant="danger" disabled={withdrawReason.trim().length < 3} onClick={() => void withdraw(upload.id)}>Confirm withdrawal</Button>
+                        </div>
+                      )}
+                    </td>
                   </tr>
                 );
               })}

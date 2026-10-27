@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from app.config import ACCESS_TOKEN_EXPIRE_MINUTES, RATE_LIMIT_LOGIN_PER_MINUTE
 from app.database import get_db
 from app.security import rate_limit
-from app.models.entities import User, UserRole
+from app.models.entities import User, UserRole, VerificationStatus
 from app.schemas.entities import Token, UserCreate, UserResponse
 from app.services.auth import (
     get_password_hash,
@@ -35,16 +35,17 @@ def register_user(user_in: UserCreate, db: Session = Depends(get_db)):
             detail="Username or email already registered."
         )
 
-    # Self-registration never confers a privileged role. Administrative and
-    # research roles must be provisioned out-of-band (for development, through
-    # the environment-controlled seed) until an authenticated admin workflow is
-    # implemented.
+    # Self-registration never confers a professional or administrative role.
+    # Professional roles and their verification state are provisioned only
+    # through a controlled out-of-band process until an audited admin workflow
+    # is implemented.
     new_user = User(
         username=user_in.username,
         email=user_in.email,
         hashed_password=get_password_hash(user_in.password),
         full_name=user_in.full_name,
-        role=UserRole.CLINICIAN,
+        role=UserRole.PUBLIC,
+        verification_status=VerificationStatus.UNVERIFIED,
         is_active=True
     )
     db.add(new_user)
@@ -57,7 +58,11 @@ def register_user(user_in: UserCreate, db: Session = Depends(get_db)):
         resource_type="USER",
         resource_id=str(new_user.id),
         user=new_user,
-        details={"username": new_user.username, "role": new_user.role.value}
+        details={
+            "username": new_user.username,
+            "role": new_user.role.value,
+            "verification_status": new_user.verification_status.value,
+        }
     )
 
     return new_user
@@ -114,7 +119,12 @@ async def login_for_access_token(
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username, "role": user.role.value, "user_id": user.id},
+        data={
+            "sub": user.username,
+            "role": user.role.value,
+            "verification_status": user.verification_status.value,
+            "user_id": user.id,
+        },
         expires_delta=access_token_expires
     )
 
@@ -123,7 +133,11 @@ async def login_for_access_token(
         action="LOGIN_SUCCESS",
         resource_type="AUTH",
         user=user,
-        details={"username": user.username, "role": user.role.value}
+        details={
+            "username": user.username,
+            "role": user.role.value,
+            "verification_status": user.verification_status.value,
+        }
     )
 
     return {
@@ -131,7 +145,8 @@ async def login_for_access_token(
         "token_type": "bearer",
         "user_id": user.id,
         "username": user.username,
-        "role": user.role
+        "role": user.role,
+        "verification_status": user.verification_status,
     }
 
 

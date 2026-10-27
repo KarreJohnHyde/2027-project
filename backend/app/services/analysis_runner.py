@@ -87,6 +87,8 @@ def _persist_report_outputs(db: Session, file_record: UploadedFile, finding: Fin
             specimen=m.get("specimen", "NOT_DOCUMENTED"), laboratory_method=m.get("laboratory_method", "NOT_DOCUMENTED"),
             laboratory_name=m.get("laboratory_name", "NOT_DOCUMENTED"),
             reference_low_inclusive=m.get("reference_low_inclusive"), reference_high_inclusive=m.get("reference_high_inclusive"),
+            reference_options=m.get("reference_options"), reference_selection=m.get("reference_selection"),
+            documented_category=(m.get("documented_category") or None) and m["documented_category"][:64],
             extractor_version=m.get("extractor_version") or result.get("model_version"),
         ))
     for a in result.get("attributes", []):

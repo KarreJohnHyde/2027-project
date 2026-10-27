@@ -1,5 +1,5 @@
 from app.models.entities import (
-    User, UserRole, Case, Examination, UploadedFile,
+    User, UserRole, VerificationStatus, Case, Examination, UploadedFile,
     InferenceRun, Finding, ClinicalReportStatement,
     MultimodalFusionRecord, ConcordanceRecord,
     AnatomicalAsset, AnatomicalMapping, ForecastRecord,
@@ -8,7 +8,7 @@ from app.models.entities import (
 )
 
 __all__ = [
-    "User", "UserRole", "Case", "Examination", "UploadedFile",
+    "User", "UserRole", "VerificationStatus", "Case", "Examination", "UploadedFile",
     "InferenceRun", "Finding", "ClinicalReportStatement",
     "MultimodalFusionRecord", "ConcordanceRecord",
     "AnatomicalAsset", "AnatomicalMapping", "ForecastRecord",

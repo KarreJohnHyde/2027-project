@@ -3,7 +3,8 @@
 Only documented values enter a series: measurements extracted from uploaded
 documents, and laboratory results a clinician transcribed through the catalog
 (labelled MANUAL_TRANSCRIPTION). A transcription that repeats an extracted value
-on the same date is excluded as a duplicate. A series is defined by analyte name and
+on the same date is excluded as a duplicate, and so is a reprinted source occurrence
+of an extracted value (app.services.measurement_identity). A series is defined by analyte name and
 a single comparable unit: values in another unit join the series only through
 a registered conversion factor (app.services.terminology.UNIT_CONVERSIONS),
 and the conversion is reported. Statistics are tiered by sample size:
@@ -29,6 +30,8 @@ from sqlalchemy.orm import Session
 
 from app.models.entities import Examination, LabInvestigationReport, MedicalMeasurement
 from app.services.lab_service import LAB_CODE_ANALYTES
+from app.services.effective_evidence import approved_measurement_overrides
+from app.services.measurement_identity import duplicate_map
 from app.services.terminology import ANALYTES_BY_NAME, CONVERSION_SOURCE, convert
 
 MIN_FOR_DELTA = 2
@@ -109,6 +112,20 @@ def _mann_kendall(values: list[float]) -> dict[str, Any]:
     }
 
 
+def _source_state(row: MedicalMeasurement) -> Optional[str]:
+    """Why a measurement's source file no longer feeds case-level series, if it does not."""
+    source = row.source_file
+    if source is None:
+        return None
+    if source.withdrawn_at is not None:
+        return "SOURCE_FILE_WITHDRAWN"
+    if source.superseded_by_file_id is not None:
+        return f"SOURCE_FILE_SUPERSEDED_BY_F{source.superseded_by_file_id}"
+    if not source.is_associated:
+        return "SOURCE_FILE_NOT_ASSOCIATED_WITH_CASE"
+    return None
+
+
 def _extracted_observations(db: Session, case_id: int) -> list[dict[str, Any]]:
     """Measurements extracted from uploaded documents, with their source spans."""
     rows = (
@@ -118,32 +135,41 @@ def _extracted_observations(db: Session, case_id: int) -> list[dict[str, Any]]:
         .all()
     )
     exams = {exam.id: exam for exam in db.query(Examination).filter(Examination.case_id == case_id).all()}
+    repeated = duplicate_map(rows)
+    # Approved, independently decided corrections apply to the series; source rows stay unchanged.
+    overrides = approved_measurement_overrides(db, case_id)
     observations = []
     for row in rows:
         observed_on, date_source = _observation_date(row, exams)
+        override = overrides.get(row.id, {})
+        corrected = override.get("fields", {})
         observations.append({
             "observation_id": f"m{row.id}",
+            "duplicate_of": f"m{repeated[row.id]}" if row.id in repeated else None,
+            "removed_by_review": override.get("review_id") if override.get("removed") else None,
+            "source_state": _source_state(row),
+            "correction_review_id": override.get("review_id") if corrected else None,
             "source_type": "DOCUMENT_EXTRACTION",
             "measurement_id": row.id,
             "lab_report_id": None,
             "name": row.name,
-            "display_name": row.display_name,
-            "value": row.value,
-            "result_operator": row.result_operator or "=",
-            "unit": row.unit,
+            "display_name": corrected.get("display_name", row.display_name),
+            "value": corrected.get("value", row.value),
+            "result_operator": corrected.get("result_operator", row.result_operator or "="),
+            "unit": corrected.get("unit", row.unit),
             "date": observed_on,
             "date_source": date_source,
             "source_file_id": row.source_file_id,
             "examination_id": row.examination_id,
             "source_span": row.source_span,
-            "reference_low": row.reference_low,
-            "reference_high": row.reference_high,
+            "reference_low": corrected.get("reference_low", row.reference_low),
+            "reference_high": corrected.get("reference_high", row.reference_high),
             "documented_flag": row.documented_flag,
             "anatomy_system": row.anatomy_system,
             "association": row.association,
             "canonical_code": row.canonical_code,
-            "specimen": row.specimen or "NOT_DOCUMENTED",
-            "laboratory_method": row.laboratory_method or "NOT_DOCUMENTED",
+            "specimen": corrected.get("specimen", row.specimen) or "NOT_DOCUMENTED",
+            "laboratory_method": corrected.get("laboratory_method", row.laboratory_method) or "NOT_DOCUMENTED",
         })
     return observations
 
@@ -222,6 +248,16 @@ def build_series(db: Session, case_id: int) -> list[dict[str, Any]]:
         points, excluded = [], []
         for item in items:
             exclusion = {"observation_id": item["observation_id"], "measurement_id": item["measurement_id"], "lab_report_id": item["lab_report_id"]}
+            if item.get("source_state"):
+                excluded.append({**exclusion, "reason": item["source_state"]})
+                continue
+            if item.get("removed_by_review"):
+                excluded.append({**exclusion, "reason": f"REMOVED_BY_APPROVED_CORRECTION_R{item['removed_by_review']}"})
+                continue
+            if item.get("duplicate_of"):
+                # A reprint of the same result (same value, unit, date or file) is one observation.
+                excluded.append({**exclusion, "reason": f"DUPLICATE_SOURCE_OCCURRENCE_OF_{item['duplicate_of'].upper()}"})
+                continue
             if item["result_operator"] != "=":
                 excluded.append({**exclusion, "reason": f"CENSORED_RESULT_{item['result_operator']}"})
                 continue
@@ -252,6 +288,7 @@ def build_series(db: Session, case_id: int) -> list[dict[str, Any]]:
                 "documented_flag": item["documented_flag"],
                 "specimen": item["specimen"],
                 "laboratory_method": item["laboratory_method"],
+                "correction_review_id": item.get("correction_review_id"),
             }
             if item["source_type"] == "MANUAL_TRANSCRIPTION":
                 extracted = [other for other in points if other["source_type"] == "DOCUMENT_EXTRACTION"]

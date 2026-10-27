@@ -93,6 +93,41 @@ MIGRATIONS: tuple[tuple[str, tuple[tuple[str, str, str], ...]], ...] = (
             ("human_reviews", "correction_payload", "JSON"),
         ),
     ),
+    (
+        "2026_10_26_001_measurement_reference_strata",
+        tuple(
+            ("medical_measurements", column, ddl)
+            for column, ddl in (
+                ("reference_options", "JSON"),
+                ("reference_selection", "VARCHAR(48)"),
+                ("documented_category", "VARCHAR(64)"),
+            )
+        ),
+    ),
+    (
+        "2026_10_27_002_uploaded_file_versions",
+        tuple(
+            ("uploaded_files", column, ddl)
+            for column, ddl in (
+                ("version_number", "INTEGER NOT NULL DEFAULT 1"),
+                ("supersedes_file_id", "INTEGER"),
+                ("superseded_by_file_id", "INTEGER"),
+                ("withdrawn_at", "DATETIME"),
+                ("withdrawn_by_id", "INTEGER"),
+                ("withdrawal_reason", "VARCHAR(256)"),
+            )
+        ),
+    ),
+    (
+        "2026_10_27_001_user_verification_status",
+        (
+            (
+                "users",
+                "verification_status",
+                "VARCHAR(16) NOT NULL DEFAULT 'UNVERIFIED'",
+            ),
+        ),
+    ),
 )
 
 
@@ -106,6 +141,12 @@ def run_migrations(engine: Engine) -> list[str]:
         done = {row[0] for row in connection.execute(text("SELECT version FROM schema_migrations"))}
         inspector = inspect(connection)
         tables = set(inspector.get_table_names())
+        # SQLAlchemy persists Enum member names in PostgreSQL. Existing
+        # installations therefore need the new non-privileged role added to
+        # the database enum before a public self-registration can be stored.
+        # New databases already receive this value from Base.metadata.
+        if engine.dialect.name == "postgresql" and "users" in tables:
+            connection.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'PUBLIC'"))
         for version, columns in MIGRATIONS:
             if version in done:
                 continue

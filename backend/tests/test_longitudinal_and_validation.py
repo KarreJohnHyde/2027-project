@@ -3,42 +3,29 @@ Tests for Longitudinal Comparison (Old vs New) and IEEE Validation Metrics Endpo
 Verifies Section IX and Section XIII of the IEEE 2026 manuscript.
 """
 
-import pytest
-from starlette.testclient import TestClient
-from app.main import app
-from app.database import Base, engine, SessionLocal
-from app.models.entities import User, UserRole, Case, Examination, ModalityType
-from app.services.auth import get_password_hash, create_access_token
 from datetime import datetime, timezone, timedelta
 
-
-@pytest.fixture(scope="module")
-def client():
-    Base.metadata.create_all(bind=engine)
-    with TestClient(app) as test_client:
-        yield test_client
+import pytest
+from app.models.entities import Case, Examination, ModalityType
+from app.services.auth import create_access_token
 
 
-@pytest.fixture(scope="module")
-def auth_headers():
-    db = SessionLocal()
-    try:
-        user = db.query(User).filter(User.username == "clinician").first()
-        if not user:
-            user = User(
-                username="clinician",
-                email="clinician@test.org",
-                hashed_password=get_password_hash("ChangeMe123!"),
-                role=UserRole.CLINICIAN,
-                is_active=True
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
-        token = create_access_token({"sub": user.username, "role": user.role.value})
-        return {"Authorization": f"Bearer {token}"}
-    finally:
-        db.close()
+@pytest.fixture
+def longitudinal_context(db_session, test_users):
+    """Create deterministic evidence inside the per-test transaction only."""
+    clinician = test_users["clinician_a"]
+    case = Case(
+        pseudonymous_id="LONGITUDINAL-TEST-CASE",
+        description="Synthetic longitudinal comparison fixture.",
+        created_by_id=clinician.id,
+    )
+    db_session.add(case)
+    db_session.commit()
+    db_session.refresh(case)
+    token = create_access_token(
+        {"sub": clinician.username, "role": clinician.role.value, "user_id": clinician.id}
+    )
+    return {"headers": {"Authorization": f"Bearer {token}"}, "case": case}
 
 
 def test_direct_health_endpoints(client):
@@ -52,8 +39,9 @@ def test_direct_health_endpoints(client):
     assert res2.json()["status"] == "HEALTHY"
 
 
-def test_ieee_validation_metrics_endpoint(client, auth_headers):
+def test_ieee_validation_metrics_endpoint(client, longitudinal_context):
     """Verifies that GET /api/v1/metrics/ieee-validation returns all 16 IEEE equations and benchmarks."""
+    auth_headers = longitudinal_context["headers"]
     res = client.get("/api/v1/metrics/ieee-validation", headers=auth_headers)
     assert res.status_code == 200
     data = res.json()
@@ -88,21 +76,22 @@ def test_ieee_validation_metrics_endpoint(client, auth_headers):
     assert service_eq["measured_metric"]["status"] in {"COMPLETED", "NOT_RUN"}
 
 
-def test_longitudinal_comparison_endpoint(client, auth_headers):
+def test_longitudinal_comparison_endpoint(client, longitudinal_context):
     """Comparison abstains when examination-level evidence links are absent."""
-    # Fetch first case
+    auth_headers = longitudinal_context["headers"]
+    expected_case_id = longitudinal_context["case"].id
+
     cases_res = client.get("/api/v1/cases", headers=auth_headers)
     assert cases_res.status_code == 200
     cases = cases_res.json()
-    assert len(cases) > 0
-    case_id = cases[0]["id"]
+    assert expected_case_id in {case["id"] for case in cases}
 
-    res = client.post(f"/api/v1/cases/{case_id}/compare", json={}, headers=auth_headers)
+    res = client.post(f"/api/v1/cases/{expected_case_id}/compare", json={}, headers=auth_headers)
     assert res.status_code == 200
     data = res.json()
 
     assert data["status"] == "NOT_COMPARABLE"
-    assert data["case_id"] == case_id
+    assert data["case_id"] == expected_case_id
     assert "interval_days" in data
     assert "semantic_report_diff" in data
     assert "numeric_deltas" in data
@@ -124,20 +113,17 @@ def test_longitudinal_comparison_endpoint(client, auth_headers):
     assert twin_delta["representation_level"] == "L1"
 
 
-def test_comparison_does_not_invent_numeric_deltas(client, auth_headers):
+def test_comparison_does_not_invent_numeric_deltas(db_session, longitudinal_context):
     """Two examination dates cannot create measurements by themselves."""
     from app.services.comparison_service import ComparisonService
-    db = SessionLocal()
-    try:
-        case = db.query(Case).first()
-        now = datetime.now(timezone.utc)
-        exam1 = Examination(case_id=case.id, exam_date=now - timedelta(days=60), modality=ModalityType.IMAGE)
-        exam2 = Examination(case_id=case.id, exam_date=now, modality=ModalityType.IMAGE)
 
-        db.add_all([exam1, exam2])
-        db.commit()
-        result = ComparisonService.compare_examinations(db, case, exam1.id, exam2.id)
-        assert result["status"] == "NOT_COMPARABLE"
-        assert result["numeric_deltas"] == []
-    finally:
-        db.close()
+    case = longitudinal_context["case"]
+    now = datetime.now(timezone.utc)
+    exam1 = Examination(case_id=case.id, exam_date=now - timedelta(days=60), modality=ModalityType.IMAGE)
+    exam2 = Examination(case_id=case.id, exam_date=now, modality=ModalityType.IMAGE)
+
+    db_session.add_all([exam1, exam2])
+    db_session.commit()
+    result = ComparisonService.compare_examinations(db_session, case, exam1.id, exam2.id)
+    assert result["status"] == "NOT_COMPARABLE"
+    assert result["numeric_deltas"] == []

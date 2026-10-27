@@ -12,12 +12,14 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import threading
 import time
 from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
 from typing import Optional
+from weakref import WeakValueDictionary
 
 import numpy as np
 from PIL import Image
@@ -32,6 +34,20 @@ logger = logging.getLogger(__name__)
 MODALITY_LABELS = {"ENDOSCOPY": "GI endoscopy image", "ANGIOGRAPHY": "X-ray coronary angiogram", "CT": "CT image or slice",
                    "MICROSCOPY": "single segmented blood-cell microscopy image"}
 _load_lock = threading.Lock()
+# This workstation serves research requests on one GPU. Serialising model runs
+# bounds activation memory and prevents concurrent requests loading several
+# networks after the cache has evicted them.
+_inference_lock = threading.Lock()
+# Telemetry observes live networks without retaining another copy or extending
+# their lifetime after cache eviction. Worker processes have separate telemetry.
+_resident_lock = threading.Lock()
+_resident_networks = WeakValueDictionary()
+
+
+def resident_model_ids() -> list[str]:
+    """Research networks alive in this process, including a request in progress."""
+    with _resident_lock:
+        return sorted({key[0] for key in _resident_networks.keys()})
 
 
 class InferenceNotPermitted(Exception):
@@ -143,7 +159,7 @@ def get_model(model_id: str) -> dict:
     return model
 
 
-@lru_cache(maxsize=4)
+@lru_cache(maxsize=1)
 def _load(model_id: str, checkpoint: str, sha256: str):
     import hashlib
     import io
@@ -158,6 +174,9 @@ def _load(model_id: str, checkpoint: str, sha256: str):
     numpy_scalars = [np._core.multiarray.scalar, np.dtype, np.dtypes.Float64DType, np.dtypes.Float32DType]
     with torch.serialization.safe_globals(numpy_scalars):
         payload = torch.load(io.BytesIO(data), map_location="cpu", weights_only=True)
+    # Verification still covers exactly the bytes deserialised. They no longer
+    # need to overlap network construction in memory once loading is complete.
+    del data
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if payload["kind"] == "image_classifier":
         from torchvision import models
@@ -183,8 +202,12 @@ def _load(model_id: str, checkpoint: str, sha256: str):
                        channels=tuple(params["channels"]), strides=tuple(params["strides"]), num_res_units=params["num_res_units"], norm=params["norm"])
     else:
         raise InferenceNotPermitted(f"Unsupported checkpoint kind {payload['kind']}.")
-    network.load_state_dict(payload["state_dict"])
+    # Serving needs the network weights and preprocessing metadata, not a
+    # second CPU copy of every weight retained by the cached payload.
+    network.load_state_dict(payload.pop("state_dict"))
     network.eval().to(device)
+    with _resident_lock:
+        _resident_networks[(model_id, checkpoint, sha256)] = network
     return network, payload, device
 
 
@@ -282,16 +305,17 @@ def segment(network, payload: dict, device, image: Image.Image) -> dict:
 
 
 def run_model(model: dict, image_path: Path) -> dict:
-    network, payload, device = load_model(model)
-    with Image.open(image_path) as image:
-        image.load()
-        if payload["kind"] == "image_classifier":
-            output = classify(network, payload, device, image)
-        elif payload["kind"] == "object_detector":
-            output = detect(network, payload, device, image)
-        else:
-            output = segment(network, payload, device, image)
-    return output
+    with _inference_lock:
+        network, payload, device = load_model(model)
+        with Image.open(image_path) as image:
+            image.load()
+            if payload["kind"] == "image_classifier":
+                output = classify(network, payload, device, image)
+            elif payload["kind"] == "object_detector":
+                output = detect(network, payload, device, image)
+            else:
+                output = segment(network, payload, device, image)
+        return output
 
 
 RASTER_SUFFIXES = {".png", ".jpg", ".jpeg", ".bmp"}
@@ -323,16 +347,53 @@ def check_input(model: dict, file_record: UploadedFile, declared_input_type: str
         raise InferenceNotPermitted("Stored file missing from disk store.")
 
 
+# A native image frame carries at most a few burned-in annotations; a photograph or scan
+# of a printed report page carries many lines of text. Measured on held-out in-domain
+# frames of every upload model (docs/validation/DOCUMENT_PHOTO_GATE.md).
+DOCUMENT_TEXT_LINE_LIMIT = 8
+_WORD_LIKE = re.compile(r"[A-Za-z]{3,}")
+
+
+def printed_text_lines(image_path: Path) -> Optional[int]:
+    """Lines of printed text that local OCR reads in the image (None if OCR is unavailable)."""
+    from app.services import ocr
+
+    if not ocr.ocr_available():
+        return None
+    with Image.open(image_path) as image:
+        image.load()
+        page = ocr.ocr_image(image)
+    return sum(1 for line in page.lines if _WORD_LIKE.search(line["text"]))
+
+
+def check_document_photograph(image_path: Path) -> dict:
+    """Content gate, independent of the user's declared modality: a photograph of a printed
+    document is refused before any image model sees it."""
+    lines = printed_text_lines(image_path)
+    if lines is not None and lines >= DOCUMENT_TEXT_LINE_LIMIT:
+        raise InferenceNotPermitted(
+            f"MODEL_INPUT_INCOMPATIBLE: this image looks like a photograph or scan of a printed document "
+            f"({lines} lines of printed text were read). Research image models accept native image frames only; "
+            "upload the page as a report for text extraction, and provide the original DICOM/PACS export or native "
+            "frames if image analysis is needed."
+        )
+    return {"printed_text_lines": lines, "document_text_line_limit": DOCUMENT_TEXT_LINE_LIMIT,
+            "status": "NOT_CHECKED_OCR_UNAVAILABLE" if lines is None else "PASSED"}
+
+
 def execute_research_inference(db: Session, file_record: UploadedFile, model_id: str, declared_input_type: str,
                                actor: Optional[User]) -> InferenceRun:
     model = get_model(model_id)
     check_input(model, file_record, declared_input_type)
     bundle = model["artifact_bundle"]
+    with upload_store.materialize(Path(file_record.file_path)) as plain:
+        content_check = check_document_photograph(plain)
     started_at = datetime.now(timezone.utc)
     start = time.perf_counter()
     try:
         with upload_store.materialize(Path(file_record.file_path)) as plain:
             output = run_model(model, plain)
+        output["input_content_check"] = content_check
     except Exception as exc:
         logger.exception("Research model %s failed for upload %s", model_id, file_record.id)
         db.rollback()

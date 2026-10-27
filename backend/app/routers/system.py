@@ -101,7 +101,9 @@ def get_readiness(db: Session = Depends(get_db)):
 
 @router.get("/gpu")
 def get_gpu_telemetry(current_user: User = Depends(get_current_user)):
-    """Device inventory and memory. No model is resident: models load on demand only."""
+    """Device memory and live research networks in this API process only."""
+    from app.services.model_inference import resident_model_ids
+
     process = psutil.Process()
     memory = psutil.virtual_memory()
     payload = {
@@ -109,7 +111,8 @@ def get_gpu_telemetry(current_user: User = Depends(get_current_user)):
         "torch_version": torch.__version__,
         "cuda_build": torch.version.cuda,
         "host_memory": {"total_bytes": memory.total, "available_bytes": memory.available, "process_rss_bytes": process.memory_info().rss},
-        "loaded_models": [],
+        "loaded_models": resident_model_ids(),
+        "telemetry_scope": "API_PROCESS_ONLY",
         "inference_concurrency_limit": 1,
     }
     if torch.cuda.is_available():

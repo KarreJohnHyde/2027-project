@@ -3,6 +3,7 @@ import { Box } from "lucide-react";
 import { Badge, Card, EmptyState, ErrorBlock, LoadingBlock, PageHeader, SelectInput, StatusBadge, Table, Unavailable } from "../components/ui";
 import { api, type MedicalMeasurement, type ReportStatement } from "../services/api";
 import { formatDate, formatNumber, humanize } from "../lib/format";
+import { documentedValue, intervalText, occurrenceNote } from "../lib/measurements";
 import { Link } from "../lib/router";
 import { useAsync } from "../lib/useAsync";
 import { useWorkspace } from "../state/workspace";
@@ -57,6 +58,13 @@ export default function DocumentIntelligencePage() {
   const statements = evidence.statements.filter((statement) => !activeUpload || statement.source_file_id === String(activeUpload.id));
   const measurements = evidence.measurements.filter((measurement) => !activeUpload || measurement.source_file_id === activeUpload.id);
   const attributes = evidence.attributes.filter((attribute) => !activeUpload || attribute.source_file_id === activeUpload.id);
+  const identityAttributes = evidence.attributes.filter((attribute) => attribute.name === "age_years" || attribute.name === "sex");
+  const documentedSexes = new Set(identityAttributes.filter((attribute) => attribute.name === "sex" && attribute.value_text).map((attribute) => attribute.value_text!.toLowerCase()));
+  const documentedAges = identityAttributes
+    .filter((attribute) => attribute.name === "age_years" && attribute.value_number !== null)
+    .map((attribute) => attribute.value_number!);
+  const ageSpread = documentedAges.length > 1 ? Math.max(...documentedAges) - Math.min(...documentedAges) : 0;
+  const identityReviewRequired = documentedSexes.size > 1 || ageSpread > 2;
   const visible = statements.filter((statement) =>
     (filters.negation === "ALL" || statement.negation === filters.negation) &&
     (filters.certainty === "ALL" || statement.certainty === filters.certainty) &&
@@ -122,6 +130,50 @@ export default function DocumentIntelligencePage() {
           </div>
         </Card>
         <div className="space-y-4">
+          <Card
+            title="Identity consistency"
+            eyebrow="Case-level document check"
+            actions={
+              <StatusBadge
+                status={identityAttributes.length === 0 ? "INSUFFICIENT_EVIDENCE" : identityReviewRequired ? "IDENTITY_REVIEW_REQUIRED" : "CONSISTENT"}
+                label={identityAttributes.length === 0 ? "No attributes" : identityReviewRequired ? "Review required" : "No conflict observed"}
+              />
+            }
+          >
+            {identityReviewRequired ? (
+              <Unavailable
+                compact
+                code="IDENTITY_REVIEW_REQUIRED"
+                reason="Documents assigned to this case contain materially different age or sex values. MedTwin will not reconcile or merge them automatically; verify the source patient and case association."
+              />
+            ) : (
+              <p className="text-xs leading-5 text-ink-2">
+                {identityAttributes.length === 0
+                  ? "No documented age or sex was extracted, so patient consistency cannot be assessed."
+                  : "No material age or sex conflict was detected in the currently extracted case documents. This is not proof of identity."}
+              </p>
+            )}
+            {identityAttributes.length > 0 && (
+              <p className="mt-2 text-[11px] leading-5 text-ink-3">
+                Review heuristic: documented sex values differ or documented ages span more than two years. A clean result is not identity proof.
+              </p>
+            )}
+            {identityAttributes.length > 0 && (
+              <ul className="mt-3 space-y-1.5 border-t border-line pt-3 text-xs text-ink-2">
+                {identityAttributes.map((attribute) => {
+                  const source = reports.find((report) => report.id === attribute.source_file_id);
+                  return (
+                    <li key={attribute.id} className="flex items-start justify-between gap-3">
+                      <span className="min-w-0 truncate" title={source?.filename}>{source?.filename ?? `Report #${attribute.source_file_id}`}</span>
+                      <span className="shrink-0 font-medium text-ink">
+                        {humanize(attribute.name)}: {attribute.value_text ?? (attribute.value_number !== null ? formatNumber(attribute.value_number, 1) : "Unparsed")}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </Card>
           <Card title="Documented attributes" eyebrow="Dates, age and sex as written">
             {attributes.length === 0 ? <p className="text-sm text-ink-2">No dates, age or sex documented in this report.</p> : (
               <ul className="space-y-1.5 text-sm">
@@ -188,8 +240,8 @@ export default function DocumentIntelligencePage() {
             {measurements.map((measurement) => (
               <tr key={measurement.id} className={activeId === `m${measurement.id}` ? "bg-accent-soft" : ""} onClick={() => setActiveId(`m${measurement.id}`)}>
                 <td><span className="font-medium text-ink">{measurement.display_name}</span><span className="block font-mono text-[11px] text-ink-3">{measurement.name}</span></td>
-                <td className="whitespace-nowrap tabular text-ink">{formatNumber(measurement.value, 3)} {measurement.unit}{measurement.conversion_status !== "AS_DOCUMENTED" && <span className="block text-[11px] text-ink-3">{humanize(measurement.conversion_status)}</span>}</td>
-                <td className="text-xs text-ink-2">{measurement.reference_text ?? "Not documented"}{measurement.documented_flag && <span className="block"><StatusBadge status={measurement.documented_flag} label={`Flag: ${humanize(measurement.documented_flag)}`} /></span>}</td>
+                <td className="whitespace-nowrap tabular text-ink">{documentedValue(measurement, 3)}{measurement.conversion_status !== "AS_DOCUMENTED" && <span className="block text-[11px] text-ink-3">{humanize(measurement.conversion_status)}</span>}{measurement.documented_category && <span className="block text-[11px] text-ink-3">Printed category: {measurement.documented_category}</span>}</td>
+                <td className="max-w-xs text-xs text-ink-2">{intervalText(measurement)}{measurement.documented_flag && <span className="block"><StatusBadge status={measurement.documented_flag} label={`Flag: ${humanize(measurement.documented_flag)}`} /></span>}{occurrenceNote(measurement) && <span className="block text-[11px] text-ink-3">{occurrenceNote(measurement)}</span>}</td>
                 <td><StatusBadge status={measurement.documented_range_position} /></td>
                 <td className="text-xs text-ink-2">{measurement.canonical_code ? <span title={measurement.code_mapping_status ?? undefined}>LOINC {measurement.canonical_code}</span> : "—"}</td>
                 <td className="whitespace-nowrap text-xs text-ink-2">{measurement.documented_date ? formatDate(measurement.documented_date) : "—"}{measurement.source_page ? ` · p.${measurement.source_page}` : ""}</td>

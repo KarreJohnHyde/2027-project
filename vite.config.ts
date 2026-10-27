@@ -10,6 +10,9 @@ import siteConfiguration from './.figma/make/site.json' with { type: 'json' }
 export default defineConfig(({ mode }) => {
   // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
   const emitSourcemaps = mode === 'development'
+  // Compile verification does not need a second copy of the ~1 GB anatomy
+  // library. Production builds still include every public asset in dist.
+  const checkBuild = mode === 'check'
   const backendUrl = process.env.MEDTWIN_BACKEND_URL || 'http://127.0.0.1:8000'
 
   return {
@@ -18,6 +21,8 @@ export default defineConfig(({ mode }) => {
     // Only browser-safe values (project URL, publishable key) may use either prefix.
     envPrefix: ['VITE_', 'NEXT_PUBLIC_'],
     build: {
+      outDir: checkBuild ? '.cache/build-check' : 'dist',
+      copyPublicDir: !checkBuild,
       sourcemap: emitSourcemaps ? 'inline' : false,
       minify: !emitSourcemaps,
     },

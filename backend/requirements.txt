@@ -23,5 +23,7 @@ pycocotools==2.0.11
 onnxruntime==1.31.0
 rapidocr-onnxruntime==1.4.4
 pypdfium2==5.14.0
+# OCR-glued word segmentation with an exact offset map (app.services.ocr_text); MIT, pure Python.
+wordninja==2.0.0
 # Encryption at rest for stored uploads (AES-256-GCM)
 cryptography==50.0.2
