@@ -22,8 +22,9 @@ Last updated 2026-10-25.
   lifecycle, lab, evidence, correction, queue, evaluator and prognosis assertions (0
   numeric risk statements) and zero console errors, page errors, or failed requests.
 - `model_registry/validation_status.json`: **21 registry entries, 11 research-runnable,
-  0 clinically activatable**. Seven support gated 2-D upload inference; the 12-lead ECG
-  classifier, both survival baselines and the cardiac MRI segmenter are evaluation-only.
+  0 clinically activatable**. Nine support gated upload inference (seven 2-D image models,
+  the 12-lead ECG classifier and the cardiac MRI segmenter); both survival baselines are
+  evaluation-only.
   All are internal, research-only results.
 
 Companion files: `docs/development/NEXT_ACTIONS.md`,

@@ -5,6 +5,7 @@ Authentication and User Management Router.
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.config import ACCESS_TOKEN_EXPIRE_MINUTES, RATE_LIMIT_LOGIN_PER_MINUTE
@@ -61,6 +62,9 @@ def register_user(user_in: UserCreate, db: Session = Depends(get_db)):
         details={
             "username": new_user.username,
             "role": new_user.role.value,
+            "requested_role": user_in.requested_role,
+            "requested_department": user_in.requested_department,
+            "requested_department_other": user_in.requested_department_other,
             "verification_status": new_user.verification_status.value,
         }
     )
@@ -93,20 +97,23 @@ async def login_for_access_token(
         except Exception:
             pass
 
-    if not username or not password:
+    if not isinstance(username, str) or not username.strip() or not isinstance(password, str) or not password:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username and password are required."
         )
+    username = username.strip()
 
     user = db.query(User).filter(User.username == username).first()
+    if user is None and isinstance(username, str):
+        user = db.query(User).filter(func.lower(User.email) == username.strip().lower()).first()
     
     if not user or not verify_password(password, user.hashed_password):
         log_audit_event(
             db=db,
             action="LOGIN_FAILED",
             resource_type="AUTH",
-            details={"attempted_username": username}
+            details={"attempted_username": username if "@" not in username else "[email identifier]"}
         )
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

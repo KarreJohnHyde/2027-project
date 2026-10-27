@@ -24,7 +24,7 @@ scope. **No modality has a clinically validated model.**
 | Microscopy / haematology | PNG/JPEG/BMP | C-NMC ALL-vs-normal classifier is `READY_UNVALIDATED`; native BMP upload/display/inference is tested. | none |
 | Histopathology / dermatology / retinal | PNG/JPEG/BMP; retinal also single DICOM objects | no runnable model | none |
 | Echocardiography | Single DICOM objects frame by frame | EchoNet use permission and model integration remain unavailable. | none |
-| ECG | CSV plus training-time WFDB parser in `ml_training`; no patient upload inference contract | PTB-XL baseline is `READY_UNVALIDATED` evaluation-only. | none |
+| ECG | WFDB format-16 header + signal file and CSV with a time column (`backend/app/services/ecg_inference.py`); 100 Hz, 10 s, 12 leads only, nothing resampled. Photographs or scans of printed ECGs are images, not signals. | PTB-XL baseline is `READY_UNVALIDATED` with research-only upload inference; parity with its held-out predictions in `docs/validation/UPLOAD_INFERENCE_PARITY.md`. | none |
 | EEG | EDF reader not installed (`UNSUPPORTED_MODALITY`) | no model | none |
 | Clinical documents | PDF (embedded text/local OCR), DOCX, XLSX, CSV/text/JSON | Rules and optional scispaCy execute but are unvalidated; MedCAT/RadGraph dependencies are missing. | none |
 | FHIR R4 | JSON resources, including coded/datetime/range Observations | no model | none |

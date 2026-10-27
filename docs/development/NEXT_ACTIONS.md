@@ -114,12 +114,12 @@ verified work table at the end and do not reopen scientific claims without new e
 | --- | --- | --- |
 | Twenty-four named archives | `IMPLEMENTED_TESTED` | 23 canonical matches plus one 6,795/6,795 safe extraction; 91 extras audited, 2 unsafe and refused. |
 | Dataset/task audit | `IMPLEMENTED_TESTED` | 61 units / 32 tasks: 10 ready, 1 exploratory, 21 blocked; `dataset_registry/tasks.json`. |
-| Model/evaluation bundles | `IMPLEMENTED_UNVALIDATED` | 21 entries / 11 research-runnable / 0 clinically activatable; seven 2-D upload models plus four evaluation-only bundles (ECG, two survival, cardiac MRI). |
+| Model/evaluation bundles | `IMPLEMENTED_UNVALIDATED` | 21 entries / 11 research-runnable / 0 clinically activatable; nine upload models (seven 2-D, ECG, cardiac MRI) plus two evaluation-only survival bundles. |
 | Browser acceptance | `IMPLEMENTED_TESTED` | `artifacts/verify/20261025T140444Z.json`: 17/17 desktop, 17/17 responsive, 43/43 anatomy, 7/7 image workflows, 11/11 reports, lifecycle/lab/evidence/correction/queue/evaluator/prognosis assertions, zero console, page or request errors. |
 | Evaluated-precision inference | `IMPLEMENTED_TESTED` | Classifiers and segmenters run under their evaluated bfloat16 autocast on CUDA; parity 21/21 (max probability difference 0.0008); outputs state precision. |
 | Medical naming and attribution | `IMPLEMENTED_TESTED` | Medical display names across the application; source names, creators, licences and citations only on `/attribution`. |
 | Native BMP microscopy | `IMPLEMENTED_TESTED` | Signature, upload, metadata, display, C-NMC applicability/inference, and malformed-file rejection are covered. |
-| Volumetric pipeline and cardiac MRI | `IMPLEMENTED_UNVALIDATED` | Owner-authorized training on 298 retained cases; 50 frozen test patients: macro Dice 0.750, LV EF MAE 9.1 points vs reference masks; evaluation-only (`docs/validation/models/acdc_cardiac_mri_3d_unet.json`). |
+| Volumetric pipeline and cardiac MRI | `IMPLEMENTED_UNVALIDATED` | Owner-authorized training on 298 retained cases; 50 frozen test patients: macro Dice 0.750, LV EF MAE 9.1 points vs reference masks; research-only single-frame NIfTI upload inference inside the development spacing envelope (`docs/validation/models/acdc_cardiac_mri_3d_unet.json`). |
 | Durable job queue | `IMPLEMENTED_TESTED` | Lease/retry/cancel/idempotency/GPU quota, separate worker, reload persistence, and restart recovery. |
 | OCR/NLP evaluator software | `IMPLEMENTED_UNVALIDATED` | Strict schemas, CER/WER and span/context metrics, byte binding, hash-only provenance, and raw-text exclusion pass; real accuracy awaits lawful gold data. |
 | Structured longitudinal analytics | `IMPLEMENTED_TESTED` | Source-linked comparisons, unit compatibility, deduplication, censored-value exclusion, and abstention. |

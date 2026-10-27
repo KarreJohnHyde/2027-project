@@ -15,7 +15,7 @@ activatable.
 | `artifacts/verify/20261025T140444Z.json` | `IMPLEMENTED_TESTED` | Commit `1aedb23`, clean tree, overall pass: backend **260 passed, 1 skipped**; frontend typecheck/lint/build and current-tree privacy scan exited 0. Non-blocking lint and bundle-size warnings remain recorded. |
 | `%TEMP%\medtwin-qa\walkthrough-20261025T140444Z\walkthrough.json` | `IMPLEMENTED_TESTED` | Edge 156: **17/17 desktop**, **17/17 responsive** (including Data sources and licences), **43/43 anatomy variants**, **7/7 2-D image workflows**, **11/11 trained reports** (including cardiac MRI); lifecycle, lab, evidence, correction, queue, evaluator and prognosis assertions passed; zero console/page/failed-request errors. |
 | Screenshot review of the new screens | `IMPLEMENTED_TESTED` | The cardiac report, Model Registry, Dataset Registry and attribution page were inspected in the run's screenshots: medical names throughout, source credits only on the attribution page. |
-| `model_registry/validation_status.json` | `IMPLEMENTED_UNVALIDATED` | **21 entries; 11 research-runnable; 0 clinically activatable**. Seven are gated 2-D upload workflows; the ECG classifier, two survival baselines and the cardiac MRI segmenter are evaluation-only. |
+| `model_registry/validation_status.json` | `IMPLEMENTED_UNVALIDATED` | **21 entries; 11 research-runnable; 0 clinically activatable**. Nine run on uploads behind research-only gates (seven 2-D image models, the ECG classifier on digital WFDB/CSV records, the cardiac MRI segmenter on single NIfTI frames); the two survival baselines are evaluation-only. |
 
 Detailed state: `docs/development/MASTER_PROGRESS.md`; queued decisions and next
 actions: `docs/development/NEXT_ACTIONS.md`; executed tests:
@@ -32,7 +32,7 @@ actions: `docs/development/NEXT_ACTIONS.md`; executed tests:
 | Reports, OCR, NLP | `IMPLEMENTED_UNVALIDATED` | Embedded and scanned documents, RapidOCR, terminology/context rules, numerical labs, and strict OCR/NLP evaluators execute. No lawful independently annotated representative medical corpus has established extraction accuracy. |
 | Longitudinal analytics | `IMPLEMENTED_TESTED` | Comparisons require source links, compatible analyte/unit context, and dated examinations; duplicate and censored observations are excluded with provenance. No disease-progression or causal interpretation is invented. |
 | Images | `IMPLEMENTED_TESTED` | Raster PNG/JPEG/BMP, single DICOM objects, NIfTI, NRRD, and MetaImage metadata/rendering paths are covered. Boxes and masks map back to source pixels. Multi-file DICOM series assembly remains unsupported. |
-| Research models | `IMPLEMENTED_UNVALIDATED` | Seven image models have research-only upload inference and now run in their evaluated numeric precision; the ECG classifier, two Cox survival models and the cardiac MRI segmenter have evaluation-only evidence. All checkpoints/reports are internally evaluated public-research artifacts, not clinical models. |
+| Research models | `IMPLEMENTED_UNVALIDATED` | Seven image models, the ECG classifier (digital WFDB/CSV records) and the cardiac MRI segmenter (single NIfTI frames) have research-only upload inference in their evaluated numeric precision; the two Cox survival models have evaluation-only evidence. All checkpoints/reports are internally evaluated public-research artifacts, not clinical models. |
 | Volumetric imaging | `IMPLEMENTED_UNVALIDATED` | The 3-D NIfTI pipeline trained a cardiac cine-MRI segmenter (owner-authorized research use): 50 frozen test patients, macro Dice 0.750, LV ejection-fraction MAE 9.1 points against reference masks, volumes overestimated. Research-only upload inference for single NIfTI frames inside the development spacing envelope; 98/98 held-out masks reproduced exactly. |
 | Naming and attribution | `IMPLEMENTED_TESTED` | Datasets, tasks, models and anatomy assets appear under medical names; original names, creators, licences and citations are only on the Data sources and licences page, which the walkthrough rendered on desktop and phone. |
 | External client configuration | `IMPLEMENTED_UNVALIDATED` | The Supabase browser client is installed and constructs with the configured project URL and publishable key (no request sent). Nothing in the application uses it yet; patient data must not leave the deployment by default. |
@@ -60,8 +60,8 @@ limitations are in `docs/imaging/DATASET_TRAINING_RESULTS.md` and
 | ARCADE SYNTAX segmenter | 2-D upload inference | n=300; vessel Dice 0.6829; mean foreground Dice/image 0.3070 |
 | Kvasir-SEG polyp segmenter | 2-D upload inference | n=120; Dice 0.7679; IoU 0.6696 |
 | C-NMC ALL-vs-normal classifier | 2-D/BMP upload inference | n=1,867 / 28 subject clusters; accuracy 0.807; macro-F1 0.790 |
-| PTB-XL ECG superclass classifier | Evaluation-only | n=2,163 ECGs / 1,881 patients; macro AUROC 0.917; macro AUPRC 0.805 |
-| ACDC cardiac cine-MRI segmenter, 3-D | Evaluation-only | n=100 volumes / 50 patients; macro Dice 0.750 (LV 0.812, myocardium 0.731, RV 0.707); LV EF MAE 9.1 points, bias −5.8 vs reference masks |
+| PTB-XL ECG superclass classifier | Research-only upload inference (digital records) | n=2,163 ECGs / 1,881 patients; macro AUROC 0.917; macro AUPRC 0.805 |
+| ACDC cardiac cine-MRI segmenter, 3-D | Research-only upload inference (single NIfTI frames) | n=100 volumes / 50 patients; macro Dice 0.750 (LV 0.812, myocardium 0.731, RV 0.707); LV EF MAE 9.1 points, bias −5.8 vs reference masks |
 | PBC Mayo survival Cox | Evaluation-only | n=104 hold-out patients; Harrell's C 0.786; integrated Brier 0.105 vs 0.146 Kaplan-Meier |
 | Heart-failure survival Cox | Evaluation-only; exploratory | n=90; Harrell's C 0.671; integrated Brier 0.168 vs 0.158 Kaplan-Meier (no skill) |
 

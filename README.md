@@ -10,23 +10,26 @@ Every patient-facing result traces to an uploaded source and a recorded computat
 
 - **Workspace:** 16 sections (Overview, Case Workspace, Document Intelligence, Medical Imaging, Biomarker Analytics, Historical Comparison, Live Anatomy Studio, Prognosis Studio, Multimodal Intelligence, Risk & Explainability, Research Analytics, Model Registry, Dataset Registry, Validation Center, Reports, Settings) plus a unified Upload Center, with light and dark themes.
 - **Access control:** JWT authentication, case-scoped authorization, case sharing (viewer/editor), rate limiting, security headers, readiness checks and audit history.
-- **Uploads:** content-signature checks and SHA-256 storage for PDF, DOCX, TXT, CSV, XLSX, JSON/FHIR, PNG/JPEG, DICOM, NIfTI, NRRD and MHA. A de-identification attestation is required.
+- **Uploads:** content-signature checks and SHA-256 storage for PDF, DOCX, TXT, CSV, XLSX, JSON/FHIR, PNG/JPEG/BMP, DICOM, NIfTI, NRRD, MHA and digital ECG (WFDB `.hea`/`.dat`, CSV). A de-identification attestation is required. Stored files are encrypted at rest with AES-256-GCM whenever a storage key is configured (`MEDTWIN_STORAGE_ENCRYPTION=required` makes it mandatory); files can be versioned or withdrawn without altering the original bytes.
+- **OCR:** born-digital text is read directly; scanned PDF pages and photographed reports are read with local RapidOCR at 300 DPI. A photograph of a printed document is refused by the image models.
 - **Documents:** the clinical-text rules baseline `rules-v2.0.0` scopes negation, uncertainty, hypothetical, historical, family and comparison context per clause, so "No evidence of…" or "Rule out…" never becomes a diagnosis. Measurements keep source spans, documented intervals, flags and dates; FHIR Observations are imported with codes. All outputs await clinician review; the baseline has not been evaluated on an annotated corpus.
-- **Imaging:** DICOM, NIfTI, NRRD and MHA metadata and slice rendering, with HU window presets only when rescale data exist and identifier warnings.
+- **Imaging:** DICOM, NIfTI, NRRD and MHA metadata and slice rendering, with HU window presets only when rescale data exist and identifier warnings. Multi-file DICOM series are grouped, ordered by patient position and checked for gaps, duplicates and inconsistent geometry; an assembled series is not yet rendered or passed to a model.
+- **Research models (research only, not clinically validated):** seven 2-D image models (GI endoscopy classification and polyp segmentation, coronary angiography stenosis detection and segment segmentation, kidney-stone CT detection, blood-cell microscopy), a 12-lead ECG classifier for digital WFDB/CSV records and a cardiac cine-MRI segmenter for single NIfTI frames run on uploads behind checkpoint-hash, licence and input-contract gates; outputs stay pending human review. The ECG and MRI paths reproduce their held-out predictions (`docs/validation/UPLOAD_INFERENCE_PARITY.md`).
+- **Background jobs:** a durable job queue with a separate worker (`python -m app.worker`) and an inline mode for development.
 - **Biomarkers:** longitudinal series with registered unit conversions, Δx, Δx%, rate, OLS/Theil–Sen from n ≥ 3 and Mann–Kendall from n ≥ 4. CKD-EPI 2021 eGFR is computed only from documented inputs.
 - **Laboratory transcription:** transcription against the test catalog, and investigation orders. A position is computed only against the laboratory's printed interval; without one it is `INDETERMINATE`.
 - **Anatomy:** ten system workspaces, 43 generic reference variants plus the Z-Anatomy atlas, structure hierarchy, sections and clinician-confirmed region mapping (`docs/anatomy/README.md`). This is reference anatomy only, never patient anatomy.
 - **Prognosis and risk:** a target-trial specification and organ capability registry. Every forecast, scenario, risk score and treatment effect is reported as unavailable, with reasons.
 - **Validation Center:** evaluates uploaded held-out predictions in the `MedTwin_2_Validation_Kit` formats. Tasks: classification, multiclass, regression, survival, forecast, lab-extraction audit, segmentation (single pair or ZIP) and COCO detection. Bootstrap CIs are cluster-aware. Each run is bound to dataset, version, split, checkpoint and code commit.
 - **Research traceability:** `docs/research/traceability.json` maps the revised draft's claims and equations to code, tests and gaps (`docs/research/implementation_gaps.md`).
-- **Registries and reports:** read-only dataset and model registries (every model is activation-blocked), append-only review, and JSON evidence export with SHA-256 plus a printable report.
+- **Registries and reports:** read-only dataset and model registries (every model is blocked from clinical activation), append-only review with four-eyes approval of corrections, and JSON evidence export with SHA-256 plus a printable report.
 
 ## What is not operational
 
-- No image, ECG or clinical-language model checkpoint is activated. No experiment in the manuscript's Section X has been run.
+- No image, ECG or clinical-language model is clinically activated; the research models above have internal held-out evaluations only, with no external or clinical validation. Of the manuscript's Section X experiments, the image classification, detection/segmentation and PTB-XL runs were executed as internal evaluations; `X-MURA`, `X-DOC-EXTRACTION`, `X-MIMIC-CXR` and `X-FORECAST` have not been run (`docs/research/IEEE_TRACEABILITY_REPORT.md`).
 - No forecast, calibrated diagnostic confidence, patient-specific anatomy (L3), validated registration or case-level multimodal fusion is produced.
-- Not implemented: image-only PDF OCR, asynchronous workers, encryption at rest, EDF/WFDB ECG readers, patient-facing views and an automated browser regression suite.
-- Docker images have not been built or run here (no Docker engine was available); `docker compose config` passes.
+- Not implemented: EEG/EDF readers, inference on assembled DICOM series, HL7 readers, database encryption at rest, patient or caregiver accounts and views, and a browser regression suite in CI. A scripted browser walkthrough exists (`tools/browser-qa/walkthrough.mjs`) but is run by hand and has no approved golden images.
+- Docker: CI builds both images and they build locally (Docker 29.9); a full Compose run with migrations, health checks and worker persistence has not been executed.
 
 ## Requirements
 

@@ -49,6 +49,13 @@ def test_user_registration_and_login(client):
     assert token_data["role"] == "public"
     assert token_data["verification_status"] == "UNVERIFIED"
 
+    email_login = client.post(
+        "/api/v1/auth/login",
+        json={"username": "WATSON@BAKERSTREET.MED", "password": "Password123!"},
+    )
+    assert email_login.status_code == 200
+    assert email_login.json()["username"] == "dr_watson"
+
 
 def test_public_registration_cannot_self_assign_privileged_role(client):
     res = client.post(
@@ -66,6 +73,64 @@ def test_public_registration_cannot_self_assign_privileged_role(client):
         error.get("loc", [])[-1:] == ["role"]
         for error in res.json().get("detail", [])
     )
+
+
+def test_registration_records_requested_role_without_granting_privileges(client, db_session):
+    registration = client.post(
+        "/api/v1/auth/register",
+        json={
+            "username": "department_expert",
+            "email": "department-expert@test.medtwin",
+            "password": "Password123!",
+            "requested_role": "department_expert",
+            "requested_department": "cardiology",
+        },
+    )
+
+    assert registration.status_code == 201, registration.text
+    assert registration.json()["role"] == "public"
+    assert registration.json()["verification_status"] == "UNVERIFIED"
+
+    event = (
+        db_session.query(AuditEvent)
+        .filter_by(action="USER_REGISTERED", resource_id=str(registration.json()["id"]))
+        .one()
+    )
+    assert event.details["requested_role"] == "department_expert"
+    assert event.details["requested_department"] == "cardiology"
+    assert event.details["role"] == "public"
+
+
+@pytest.mark.parametrize("requested_role", ["doctor", "surgeon", "department_expert"])
+def test_professional_profile_requires_department(client, requested_role):
+    registration = client.post(
+        "/api/v1/auth/register",
+        json={
+            "username": f"missing_department_{requested_role}",
+            "email": f"missing-department-{requested_role}@test.medtwin",
+            "password": "Password123!",
+            "requested_role": requested_role,
+        },
+    )
+
+    assert registration.status_code == 422
+    assert "Select a hospital department" in str(registration.json()["detail"])
+
+
+def test_other_department_requires_name(client):
+    registration = client.post(
+        "/api/v1/auth/register",
+        json={
+            "username": "other_department",
+            "email": "other-department@test.medtwin",
+            "password": "Password123!",
+            "requested_role": "surgeon",
+            "requested_department": "other",
+        },
+    )
+
+    assert registration.status_code == 422
+    assert "Enter the name of the other department" in str(registration.json()["detail"])
 
 
 def test_public_registrant_cannot_review_or_mutate_clinical_catalog(client, db_session):

@@ -76,7 +76,56 @@ export interface RegisterUserInput {
   email: string;
   password: string;
   full_name?: string;
+  requested_role: RequestedRole;
+  requested_department?: RequestedDepartment;
+  requested_department_other?: string;
 }
+
+export interface RegisterUserResult {
+  user: User;
+  profileRequestSaved: boolean;
+}
+
+export type RequestedRole =
+  | 'standard_user'
+  | 'patient'
+  | 'medical_staff'
+  | 'nurse'
+  | 'lab_expert'
+  | 'doctor'
+  | 'surgeon'
+  | 'department_expert'
+  | 'researcher';
+
+export type RequestedDepartment =
+  | 'anesthesiology'
+  | 'cardiology'
+  | 'cardiothoracic_surgery'
+  | 'dermatology'
+  | 'emergency_medicine'
+  | 'endocrinology'
+  | 'family_medicine'
+  | 'gastroenterology'
+  | 'general_surgery'
+  | 'hematology'
+  | 'infectious_disease'
+  | 'internal_medicine'
+  | 'laboratory_medicine'
+  | 'nephrology'
+  | 'neurology'
+  | 'neurosurgery'
+  | 'obstetrics_gynecology'
+  | 'oncology'
+  | 'ophthalmology'
+  | 'orthopedic_surgery'
+  | 'otolaryngology'
+  | 'pediatrics'
+  | 'psychiatry'
+  | 'pulmonology'
+  | 'radiology'
+  | 'rehabilitation_medicine'
+  | 'urology'
+  | 'other';
 
 export interface Examination {
   id: number;
@@ -1313,6 +1362,49 @@ function resourcePath(id: ResourceId): string {
   return encodeURIComponent(String(id));
 }
 
+function formatValidationDetail(detail: unknown): string | null {
+  if (!Array.isArray(detail)) return null;
+
+  const issues = detail.flatMap((entry): string[] => {
+    if (!entry || typeof entry !== 'object') return [];
+    const location =
+      'loc' in entry && Array.isArray(entry.loc)
+        ? entry.loc
+            .filter((part: unknown): part is string | number => typeof part === 'string' || typeof part === 'number')
+            .slice(1)
+            .join('.')
+        : '';
+    const message = 'msg' in entry && typeof entry.msg === 'string' ? entry.msg : '';
+    return message ? [`${location || 'Request'}: ${message}`] : [];
+  });
+
+  return issues.length > 0 ? issues.join('; ') : null;
+}
+
+function rejectsRegistrationProfileFields(error: unknown): error is ApiError {
+  if (!(error instanceof ApiError) || error.status !== 422 || !Array.isArray(error.detail)) return false;
+  const profileFields = new Set([
+    'requested_role',
+    'requested_department',
+    'requested_department_other',
+  ]);
+  const errors = error.detail.filter((entry) => entry && typeof entry === 'object');
+
+  return (
+    errors.length > 0 &&
+    errors.every(
+      (entry) =>
+        'loc' in entry &&
+        Array.isArray(entry.loc) &&
+        entry.loc[0] === 'body' &&
+        typeof entry.loc[1] === 'string' &&
+        profileFields.has(entry.loc[1]) &&
+        'msg' in entry &&
+        entry.msg === 'Extra inputs are not permitted',
+    )
+  );
+}
+
 class ApiClient {
   private token: string | null =
     typeof window === 'undefined' ? null : window.localStorage.getItem(TOKEN_STORAGE_KEY);
@@ -1362,7 +1454,8 @@ class ApiClient {
       const message =
         typeof detail === 'string'
           ? detail
-          : `Request failed (${response.status} ${response.statusText})`;
+          : (formatValidationDetail(detail) ??
+            `Request failed (${response.status} ${response.statusText})`);
       throw new ApiError(response.status, message, detail, response.headers.get('X-Request-ID'));
     }
 
@@ -1405,12 +1498,25 @@ class ApiClient {
     }
   }
 
-  register(input: RegisterUserInput): Promise<User> {
-    return this.request<User>(
-      '/auth/register',
-      { method: 'POST', body: JSON.stringify(input) },
-      false,
-    );
+  async register(input: RegisterUserInput): Promise<RegisterUserResult> {
+    try {
+      const user = await this.request<User>(
+        '/auth/register',
+        { method: 'POST', body: JSON.stringify(input) },
+        false,
+      );
+      return { user, profileRequestSaved: true };
+    } catch (error) {
+      if (!rejectsRegistrationProfileFields(error)) throw error;
+
+      const { username, email, password, full_name } = input;
+      const user = await this.request<User>(
+        '/auth/register',
+        { method: 'POST', body: JSON.stringify({ username, email, password, full_name }) },
+        false,
+      );
+      return { user, profileRequestSaved: false };
+    }
   }
 
   logout(): void {

@@ -71,6 +71,14 @@
         "PATIENT_NAME_FIELD"
       ],
       "reason": "Synthetic DICOM fixture name used to test name-only identifier reporting."
+    },
+    {
+      "key": "backend/tests/test_auth_and_access.py#01302a805ef68a3ccca1e395cc7e6b4b2b93b2fee0a77ac97b535bb55e69c991",
+      "categories": [
+        "EMAIL",
+        "HARDCODED_SECRET"
+      ],
+      "reason": "Fictional test user signing in by email address (case-insensitive lookup)."
     }
   ]
 }

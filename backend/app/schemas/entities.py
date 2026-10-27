@@ -36,10 +36,69 @@ class UserCreate(BaseModel):
     email: str = Field(..., min_length=5, max_length=128, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
     password: str = Field(..., min_length=6)
     full_name: Optional[str] = None
+    requested_role: Literal[
+        "standard_user",
+        "patient",
+        "medical_staff",
+        "nurse",
+        "lab_expert",
+        "doctor",
+        "surgeon",
+        "department_expert",
+        "researcher",
+    ] = "standard_user"
+    requested_department: Optional[Literal[
+        "anesthesiology",
+        "cardiology",
+        "cardiothoracic_surgery",
+        "dermatology",
+        "emergency_medicine",
+        "endocrinology",
+        "family_medicine",
+        "gastroenterology",
+        "general_surgery",
+        "hematology",
+        "infectious_disease",
+        "internal_medicine",
+        "laboratory_medicine",
+        "nephrology",
+        "neurology",
+        "neurosurgery",
+        "obstetrics_gynecology",
+        "oncology",
+        "ophthalmology",
+        "orthopedic_surgery",
+        "otolaryngology",
+        "pediatrics",
+        "psychiatry",
+        "pulmonology",
+        "radiology",
+        "rehabilitation_medicine",
+        "urology",
+        "other",
+    ]] = None
+    requested_department_other: Optional[str] = Field(default=None, max_length=100)
 
-    # Role assignment is deliberately absent from public self-registration.
+    # Requested profiles are recorded for provisioning, never used as permissions.
     # Reject unexpected fields instead of silently suggesting they are honored.
     model_config = ConfigDict(extra="forbid")
+
+    @model_validator(mode="after")
+    def validate_requested_department(self):
+        department_roles = {"doctor", "surgeon", "department_expert"}
+        if self.requested_role in department_roles and self.requested_department is None:
+            raise ValueError("Select a hospital department for this requested profile.")
+        if self.requested_role not in department_roles and (
+            self.requested_department is not None or self.requested_department_other is not None
+        ):
+            raise ValueError("A department can only be requested for doctor, surgeon, or department expert profiles.")
+        if self.requested_department == "other" and not (self.requested_department_other or "").strip():
+            raise ValueError("Enter the name of the other department.")
+        if self.requested_department != "other" and self.requested_department_other is not None:
+            raise ValueError("Only provide a department name when Other department is selected.")
+        if self.requested_department_other is not None:
+            self.requested_department_other = self.requested_department_other.strip()
+        return self
 
 
 class UserLogin(BaseModel):
