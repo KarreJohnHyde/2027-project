@@ -1386,7 +1386,8 @@
       "weights_path": "artifacts/training/ptbxl_ecg_baseline-20261025T072058Z/model.pt",
       "device": "cuda_or_cpu",
       "supported_inputs": [
-        "application/wfdb (100 Hz, 12-lead, 10 s)"
+        "application/wfdb (format 16 header + signal file; 100 Hz, 12-lead, 10 s)",
+        "text/csv (time column in seconds, 12 lead columns, amplitude unit declared by the user; 100 Hz, 10 s)"
       ],
       "supported_modalities": [
         "ECG"
@@ -1825,7 +1826,7 @@
         "Native acquisition grid without resampling; slice thickness (5-10 mm) limits through-plane accuracy, and HD95 is dominated by it.",
         "No connected-component post-processing was prespecified; predicted regions away from the heart inflate volumes and HD95, so volumes, ejection fractions and myocardial mass carry large biases and wide limits of agreement.",
         "Evaluation and training used float16 autocast on CUDA; CUDA cross-entropy is not deterministic, so a rerun can differ slightly.",
-        "Research-only output; there is no upload inference path, and nothing here is a patient measurement."
+        "Research-only output; upload inference runs only on single 3-D frames inside the recorded development spacing envelope, and nothing here is a patient measurement."
       ],
       "pipeline": {
         "manifest_builder": "python -m ml_training.volumetric_manifest",
@@ -1861,7 +1862,8 @@
         "abstention_thresholds": null,
         "held_out_predictions_path": "artifacts/training/acdc_cardiac_mri_3d_unet-20261025T132755Z/held_out_predictions",
         "evaluation_report_path": "docs/validation/models/acdc_cardiac_mri_3d_unet.json",
-        "model_card_path": "docs/models/acdc_cardiac_mri_3d_unet.md"
+        "model_card_path": "docs/models/acdc_cardiac_mri_3d_unet.md",
+        "input_envelope_path": "docs/validation/models/acdc_cardiac_mri_3d_unet_input_envelope.json"
       },
       "source_display_name": "ACDC cardiac MRI 3-D U-Net (research)",
       "inference_input": "volume_nifti",

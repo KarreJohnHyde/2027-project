@@ -28,7 +28,13 @@ NOTICE = ("Research-only models trained on public datasets and evaluated on inte
 
 class ResearchInferenceRequest(BaseModel):
     model_id: str = Field(min_length=1, max_length=128)
-    declared_input_type: Literal["ENDOSCOPY", "ANGIOGRAPHY", "CT", "MICROSCOPY"]
+    declared_input_type: Literal["ENDOSCOPY", "ANGIOGRAPHY", "CT", "MICROSCOPY", "ECG", "MRI"]
+    # WFDB records are a header plus a signal file uploaded separately; CSV records carry no amplitude unit.
+    companion_upload_id: Optional[int] = Field(default=None, ge=1)
+    amplitude_unit: Optional[Literal["mV", "uV"]] = None
+
+    def options(self) -> dict:
+        return {"companion_upload_id": self.companion_upload_id, "amplitude_unit": self.amplitude_unit}
 
 
 def serialize_research_run(run: InferenceRun) -> dict:
@@ -77,13 +83,15 @@ def run_research_inference(
     verify_case_access(file_record.case_id, current_user, db)
     try:
         model = model_inference.get_model(request.model_id)
-        model_inference.check_input(model, file_record, request.declared_input_type)
+        companion = model_inference.check_input(model, file_record, request.declared_input_type, request.options(), db)
+        # Signal and volume content is checked here too, so an out-of-contract upload is a typed refusal, not a failed job.
+        model_inference.prepare_input(model, file_record, companion, request.options())
     except model_inference.InferenceNotPermitted as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
     key = f"research:{current_user.id}:{idempotency_key}" if idempotency_key else None
     job, _created = job_queue.enqueue(
-        db, "RESEARCH_MODEL_INFERENCE", payload={"model_id": request.model_id, "declared_input_type": request.declared_input_type},
+        db, "RESEARCH_MODEL_INFERENCE", payload={"model_id": request.model_id, "declared_input_type": request.declared_input_type, **request.options()},
         requested_by=current_user, case_id=file_record.case_id, file_id=file_record.id, resource="GPU", idempotency_key=key,
     )
     if job_queue.execution_mode() == "worker" and job.status not in job_queue.TERMINAL:

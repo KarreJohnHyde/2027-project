@@ -1,0 +1,45 @@
+{
+  "generated_by": "scripts/verify_upload_inference_parity.py",
+  "ecg": {
+    "model_id": "ptbxl_ecg_baseline",
+    "checkpoint_sha256": "687f69a2ff1cb50dcd0c5a26759f2d2154090c71746518db150c7638d9efb067",
+    "held_out_split": "PTB-XL strat_fold 10 (publisher test fold)",
+    "records": 2163,
+    "refused_by_contract_gate": {
+      "SIGNAL_QUALITY_AMPLITUDE": 2
+    },
+    "compared": 2161,
+    "probability_abs_difference": {
+      "max": 0.002361810344696069,
+      "mean": 0.00022287042081547953,
+      "p99": 0.001662515058517458
+    },
+    "threshold_decisions_compared": 10805,
+    "threshold_decision_disagreements": 2,
+    "reference_precision": "saved probabilities are rounded to 6 decimals; training scored batches of 256 under bfloat16 autocast on CUDA",
+    "served_precision": "bfloat16 autocast on CUDA, as in the held-out evaluation",
+    "seconds": 10.6
+  },
+  "volume": {
+    "model_id": "acdc_cardiac_mri_3d_unet",
+    "checkpoint_sha256": "b18afcf66effbfd8c8db515958e798cb7b03f322b4a1da354d41edb5edc2d60e",
+    "held_out_split": "ACDC publisher test set (frames)",
+    "frames": 100,
+    "refused_by_envelope_gate": {
+      "IN_PLANE_SPACING_OUTSIDE_DEVELOPMENT_RANGE": 2
+    },
+    "compared": 98,
+    "identical_masks": 98,
+    "voxel_agreement": {
+      "min": 1.0,
+      "mean": 1.0
+    },
+    "served_vs_saved_structure_dice": {
+      "min": 1.0,
+      "mean": 1.0
+    },
+    "reference_precision": "saved masks came from float16 autocast on CUDA; CUDA kernels in this path are not deterministic",
+    "served_precision": "float16 autocast on CUDA",
+    "seconds": 5.1
+  }
+}

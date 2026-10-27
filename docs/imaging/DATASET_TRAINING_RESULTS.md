@@ -30,8 +30,8 @@ separation guarantee unless stated. None is clinically activatable.
 
 The first five rows are the image runs registered on 2026-10-24. The later Kvasir-SEG and
 C-NMC image models were trained on 2026-10-25 and have research-only upload inference;
-the ECG, survival and cardiac MRI models are listed in Validation Center as evaluation
-evidence, with no upload inference path. The application shows all of them under medical
+the ECG and cardiac MRI models gained research-only upload inference on 2026-10-28 (`docs/validation/UPLOAD_INFERENCE_PARITY.md`),
+and the survival models are listed in Validation Center as evaluation evidence, with no upload inference path. The application shows all of them under medical
 names; the source dataset names used here are credited on its Data sources and licences
 page. The superseded Kvasir run described below is retained only as
 methodological history and is not a registered model.
@@ -303,8 +303,8 @@ not near-duplicates), not to change the result, and the model was retrained once
 - Checkpoint `artifacts/training/acdc_cardiac_mri_3d_unet-20261025T132755Z/best.pt`,
   SHA-256 `b18afcf66effbfd8c8db515958e798cb7b03f322b4a1da354d41edb5edc2d60e`; report
   `docs/validation/models/acdc_cardiac_mri_3d_unet.json` (`python -m ml_training.volumetric_report`).
-  Registered `READY_UNVALIDATED` with `inference_input = volume_nifti`: evaluation evidence
-  only, no upload inference path.
+  Registered `READY_UNVALIDATED` with `inference_input = volume_nifti`: research-only upload
+  inference on single NIfTI frames inside the recorded development spacing envelope.
 
 ## ECG — PTB-XL 1.0.1, 5 diagnostic superclasses (`ptbxl_ecg_baseline`)
 
@@ -331,8 +331,8 @@ not near-duplicates), not to change the result, and the model was retrained once
   about 0.93 for 1D CNNs on this task.
 - Checkpoint SHA-256 `687f69a2ff1cb50dcd0c5a26759f2d2154090c71746518db150c7638d9efb067`.
   Registered as `ptbxl_ecg_baseline` (replacing the former `WEIGHTS_MISSING` placeholder),
-  `inference_input = ecg_12lead`: evaluation evidence only — the ECG upload path does not
-  run this model.
+  `inference_input = ecg_12lead`: research-only upload inference on digital WFDB (format 16)
+  or CSV records at 100 Hz, 10 s, 12 leads; the ECG preview validator does not run this model.
 
 ## Survival — Mayo PBC and heart failure (`pbc_mayo_survival_cox`, `heart_failure_survival_cox`)
 

@@ -49,6 +49,10 @@
     "abstention_thresholds": { "type": ["object", "null"] },
     "held_out_predictions_path": { "type": ["string", "null"] },
     "evaluation_report_path": { "type": ["string", "null"] },
-    "model_card_path": { "type": ["string", "null"] }
+    "model_card_path": { "type": ["string", "null"] },
+    "input_envelope_path": {
+      "type": ["string", "null"],
+      "description": "Recorded input-geometry envelope of the development data; volumetric upload inference is refused without it."
+    }
   }
 }

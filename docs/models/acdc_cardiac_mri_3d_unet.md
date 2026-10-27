@@ -1,6 +1,6 @@
 # Model card: Cardiac cine-MRI ventricular segmenter, 3-D (research)
 
-- **Model id:** `acdc_cardiac_mri_3d_unet` (registry status `READY_UNVALIDATED`; research-only; no upload inference path)
+- **Model id:** `acdc_cardiac_mri_3d_unet` (registry status `READY_UNVALIDATED`; research-only; upload inference on single NIfTI frames inside the development spacing envelope)
 - **Task:** segmentation of the right-ventricular cavity, myocardium and left-ventricular cavity at end-diastole and end-systole.
 - **Data:** dataset version `c0fa24d113128f2d`; publisher test patients frozen; development patients split by patient (seed 20261024); development patients whose images duplicate a test patient are excluded. Sources and terms: Data sources and licences.
 - **Architecture:** 3-D U-Net, channels [32, 64, 128, 256], patch [128, 128, 16], trained from scratch; best validation epoch 41 of 60.
@@ -21,6 +21,6 @@
 - Native acquisition grid without resampling; slice thickness (5-10 mm) limits through-plane accuracy, and HD95 is dominated by it.
 - No connected-component post-processing was prespecified; predicted regions away from the heart inflate volumes and HD95, so volumes, ejection fractions and myocardial mass carry large biases and wide limits of agreement.
 - Evaluation and training used float16 autocast on CUDA; CUDA cross-entropy is not deterministic, so a rerun can differ slightly.
-- Research-only output; there is no upload inference path, and nothing here is a patient measurement.
+- Research-only output; upload inference runs only on single 3-D frames inside the recorded development spacing envelope (`docs/validation/UPLOAD_INFERENCE_PARITY.md`), and nothing here is a patient measurement.
 
 Full report: `docs/validation/models/acdc_cardiac_mri_3d_unet.json`.

@@ -1,0 +1,49 @@
+{
+  "model_id": "acdc_cardiac_mri_3d_unet",
+  "dataset_id": "acdc-cardiac-mri",
+  "dataset_version": "c0fa24d113128f2d33975747fa82c3d13eea27577c08de895346094544afebcd",
+  "manifest_sha256": "107908e566f1da5a467247eb2922a2c9b0bae1325e8d6b54ca9c248dd44ac228",
+  "derived_from": "NIfTI headers of the development cases (manifest train and validation splits); test cases do not shape the range",
+  "development_cases": 198,
+  "ndim": [
+    3
+  ],
+  "spatial_unit_codes": [
+    0
+  ],
+  "in_plane_spacing_mm": {
+    "min": 0.703125,
+    "max": 1.9196399450302124
+  },
+  "in_plane_square_pixels": true,
+  "slice_spacing_mm": {
+    "min": 5.0,
+    "max": 10.0
+  },
+  "slice_axis_last": true,
+  "matrix": {
+    "i": {
+      "min": 154,
+      "max": 428
+    },
+    "j": {
+      "min": 154,
+      "max": 512
+    },
+    "k": {
+      "min": 6,
+      "max": 18
+    }
+  },
+  "publisher_test_cases": {
+    "total": 100,
+    "accepted_by_gate": 98,
+    "refusal_reasons": {
+      "IN_PLANE_SPACING_OUTSIDE_DEVELOPMENT_RANGE": 2
+    },
+    "warnings": {
+      "SPATIAL_UNIT_NOT_DECLARED_TREATED_AS_MM": 98,
+      "MATRIX_OUTSIDE_DEVELOPMENT_RANGE": 6
+    }
+  }
+}

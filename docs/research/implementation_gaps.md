@@ -31,10 +31,10 @@ clinical accuracy, safety, or fitness for patient care.
 | ARCADE SYNTAX segmenter | Internal n=300; vessel Dice 0.6829, mean foreground Dice/image 0.3070; sparse/absent segment support. |
 | Kvasir-SEG segmenter | Internal n=120; Dice 0.7679, IoU 0.6696; same-source and patient independence unavailable. |
 | C-NMC classifier | Internal n=1,867 / 28 filename-derived clusters; accuracy 0.807, macro-F1 0.790; identity assumptions and wide cluster intervals limit interpretation. |
-| PTB-XL ECG baseline | Internal n=2,163 / 1,881 patients; macro AUROC 0.917, macro AUPRC 0.805; evaluation-only, single historical source, no upload inference. |
+| PTB-XL ECG baseline | Internal n=2,163 / 1,881 patients; macro AUROC 0.917, macro AUPRC 0.805; single historical source; research-only upload inference for digital records (parity with held-out predictions verified). |
 | PBC Cox baseline | Internal n=104 hold-out patients; Harrell's C 0.786; population-specific, evaluation-only, not a longitudinal trajectory product. |
 | Heart-failure Cox baseline | Exploratory n=90; Harrell's C 0.671; integrated Brier is worse than Kaplan-Meier; no patient forecast is exposed. |
-| Generic volumetric pipeline / cardiac MRI | Owner-authorized cardiac cine-MRI training: macro Dice 0.750 and LV ejection-fraction MAE 9.1 points on 50 frozen test patients; volumes overestimated; no volume upload path or external validation. |
+| Generic volumetric pipeline / cardiac MRI | Owner-authorized cardiac cine-MRI training: macro Dice 0.750 and LV ejection-fraction MAE 9.1 points on 50 frozen test patients; volumes overestimated; research-only single-frame NIfTI upload inference inside the spacing envelope; no external validation. |
 
 Registry state: **21 entries, 11 research-runnable, 0 clinically activatable**.
 Exact intervals, hashes, thresholds, splits, and limitations are in
@@ -52,8 +52,8 @@ and `docs/validation/models/`.
 ## Engineering gaps that do not remove the scientific blockers
 
 - Add objective quality/applicability/OOD gates for all seven image upload models.
-- Add multi-file DICOM series assembly; define ECG upload inference only under an
-  explicit product/validation contract; EEG remains unsupported.
+- Render and route assembled multi-file DICOM series (assembly and geometry checks exist);
+  EEG remains unsupported.
 - Add golden-image regression and broader accessibility automation.
 - Exercise worker termination/restart in a browser scenario in addition to backend tests.
 - Reduce the large Anatomy bundle and resolve non-failing React lint warnings.

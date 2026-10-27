@@ -832,7 +832,9 @@ function TrainedModelsTab() {
       <div className="flex flex-wrap items-center gap-2">
         <div className="w-96"><SelectInput aria-label="Trained model" value={active.model_id} onChange={(event) => setModelId(event.target.value)}>{models.map((model) => <option key={model.model_id} value={model.model_id}>{model.display_name}{model.run_scope === "EXPLORATORY_ONLY" ? " (exploratory only)" : ""}</option>)}</SelectInput></div>
         {active.run_scope === "EXPLORATORY_ONLY" && <Badge tone="warning">Exploratory only: held-out evidence does not support use</Badge>}
-        {active.inference_input && active.inference_input !== "image_2d" && <Badge tone="neutral">Evaluation evidence only: no upload inference path</Badge>}
+        {active.inference_input === "tabular_survival" && <Badge tone="neutral">Evaluation evidence only: no upload inference path</Badge>}
+        {active.inference_input === "ecg_12lead" && <Badge tone="neutral">Upload inference: digital WFDB/CSV records, from Multimodal</Badge>}
+        {active.inference_input === "volume_nifti" && <Badge tone="neutral">Upload inference: single NIfTI frames inside the spacing envelope, from Medical Imaging</Badge>}
       </div>
       <TrainedModelReport key={active.model_id} modelId={active.model_id} />
     </div>

@@ -30,6 +30,34 @@ export interface OverlayState {
   layer: ReactNode;
 }
 
+/** Upload kinds the research models run on; anything else has no upload inference path. */
+export type ResearchInput = "image_2d" | "volume_nifti";
+
+// One fixed colour per cardiac structure (ACDC label ids); the legend and table name each one.
+const STRUCTURE_RGBA: Record<number, [number, number, number, number]> = { 1: [56, 132, 255, 140], 2: [245, 170, 40, 140], 3: [236, 72, 153, 140] };
+
+function rgbaCss([r, g, b]: [number, number, number, number]): string {
+  return `rgb(${r} ${g} ${b})`;
+}
+
+type VolumeOutput = Extract<ResearchOutput, { type: "volume_segmentation" }>;
+
+function VolumeSliceLayer({ output, slice, highlight }: { output: VolumeOutput; slice: number; highlight: number | null }) {
+  const [width, height] = output.volume_shape_ijk;
+  const image = useMemo(() => {
+    const plane = output.slices[slice];
+    if (!plane) return null;
+    return maskImage(
+      plane.segments
+        .filter((segment) => highlight === null || segment.class_index === highlight)
+        .map((segment) => ({ mask: decodeCocoRle(segment.rle.counts, segment.rle.size[0], segment.rle.size[1]), rgba: STRUCTURE_RGBA[segment.class_index] ?? [34, 211, 238, 120] })),
+      width,
+      height,
+    );
+  }, [output, slice, highlight, width, height]);
+  return image ? <image href={image} x={0} y={0} width={width} height={height} style={{ imageRendering: "pixelated" }} /> : null;
+}
+
 function OverlayLayer({ output, showBelow, highlight }: { output: ResearchOutput; showBelow: boolean; highlight: number | null }) {
   const segmentationImage = useMemo(() => {
     if (output.type !== "segmentation") return null;
@@ -65,7 +93,7 @@ function OverlayLayer({ output, showBelow, highlight }: { output: ResearchOutput
   return null;
 }
 
-function ResultView({ run, showBelow, setShowBelow, highlight, setHighlight }: { run: ResearchRun; showBelow: boolean; setShowBelow: (value: boolean) => void; highlight: number | null; setHighlight: (value: number | null) => void }) {
+export function ResultView({ run, showBelow = false, setShowBelow = () => undefined, highlight = null, setHighlight = () => undefined }: { run: ResearchRun; showBelow?: boolean; setShowBelow?: (value: boolean) => void; highlight?: number | null; setHighlight?: (value: number | null) => void }) {
   const output = run.research_output;
   if (!output) return <Unavailable compact code={run.status} reason={run.error_message ?? "The run recorded no model output."} />;
   return (
@@ -108,6 +136,60 @@ function ResultView({ run, showBelow, setShowBelow, highlight, setHighlight }: {
           <p className="text-[11px] leading-4 text-ink-3">Masks are predicted at the model grid and mapped back to {output.coordinate_space} with nearest-neighbour resampling.</p>
         </>
       )}
+      {output.type === "ecg_multilabel" && (
+        <>
+          <p className="text-sm text-ink">At or above the validation-chosen threshold: {output.positive_classes.length ? output.positive_classes.join(", ") : "no class"}.</p>
+          <Table headers={["Class", "Probability", "Threshold", "At/above"]} dense>
+            {output.classes.map((item) => (
+              <tr key={item.class}>
+                <td className="text-ink">{item.class}</td>
+                <td className="tabular text-ink-2">{formatNumber(item.probability, 3)}</td>
+                <td className="tabular text-ink-2">{formatNumber(item.threshold, 3)}</td>
+                <td>{item.at_or_above_threshold ? <Badge tone="neutral" icon={false}>Yes</Badge> : <span className="text-xs text-ink-3">No</span>}</td>
+              </tr>
+            ))}
+          </Table>
+          <KeyValue items={[
+            { label: "Input", value: `${output.input.format} · ${formatNumber(output.input.sampling_rate_hz, 0)} Hz · ${formatNumber(output.input.duration_s, 1)} s` },
+            { label: "Leads", value: output.input.leads.join(", ") },
+            { label: "Peak |amplitude|", value: `${formatNumber(output.input.peak_abs_amplitude_mv, 2)} mV` },
+            { label: "Precision", value: output.numeric_precision },
+          ]} />
+          <p className="text-[11px] leading-4 text-ink-3">{output.probability_semantics} {output.threshold_semantics} {output.input.processing} {output.input.notes.join(" ")} PTB-XL superclasses are ECG annotation groups, not confirmed clinical diagnoses.</p>
+        </>
+      )}
+      {output.type === "volume_segmentation" && (
+        <>
+          <Table headers={["Structure", "Voxels", "Volume (mL)"]} dense>
+            {output.structures.map((item) => (
+              <tr key={item.class_index}>
+                <td className="text-ink"><span aria-hidden className="mr-2 inline-block h-2.5 w-2.5 rounded-sm align-middle" style={{ background: rgbaCss(STRUCTURE_RGBA[item.class_index] ?? [34, 211, 238, 1]) }} />{humanize(item.structure)}</td>
+                <td className="tabular text-ink-2">{formatNumber(item.voxels, 0)}</td>
+                <td className="tabular text-ink-2">{formatNumber(item.volume_ml, 1)}</td>
+              </tr>
+            ))}
+          </Table>
+          <SelectInput aria-label="Highlight structure" value={highlight ?? ""} onChange={(event) => setHighlight(event.target.value === "" ? null : Number(event.target.value))}>
+            <option value="">All structures</option>
+            {output.structures.map((item) => <option key={item.class_index} value={item.class_index}>{humanize(item.structure)}</option>)}
+          </SelectInput>
+          {Object.keys(output.held_out_volume_agreement).length > 0 && (
+            <Disclosure summary="Held-out volume agreement of this model (internal ACDC test set)">
+              <Table headers={["Index", "Bias (mL)", "95% limits (mL)"]} dense>
+                {Object.entries(output.held_out_volume_agreement).map(([key, value]) => (
+                  <tr key={key}>
+                    <td className="text-ink">{humanize(key)}</td>
+                    <td className="tabular text-ink-2">{formatNumber(value.bias_ml, 1)}</td>
+                    <td className="tabular text-ink-2">{value.limits_of_agreement_ml ? `${formatNumber(value.limits_of_agreement_ml[0], 1)} to ${formatNumber(value.limits_of_agreement_ml[1], 1)}` : "—"}</td>
+                  </tr>
+                ))}
+              </Table>
+            </Disclosure>
+          )}
+          {output.input_warnings.length > 0 && <p className="text-[11px] leading-4 text-warning-text">Input notes: {output.input_warnings.join("; ")}.</p>}
+          <p className="text-[11px] leading-4 text-ink-3">{output.volume_semantics} Voxel spacing {output.voxel_spacing_mm.map((value) => formatNumber(value, 3)).join(" × ")} mm from the NIfTI header. Masks are drawn on the axial index plane of the current slice.</p>
+        </>
+      )}
       <Disclosure summary="Run provenance">
         <pre className="max-h-60 overflow-auto whitespace-pre-wrap font-mono text-[11px] leading-5 text-ink-2">{JSON.stringify(run.research_provenance, null, 2)}</pre>
       </Disclosure>
@@ -124,7 +206,7 @@ function Evaluation({ model }: { model: ResearchModel }) {
   const evaluation = model.held_out_evaluation ?? {};
   const items = Object.entries(evaluation)
     .filter(([, value]) => typeof value === "number")
-    .map(([key, value]) => ({ label: METRIC_LABELS[key] ?? humanize(key), value: key === "test_n" ? String(value) : formatNumber(value as number, 3) }));
+    .map(([key, value]) => ({ label: key === "test_n" && model.task === "volumetric_semantic_segmentation" ? "Test frames" : METRIC_LABELS[key] ?? humanize(key), value: key === "test_n" ? String(value) : formatNumber(value as number, 3) }));
   return (
     <div className="rounded-lg border border-line p-3">
       <p className="text-xs font-medium text-ink">Internal held-out evaluation (public dataset, same source distribution)</p>
@@ -134,10 +216,10 @@ function Evaluation({ model }: { model: ResearchModel }) {
   );
 }
 
-export default function ResearchModelPanel({ uploadId, raster, onOverlay }: { uploadId: number; raster: boolean; onOverlay: (overlay: OverlayState | null) => void }) {
+export default function ResearchModelPanel({ uploadId, input, axialSlice = null, onOverlay }: { uploadId: number; input: ResearchInput | null; axialSlice?: number | null; onOverlay: (overlay: OverlayState | null) => void }) {
   const listing = useAsync(() => api.getResearchModels(), []);
-  // ECG and tabular survival models are registered evidence, not image-upload models.
-  const runnable = (listing.data?.models ?? []).filter((model) => model.gate.allowed && (model.inference_input ?? "image_2d") === "image_2d");
+  // Only models whose upload contract matches this file; ECG models run from Multimodal, survival models never run on uploads.
+  const runnable = (listing.data?.models ?? []).filter((model) => model.gate.allowed && (model.inference_input ?? "image_2d") === input);
   const [modelId, setModelId] = useState<string>("");
   const model = runnable.find((item) => item.model_id === modelId) ?? runnable[0] ?? null;
   const [attested, setAttested] = useState(false);
@@ -150,12 +232,17 @@ export default function ResearchModelPanel({ uploadId, raster, onOverlay }: { up
 
   useEffect(() => {
     const output = run?.research_output;
-    if (!output || output.type === "classification") {
+    if (output?.type === "volume_segmentation") {
+      // Volume masks exist per axial index plane; other planes show the image without an overlay.
+      onOverlay(axialSlice === null ? null : { sourceSize: [output.volume_shape_ijk[0], output.volume_shape_ijk[1]], layer: <VolumeSliceLayer output={output} slice={axialSlice} highlight={highlight} /> });
+      return;
+    }
+    if (!output || (output.type !== "detection" && output.type !== "segmentation")) {
       onOverlay(null);
       return;
     }
     onOverlay({ sourceSize: output.image_size, layer: <OverlayLayer output={output} showBelow={showBelow} highlight={highlight} /> });
-  }, [run, showBelow, highlight, onOverlay]);
+  }, [run, showBelow, highlight, axialSlice, onOverlay]);
 
   async function execute() {
     if (!model) return;
@@ -174,8 +261,8 @@ export default function ResearchModelPanel({ uploadId, raster, onOverlay }: { up
 
   if (listing.loading) return <LoadingBlock label="Reading model registry" />;
   if (listing.error) return <ErrorBlock message={listing.error} onRetry={listing.reload} />;
-  if (!raster) return <Unavailable compact code="INPUT_NOT_SUPPORTED" reason="The registered research models accept decoded 2D PNG/JPEG/BMP images; DICOM and volumetric inputs are not supported by them." />;
-  if (!model) return <Unavailable compact code="NO_RUNNABLE_RESEARCH_MODEL" reason="No registered research model passes the gate (verified licence, held-out report, checkpoint hash)." />;
+  if (!input) return <Unavailable compact code="INPUT_NOT_SUPPORTED" reason="The registered research models accept decoded 2D PNG/JPEG/BMP images and single-frame NIfTI cardiac MRI volumes; DICOM, NRRD and MetaImage files are not supported by them." />;
+  if (!model) return <Unavailable compact code="NO_RUNNABLE_RESEARCH_MODEL" reason={input === "volume_nifti" ? "No volumetric research model passes the gate (verified licence, held-out report, checkpoint hash, recorded input envelope)." : "No registered research model passes the gate (verified licence, held-out report, checkpoint hash)."} />;
 
   return (
     <div className="space-y-3">
@@ -189,7 +276,7 @@ export default function ResearchModelPanel({ uploadId, raster, onOverlay }: { up
       <Evaluation model={model} />
       <label className="flex items-start gap-2 text-xs text-ink-2">
         <input type="checkbox" checked={attested} onChange={(event) => setAttested(event.target.checked)} className="mt-0.5 accent-[var(--mt-accent)]" />
-        <span>I confirm this upload is a {listing.data?.input_types[inputType] ?? humanize(inputType)}, the input type this model was trained on. MedTwin does not detect out-of-distribution inputs.</span>
+        <span>I confirm this upload is a {listing.data?.input_types[inputType] ?? humanize(inputType)}, the input type this model was trained on. {input === "volume_nifti" ? "The server checks dimensionality and voxel spacing against the development data; it cannot verify the sequence, view or cardiac phase." : "MedTwin does not detect out-of-distribution inputs."}</span>
       </label>
       <Button variant="primary" icon={FlaskConical} disabled={!attested} loading={busy !== null} onClick={execute}>{busy ?? "Run research model"}</Button>
       {error && <ErrorBlock message={error} />}

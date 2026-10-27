@@ -211,7 +211,7 @@
         "backend/tests/test_training_volumetric.py::test_synthetic_smoke_executes_validation_training_evaluation_and_resume",
         "docs/imaging/VOLUMETRIC_SEGMENTATION_PIPELINE.md"
       ],
-      "gap": "Reading, metadata and window/level rendering exist. Seven checkpointed 2-D image models can run only through a research-only applicability and artifact-integrity gate; PTB-XL has internal evaluation evidence but no upload inference. A reusable 3-D pipeline passed synthetic execution and an ACDC data audit, but real ACDC training is licence-blocked and has no checkpoint or metric. All remain not clinically or externally validated; EEG inference and task-specific image quality/OOD gates are unavailable."
+      "gap": "Reading, metadata and window/level rendering exist. Seven checkpointed 2-D image models can run only through a research-only applicability and artifact-integrity gate; PTB-XL has internal evaluation evidence and research-only upload inference for digital WFDB/CSV records. A reusable 3-D pipeline passed synthetic execution and an ACDC data audit, and an owner-authorized ACDC cardiac segmenter now runs research-only on single NIfTI frames inside its development spacing envelope. All remain not clinically or externally validated; EEG inference and task-specific image quality/OOD gates are unavailable."
     },
     {
       "id": "O4",
@@ -446,7 +446,7 @@
         "backend/tests/test_training_volumetric.py::test_recorded_owner_authorization_opens_the_real_data_gate",
         "docs/validation/models/acdc_cardiac_mri_3d_unet.json"
       ],
-      "gap": "Seven completed 2-D image bundles have frozen checkpoints, internal held-out reports, modality restrictions and research-only failure states. PTB-XL has weights and internal evaluation evidence but no upload inference path. A generic 3-D trainer produced a cardiac cine-MRI segmenter (owner-authorized research use) with held-out cardiac indices; it is evaluation evidence only, with no volume upload path. Inference reproduces each model's evaluated numeric precision. None is clinically activatable or externally validated; EEG weights and image OOD gates remain unavailable."
+      "gap": "Seven completed 2-D image bundles have frozen checkpoints, internal held-out reports, modality restrictions and research-only failure states. PTB-XL has weights, internal evaluation evidence and research-only upload inference for digital records. A generic 3-D trainer produced a cardiac cine-MRI segmenter (owner-authorized research use) with held-out cardiac indices; it runs research-only on single NIfTI frames inside its development spacing envelope, reproducing 98/98 held-out masks. Inference reproduces each model's evaluated numeric precision. None is clinically activatable or externally validated; EEG weights and image OOD gates remain unavailable."
     },
     {
       "id": "VI-VIEWER",

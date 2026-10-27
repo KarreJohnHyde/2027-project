@@ -90,7 +90,7 @@ def test_listing_shows_only_research_models_with_gate_and_metrics(client, test_u
     assert model["held_out_evaluation"]["test_n"] == 10
 
 
-def test_ecg_and_survival_models_are_listed_as_evidence_but_never_run_on_uploads(client, test_users, tmp_path, monkeypatch):
+def test_ecg_volume_and_survival_models_are_listed_and_survival_never_runs_on_uploads(client, test_users, tmp_path, monkeypatch):
     checkpoint = tmp_path / "evidence.pt"
     checkpoint.write_bytes(b"synthetic checkpoint fixture")
     sha = hashlib.sha256(checkpoint.read_bytes()).hexdigest()
@@ -286,7 +286,9 @@ def test_applicability_gate_rejects_unsupported_inputs(client, test_users, resea
     assert microscopy_type.status_code == 400 and "trained only on" in microscopy_type.json()["detail"]
     assert client.post(url.format(report_id), json={"model_id": MODEL_ID, "declared_input_type": "ENDOSCOPY"}, headers=headers).status_code == 400
     assert client.post(url.format(image_id), json={"model_id": "unknown", "declared_input_type": "ENDOSCOPY"}, headers=headers).status_code == 400
-    assert client.post(url.format(image_id), json={"model_id": MODEL_ID, "declared_input_type": "MRI"}, headers=headers).status_code == 422
+    mri_type = client.post(url.format(image_id), json={"model_id": MODEL_ID, "declared_input_type": "MRI"}, headers=headers)
+    assert mri_type.status_code == 400 and "trained only on" in mri_type.json()["detail"]
+    assert client.post(url.format(image_id), json={"model_id": MODEL_ID, "declared_input_type": "ULTRASOUND"}, headers=headers).status_code == 422
 
 
 def test_detection_boxes_are_clipped_to_source_pixels():

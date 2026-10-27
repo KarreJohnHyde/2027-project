@@ -39,11 +39,12 @@ verified work table at the end and do not reopen scientific claims without new e
    acceptance criteria, and missingness/censoring policy. PBC and heart-failure Cox
    baselines are evaluation-only and do not clear this gate. Treatment comparisons also
    require a target-trial estimand and defensible causal assumptions.
-8. **Start Docker Desktop or provide another reachable Linux engine** (`BLOCKED`).
-   Docker client 29.9.2 and Compose 5.6.1 are installed; base and worker-profile
-   configuration both pass with a temporary non-secret validation key. Image builds,
-   container startup, migrations, health/security checks, worker persistence, and clean
-   shutdown remain unexecuted.
+8. **Run the full Compose stack** (`PARTIAL`). Docker engine 29.9.2 is running. On
+   2026-10-28 both images built locally with the CI's non-secret key; the frontend
+   container served the app and SPA routes with the `backend` host mapped, and the backend
+   image imported the application, PyTorch 2.14.1 (CPU), MONAI 1.6.1 and the ECG/volume
+   modules. Compose startup, migrations, health/security checks, worker persistence and
+   clean shutdown remain unexecuted.
 
 ## Engineering work still open
 
@@ -62,11 +63,15 @@ verified work table at the end and do not reopen scientific claims without new e
    de-identification attestations, adjudication records, and error categories.
 4. **Replace per-report WSL scispaCy cold startup with a persistent isolated worker**
    (`NOT_STARTED`). The adapter executes, but cold model startup is slow.
-5. **Implement multi-file DICOM series assembly** (`NOT_STARTED`) with series grouping,
-   ordering, geometry validation, de-identification checks, and volumetric rendering.
-6. **Add ECG upload inference only after an explicit product contract** (`NOT_STARTED`).
-   PTB-XL has internal evaluation evidence but no upload parser/inference UI. EEG remains
-   unsupported pending data, labels, formats, weights, and validation.
+5. **Render and route assembled DICOM series** (`PARTIAL`). Series grouping, position
+   ordering, geometry validation and identifying-tag reporting are implemented
+   (`POST /cases/{id}/dicom-series/assemble`); volumetric rendering and inference of an
+   assembled series are not.
+6. **ECG upload inference** (`DONE`, research-only). Digital WFDB format-16 pairs and CSV
+   records at 100 Hz, 10 s, 12 leads run from Multimodal; parity with the held-out
+   predictions is in `docs/validation/UPLOAD_INFERENCE_PARITY.md`. Other sampling rates, formats and photographed
+   ECGs are refused. EEG remains unsupported pending data, labels, formats, weights and
+   validation.
 7. **Add golden-image and broader accessibility regression** (`NOT_STARTED`). Current
    browser QA captures screenshots and verifies headings, phone overflow, interactions,
    WebGL counters, canvas content, and errors, but has no approved pixel baseline.
@@ -76,10 +81,11 @@ verified work table at the end and do not reopen scientific claims without new e
    organization retention/deletion policy, backup recovery, tamper-evident audit
    retention, tenant/identity threat modeling, penetration testing, and human-factors
    work.
-10. **Volume upload inference for the cardiac segmenter** (`NOT_STARTED`). It has internal
-    held-out evidence only; an upload path needs NIfTI applicability checks (orientation,
-    spacing from the header pixdim, ED/ES phase identification) and an explicit product
-    contract before any patient volume is processed.
+10. **Volume upload inference for the cardiac segmenter** (`DONE`, research-only). Single
+    NIfTI frames inside the development spacing envelope run from Medical Imaging, with
+    per-slice overlays and structure volumes; 98/98 held-out masks are reproduced. The
+    cardiac phase and sequence are declared by the user, not detected, so ejection fraction
+    is not computed from uploads.
 11. **Record header pixdim in volumetric manifests** (`NOT_STARTED`). The manifest derives
     spacing from the affine, which is unit-scaled in the cardiac files; cardiac indices
     therefore read pixdim directly (`ml_training/volumetric_report.py`).

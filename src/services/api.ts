@@ -218,7 +218,38 @@ export type ResearchOutput =
       vessel_area_px: number;
       foreground_label?: string;
       encoding: string;
+    }
+  | {
+      type: 'ecg_multilabel';
+      classes: Array<{ class: string; probability: number; threshold: number; at_or_above_threshold: boolean }>;
+      positive_classes: string[];
+      probability_semantics: string;
+      threshold_semantics: string;
+      numeric_precision: string;
+      input: { format: string; sampling_rate_hz: number; samples: number; duration_s: number; leads: string[]; peak_abs_amplitude_mv: number; notes: string[]; processing: string };
+    }
+  | {
+      type: 'volume_segmentation';
+      structures: Array<{ class_index: number; structure: string; voxels: number; volume_ml: number }>;
+      slices: Array<{ slice_index: number; segments: Array<{ class_index: number; area_px: number; rle: { size: [number, number]; counts: string } }> }>;
+      volume_shape_ijk: [number, number, number];
+      voxel_spacing_mm: [number, number, number];
+      voxel_volume_ml: number;
+      coordinate_space: string;
+      encoding: string;
+      numeric_precision: string;
+      volume_semantics: string;
+      held_out_volume_agreement: Record<string, { n_patients: number | null; bias_ml: number; limits_of_agreement_ml: [number, number] | null }>;
+      input_warnings: string[];
     };
+
+/** Inputs some research models need besides the upload itself. */
+export interface ResearchRunOptions {
+  /** WFDB signal file (.dat) uploaded alongside a .hea header. */
+  companionUploadId?: ResourceId;
+  /** CSV ECG records carry no amplitude unit. */
+  amplitudeUnit?: 'mV' | 'uV';
+}
 
 export interface ResearchRun extends AnalysisJob {
   research_output: ResearchOutput | null;
@@ -1615,10 +1646,15 @@ class ApiClient {
     return this.request(`/research-models/${encodeURIComponent(modelId)}/evaluation`);
   }
 
-  async runResearchModel(uploadId: ResourceId, modelId: string, declaredInputType: string, onQueued?: (job: QueuedJob) => void): Promise<ResearchRun> {
+  async runResearchModel(uploadId: ResourceId, modelId: string, declaredInputType: string, onQueued?: (job: QueuedJob) => void, options: ResearchRunOptions = {}): Promise<ResearchRun> {
     const response = await this.request<ResearchRun | { queued_job: QueuedJob }>(`/uploads/${resourcePath(uploadId)}/research-inference`, {
       method: 'POST',
-      body: JSON.stringify({ model_id: modelId, declared_input_type: declaredInputType }),
+      body: JSON.stringify({
+        model_id: modelId,
+        declared_input_type: declaredInputType,
+        ...(options.companionUploadId !== undefined ? { companion_upload_id: options.companionUploadId } : {}),
+        ...(options.amplitudeUnit ? { amplitude_unit: options.amplitudeUnit } : {}),
+      }),
     });
     if (!('queued_job' in response)) return response;
     return this.getResearchRun(await this.waitForJob(response.queued_job, onQueued));

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type PointerEvent, type WheelEvent } from "react";
 import { AlertTriangle, RotateCcw } from "lucide-react";
-import ResearchModelPanel, { type OverlayState } from "../components/ResearchModelPanel";
+import ResearchModelPanel, { type OverlayState, type ResearchInput } from "../components/ResearchModelPanel";
 import { Badge, Button, Card, Disclosure, EmptyState, ErrorBlock, KeyValue, LoadingBlock, PageHeader, Segmented, SelectInput, StatusBadge, Table, TextInput } from "../components/ui";
 import { api, type ImagingMetadata, type RenderInfo } from "../services/api";
 import { formatDate, formatNumber, humanize } from "../lib/format";
@@ -88,6 +88,9 @@ function Viewer({ uploadId }: { uploadId: number }) {
   const data: ImagingMetadata = metadata.data;
   const info = image?.info ?? null;
   const volume = data.container === "NIFTI" || data.container === "NRRD" || data.container === "METAIMAGE";
+  const researchInput: ResearchInput | null = raster ? "image_2d" : data.container === "NIFTI" ? "volume_nifti" : null;
+  // Volume masks are per axial index plane, so the overlay follows the displayed axial slice only.
+  const axialSlice = data.container === "NIFTI" && axis === "axial" && info ? info.slice_index : null;
   const hounsfield = info?.rescale?.units === "HU";
   const sliceCount = info?.slice_count ?? data.slices ?? 1;
 
@@ -100,7 +103,7 @@ function Viewer({ uploadId }: { uploadId: number }) {
             <span>Possible residual identifiers despite the de-identification attestation: {data.deidentification_warnings.join("; ")}. Values are never displayed; review and re-export the file.</span>
           </div>
         )}
-        {renderError ? <ErrorBlock message={renderError} /> : image ? <PanZoomImage src={image.url} alt={`${data.filename} ${info ? `slice ${info.slice_index + 1}` : ""}`} overlay={raster ? overlay : null} /> : <LoadingBlock label="Rendering" />}
+        {renderError ? <ErrorBlock message={renderError} /> : image ? <PanZoomImage src={image.url} alt={`${data.filename} ${info ? `slice ${info.slice_index + 1}` : ""}`} overlay={raster || axialSlice !== null ? overlay : null} /> : <LoadingBlock label="Rendering" />}
         {!raster && (
           <div className="mt-3 flex flex-wrap items-end gap-3">
             {volume && <Segmented label="Plane" value={axis} onChange={(next) => { setAxis(next); setIndex(null); }} options={[{ value: "axial", label: "Axial idx" }, { value: "coronal", label: "Coronal idx" }, { value: "sagittal", label: "Sagittal idx" }]} size="sm" />}
@@ -134,7 +137,7 @@ function Viewer({ uploadId }: { uploadId: number }) {
       </Card>
       <div className="space-y-4">
         <Card title="Research models" eyebrow="Research only · overlay in source pixels">
-          <ResearchModelPanel uploadId={uploadId} raster={raster} onOverlay={setOverlay} />
+          <ResearchModelPanel uploadId={uploadId} input={researchInput} axialSlice={axialSlice} onOverlay={setOverlay} />
         </Card>
         <Card title="Spatial metadata">
           <KeyValue items={[
@@ -208,7 +211,7 @@ export default function MedicalImagingPage() {
       <PageHeader
         eyebrow="Medical Imaging"
         title="Imaging viewer and modality coverage"
-        description="CT, MRI, X-ray, ultrasound, PET, angiography, endoscopy and other containers are read and displayed with their spatial metadata. No clinically validated model is configured. Research-only models trained on public datasets can be run on PNG/JPEG/BMP uploads; their outputs are labelled as research and stay pending review."
+        description="CT, MRI, X-ray, ultrasound, PET, angiography, endoscopy and other containers are read and displayed with their spatial metadata. No clinically validated model is configured. Research-only models trained on public datasets can be run on PNG/JPEG/BMP uploads and on single-frame NIfTI cardiac MRI volumes; their outputs are labelled as research and stay pending review."
         actions={<Segmented label="Imaging view" value={tab} onChange={setTab} options={[{ value: "viewer", label: "Viewer" }, { value: "support", label: "Modality support" }]} />}
       />
       {tab === "support" ? <ModalitySupport /> : !selected ? (

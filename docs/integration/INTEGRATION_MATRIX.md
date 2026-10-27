@@ -61,7 +61,7 @@ evaluation exist, but no external/clinical activation evidence exists.
 
 | Model | Evidence | Boundary |
 | --- | --- | --- |
-| `ptbxl_ecg_baseline` | n=2,163 / 1,881 patients; macro AUROC 0.917, macro AUPRC 0.805 | No ECG upload inference or external cohort |
+| `ptbxl_ecg_baseline` | n=2,163 / 1,881 patients; macro AUROC 0.917, macro AUPRC 0.805 | Research-only upload inference for digital records; no external cohort |
 | `pbc_mayo_survival_cox` | n=104 hold-out; Harrell's C 0.786; integrated Brier 0.105 | Population-specific baseline-covariate survival, not longitudinal patient forecasting |
 | `heart_failure_survival_cox` | exploratory n=90; Harrell's C 0.671; Brier worse than Kaplan-Meier | No demonstrated calibration skill or patient forecast |
 

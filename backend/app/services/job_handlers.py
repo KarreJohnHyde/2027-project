@@ -31,5 +31,6 @@ def research_model_inference(db: Session, job: QueuedJob, context: JobContext) -
         raise AnalysisNotPermitted("The upload no longer exists.")
     actor = db.get(User, job.requested_by_id) if job.requested_by_id else None
     context.progress(10, f"Running research model {job.payload['model_id']}")
-    run = execute_research_inference(db, file_record, job.payload["model_id"], job.payload["declared_input_type"], actor)
+    options = {key: job.payload.get(key) for key in ("companion_upload_id", "amplitude_unit")}
+    run = execute_research_inference(db, file_record, job.payload["model_id"], job.payload["declared_input_type"], actor, options)
     return {"inference_run_id": run.id, "run_status": run.status.value}

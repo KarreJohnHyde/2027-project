@@ -1,6 +1,6 @@
 # MedTwin change log
 
-All work is on branch `feature/medtwin-2-integration`. This repository has no remote and its history has never been pushed. A history-free snapshot of commit `3e60b8b` was published on 2026-10-25 as `45c25ce` in `https://github.com/KarreJohnHyde/2027-project` (see `docs/security/PHI_RELEASE_BLOCKER.md`).
+All work is on branch `feature/medtwin-2-integration`. This repository has no remote and its history has never been pushed. A history-free snapshot of commit `3e60b8b` was published on 2026-10-25 as `45c25ce` in `https://github.com/KarreJohnHyde/2027-project`; later snapshots are published the same way, never by pushing this history (see `docs/security/PHI_RELEASE_BLOCKER.md`).
 
 | Commit | Date | Summary |
 | --- | --- | --- |
@@ -12,6 +12,18 @@ All work is on branch `feature/medtwin-2-integration`. This repository has no re
 | next | 2026-10-25 | Supplementary archive batch (38 archives), root-file restore, ECG and survival baselines, Kvasir-SEG polyp segmenter, evaluation-only model inputs (entry below). |
 | next | 2026-10-25 | Final master-directive reconciliation: seven browser-runnable 2-D workflows, strict OCR/NLP and laboratory evidence controls, generic volumetric pipeline, complete acceptance evidence, and explicit unresolved release/clinical blockers. |
 | next | 2026-10-25 | Cardiac cine-MRI segmentation with cardiac indices, evaluated-precision inference, medical display names with one attribution page, Supabase browser client (entry below). |
+| `af8e85c` | 2026-10-27 | Photographed-report extraction fixes (OCR-glued negations, printed reference strata, source-occurrence dedupe, billing/footer exclusion, documented vs calculated eGFR), restored root files, document-photograph gate. |
+| `cfbeead` | 2026-10-27 | Four-eyes correction approval applied to effective results, file versions and withdrawal, DICOM series assembly. |
+| next | 2026-10-28 | ECG and cardiac MRI upload inference with held-out parity, frontend Docker build fix (entry below). |
+
+## ECG and cardiac MRI upload inference, Docker build fix (next, 2026-10-28)
+
+- **ECG.** `backend/app/services/ecg_inference.py` reads WFDB format-16 header/signal pairs exactly (gain, baseline, unit, per-lead checksum and first sample, which also prove the two uploads belong together) and CSV records with a time column in seconds and a user-declared amplitude unit. Records outside the trained contract (100 Hz, 1,000 samples, the 12 standard leads, finite samples, peak ≤ 10 mV, no flat lead) are refused with a typed reason; nothing is resampled, cropped or padded. The compact 1-D ResNet is rebuilt in the backend and loaded with strict key/shape checks; Platt scaling and validation thresholds come from the checkpoint. Run from Multimodal.
+- **Cardiac MRI.** `backend/app/services/volume_inference.py` accepts one 3-D NIfTI frame with square in-plane pixels, the slice axis last and voxel spacing inside the development range recorded by `scripts/build_acdc_input_envelope.py` (198 development cases; refuses 2 of 100 publisher test frames). Inference matches the evaluation: non-zero z-score, sliding window at the training patch, overlap 0.25, float16 autocast on CUDA. Output: per-structure voxel counts and volumes from the header voxel size, per-axial-slice masks drawn on the viewer's slice, and the model's held-out volume agreement. Ejection fraction is not computed from single uploads.
+- **Gate and route.** `POST /uploads/{id}/research-inference` takes `companion_upload_id` (WFDB signal file, same case, current) and `amplitude_unit` (CSV). Content is checked before a job is queued, so out-of-contract uploads are typed 400 refusals; execution repeats the checks. Provenance records the companion file hash and declared unit.
+- **Parity.** `scripts/verify_upload_inference_parity.py` ran the server path on the public held-out sets: ECG 2,161 of 2,163 records compared, max probability difference 0.0024, 2 of 10,805 threshold decisions differ; cardiac MRI 98 of 98 masks identical (`docs/validation/UPLOAD_INFERENCE_PARITY.md`).
+- **Docker.** `Dockerfile.frontend` ran `npm run check`, which now compiles into `.cache/build-check`, so the nginx stage found no `dist` and the CI image build failed. It now runs typecheck, lint and the production build. A stray TotalSegmentator workflow left by an archive extraction (ignored, never published) was removed.
+- Tests: `backend/tests/test_signal_and_volume_inference.py` (20, synthetic signals, volumes and randomly initialised networks); browser check on an isolated QA stack with one public PTB-XL record and one public ACDC frame.
 
 ## Cardiac MRI, inference precision, medical naming and Supabase client (next, 2026-10-25)
 

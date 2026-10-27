@@ -12,8 +12,8 @@ scope. **No modality has a clinically validated model.**
 
 | Modality | Files accepted | Registered model state | Clinical tasks |
 | --- | --- | --- | --- |
-| CT | Single DICOM objects, NIfTI-1, NRRD, MetaImage; PNG/JPEG research slices. Multi-file DICOM series assembly is not implemented. | TEZ kidney-stone detector is `READY_UNVALIDATED`; brain/lung adapters lack weights. | none |
-| MRI | Single DICOM objects, NIfTI-1, NRRD, MetaImage. Multi-file DICOM series assembly is not implemented. | The cardiac cine-MRI 3-D U-Net has internal held-out evidence (evaluation-only; no upload inference). Brain adapter lacks weights. | none |
+| CT | Single DICOM objects, NIfTI-1, NRRD, MetaImage; PNG/JPEG research slices. Multi-file DICOM series are validated and ordered by `POST /cases/{id}/dicom-series/assemble`; assembled series are not yet rendered or inferred. | TEZ kidney-stone detector is `READY_UNVALIDATED`; brain/lung adapters lack weights. | none |
+| MRI | Single DICOM objects, NIfTI-1, NRRD, MetaImage. Multi-file DICOM series are validated and ordered by series assembly; assembled series are not yet rendered or inferred. | The cardiac cine-MRI 3-D U-Net runs research-only on single NIfTI frames inside its development spacing envelope (`docs/validation/UPLOAD_INFERENCE_PARITY.md`). Brain adapter lacks weights. | none |
 | X-ray | DICOM, PNG/JPEG/BMP | MURA and lung adapters lack usable authorized weights; bone-fracture task remains audit-blocked. | none |
 | Ultrasound / Doppler | DICOM, PNG/JPEG/BMP | no runnable model | none |
 | PET / SPECT / PET-CT | Single DICOM objects and NIfTI/NRRD/MetaImage volumes; no DICOM-series assembly | no runnable model | none |
@@ -49,7 +49,7 @@ The separate `ml_training.volumetric` path accepts paired 3-D NIfTI volumes for 
 training/evaluation and is not connected to upload inference. Synthetic train/evaluate/
 checkpoint/resume executed successfully. After the owner's recorded authorization it
 trained the cardiac cine-MRI segmenter (macro Dice 0.750 on 50 test patients; cardiac
-indices in its report); it remains evaluation evidence only. See `docs/imaging/VOLUMETRIC_SEGMENTATION_PIPELINE.md`.
+indices in its report); it runs research-only on single NIfTI frames inside its development spacing envelope. See `docs/imaging/VOLUMETRIC_SEGMENTATION_PIPELINE.md` and `docs/validation/UPLOAD_INFERENCE_PARITY.md`.
 
 ## DICOM-series boundary
 

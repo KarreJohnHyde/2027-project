@@ -15,6 +15,7 @@ import logging
 import re
 import threading
 import time
+from contextlib import ExitStack
 from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
@@ -26,13 +27,16 @@ from PIL import Image
 from sqlalchemy.orm import Session
 
 from app.models.entities import EvidenceStatus, Finding, InferenceRun, ModalityType, RepresentationLevel, UploadedFile, User
-from app.services import upload_store
+from app.services import ecg_inference, upload_store, volume_inference
 from app.services.audit_service import log_audit_event
 from app.services.model_registry import _load_registry, _resolve_artifact_path, _sha256
 
 logger = logging.getLogger(__name__)
 MODALITY_LABELS = {"ENDOSCOPY": "GI endoscopy image", "ANGIOGRAPHY": "X-ray coronary angiogram", "CT": "CT image or slice",
-                   "MICROSCOPY": "single segmented blood-cell microscopy image"}
+                   "MICROSCOPY": "single segmented blood-cell microscopy image",
+                   "ECG": "resting 12-lead ECG recording (digital signal, not a photograph or printout)",
+                   "MRI": "short-axis cardiac cine-MRI frame at end-diastole or end-systole"}
+UPLOAD_INPUTS = {"image_2d", "ecg_12lead", "volume_nifti"}
 _load_lock = threading.Lock()
 # This workstation serves research requests on one GPU. Serialising model runs
 # bounds activation memory and prevents concurrent requests loading several
@@ -139,7 +143,7 @@ def inference_models() -> list[dict]:
             "dataset_license": model["artifact_bundle"].get("dataset_license"), "model_card_path": model["artifact_bundle"].get("model_card_path"),
             "evaluation_report_path": model["artifact_bundle"].get("evaluation_report_path"), "checkpoint_sha256": model["artifact_bundle"].get("checkpoint_sha256"),
             "output_status": "RESEARCH_ONLY_NOT_CLINICALLY_VALIDATED",
-            # Image models run from Medical Imaging; ECG and tabular survival models are evaluation evidence only.
+            # Image and volume models run from Medical Imaging, ECG models from Multimodal; tabular survival models are evaluation evidence only.
             "inference_input": model.get("inference_input", "image_2d"),
             "run_scope": (model.get("validation_readiness") or {}).get("run_scope", "RESEARCH"),
         }
@@ -200,6 +204,16 @@ def _load(model_id: str, checkpoint: str, sha256: str):
         params = payload["arch_params"]
         network = UNet(spatial_dims=params["spatial_dims"], in_channels=params["in_channels"], out_channels=params["out_channels"],
                        channels=tuple(params["channels"]), strides=tuple(params["strides"]), num_res_units=params["num_res_units"], norm=params["norm"])
+    elif payload["kind"] == "ecg_classifier" and payload.get("arch") == "resnet1d_compact":
+        network = ecg_inference.build_network(len(payload["classes"]), len(payload["leads"]))
+    elif payload["kind"] == "volumetric_semantic_segmenter":
+        try:
+            network = volume_inference.build_network(payload)
+        except volume_inference.VolumeInputError as exc:
+            raise InferenceNotPermitted(str(exc)) from exc
+        # Training resumption state is not needed for serving.
+        payload.pop("best_state_dict", None)
+        payload.pop("optimizer_state_dict", None)
     else:
         raise InferenceNotPermitted(f"Unsupported checkpoint kind {payload['kind']}.")
     # Serving needs the network weights and preprocessing metadata, not a
@@ -327,24 +341,115 @@ def summary_label(output: dict) -> str:
     if output["type"] == "detection":
         shown = sum(1 for box in output["boxes"] if box["above_display_threshold"])
         return f"Research model: {shown} {output['class']} box(es) above threshold"[:128]
+    if output["type"] == "ecg_multilabel":
+        positive = ", ".join(output["positive_classes"]) or "none"
+        return f"Research ECG model, classes at/above threshold: {positive}"[:128]
+    if output["type"] == "volume_segmentation":
+        present = sum(1 for item in output["structures"] if item["voxels"])
+        return f"Research model: {present} cardiac structure(s) segmented"[:128]
     return f"Research model: {len(output['segments'])} segment class(es) predicted"[:128]
 
 
-def check_input(model: dict, file_record: UploadedFile, declared_input_type: str) -> None:
-    """Applicability gate: 2D raster image upload whose declared type the model was trained on."""
-    if model.get("inference_input", "image_2d") != "image_2d":
+def _suffix(name: str) -> str:
+    lower = name.lower()
+    return ".nii.gz" if lower.endswith(".nii.gz") else Path(lower).suffix
+
+
+def _usable(record: UploadedFile) -> bool:
+    return bool(record.is_associated) and record.withdrawn_at is None
+
+
+def check_input(model: dict, file_record: UploadedFile, declared_input_type: str, options: Optional[dict] = None,
+                db: Optional[Session] = None) -> Optional[UploadedFile]:
+    """Applicability gate on the upload's metadata: modality, container and declared type.
+
+    Returns the companion upload (the WFDB signal file) when the input needs one."""
+    kind = model.get("inference_input", "image_2d")
+    options = options or {}
+    if kind not in UPLOAD_INPUTS:
         raise InferenceNotPermitted(f"{model['display_name']} has no upload inference path; its held-out evaluation is evidence only.")
-    if not file_record.is_associated:
+    if not _usable(file_record):
         raise InferenceNotPermitted("Unassociated uploads cannot enter case-level processing.")
-    if file_record.modality != ModalityType.IMAGE:
-        raise InferenceNotPermitted("Research image models accept image uploads only.")
-    if Path(file_record.stored_filename).suffix.lower() not in RASTER_SUFFIXES:
-        raise InferenceNotPermitted("These 2D models accept PNG, JPEG or BMP images only; DICOM/NIfTI are not supported by them.")
+    suffix = _suffix(file_record.stored_filename)
+    companion = None
+    if kind == "image_2d":
+        if file_record.modality != ModalityType.IMAGE:
+            raise InferenceNotPermitted("Research image models accept image uploads only.")
+        if suffix not in RASTER_SUFFIXES:
+            raise InferenceNotPermitted("These 2D models accept PNG, JPEG or BMP images only; DICOM/NIfTI are not supported by them.")
+    elif kind == "volume_nifti":
+        if file_record.modality != ModalityType.IMAGE or suffix not in {".nii", ".nii.gz"}:
+            raise InferenceNotPermitted("This volumetric model accepts one NIfTI frame (.nii or .nii.gz).")
+    else:
+        if file_record.modality != ModalityType.ECG or suffix not in {".hea", ".csv"}:
+            raise InferenceNotPermitted("The ECG model runs on a WFDB header (.hea) with its signal file, or on a CSV record.")
+        if suffix == ".hea":
+            companion_id = options.get("companion_upload_id")
+            companion = db.get(UploadedFile, companion_id) if db is not None and companion_id is not None else None
+            if companion is None or companion.case_id != file_record.case_id:
+                raise InferenceNotPermitted("WFDB_SIGNAL_FILE_REQUIRED: select the record's .dat signal upload from the same case.")
+            if not _usable(companion) or _suffix(companion.stored_filename) != ".dat":
+                raise InferenceNotPermitted("WFDB_SIGNAL_FILE_REQUIRED: the signal upload must be a current, case-bound .dat file.")
+        elif not options.get("amplitude_unit"):
+            raise InferenceNotPermitted("AMPLITUDE_UNIT_NOT_DECLARED: declare the CSV amplitude unit (mV or uV).")
     if declared_input_type not in model.get("supported_modalities", []):
         supported = ", ".join(MODALITY_LABELS.get(m, m) for m in model.get("supported_modalities", []))
         raise InferenceNotPermitted(f"{model['display_name']} was trained only on: {supported}.")
-    if not Path(file_record.file_path).exists():
+    if not Path(file_record.file_path).exists() or (companion is not None and not Path(companion.file_path).exists()):
         raise InferenceNotPermitted("Stored file missing from disk store.")
+    return companion
+
+
+def _input_envelope(model: dict) -> dict:
+    bundle = model["artifact_bundle"]
+    path = bundle.get("input_envelope_path")
+    if not path or not _resolve_artifact_path(path).exists():
+        raise InferenceNotPermitted("INPUT_ENVELOPE_MISSING: no recorded input envelope; upload inference is refused.")
+    try:
+        return volume_inference.load_envelope(_resolve_artifact_path(path), bundle["dataset_version"])
+    except volume_inference.VolumeInputError as exc:
+        raise InferenceNotPermitted(str(exc)) from exc
+
+
+def prepare_input(model: dict, file_record: UploadedFile, companion: Optional[UploadedFile], options: Optional[dict] = None):
+    """Read the upload and check its content against the model's input contract.
+
+    Runs in the API before a job is queued (so refusals are typed) and again at execution.
+    Returns the prepared ECG record or volume; images are prepared by run_model."""
+    kind = model.get("inference_input", "image_2d")
+    options = options or {}
+    try:
+        if kind == "ecg_12lead":
+            contract = ecg_inference.CONTRACTS.get(model["artifact_bundle"].get("preprocessing_version"))
+            if contract is None:
+                raise InferenceNotPermitted("No input contract is registered for this ECG preprocessing version.")
+            with ExitStack() as stack:
+                primary = stack.enter_context(upload_store.materialize(Path(file_record.file_path)))
+                signal = stack.enter_context(upload_store.materialize(Path(companion.file_path))) if companion is not None else None
+                record = ecg_inference.read_upload(primary, signal, options.get("amplitude_unit"))
+            return ecg_inference.check_record(record, contract)
+        if kind == "volume_nifti":
+            envelope = _input_envelope(model)
+            with upload_store.materialize(Path(file_record.file_path)) as plain:
+                return volume_inference.read_volume(plain, envelope)
+    except (ecg_inference.EcgInputError, volume_inference.VolumeInputError) as exc:
+        raise InferenceNotPermitted(f"MODEL_INPUT_INCOMPATIBLE: {exc}") from exc
+    return None
+
+
+def run_prepared(model: dict, prepared) -> dict:
+    """Run an ECG or volumetric model on input returned by prepare_input."""
+    with _inference_lock:
+        network, payload, device = load_model(model)
+        if payload["kind"] == "ecg_classifier":
+            contract = ecg_inference.CONTRACTS[model["artifact_bundle"]["preprocessing_version"]]
+            try:
+                ecg_inference.verify_contract(payload, contract)
+            except ecg_inference.EcgInputError as exc:
+                raise InferenceNotPermitted(str(exc)) from exc
+            return ecg_inference.classify(network, payload, device, prepared, evaluated_precision(device))
+        mask = volume_inference.predict(network, payload, device, prepared)
+        return volume_inference.segmentation_output(mask, payload, prepared, volume_inference.held_out_agreement(_report(model)), device)
 
 
 # A native image frame carries at most a few burned-in annotations; a photograph or scan
@@ -381,18 +486,36 @@ def check_document_photograph(image_path: Path) -> dict:
             "status": "NOT_CHECKED_OCR_UNAVAILABLE" if lines is None else "PASSED"}
 
 
+CONTENT_CHECKS = {
+    "ecg_12lead": "Signal read exactly (WFDB checksums or CSV time column) and checked against the trained contract: sampling rate, duration, lead set, amplitude and flatline limits.",
+    "volume_nifti": "Header and voxels checked against the recorded development envelope: one 3-D frame, square in-plane pixels, slice axis last, voxel spacing range.",
+}
+MAPPING_STATUS = {"image_2d": "NOT_MAPPABLE: RESEARCH_MODEL_OUTPUT_2D_SOURCE_COORDINATES",
+                  "ecg_12lead": "NOT_MAPPABLE: RESEARCH_MODEL_OUTPUT_WHOLE_RECORDING",
+                  "volume_nifti": "NOT_MAPPABLE: RESEARCH_MODEL_OUTPUT_NATIVE_VOXEL_GRID"}
+
+
 def execute_research_inference(db: Session, file_record: UploadedFile, model_id: str, declared_input_type: str,
-                               actor: Optional[User]) -> InferenceRun:
+                               actor: Optional[User], options: Optional[dict] = None) -> InferenceRun:
     model = get_model(model_id)
-    check_input(model, file_record, declared_input_type)
+    companion = check_input(model, file_record, declared_input_type, options, db)
     bundle = model["artifact_bundle"]
-    with upload_store.materialize(Path(file_record.file_path)) as plain:
-        content_check = check_document_photograph(plain)
+    kind = model.get("inference_input", "image_2d")
+    prepared = None
+    if kind == "image_2d":
+        with upload_store.materialize(Path(file_record.file_path)) as plain:
+            content_check = check_document_photograph(plain)
+    else:
+        prepared = prepare_input(model, file_record, companion, options)
+        content_check = {"status": "PASSED", "checks": CONTENT_CHECKS[kind]}
     started_at = datetime.now(timezone.utc)
     start = time.perf_counter()
     try:
-        with upload_store.materialize(Path(file_record.file_path)) as plain:
-            output = run_model(model, plain)
+        if prepared is None:
+            with upload_store.materialize(Path(file_record.file_path)) as plain:
+                output = run_model(model, plain)
+        else:
+            output = run_prepared(model, prepared)
         output["input_content_check"] = content_check
     except Exception as exc:
         logger.exception("Research model %s failed for upload %s", model_id, file_record.id)
@@ -414,13 +537,17 @@ def execute_research_inference(db: Session, file_record: UploadedFile, model_id:
     db.add(run)
     db.flush()
     classification = output["type"] == "classification"
+    calibration = {"classification": "TEMPERATURE_SCALED_ON_INTERNAL_VALIDATION_SPLIT", "ecg_multilabel": "PLATT_SCALED_PER_CLASS_ON_INTERNAL_VALIDATION_FOLD"}
+    applicability = "Input type declared by the requesting user; no out-of-distribution detection is performed."
+    if kind != "image_2d":
+        applicability = f"Input type declared by the requesting user. {CONTENT_CHECKS[kind]} No out-of-distribution detector is used."
     finding = Finding(
         inference_run_id=run.id, case_id=file_record.case_id, modality=file_record.modality,
         category=f"Research model output ({model['task'].replace('_', ' ')})"[:128], label=summary_label(output),
         raw_confidence=output["top_probability"] if classification else None,
-        calibration_status="TEMPERATURE_SCALED_ON_INTERNAL_VALIDATION_SPLIT" if classification else "UNCALIBRATED",
+        calibration_status=calibration.get(output["type"], "UNCALIBRATED"),
         representation_level=RepresentationLevel.L1_GENERIC, anatomical_region=None,
-        mapping_status="NOT_MAPPABLE: RESEARCH_MODEL_OUTPUT_2D_SOURCE_COORDINATES",
+        mapping_status=MAPPING_STATUS[kind],
         review_status=EvidenceStatus.PENDING_HUMAN_REVIEW, is_demo=False,
         evidence_provenance={
             "source": "MODEL_INFERENCE", "output_status": "RESEARCH_ONLY_NOT_CLINICALLY_VALIDATED", "model_id": model_id,
@@ -428,8 +555,10 @@ def execute_research_inference(db: Session, file_record: UploadedFile, model_id:
             "dataset_version": bundle["dataset_version"], "dataset_license": bundle["dataset_license"],
             "evaluation_report_path": bundle["evaluation_report_path"], "model_card_path": bundle["model_card_path"],
             "held_out_evaluation": evaluation_summary(model), "declared_input_type": declared_input_type,
-            "applicability": "Input type declared by the requesting user; no out-of-distribution detection is performed.",
+            "applicability": applicability,
             "anatomy_system_of_model": model.get("anatomy"), "source_file_sha256": file_record.file_hash, "output": output,
+            **({"companion_file_id": companion.id, "companion_file_sha256": companion.file_hash} if companion is not None else {}),
+            **({"declared_amplitude_unit": options["amplitude_unit"]} if options and options.get("amplitude_unit") else {}),
         },
     )
     db.add(finding)

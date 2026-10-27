@@ -7,7 +7,8 @@ RUN npm ci
 COPY . .
 ARG VITE_MEDTWIN_API_URL=""
 ENV VITE_MEDTWIN_API_URL=${VITE_MEDTWIN_API_URL}
-RUN npm run check
+# `npm run check` compiles into .cache/build-check (no public assets); the image needs the production dist.
+RUN npm run typecheck && npm run lint && npm run build
 
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
