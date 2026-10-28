@@ -53,6 +53,7 @@ from app.routers import (
     members,
     metrics,
     modalities,
+    portal,
     prognosis,
     provenance,
     queue,
@@ -185,6 +186,7 @@ app.add_middleware(RequestIdMiddleware)
 for router in (
     auth.router,
     members.router,
+    portal.router,
     cases.router,
     files.router,
     analysis.router,

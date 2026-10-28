@@ -122,6 +122,10 @@ def execute_upload_analysis(db: Session, file_record: UploadedFile, actor: Optio
                 result = analyze_ecg_record(plain, file_record.file_hash)
             elif file_record.modality == ModalityType.REPORT:
                 result = analyze_clinical_report(plain, file_record.file_hash)
+            elif file_record.modality == ModalityType.SIGNAL:
+                from app.services.edf_reader import analyze_signal_record
+
+                result = analyze_signal_record(plain, file_record.file_hash)
             else:
                 raise ValueError(f"Unknown modality: {file_record.modality}")
         exec_ms = round((time.perf_counter() - start_time) * 1000, 2)

@@ -1,5 +1,7 @@
 services:
   backend:
+    # tini as PID 1 forwards stop signals and reaps child processes.
+    init: true
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -31,6 +33,11 @@ services:
       # file before patient uploads are accepted.
       MEDTWIN_STORAGE_ENCRYPTION: "${MEDTWIN_STORAGE_ENCRYPTION:-required}"
       MEDTWIN_STORAGE_KEYS: "${MEDTWIN_STORAGE_KEYS:-}"
+      # The SQLite database is SQLCipher-encrypted by default; the service does not start without
+      # MEDTWIN_DB_KEY (64 hex characters). Convert an existing plaintext volume with
+      # scripts/encrypt_database.py, or set MEDTWIN_DB_ENCRYPTION=off deliberately.
+      MEDTWIN_DB_ENCRYPTION: "${MEDTWIN_DB_ENCRYPTION:-sqlcipher}"
+      MEDTWIN_DB_KEY: "${MEDTWIN_DB_KEY:-}"
       # "worker" hands analysis jobs to the worker service (profile "worker").
       MEDTWIN_JOB_EXECUTION: "${MEDTWIN_JOB_EXECUTION:-inline}"
     volumes:
@@ -48,6 +55,7 @@ services:
   worker:
     # Durable-queue worker; start with: docker compose --profile worker up
     profiles: ["worker"]
+    init: true
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -59,6 +67,8 @@ services:
       UPLOAD_DIR: /data/uploads
       MEDTWIN_STORAGE_ENCRYPTION: "${MEDTWIN_STORAGE_ENCRYPTION:-required}"
       MEDTWIN_STORAGE_KEYS: "${MEDTWIN_STORAGE_KEYS:-}"
+      MEDTWIN_DB_ENCRYPTION: "${MEDTWIN_DB_ENCRYPTION:-sqlcipher}"
+      MEDTWIN_DB_KEY: "${MEDTWIN_DB_KEY:-}"
     volumes:
       - medtwin_data:/data
       - ./artifacts/training:/app/project/artifacts/training:ro
@@ -76,7 +86,7 @@ services:
       args:
         VITE_MEDTWIN_API_URL: "${VITE_MEDTWIN_API_URL:-}"
     ports:
-      - "${MEDTWIN_FRONTEND_PORT:-5173}:80"
+      - "${MEDTWIN_FRONTEND_PORT:-5173}:8080"
     depends_on:
       backend:
         condition: service_healthy

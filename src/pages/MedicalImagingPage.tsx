@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, type PointerEvent, type WheelEvent } from "react";
 import { AlertTriangle, RotateCcw } from "lucide-react";
-import ResearchModelPanel, { type OverlayState, type ResearchInput } from "../components/ResearchModelPanel";
+import ResearchModelPanel, { ResultView, VolumeSliceLayer, type OverlayState, type ResearchInput } from "../components/ResearchModelPanel";
 import { Badge, Button, Card, Disclosure, EmptyState, ErrorBlock, KeyValue, LoadingBlock, PageHeader, Segmented, SelectInput, StatusBadge, Table, TextInput } from "../components/ui";
-import { api, type ImagingMetadata, type RenderInfo } from "../services/api";
-import { formatDate, formatNumber, humanize } from "../lib/format";
+import { api, type DicomSeriesReport, type ImagingMetadata, type RenderInfo, type ResearchRun, type SeriesRenderInfo, type UploadedFile } from "../services/api";
+import { errorMessage, formatDate, formatNumber, humanize } from "../lib/format";
 import { Link, useLocation } from "../lib/router";
 import { useAsync } from "../lib/useAsync";
 import { useSelectedCase, useWorkspace } from "../state/workspace";
@@ -171,6 +171,146 @@ function Viewer({ uploadId }: { uploadId: number }) {
   );
 }
 
+/** A multi-file DICOM series: assembled by geometry, displayed plane by plane, optionally segmented. */
+function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFile[] }) {
+  const [chosen, setChosen] = useState<number[]>(() => uploads.map((upload) => upload.id));
+  const [report, setReport] = useState<DicomSeriesReport | null>(null);
+  const [axis, setAxis] = useState<"axial" | "coronal" | "sagittal">("axial");
+  const [index, setIndex] = useState<number | null>(null);
+  const [windowing, setWindowing] = useState<{ center: number; width: number } | null>(null);
+  const [image, setImage] = useState<{ url: string; info: SeriesRenderInfo } | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [attested, setAttested] = useState(false);
+  const [run, setRun] = useState<ResearchRun | null>(null);
+  const listing = useAsync(() => api.getResearchModels(), []);
+  const model = (listing.data?.models ?? []).find((item) => item.gate.allowed && item.inference_input === "volume_nifti") ?? null;
+  const ordered = report?.status === "ASSEMBLED" ? report.ordered_upload_ids ?? null : null;
+
+  useEffect(() => {
+    if (!ordered) return;
+    let cancelled = false;
+    let created: string | null = null;
+    api.renderDicomSeries(caseId, ordered, { axis, index, ...(windowing ?? {}) }).then(
+      (result) => {
+        created = result.url;
+        if (cancelled) URL.revokeObjectURL(result.url);
+        else {
+          setImage(result);
+          setError(null);
+        }
+      },
+      (failure: unknown) => !cancelled && setError(errorMessage(failure)),
+    );
+    return () => {
+      cancelled = true;
+      if (created) URL.revokeObjectURL(created);
+    };
+  }, [caseId, ordered, axis, index, windowing]);
+
+  async function assemble() {
+    setBusy("Assembling");
+    setError(null);
+    setRun(null);
+    setImage(null);
+    setIndex(null);
+    try {
+      setReport(await api.assembleDicomSeries(caseId, chosen));
+    } catch (failure) {
+      setError(errorMessage(failure));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function segment() {
+    if (!model || !ordered) return;
+    setBusy("Running");
+    setError(null);
+    try {
+      setRun(await api.runSeriesResearchModel(caseId, ordered, model.model_id, (job) => setBusy(`${humanize(job.status)}${job.message ? ` · ${job.message}` : ""}`)));
+    } catch (failure) {
+      setError(errorMessage(failure));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const output = run?.research_output?.type === "volume_segmentation" ? run.research_output : null;
+  const info = image?.info ?? null;
+  const overlay: OverlayState | null = output && info && axis === "axial"
+    ? { sourceSize: [info.shape[1], info.shape[0]], layer: <VolumeSliceLayer output={output} slice={info.index} highlight={null} /> }
+    : null;
+  return (
+    <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
+      <Card title="DICOM series" eyebrow="Ordered by slice position, not file order">
+        {error && <ErrorBlock message={error} />}
+        {report?.status === "ASSEMBLED" ? (
+          image ? <PanZoomImage src={image.url} alt={`Series ${axis} plane ${image.info.index + 1}`} overlay={overlay} /> : <LoadingBlock label="Rendering" />
+        ) : (
+          <p className="text-sm text-ink-2">Choose the files of one series and assemble them. Slices are ordered by their position along the slice normal; a series with missing, duplicate or irregular slices is rejected with every reason.</p>
+        )}
+        {info && (
+          <div className="mt-3 flex flex-wrap items-end gap-3">
+            <Segmented label="Plane" value={axis} onChange={(next) => { setAxis(next); setIndex(null); }} options={[{ value: "axial", label: "Slices" }, { value: "coronal", label: "Rows" }, { value: "sagittal", label: "Columns" }]} size="sm" />
+            <label className="flex items-center gap-2 text-xs text-ink-2">
+              Position
+              <input type="range" min={0} max={info.count - 1} value={info.index} onChange={(event) => setIndex(Number(event.target.value))} className="w-40 accent-[var(--mt-accent)]" aria-label="Series position" />
+              <span className="tabular">{info.index + 1}/{info.count}</span>
+            </label>
+            <div className="flex flex-wrap gap-1">
+              {CT_PRESETS.map((preset) => <Button key={preset.id} size="sm" variant={windowing?.center === preset.center && windowing.width === preset.width ? "primary" : "secondary"} onClick={() => setWindowing({ center: preset.center, width: preset.width })}>{preset.label}</Button>)}
+              <Button size="sm" variant={windowing ? "secondary" : "primary"} onClick={() => setWindowing(null)}>Auto</Button>
+            </div>
+          </div>
+        )}
+        {info && <p className="mt-2 text-[11px] text-ink-3">{info.plane}; pixel {formatNumber(info.pixel_spacing_mm.vertical, 3)} × {formatNumber(info.pixel_spacing_mm.horizontal, 3)} mm (vertical × horizontal); window {formatNumber(info.window.low, 1)} to {formatNumber(info.window.high, 1)}.</p>}
+      </Card>
+      <div className="space-y-4">
+        <Card title="Files">
+          <div className="max-h-48 space-y-1 overflow-auto text-xs">
+            {uploads.map((upload) => (
+              <label key={upload.id} className="flex items-center gap-2">
+                <input type="checkbox" checked={chosen.includes(upload.id)} onChange={(event) => setChosen(event.target.checked ? [...chosen, upload.id] : chosen.filter((id) => id !== upload.id))} />
+                {upload.filename}
+              </label>
+            ))}
+          </div>
+          <Button className="mt-3" size="sm" disabled={chosen.length < 2 || busy !== null} loading={busy === "Assembling"} onClick={assemble}>Assemble series</Button>
+        </Card>
+        {report && (
+          <Card title="Geometry" actions={<StatusBadge status={report.status} />}>
+            <KeyValue columns={1} items={[
+              ...(report.issues.length ? [{ label: "Issues", value: report.issues.map(humanize).join(", ") }] : []),
+              ...(report.shape_slices_rows_columns ? [{ label: "Slices × rows × columns", value: report.shape_slices_rows_columns.join(" × ") }] : []),
+              ...(report.spacing_mm ? [{ label: "Spacing (mm)", value: `row ${formatNumber(report.spacing_mm.row, 4)}, column ${formatNumber(report.spacing_mm.column, 4)}, slice ${formatNumber(report.spacing_mm.slice, 4)}` }] : []),
+              ...(report.warnings.length ? [{ label: "Warnings", value: report.warnings.map(humanize).join(", ") }] : []),
+              ...(report.identifying_tags_present?.length ? [{ label: "Identifying elements present", value: report.identifying_tags_present.join(", ") }] : []),
+            ]} />
+          </Card>
+        )}
+        {ordered && (
+          <Card title="Research model on this series" eyebrow="Research only · cardiac cine-MRI short-axis frames">
+            {!model ? (
+              <p className="text-xs text-ink-2">No volumetric research model passes the gate on this server.</p>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-[11px] leading-4 text-ink-2">{model.display_name}. The series must be one short-axis cine frame inside the development spacing range; it is read with i = column, j = row, k = slice position, an assumed convention (the development frames carry no orientation).</p>
+                <label className="flex items-start gap-2 text-xs text-ink-2">
+                  <input type="checkbox" checked={attested} onChange={(event) => setAttested(event.target.checked)} className="mt-0.5" />
+                  This series is a cardiac cine-MRI short-axis stack of a single phase.
+                </label>
+                <Button size="sm" disabled={!attested || busy !== null} loading={busy !== null && busy !== "Assembling"} onClick={segment}>{busy && busy !== "Assembling" ? busy : "Run segmenter"}</Button>
+                {run && <ResultView run={run} />}
+              </div>
+            )}
+          </Card>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ModalitySupport() {
   const registry = useAsync(() => api.getModalities(), []);
   if (!registry.data) return registry.error ? <ErrorBlock message={registry.error} onRetry={registry.reload} /> : <LoadingBlock />;
@@ -198,10 +338,11 @@ export default function MedicalImagingPage() {
   const selected = useSelectedCase();
   const uploads = useWorkspace((state) => state.evidence.uploads);
   const images = uploads.filter((upload) => upload.modality === "IMAGE");
+  const dicom = images.filter((upload) => upload.filename.toLowerCase().endsWith(".dcm") && upload.is_associated && !upload.withdrawn_at);
   const requested = Number(search.get("upload")) || null;
   // The case and its uploads load after the first render (e.g. on a deep link), so the
   // defaults are derived until the user makes an explicit choice.
-  const [chosenTab, setTab] = useState<"viewer" | "support" | null>(null);
+  const [chosenTab, setTab] = useState<"viewer" | "series" | "support" | null>(null);
   const tab = chosenTab ?? (selected || requested ? "viewer" : "support");
   const [uploadId, setUploadId] = useState<number | null>(null);
   const active = images.find((upload) => upload.id === (uploadId ?? requested)) ?? images[0] ?? null;
@@ -211,10 +352,14 @@ export default function MedicalImagingPage() {
       <PageHeader
         eyebrow="Medical Imaging"
         title="Imaging viewer and modality coverage"
-        description="CT, MRI, X-ray, ultrasound, PET, angiography, endoscopy and other containers are read and displayed with their spatial metadata. No clinically validated model is configured. Research-only models trained on public datasets can be run on PNG/JPEG/BMP uploads and on single-frame NIfTI cardiac MRI volumes; their outputs are labelled as research and stay pending review."
-        actions={<Segmented label="Imaging view" value={tab} onChange={setTab} options={[{ value: "viewer", label: "Viewer" }, { value: "support", label: "Modality support" }]} />}
+        description="CT, MRI, X-ray, ultrasound, PET, angiography, endoscopy and other containers are read and displayed with their spatial metadata; multi-file DICOM series are assembled by slice position. No clinically validated model is configured. Research-only models trained on public datasets can be run on PNG/JPEG/BMP uploads (after an applicability check against each model's training images), on single-frame NIfTI cardiac MRI volumes and on assembled cardiac MRI series; their outputs are labelled as research and stay pending review."
+        actions={<Segmented label="Imaging view" value={tab} onChange={setTab} options={[{ value: "viewer", label: "Viewer" }, { value: "series", label: "DICOM series" }, { value: "support", label: "Modality support" }]} />}
       />
-      {tab === "support" ? <ModalitySupport /> : !selected ? (
+      {tab === "support" ? <ModalitySupport /> : tab === "series" && selected ? (
+        dicom.length < 2
+          ? <EmptyState title="No multi-file DICOM series" detail="Upload the files of one series (two or more DICOM Part 10 slices) to assemble and view it here." action={<Link to="/upload" className="text-sm text-accent-text hover:underline">Open the upload center</Link>} />
+          : <SeriesViewer key={selected.id} caseId={selected.id} uploads={dicom} />
+      ) : !selected ? (
         <EmptyState title="Select a case" detail="The viewer shows imaging uploaded to the selected case." />
       ) : images.length === 0 ? (
         <EmptyState title="No imaging uploads" detail="Upload DICOM (Part 10), NIfTI, NRRD, MetaImage, PNG, JPEG or BMP files to view them here." action={<Link to="/upload" className="text-sm text-accent-text hover:underline">Open the upload center</Link>} />

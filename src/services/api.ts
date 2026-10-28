@@ -34,7 +34,43 @@ export const API_V1_BASE = configuredOrigin ? `${configuredOrigin}/api/v1` : '/a
 export type ResourceId = number | string;
 export type UserRole = 'public' | 'admin' | 'clinician' | 'researcher';
 export type VerificationStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'SUSPENDED';
-export type Modality = 'IMAGE' | 'ECG' | 'REPORT' | 'MULTIMODAL';
+export type Modality = 'IMAGE' | 'ECG' | 'REPORT' | 'SIGNAL' | 'MULTIMODAL';
+
+export interface SignalChannel {
+  index: number;
+  label: string;
+  transducer: string;
+  physical_dimension: string;
+  physical_min: number;
+  physical_max: number;
+  prefiltering: string;
+  samples_per_record: number;
+  sampling_rate_hz: number;
+}
+
+export interface SignalHeader {
+  upload_id: number;
+  format: string;
+  records: number;
+  record_duration_s: number;
+  duration_s: number;
+  start: string | null;
+  patient_identification_field: 'EMPTY' | 'ANONYMISED' | 'FILLED_NOT_SHOWN';
+  recording_identification_field: 'EMPTY' | 'ANONYMISED' | 'FILLED_NOT_SHOWN';
+  signals: SignalChannel[];
+  annotations: Array<{ onset_s: number; duration_s: number | null; text: string }>;
+  warnings: string[];
+  model: string;
+}
+
+export interface SignalPreview {
+  start_s: number;
+  duration_s: number;
+  recording_duration_s: number;
+  reduction: string;
+  channels: Array<{ index: number; label: string; unit: string; sampling_rate_hz: number; points: number; seconds_per_point: number | null;
+    min: number[]; max: number[]; window_min: number | null; window_max: number | null }>;
+}
 export type EvidenceStatus =
   | 'COMPLETED'
   | 'PENDING_HUMAN_REVIEW'
@@ -660,6 +696,48 @@ export interface ImagingMetadata {
   [key: string]: unknown;
 }
 
+/** PATIENT and CAREGIVER open only the read-only portal of a personal account. */
+export type CaseMemberRole = 'VIEWER' | 'EDITOR' | 'PATIENT' | 'CAREGIVER';
+
+export interface PortalCase {
+  case_id: number;
+  record: string;
+  relationship: 'PATIENT' | 'CAREGIVER';
+}
+
+export interface PortalRecord {
+  case_id: number;
+  relationship: 'PATIENT' | 'CAREGIVER';
+  notice: string;
+  documents: Array<{ id: number; filename: string; kind: string; size_bytes: number | null; uploaded_at: string | null }>;
+  results: Array<{ name: string; value: number; comparator: string; unit: string; reference_low: number | null; reference_high: number | null;
+    reference_source: string; documented_flag: string | null; documented_date: string | null; source_document_id: number | null; corrected_by_review: boolean }>;
+}
+
+export interface DicomSeriesReport {
+  status: 'ASSEMBLED' | 'REJECTED';
+  issues: string[];
+  warnings: string[];
+  series: Array<{ series_reference: string; slice_count: number }>;
+  series_reference?: string | null;
+  shape_slices_rows_columns?: [number, number, number];
+  spacing_mm?: { row: number; column: number; slice: number };
+  ordered_upload_ids?: number[];
+  identifying_tags_present?: string[];
+  slice_steps_mm?: number[];
+}
+
+export interface SeriesRenderInfo {
+  axis: 'axial' | 'coronal' | 'sagittal';
+  index: number;
+  count: number;
+  shape: [number, number];
+  pixel_spacing_mm: { vertical: number; horizontal: number };
+  window: { low: number; high: number; source: string };
+  plane: string;
+  warnings: string[];
+}
+
 export interface RenderInfo {
   container: string;
   slice_index: number;
@@ -940,7 +1018,7 @@ export interface CaseMember {
   user_id: number;
   username: string;
   full_name: string | null;
-  role: 'VIEWER' | 'EDITOR';
+  role: CaseMemberRole;
   created_at: string;
 }
 
@@ -1463,10 +1541,11 @@ class ApiClient {
   }
 
   /** Authenticated binary fetch (images, rendered slices) returning the blob and headers. */
-  async requestBlob(endpoint: `/${string}`): Promise<{ blob: Blob; headers: Headers }> {
+  async requestBlob(endpoint: `/${string}`, body?: unknown): Promise<{ blob: Blob; headers: Headers }> {
     const headers = new Headers();
     if (this.token) headers.set('Authorization', `Bearer ${this.token}`);
-    const response = await fetch(`${API_V1_BASE}${endpoint}`, { headers });
+    if (body !== undefined) headers.set('Content-Type', 'application/json');
+    const response = await fetch(`${API_V1_BASE}${endpoint}`, body === undefined ? { headers } : { method: 'POST', headers, body: JSON.stringify(body) });
     if (!response.ok) {
       let message = `Request failed (${response.status} ${response.statusText})`;
       try {
@@ -1766,6 +1845,51 @@ class ApiClient {
     return this.getResearchRun(await this.waitForJob(response.queued_job, onQueued));
   }
 
+  getPortalCases(): Promise<PortalCase[]> {
+    return this.request<PortalCase[]>('/portal/cases');
+  }
+
+  getPortalRecord(caseId: ResourceId): Promise<PortalRecord> {
+    return this.request<PortalRecord>(`/portal/cases/${resourcePath(caseId)}`);
+  }
+
+  async downloadPortalDocument(caseId: ResourceId, documentId: ResourceId): Promise<string> {
+    const { blob } = await this.requestBlob(`/portal/cases/${resourcePath(caseId)}/documents/${resourcePath(documentId)}`);
+    return URL.createObjectURL(blob);
+  }
+
+  getPortalCaregivers(caseId: ResourceId): Promise<Array<{ user_id: number; username: string; since: string }>> {
+    return this.request(`/portal/cases/${resourcePath(caseId)}/caregivers`);
+  }
+
+  addPortalCaregiver(caseId: ResourceId, username: string): Promise<{ user_id: number; username: string }> {
+    return this.request(`/portal/cases/${resourcePath(caseId)}/caregivers`, { method: 'POST', body: JSON.stringify({ username }) });
+  }
+
+  removePortalCaregiver(caseId: ResourceId, userId: ResourceId): Promise<void> {
+    return this.request<void>(`/portal/cases/${resourcePath(caseId)}/caregivers/${resourcePath(userId)}`, { method: 'DELETE' });
+  }
+
+  assembleDicomSeries(caseId: ResourceId, uploadIds: number[]): Promise<DicomSeriesReport> {
+    return this.request<DicomSeriesReport>(`/cases/${resourcePath(caseId)}/dicom-series/assemble`, { method: 'POST', body: JSON.stringify({ upload_ids: uploadIds }) });
+  }
+
+  async renderDicomSeries(caseId: ResourceId, uploadIds: number[], plane: { axis: 'axial' | 'coronal' | 'sagittal'; index: number | null; center?: number; width?: number }): Promise<{ url: string; info: SeriesRenderInfo }> {
+    const { blob, headers } = await this.requestBlob(`/cases/${resourcePath(caseId)}/dicom-series/render`, {
+      upload_ids: uploadIds, axis: plane.axis, ...(plane.index !== null ? { index: plane.index } : {}),
+      ...(plane.center !== undefined && plane.width !== undefined ? { center: plane.center, width: plane.width } : {}),
+    });
+    return { url: URL.createObjectURL(blob), info: JSON.parse(headers.get('X-MedTwin-Render') ?? '{}') as SeriesRenderInfo };
+  }
+
+  async runSeriesResearchModel(caseId: ResourceId, uploadIds: number[], modelId: string, onQueued?: (job: QueuedJob) => void): Promise<ResearchRun> {
+    const response = await this.request<ResearchRun | { queued_job: QueuedJob }>(`/cases/${resourcePath(caseId)}/dicom-series/research-inference`, {
+      method: 'POST', body: JSON.stringify({ upload_ids: uploadIds, model_id: modelId, declared_input_type: 'MRI' }),
+    });
+    if (!('queued_job' in response)) return response;
+    return this.getResearchRun(await this.waitForJob(response.queued_job, onQueued));
+  }
+
   getResearchRun(runId: ResourceId): Promise<ResearchRun> {
     return this.request<ResearchRun>(`/research-inference/${resourcePath(runId)}`);
   }
@@ -1964,6 +2088,15 @@ class ApiClient {
     return this.request<ModalityRegistryResponse>('/modalities');
   }
 
+  getSignalHeader(uploadId: ResourceId): Promise<SignalHeader> {
+    return this.request<SignalHeader>(`/uploads/${resourcePath(uploadId)}/signal`);
+  }
+
+  getSignalPreview(uploadId: ResourceId, start: number, duration: number, channels: number[], maxPoints = 1200): Promise<SignalPreview> {
+    const query = new URLSearchParams({ start: String(start), duration: String(duration), max_points: String(maxPoints), channels: channels.join(",") });
+    return this.request<SignalPreview>(`/uploads/${resourcePath(uploadId)}/signal/preview?${query.toString()}`);
+  }
+
   getImagingMetadata(uploadId: ResourceId): Promise<ImagingMetadata> {
     return this.request<ImagingMetadata>(`/uploads/${resourcePath(uploadId)}/imaging/metadata`);
   }
@@ -2105,7 +2238,7 @@ class ApiClient {
     return this.request<CaseMember[]>(`/cases/${resourcePath(caseId)}/members`);
   }
 
-  addCaseMember(caseId: ResourceId, username: string, role: 'VIEWER' | 'EDITOR'): Promise<CaseMember> {
+  addCaseMember(caseId: ResourceId, username: string, role: CaseMemberRole): Promise<CaseMember> {
     return this.request<CaseMember>(`/cases/${resourcePath(caseId)}/members`, { method: 'POST', body: JSON.stringify({ username, role }) });
   }
 

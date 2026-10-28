@@ -37,7 +37,8 @@ def list_cases(
     if current_user.role == UserRole.ADMIN:
         cases = db.query(Case).all()
     else:
-        shared = db.query(CaseMembership.case_id).filter(CaseMembership.user_id == current_user.id)
+        # Patient and caregiver links open the portal only, not the clinical case list.
+        shared = db.query(CaseMembership.case_id).filter(CaseMembership.user_id == current_user.id, CaseMembership.role.in_(("VIEWER", "EDITOR")))
         cases = db.query(Case).filter((Case.created_by_id == current_user.id) | (Case.id.in_(shared))).all()
     return cases
 

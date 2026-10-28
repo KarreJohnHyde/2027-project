@@ -147,6 +147,8 @@ def run_migrations(engine: Engine) -> list[str]:
         # New databases already receive this value from Base.metadata.
         if engine.dialect.name == "postgresql" and "users" in tables:
             connection.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'PUBLIC'"))
+        if engine.dialect.name == "postgresql" and "uploaded_files" in tables:
+            connection.execute(text("ALTER TYPE modalitytype ADD VALUE IF NOT EXISTS 'SIGNAL'"))
         for version, columns in MIGRATIONS:
             if version in done:
                 continue

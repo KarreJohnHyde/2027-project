@@ -54,6 +54,8 @@ class ModalityType(str, enum.Enum):
     ECG = "ECG"
     REPORT = "REPORT"
     MULTIMODAL = "MULTIMODAL"
+    # EDF/BDF recordings (EEG and other physiological signals other than digital ECG).
+    SIGNAL = "SIGNAL"
 
 
 class User(Base):
@@ -499,6 +501,29 @@ class CaseMembership(Base):
     role = Column(String(16), nullable=False) # VIEWER or EDITOR
     granted_by_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     created_at = Column(DateTime, default=utc_now, nullable=False)
+
+
+class LandmarkManifest(Base):
+    """Landmark correspondences for one finding's registration, proposed by one verified clinician
+    and approved or rejected by another. Held-out landmarks are declared up front, never chosen
+    after fitting; only an approved manifest can promote a finding beyond L1."""
+
+    __tablename__ = "landmark_manifests"
+
+    id = Column(Integer, primary_key=True, index=True)
+    case_id = Column(Integer, ForeignKey("cases.id", ondelete="CASCADE"), nullable=False, index=True)
+    finding_id = Column(Integer, ForeignKey("findings.id", ondelete="CASCADE"), nullable=False, index=True)
+    coordinate_frame = Column(String(128), nullable=False)
+    requested_region = Column(String(128), nullable=False)
+    fit_landmarks = Column(JSON, nullable=False)  # [{"source": [x, y, z], "target": [x, y, z]}, ...]
+    held_out_landmarks = Column(JSON, nullable=False)
+    threshold_mm = Column(Float, nullable=False)
+    status = Column(String(16), nullable=False, default="PROPOSED")  # PROPOSED, APPROVED, REJECTED
+    created_by_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
+    decided_by_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    decided_at = Column(DateTime, nullable=True)
+    decision_comment = Column(Text, nullable=True)
 
 
 class AnatomyRegistrationReview(Base):

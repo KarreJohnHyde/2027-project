@@ -552,7 +552,9 @@
           "row_count": 1202
         },
         "evaluation_report_path": "docs/validation/models/gi_kvasir_v2_classifier.json",
-        "model_card_path": "docs/models/gi_kvasir_v2_classifier.md"
+        "model_card_path": "docs/models/gi_kvasir_v2_classifier.md",
+        "ood_reference_path": "artifacts/training/gi_kvasir_v2_classifier-20261024T151359Z/ood_reference.npz",
+        "ood_reference_sha256": "e8f7f3faa204150d721031850bc815e70e559ebe8f050d3bcf9cbd6fb587cfa3"
       },
       "source_display_name": "Kvasir v2 8-class GI endoscopy classifier (research)"
     },
@@ -608,7 +610,9 @@
         "abstention_thresholds": null,
         "held_out_predictions_path": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/predictions_test.json",
         "evaluation_report_path": "docs/validation/models/angiography_stenosis_detector.json",
-        "model_card_path": "docs/models/angiography_stenosis_detector.md"
+        "model_card_path": "docs/models/angiography_stenosis_detector.md",
+        "ood_reference_path": "artifacts/training/angiography_stenosis_detector-20261024T152607Z/ood_reference.npz",
+        "ood_reference_sha256": "a12b5ed831c21889dd6446369eb2b1529504f03a1eb0115e947c6ec6cd55767d"
       },
       "dataset_version_lineage": {
         "trained_and_evaluated_on": "2b1fbdaf7fe5431febcddff60f00b542b2ae4def1605941e532ee195d1229a93",
@@ -671,7 +675,9 @@
         "abstention_thresholds": null,
         "held_out_predictions_path": "artifacts/training/kidney_stone_detector-20261024T161540Z/predictions_test.json",
         "evaluation_report_path": "docs/validation/models/kidney_stone_detector.json",
-        "model_card_path": "docs/models/kidney_stone_detector.md"
+        "model_card_path": "docs/models/kidney_stone_detector.md",
+        "ood_reference_path": "artifacts/training/kidney_stone_detector-20261024T161540Z/ood_reference.npz",
+        "ood_reference_sha256": "840a9bf81da5ec86ccbd04a12a917d47df3712c4ec603a76abd87ae3d591c6c8"
       },
       "source_display_name": "TEZ kidney stone detector on CT slices (research)"
     },
@@ -776,7 +782,9 @@
         "abstention_thresholds": null,
         "held_out_predictions_path": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/test_masks",
         "evaluation_report_path": "docs/validation/models/angiography_syntax_segmenter.json",
-        "model_card_path": "docs/models/angiography_syntax_segmenter.md"
+        "model_card_path": "docs/models/angiography_syntax_segmenter.md",
+        "ood_reference_path": "artifacts/training/angiography_syntax_segmenter-20261024T170738Z/ood_reference.npz",
+        "ood_reference_sha256": "ef94b816d6c0aa295e9c08b77fbad1a8965d1c20a3f8c8169479f6cb64a400cf"
       },
       "dataset_version_lineage": {
         "trained_and_evaluated_on": "c21bee6dc5bd0a4ef91711802b7a606cec4d6c08b686ed0af0db7f9c959486ba",
@@ -1369,7 +1377,9 @@
         },
         "held_out_predictions_path": "artifacts/training/gi_gastrovision_27class_classifier-20261024T173442Z/predictions_test.csv",
         "evaluation_report_path": "docs/validation/models/gi_gastrovision_27class_classifier.json",
-        "model_card_path": "docs/models/gi_gastrovision_27class_classifier.md"
+        "model_card_path": "docs/models/gi_gastrovision_27class_classifier.md",
+        "ood_reference_path": "artifacts/training/gi_gastrovision_27class_classifier-20261024T173442Z/ood_reference.npz",
+        "ood_reference_sha256": "53669b76e96ff06a5120191024e77e8f97fbb59f95ee8d8149b18d926d1280d1"
       },
       "source_display_name": "GastroVision 27-class GI endoscopy classifier (exploratory research)"
     },
@@ -1628,7 +1638,9 @@
         "abstention_thresholds": null,
         "held_out_predictions_path": "artifacts/training/gi_kvasir_seg_polyp_segmenter-20261025T080312Z/test_masks",
         "evaluation_report_path": "docs/validation/models/gi_kvasir_seg_polyp_segmenter.json",
-        "model_card_path": "docs/models/gi_kvasir_seg_polyp_segmenter.md"
+        "model_card_path": "docs/models/gi_kvasir_seg_polyp_segmenter.md",
+        "ood_reference_path": "artifacts/training/gi_kvasir_seg_polyp_segmenter-20261025T080312Z/ood_reference.npz",
+        "ood_reference_sha256": "33c537101d6eaae724f44f44d8bbf3ca40860ebd74cb6105b4f9aeb6641bf077"
       },
       "source_display_name": "Kvasir-SEG polyp segmenter (research)"
     },
@@ -1788,7 +1800,9 @@
         },
         "held_out_predictions_path": "artifacts/training/hematology_cnmc_all_classifier-20261025T082713Z/predictions_test.csv",
         "evaluation_report_path": "docs/validation/models/hematology_cnmc_all_classifier.json",
-        "model_card_path": "docs/models/hematology_cnmc_all_classifier.md"
+        "model_card_path": "docs/models/hematology_cnmc_all_classifier.md",
+        "ood_reference_path": "artifacts/training/hematology_cnmc_all_classifier-20261025T082713Z/ood_reference.npz",
+        "ood_reference_sha256": "ede79c8e8afe88f0d379b02bbab66701ad2ac43d4e707b3ddfb11bc3ecc0d47e"
       },
       "source_display_name": "C-NMC ALL vs normal cell classifier (research)"
     },

@@ -5,7 +5,7 @@ import AnatomyViewport, { type TargetSummary, type ViewportApi, type ViewportLay
 import { ancestry, atlasLookup, chooseTier, loadAtlasIndex, loadManifest, selectAtlasStructures } from "../anatomy/data";
 import { AssetStatus, HierarchyList, Inspector, NoAnatomy, PerformanceOverlay, StudioBottomPanel, SystemList, VariantList, ViewerToolbar, type ToolbarState } from "../anatomy/StudioPanels";
 import type { AnatomyManifest, AtlasIndex, AtlasStructure, HybridLayer, TierName } from "../anatomy/types";
-import { Badge, Button, Disclosure, ErrorBlock, LoadingBlock, SectionTitle, SelectInput, StatusBadge, TextArea } from "../components/ui";
+import { Badge, Button, Disclosure, ErrorBlock, LoadingBlock, PageHeader, SectionTitle, SelectInput, StatusBadge, TextArea } from "../components/ui";
 import { api } from "../services/api";
 import { errorMessage, formatNumber, humanize } from "../lib/format";
 import { usePreferences } from "../lib/preferences";
@@ -381,7 +381,8 @@ function Studio({ manifest, atlas }: { manifest: AnatomyManifest; atlas: AtlasIn
 
 export default function AnatomyStudioPage() {
   const data = useAsync(() => Promise.all([loadManifest(), loadAtlasIndex()]), []);
-  if (data.error) return <div className="p-6"><NoAnatomy message={data.error} /></div>;
-  if (!data.data) return <div className="p-6"><LoadingBlock label="Loading anatomy manifest" /></div>;
+  // The page keeps its heading while the anatomy library loads or is unavailable.
+  if (data.error) return <div className="p-6"><PageHeader title="Live Anatomy Studio" /><NoAnatomy message={data.error} /></div>;
+  if (!data.data) return <div className="p-6"><PageHeader title="Live Anatomy Studio" /><LoadingBlock label="Loading anatomy manifest" /></div>;
   return <Studio manifest={data.data[0]} atlas={data.data[1]} />;
 }

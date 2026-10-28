@@ -79,7 +79,24 @@ def read_volume(path: Path, envelope: dict) -> VolumeInput:
         raise VolumeInputError(["SPATIAL_UNIT_UNSUPPORTED"], f"xyzt_units spatial code {unit_code}")
     scale = SPATIAL_UNIT_TO_MM.get(unit_code, 1.0)
     dx, dy, dz = (float(value) * scale for value in header.get_zooms()[:3])
+    _check_geometry(dx, dy, dz, envelope)
+    data = np.asarray(image.dataobj, dtype=np.float32).reshape(shape)
+    return _checked_volume(data, (dx, dy, dz), envelope, warnings)
 
+
+def from_series(volume: np.ndarray, spacing_mm: dict, envelope: dict) -> VolumeInput:
+    """A volume assembled from a DICOM series (app.services.dicom_series: slices, rows, columns)
+    in the voxel order the segmenter uses: i = column, j = row, k = slice along the normal, the
+    same order the viewer draws NIfTI masks in. The same checks as for a NIfTI frame apply."""
+    dx, dy, dz = float(spacing_mm["column"]), float(spacing_mm["row"]), float(spacing_mm["slice"])
+    _check_geometry(dx, dy, dz, envelope)
+    data = np.ascontiguousarray(np.transpose(np.asarray(volume, dtype=np.float32), (2, 1, 0)))
+    warnings = ["ORIENTATION_CONVENTION: series read with i = column, j = row, k = slice position along the normal; "
+                "the development NIfTI frames carry no orientation, so this convention is assumed, not verified, for scanner series"]
+    return _checked_volume(data, (dx, dy, dz), envelope, warnings)
+
+
+def _check_geometry(dx: float, dy: float, dz: float, envelope: dict) -> None:
     issues, details = [], []
     if not all(math.isfinite(value) and value > 0 for value in (dx, dy, dz)):
         raise VolumeInputError(["INVALID_VOXEL_SPACING"], f"pixdim {dx:g} x {dy:g} x {dz:g}")
@@ -100,7 +117,9 @@ def read_volume(path: Path, envelope: dict) -> VolumeInput:
     if issues:
         raise VolumeInputError(issues, "; ".join(details) + ". Nothing is resampled.")
 
-    data = np.asarray(image.dataobj, dtype=np.float32).reshape(shape)
+
+def _checked_volume(data: np.ndarray, spacing: tuple[float, float, float], envelope: dict, warnings: list[str]) -> VolumeInput:
+    shape = data.shape
     if not np.all(np.isfinite(data)):
         raise VolumeInputError(["NON_FINITE_VOXELS"], "the volume contains NaN or infinite values")
     if float(data.max()) == float(data.min()):
@@ -108,7 +127,7 @@ def read_volume(path: Path, envelope: dict) -> VolumeInput:
     matrix = envelope["matrix"]
     if not all(matrix[axis]["min"] <= size <= matrix[axis]["max"] for axis, size in zip(("i", "j", "k"), shape)):
         warnings.append(f"MATRIX_OUTSIDE_DEVELOPMENT_RANGE ({' x '.join(map(str, shape))})")
-    return VolumeInput(data, (dx, dy, dz), warnings)
+    return VolumeInput(data, spacing, warnings)
 
 
 def normalise(image: np.ndarray) -> np.ndarray:

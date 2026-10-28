@@ -14,9 +14,11 @@ identifying tags are reported by keyword only so a reviewer can see de-identific
 from __future__ import annotations
 
 import hashlib
+import threading
+from collections import OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Optional, Sequence
+from typing import Any, Callable, Optional, Sequence
 
 import numpy as np
 
@@ -166,3 +168,57 @@ def assemble_series(paths: Sequence[Path], series_reference: Optional[str] = Non
             planes.append(dataset.pixel_array.astype(np.float32) * slope + intercept)
         report["volume"] = np.stack(planes)
     return report
+
+
+# Assembled volumes are reused across slice requests: decoding every file per request is slow.
+_VOLUME_CACHE: "OrderedDict[tuple, dict[str, Any]]" = OrderedDict()
+_VOLUME_CACHE_LOCK = threading.Lock()
+VOLUME_CACHE_ENTRIES = 2
+
+
+def cached_assembly(key: tuple, load: Callable[[], dict[str, Any]]) -> dict[str, Any]:
+    """The assembled report with pixels for ``key`` (upload ids and file hashes), from cache when present."""
+    with _VOLUME_CACHE_LOCK:
+        if key in _VOLUME_CACHE:
+            _VOLUME_CACHE.move_to_end(key)
+            return _VOLUME_CACHE[key]
+    report = load()
+    if report.get("status") == "ASSEMBLED":
+        with _VOLUME_CACHE_LOCK:
+            _VOLUME_CACHE[key] = report
+            while len(_VOLUME_CACHE) > VOLUME_CACHE_ENTRIES:
+                _VOLUME_CACHE.popitem(last=False)
+    return report
+
+
+PLANES = {"axial": 0, "coronal": 1, "sagittal": 2}
+
+
+def render_series_slice(report: dict[str, Any], axis: str = "axial", index: Optional[int] = None,
+                        center: Optional[float] = None, width: Optional[float] = None) -> tuple[bytes, dict[str, Any]]:
+    """One voxel-index plane of an assembled series as PNG: axial = one slice (rows x columns),
+    coronal = one row (slices x columns), sagittal = one column (slices x rows), slice 0 at the top."""
+    import io
+
+    from PIL import Image
+
+    from app.services.imaging_readers import _window
+
+    volume = report["volume"]
+    dim = PLANES[axis]
+    count = volume.shape[dim]
+    position = count // 2 if index is None else min(max(int(index), 0), count - 1)
+    plane = np.take(volume, position, axis=dim)
+    image8, low, high, source = _window(plane, center, width)
+    buffer = io.BytesIO()
+    Image.fromarray(image8).save(buffer, format="PNG")
+    spacing = report["spacing_mm"]
+    vertical, horizontal = {"axial": (spacing["row"], spacing["column"]), "coronal": (spacing["slice"], spacing["column"]),
+                            "sagittal": (spacing["slice"], spacing["row"])}[axis]
+    return buffer.getvalue(), {
+        "axis": axis, "index": position, "count": count, "shape": list(plane.shape),
+        "pixel_spacing_mm": {"vertical": vertical, "horizontal": horizontal},
+        "window": {"low": low, "high": high, "source": source},
+        "plane": {"axial": "slice k: rows (top to bottom) x columns", "coronal": "row j: slices (top to bottom) x columns",
+                  "sagittal": "column i: slices (top to bottom) x rows"}[axis],
+    }

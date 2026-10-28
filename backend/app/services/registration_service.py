@@ -84,6 +84,7 @@ def evaluate_registration_gate(
     requested_region: Optional[str] = None,
     evidence_manifest_id: Optional[str] = None,
     landmarks_are_independently_held_out: bool = False,
+    held_out_count: Optional[int] = None,
 ) -> Dict[str, Any]:
     """
     Executes the L1/L2 Anatomical Gate (Fig. 4).
@@ -107,8 +108,9 @@ def evaluate_registration_gate(
             "explanatory_reason": "Held-out landmark verification requires at least 4 registered anatomical landmarks."
         }
 
-    # Partition into fitting set and held-out evaluation set Q
-    num_held_out = max(1, int(round(total_pts * held_out_ratio)))
+    # Partition into fitting set and held-out evaluation set Q (the last points). A reviewed
+    # manifest declares its held-out landmarks, so their number is given rather than derived.
+    num_held_out = held_out_count if held_out_count else max(1, int(round(total_pts * held_out_ratio)))
     fit_src = src[:-num_held_out]
     fit_tgt = tgt[:-num_held_out]
     q_src = src[-num_held_out:]

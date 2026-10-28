@@ -82,7 +82,7 @@ Companion files: `docs/development/NEXT_ACTIONS.md`,
 | Patient-specific 2-D-to-3-D localization | `BLOCKED` | Supply reviewed landmarks/transforms, fitting versus held-out partitions, coordinate-frame provenance, and acceptance thresholds. |
 | Prognosis and treatment effects | `BLOCKED` | Supply repeated longitudinal outcomes, define population/time zero/endpoints/horizons, use time-respecting splits, validate the integrated forecast, and define a target-trial estimand for treatment effects. |
 | External and clinical validation | `BLOCKED` | Execute independent-site evaluation, subgroup/failure-mode analysis, calibration transfer, prospective safety work, governance review, and production security review. |
-| Unsupported integrations | `UNSUPPORTED` | EEG inference, DeepSA weights/executable, and inference or rendering of an assembled multi-file DICOM series are not operational (series assembly itself validates and orders slices). |
+| Unsupported integrations | `UNSUPPORTED` | EEG interpretation (EDF/BDF recordings are read and shown, no model) and DeepSA weights/executable. Assembled multi-file DICOM series render and run through the cardiac MRI segmenter (orientation convention of scanner series assumed). |
 
 ## High-value corrections in the final pass
 

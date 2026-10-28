@@ -22,6 +22,7 @@ from app.models.entities import ModalityType
 
 IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".bmp", ".dcm", ".nii", ".nii.gz", ".nrrd", ".mha")
 ECG_EXTENSIONS = (".csv", ".dat", ".hea")
+SIGNAL_EXTENSIONS = (".edf", ".bdf")
 REPORT_EXTENSIONS = (".txt", ".json", ".pdf", ".docx", ".md", ".xlsx", ".hl7")
 
 EXPECTED_MIME_TYPES = {
@@ -43,6 +44,8 @@ EXPECTED_MIME_TYPES = {
     ".xlsx": {"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/octet-stream"},
     ".hl7": {"x-application/hl7-v2+er7", "application/hl7-v2", "text/plain", "application/octet-stream"},
     ".dat": {"application/octet-stream", "text/plain"},
+    ".edf": {"application/octet-stream", "application/edf", "application/x-edf"},
+    ".bdf": {"application/octet-stream"},
     ".hea": {"application/octet-stream", "text/plain"},
 }
 
@@ -72,12 +75,14 @@ def detect_modality(filename: str, mime_type: str) -> ModalityType:
         return ModalityType.IMAGE
     elif ext in ECG_EXTENSIONS:
         return ModalityType.ECG
+    elif ext in SIGNAL_EXTENSIONS:
+        return ModalityType.SIGNAL
     elif ext in REPORT_EXTENSIONS:
         return ModalityType.REPORT
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Unsupported file format '{ext}'. Must be an image, digital ECG, or clinical report."
+            detail=f"Unsupported file format '{ext}'. Must be an image, digital ECG, EDF/BDF recording, or clinical report."
         )
 
 
@@ -111,6 +116,8 @@ def validate_signature(ext: str, head: bytes) -> None:
         ".nii": len(head) >= 4 and (int.from_bytes(head[:4], "little") in (348, 540) or int.from_bytes(head[:4], "big") in (348, 540)),
         ".nrrd": head.startswith(b"NRRD000"),
         ".mha": b"ObjectType" in head[:1024] and b"ElementDataFile" in head,
+        ".edf": head.startswith(b"0       "),
+        ".bdf": head.startswith(b"\xffBIOSEMI"),
     }
     if ext in checks and not checks[ext]:
         detail = {
@@ -122,6 +129,13 @@ def validate_signature(ext: str, head: bytes) -> None:
 
 
 def validate_complete_content(ext: str, path: Path) -> None:
+    if ext in SIGNAL_EXTENSIONS:
+        from app.services.edf_reader import EdfError, read_file_header
+
+        try:
+            read_file_header(path)
+        except EdfError as exc:
+            raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=str(exc))
     if ext == ".hl7":
         from app.services.hl7_import import is_hl7
 
@@ -163,7 +177,7 @@ async def save_uploaded_file(upload_file: UploadFile) -> Tuple[str, str, str, in
         )
 
     modality = detect_modality(original_filename, mime_type)
-    limit = MAX_IMAGE_UPLOAD_SIZE_BYTES if modality == ModalityType.IMAGE else MAX_UPLOAD_SIZE_BYTES
+    limit = MAX_IMAGE_UPLOAD_SIZE_BYTES if modality in (ModalityType.IMAGE, ModalityType.SIGNAL) else MAX_UPLOAD_SIZE_BYTES
 
     hasher = hashlib.sha256()
     total_bytes = 0

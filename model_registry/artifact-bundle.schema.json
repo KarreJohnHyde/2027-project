@@ -53,6 +53,14 @@
     "input_envelope_path": {
       "type": ["string", "null"],
       "description": "Recorded input-geometry envelope of the development data; volumetric upload inference is refused without it."
+    },
+    "ood_reference_path": {
+      "type": ["string", "null"],
+      "description": "Feature-space applicability reference fitted on the training split (app/services/image_ood.py); 2-D upload inference is refused without it."
+    },
+    "ood_reference_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
     }
   }
 }

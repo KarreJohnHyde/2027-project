@@ -40,9 +40,9 @@ function rgbaCss([r, g, b]: [number, number, number, number]): string {
   return `rgb(${r} ${g} ${b})`;
 }
 
-type VolumeOutput = Extract<ResearchOutput, { type: "volume_segmentation" }>;
+export type VolumeOutput = Extract<ResearchOutput, { type: "volume_segmentation" }>;
 
-function VolumeSliceLayer({ output, slice, highlight }: { output: VolumeOutput; slice: number; highlight: number | null }) {
+export function VolumeSliceLayer({ output, slice, highlight }: { output: VolumeOutput; slice: number; highlight: number | null }) {
   const [width, height] = output.volume_shape_ijk;
   const image = useMemo(() => {
     const plane = output.slices[slice];

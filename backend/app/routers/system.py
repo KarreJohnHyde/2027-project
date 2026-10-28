@@ -10,7 +10,7 @@ from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 
 from app.config import ANATOMY_MANIFEST_PATH, PROJECT_NAME, UPLOAD_DIR, VERSION, RESEARCH_ONLY_NOTICE
-from app.database import engine, get_db
+from app.database import encryption_status as database_encryption_status, engine, get_db
 from app.migrations import migration_status
 from app.services import job_queue, upload_store
 from app.services.model_registry import list_models
@@ -84,6 +84,7 @@ def get_readiness(db: Session = Depends(get_db)):
     except Exception as exc:
         checks["model_registry"] = {"ready": False, "error": str(exc)}
     checks["anatomy_manifest"] = {"ready": ANATOMY_MANIFEST_PATH.exists(), "optional": True}
+    checks["database_encryption"] = database_encryption_status()
     try:
         checks["storage_encryption"] = upload_store.readiness()
     except Exception as exc:  # malformed key configuration

@@ -4,7 +4,7 @@ import { CreateExaminationDialog } from "../components/CaseDialogs";
 import { FindingCard } from "../components/FindingReview";
 import { OrdersCard } from "../components/LabEntry";
 import { Button, Card, ErrorBlock, Hash, PageHeader, SelectInput, StatusBadge, Table, TextInput } from "../components/ui";
-import { api } from "../services/api";
+import { api, type CaseMemberRole } from "../services/api";
 import { errorMessage, formatBytes, formatDate, humanize } from "../lib/format";
 import { navigate } from "../lib/router";
 import { useAsync } from "../lib/useAsync";
@@ -13,7 +13,7 @@ import { useSelectedCase, useWorkspace } from "../state/workspace";
 function Members({ caseId, canManage }: { caseId: number; canManage: boolean }) {
   const members = useAsync(() => api.getCaseMembers(caseId), [caseId]);
   const [username, setUsername] = useState("");
-  const [role, setRole] = useState<"VIEWER" | "EDITOR">("VIEWER");
+  const [role, setRole] = useState<CaseMemberRole>("VIEWER");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   async function add(event: FormEvent) {
@@ -53,7 +53,7 @@ function Members({ caseId, canManage }: { caseId: number; canManage: boolean }) 
       {canManage && (
         <form onSubmit={add} className="flex flex-wrap gap-2">
           <TextInput aria-label="Username to share with" placeholder="Username" value={username} onChange={(event) => setUsername(event.target.value)} required className="min-w-0 flex-1" />
-          <div className="w-28"><SelectInput aria-label="Role" value={role} onChange={(event) => setRole(event.target.value as "VIEWER" | "EDITOR")}><option value="VIEWER">Viewer</option><option value="EDITOR">Editor</option></SelectInput></div>
+          <div className="w-36"><SelectInput aria-label="Role" value={role} onChange={(event) => setRole(event.target.value as CaseMemberRole)}><option value="VIEWER">Viewer</option><option value="EDITOR">Editor</option><option value="PATIENT">Patient (portal)</option><option value="CAREGIVER">Caregiver (portal)</option></SelectInput></div>
           <Button type="submit" icon={UserPlus} loading={busy}>Share</Button>
         </form>
       )}

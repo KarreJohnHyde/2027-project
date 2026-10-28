@@ -32,8 +32,8 @@ Canonical evidence: `docs/development/MASTER_PROGRESS.md`,
 | Risk and statistical evaluation | `IMPLEMENTED_TESTED` | Task-appropriate metrics and immutable artifact binding are implemented; missing/mismatched inputs remain exploratory and unsupported patient risk remains unavailable. |
 | IEEE traceability | `IMPLEMENTED_TESTED` | Exactly 56 claims: 28 tested, 18 partial, 5 implemented-not-validated, 3 proposed-only, 2 unsupported; revised Eq. (1)-(12) is preserved. |
 | Docker configuration | `IMPLEMENTED_TESTED` | Docker client 29.9.2 / Compose 5.6.1; base and worker-profile configuration both exit 0 with a temporary non-secret validation key. |
-| Docker build/container runtime | `BLOCKED` | The Desktop Linux engine pipe is absent; no image-build, migration, container-start, health, worker, persistence, or shutdown claim is made. |
-| External/clinical validation and production release | `BLOCKED` | No independent-site/prospective study, clinical safety case, regulatory review, production threat model, database-at-rest solution, or production security assessment exists. |
+| Docker build/container runtime | `IMPLEMENTED_TESTED` | 2026-10-28 full Compose run (worker profile): images built, health and readiness, migrations, worker-executed analysis job, encrypted uploads and SQLCipher database on the volume, non-root containers, frontend security headers, restart persistence, clean shutdown. |
+| External/clinical validation and production release | `BLOCKED` | No independent-site/prospective study, clinical safety case, regulatory review, production threat model, database key-rotation/backup procedure, or production security assessment exists. |
 
 ## Latest executed verification
 
@@ -47,6 +47,6 @@ Canonical evidence: `docs/development/MASTER_PROGRESS.md`,
 - Visible Chrome: correction history, BMP/C-NMC, Prognosis abstention, and the
   ten-system Anatomy interface were opened and inspected.
 - Privacy: current-tree scan exits 0; history scan/pre-push remain intentionally blocked.
-- Docker: Compose configuration exits 0; engine query fails because the engine is absent.
+- Docker: full Compose run with the worker profile passed (2026-10-28); see the Docker row above.
 
 No status above upgrades an internal held-out result to external or clinical validation.

@@ -178,7 +178,8 @@ def case_charts(db: Session, user: User) -> list[dict[str, Any]]:
     if user.role == UserRole.ADMIN:
         case_ids = [row.id for row in db.query(Case.id).all()]
     else:
-        shared = {row.case_id for row in db.query(CaseMembership.case_id).filter(CaseMembership.user_id == user.id)}
+        # Patient and caregiver links open the portal only, never analytics over unreviewed evidence.
+        shared = {row.case_id for row in db.query(CaseMembership.case_id).filter(CaseMembership.user_id == user.id, CaseMembership.role.in_(("VIEWER", "EDITOR")))}
         case_ids = [row.id for row in db.query(Case.id).filter(Case.created_by_id == user.id).all()] + list(shared)
     uploads = db.query(UploadedFile).filter(UploadedFile.case_id.in_(case_ids)).all() if case_ids else []
     statements = db.query(ClinicalReportStatement).filter(ClinicalReportStatement.case_id.in_(case_ids)).all() if case_ids else []

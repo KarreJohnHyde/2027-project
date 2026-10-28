@@ -1,0 +1,20 @@
+{
+  "model_id": "acdc_cardiac_mri_3d_unet",
+  "checkpoint_sha256": "b18afcf66effbfd8c8db515958e798cb7b03f322b4a1da354d41edb5edc2d60e",
+  "frames": "ACDC publisher test set (public research data), each re-encoded as a DICOM series in a temporary directory",
+  "refused_by_envelope_gate": {
+    "IN_PLANE_SPACING_OUTSIDE_DEVELOPMENT_RANGE": 2
+  },
+  "inputs_identical": 98,
+  "spacing_identical": 98,
+  "masks_identical": 98,
+  "compared": 98,
+  "voxel_agreement": {
+    "min": 1.0,
+    "mean": 1.0
+  },
+  "integer_storage_max_abs_difference": 0.0,
+  "precision": "float16 autocast on CUDA",
+  "seconds": 27.8,
+  "scope": "Proves the series assembly and conversion feed the network the same voxels in the same order as the NIfTI path. It does not establish the orientation convention of scanner-native series."
+}

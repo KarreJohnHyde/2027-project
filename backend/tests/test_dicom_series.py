@@ -7,6 +7,7 @@ import io
 import random
 
 import numpy as np
+import pytest
 import pydicom
 from pydicom.dataset import FileMetaDataset
 from pydicom.uid import ExplicitVRLittleEndian, generate_uid
@@ -132,3 +133,80 @@ def test_assembly_endpoint_uses_only_case_bound_uploads(client, db_session, test
 
     foreign = client.post(f"/api/v1/cases/{case.id}/dicom-series/assemble", headers=get_auth_headers(owner), json={"upload_ids": [upload_ids[0], 999999]})
     assert foreign.status_code == 404
+
+
+def _upload_series(client, owner, case, values_by_z):
+    series = generate_uid()
+    upload_ids = []
+    for index, (z, value) in enumerate(values_by_z):
+        buffer = io.BytesIO()
+        _slice(series, z, index + 1, value=value).save_as(buffer, enforce_file_format=True)
+        response = client.post(f"/api/v1/cases/{case.id}/uploads", headers=get_auth_headers(owner),
+                               files={"file": (f"r{index}.dcm", buffer.getvalue(), "application/dicom")}, data={"deidentified": "true"})
+        assert response.status_code == 201, response.text
+        upload_ids.append(response.json()["id"])
+    return upload_ids
+
+
+def test_assembled_series_renders_every_plane_in_slice_order(client, db_session, test_users):
+    import json as jsonlib
+
+    from PIL import Image
+
+    owner = test_users["clinician_a"]
+    case = Case(pseudonymous_id="DICOM-SERIES-RENDER", created_by_id=owner.id)
+    db_session.add(case)
+    db_session.commit()
+    # Stored values 1000, 1100, 1200 by position (rescaled -24, 76, 176); uploaded out of order.
+    upload_ids = _upload_series(client, owner, case, [(5.0, 1200), (0.0, 1000), (2.5, 1100)])
+    url = f"/api/v1/cases/{case.id}/dicom-series/render"
+    axial = client.post(url, headers=get_auth_headers(owner), json={"upload_ids": upload_ids, "axis": "axial", "index": 2, "center": 76, "width": 200})
+    assert axial.status_code == 200 and axial.headers["content-type"] == "image/png"
+    info = jsonlib.loads(axial.headers["X-MedTwin-Render"])
+    assert (info["index"], info["count"], info["shape"]) == (2, 3, [4, 4])
+    assert info["ordered_upload_ids"] == [upload_ids[1], upload_ids[2], upload_ids[0]]
+    assert np.asarray(Image.open(io.BytesIO(axial.content))).max() == 255  # the last slice (176) is at the top of the window
+    coronal = client.post(url, headers=get_auth_headers(owner), json={"upload_ids": upload_ids, "axis": "coronal", "index": 1, "center": 76, "width": 200})
+    rows = np.asarray(Image.open(io.BytesIO(coronal.content)))
+    assert rows.shape == (3, 4) and rows[0, 0] < rows[1, 0] < rows[2, 0]  # slice 0 at the top
+    info = jsonlib.loads(coronal.headers["X-MedTwin-Render"])
+    assert info["pixel_spacing_mm"] == {"vertical": 2.5, "horizontal": 0.7}
+    rejected = _upload_series(client, owner, case, [(0.0, 1000), (2.5, 1000), (5.0, 1000), (12.5, 1000)])
+    refused = client.post(url, headers=get_auth_headers(owner), json={"upload_ids": rejected})
+    assert refused.status_code == 422 and refused.json()["detail"]["issues"] == ["MISSING_SLICES"]
+
+
+def test_series_volume_matches_the_nifti_voxel_order(tmp_path):
+    import nibabel as nib
+
+    from app.services import volume_inference
+
+    rng = np.random.default_rng(0)
+    image = rng.integers(0, 400, size=(5, 4, 3)).astype(np.float32)  # (i, j, k)
+    nifti = tmp_path / "frame.nii.gz"
+    affine = np.diag([1.5, 1.5, 8.0, 1.0])
+    nib.save(nib.Nifti1Image(image, affine), str(nifti))
+    envelope = {"in_plane_spacing_mm": {"min": 1.0, "max": 2.0}, "slice_spacing_mm": {"min": 5.0, "max": 10.0},
+                "matrix": {axis: {"min": 1, "max": 512} for axis in ("i", "j", "k")}}
+    from_nifti = volume_inference.read_volume(nifti, envelope)
+    series = np.stack([image[:, :, k].T for k in range(3)])  # slices x rows (j) x columns (i), as dicom_series assembles
+    from_series = volume_inference.from_series(series, {"row": 1.5, "column": 1.5, "slice": 8.0}, envelope)
+    assert np.array_equal(from_series.image, from_nifti.image) and from_series.spacing_mm == from_nifti.spacing_mm
+    assert any(warning.startswith("ORIENTATION_CONVENTION") for warning in from_series.warnings)
+    with pytest.raises(volume_inference.VolumeInputError, match="NONSQUARE_IN_PLANE_PIXELS"):
+        volume_inference.from_series(series, {"row": 1.5, "column": 1.9, "slice": 8.0}, envelope)
+
+
+def test_series_inference_refuses_models_that_do_not_take_volumes(client, db_session, test_users, monkeypatch):
+    from app.services import model_inference
+
+    owner = test_users["clinician_a"]
+    case = Case(pseudonymous_id="DICOM-SERIES-MODEL", created_by_id=owner.id)
+    db_session.add(case)
+    db_session.commit()
+    upload_ids = _upload_series(client, owner, case, [(0.0, 1000), (2.5, 1100), (5.0, 1200)])
+    monkeypatch.setattr(model_inference, "get_model", lambda model_id: {"model_id": model_id, "display_name": "Image classifier",
+                                                                          "inference_input": "image_2d", "supported_modalities": ["MRI"]})
+    response = client.post(f"/api/v1/cases/{case.id}/dicom-series/research-inference", headers=get_auth_headers(owner),
+                           json={"upload_ids": upload_ids, "model_id": "image_classifier"})
+    assert response.status_code == 400 and "only volumetric models" in response.json()["detail"]

@@ -67,6 +67,8 @@ ALLOWED_EXTENSIONS: set = {
     ".png", ".jpg", ".jpeg", ".bmp", ".dcm", ".nii", ".nii.gz", ".nrrd", ".mha",
     # ECG records
     ".csv", ".dat", ".hea",
+    # EEG and other physiological recordings
+    ".edf", ".bdf",
     # Clinical reports (JSON includes FHIR R4 resources; .hl7 is HL7 v2 observation results)
     ".txt", ".json", ".pdf", ".docx", ".md", ".xlsx", ".hl7"
 }

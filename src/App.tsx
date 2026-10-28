@@ -31,10 +31,12 @@ const ROUTES: Record<string, Route> = {
   "/validation": { component: page(() => import("./pages/ValidationCenterPage")), title: "Validation Center" },
   "/reports": { component: page(() => import("./pages/ReportsPage")), needsCase: true, title: "Reports" },
   "/settings": { component: page(() => import("./pages/SettingsPage")), title: "Settings" },
+  "/portal": { component: page(() => import("./pages/PortalPage")), title: "My record" },
   "/attribution": { component: page(() => import("./pages/AttributionPage")), title: "Data sources and licences" },
 };
 
 const NotFound = page(() => import("./pages/NotFoundPage"));
+const PERSONAL_PATHS = new Set(["/portal", "/settings", "/attribution"]);
 
 function NeedsCase({ title }: { title: string }) {
   const [creating, setCreating] = useState(false);
@@ -78,11 +80,13 @@ function App() {
   }
   if (!user) return <LoginPage onLoginSuccess={(next) => void signedIn(next)} />;
 
-  const Page = route?.component ?? NotFound;
+  // Personal (patient or caregiver) accounts see only their own record, settings and attribution.
+  const personal = user.role === "public";
+  const Page = personal && !PERSONAL_PATHS.has(path) ? ROUTES["/portal"].component : route?.component ?? NotFound;
   return (
     <AppShell fullBleed={route?.fullBleed}>
       <Suspense fallback={<div className={route?.fullBleed ? "p-6" : ""}><LoadingBlock label={`Loading ${title}`} /></div>}>
-        {route?.needsCase && !selected ? <NeedsCase title={title} /> : <Page />}
+        {route?.needsCase && !selected && !personal ? <NeedsCase title={title} /> : <Page />}
       </Suspense>
     </AppShell>
   );

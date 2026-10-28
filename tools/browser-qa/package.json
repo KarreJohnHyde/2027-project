@@ -1,9 +1,12 @@
-﻿{
+{
   "name": "medtwin-browser-qa",
   "private": true,
   "type": "module",
-  "description": "Isolated browser verification for MedTwin (drives the installed Microsoft Edge; no browser download).",
+  "description": "MedTwin browser checks: the hand-run isolated-stack walkthrough (installed Edge) and the Playwright regression suite run in CI (npx playwright test).",
   "dependencies": {
     "playwright-core": "1.63.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
   }
 }

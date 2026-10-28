@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Combine } from "lucide-react";
 import EcgResearchPanel from "../components/EcgResearchPanel";
+import SignalRecordingPanel from "../components/SignalRecordingPanel";
 import { Button, Card, ErrorBlock, KeyValue, Metric, PageHeader, StatusBadge, Table, Unavailable } from "../components/ui";
 import { api, type FusionRecord } from "../services/api";
 import { errorMessage, formatDate, humanize } from "../lib/format";
@@ -87,6 +88,9 @@ export default function MultimodalPage() {
       </Card>
       <Card title="ECG research model" eyebrow="Research only · digital 12-lead records" className="mt-4">
         <EcgResearchPanel uploads={evidence.uploads} />
+      </Card>
+      <Card title="EEG and physiological recordings" eyebrow="EDF / EDF+ / BDF · read as recorded, no model" className="mt-4">
+        <SignalRecordingPanel uploads={evidence.uploads} />
       </Card>
     </>
   );

@@ -9,7 +9,7 @@ from typing import Literal, Optional
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -107,8 +107,64 @@ def run_research_inference(
         return serialize_research_run(db.get(InferenceRun, job.result_ref["inference_run_id"]))
     if job.status == "RUNNING":
         return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"queued_job": job_queue.serialize(job)})
+    refusal = "InferenceNotPermitted: "
+    if job.status == "FAILED" and (job.last_error or "").startswith(refusal):
+        # A content gate that needs the network (printed document, applicability reference) refused the image.
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=job.last_error[len(refusal):])
     raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                         detail="Research inference failed; the error state was recorded in provenance.")
+
+
+class SeriesInferenceRequest(BaseModel):
+    upload_ids: list[int] = Field(..., min_length=2, max_length=2000)
+    series_reference: Optional[str] = Field(default=None, pattern="^[0-9a-f]{16}$")
+    model_id: str = Field(..., min_length=1, max_length=128)
+    declared_input_type: Literal["MRI"] = "MRI"
+
+    model_config = ConfigDict(extra="forbid")
+
+
+@router.post("/cases/{case_id}/dicom-series/research-inference", status_code=status.HTTP_201_CREATED,
+             responses={202: {"description": "Queued for the background worker (worker execution mode)."}})
+def run_series_research_inference(
+    case_id: int,
+    request: SeriesInferenceRequest,
+    idempotency_key: Optional[str] = Header(default=None, alias="Idempotency-Key", max_length=128),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Run a volumetric research model on an assembled multi-file DICOM series. The series must
+    assemble without issues and pass the same input checks as a NIfTI frame."""
+    from app.routers.modalities import load_series, series_records
+
+    verify_case_access(case_id, current_user, db)
+    records = series_records(case_id, request.upload_ids, db)
+    try:
+        model = model_inference.get_model(request.model_id)
+        report = load_series(records, request.series_reference, load_pixels=True)
+        model_inference.prepare_series(model, report, request.declared_input_type)
+    except model_inference.InferenceNotPermitted as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+    first = db.get(UploadedFile, report["ordered_upload_ids"][0])
+    key = f"research-series:{current_user.id}:{idempotency_key}" if idempotency_key else None
+    job, _created = job_queue.enqueue(
+        db, "RESEARCH_SERIES_INFERENCE", requested_by=current_user, case_id=case_id, file_id=first.id, resource="GPU", idempotency_key=key,
+        payload={"upload_ids": report["upload_ids"], "series_reference": report["series_reference"], "model_id": request.model_id,
+                 "declared_input_type": request.declared_input_type},
+    )
+    if job_queue.execution_mode() == "worker" and job.status not in job_queue.TERMINAL:
+        return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"queued_job": job_queue.serialize(job)})
+    if job.status == "QUEUED":
+        claimed = job_queue.claim(db, f"api-inline:{job_queue.default_worker_id()}", job_id=job.id)
+        if claimed is None:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="The model runtime is busy; retry shortly.")
+        job = job_queue.run_claimed(db, claimed, claimed.lease_owner)
+    if job.status == "SUCCEEDED" and job.result_ref:
+        return serialize_research_run(db.get(InferenceRun, job.result_ref["inference_run_id"]))
+    if job.status == "RUNNING":
+        return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"queued_job": job_queue.serialize(job)})
+    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        detail="Research inference on the series failed; the error state was recorded in provenance.")
 
 
 @router.get("/research-inference/{run_id}")

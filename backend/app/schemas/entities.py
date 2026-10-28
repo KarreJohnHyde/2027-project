@@ -305,6 +305,8 @@ class RegistrationGateCheck(BaseModel):
     landmarks_source: List[List[float]] = [] # [ [x, y, z], ... ]
     landmarks_target: List[List[float]] = [] # [ [x, y, z], ... ]
     threshold_mm: Optional[float] = 5.0
+    # An approved landmark manifest replaces raw coordinates and is the only path to L2.
+    manifest_id: Optional[int] = None
 
 
 class AnatomicalAssetResponse(BaseModel):

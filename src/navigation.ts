@@ -15,6 +15,7 @@ import {
   Settings,
   ShieldQuestion,
   TrendingUp,
+  UserRound,
 } from "lucide-react";
 
 export type NavItem = {
@@ -23,6 +24,8 @@ export type NavItem = {
   icon: typeof Activity;
   summary: string;
   needsCase?: boolean;
+  /** Shown to personal (patient or caregiver) accounts, which see nothing else. */
+  personal?: boolean;
 };
 
 export const NAV_SECTIONS: Array<{ label: string; items: NavItem[] }> = [
@@ -58,7 +61,10 @@ export const NAV_SECTIONS: Array<{ label: string; items: NavItem[] }> = [
   },
   {
     label: "System",
-    items: [{ path: "/settings", label: "Settings", icon: Settings, summary: "Theme, detail level, privacy and environment." }],
+    items: [
+      { path: "/portal", label: "My record", icon: UserRound, summary: "Your documents and reviewed results (patients and caregivers).", personal: true },
+      { path: "/settings", label: "Settings", icon: Settings, summary: "Theme, detail level, privacy and environment.", personal: true },
+    ],
   },
 ];
 

@@ -32,6 +32,7 @@ def _bundle(tmp_path, checkpoint, sha):
         "task_definition": "fixture", "label_definition": {"classes": ["a", "b", "c"]}, "preprocessing_version": "fixture-v1",
         "checkpoint_path": str(checkpoint), "checkpoint_sha256": sha, "calibration": None, "decision_thresholds": None,
         "abstention_thresholds": None, "held_out_predictions_path": str(report), "evaluation_report_path": str(report), "model_card_path": str(card),
+        "ood_reference_path": None, "ood_reference_sha256": None,
     }
 
 
@@ -61,9 +62,39 @@ def research_registry(tmp_path, monkeypatch):
 
     monkeypatch.setattr(model_registry, "REGISTRY_PATH", path)
     write()
-    yield {"write": write, "checkpoint": checkpoint, "sha": sha}
+    # The applicability reference is fitted on varied synthetic frames through the served network.
+    reference_path, reference_sha = _fit_reference(tmp_path, model_inference.load_model(model_inference._load_registry()["models"][0]), sha)
+    entry["artifact_bundle"].update(ood_reference_path=str(reference_path), ood_reference_sha256=reference_sha)
+    write()
+    model_inference._load.cache_clear()  # later tests must load (and re-verify) the checkpoint themselves
+    yield {"write": write, "checkpoint": checkpoint, "sha": sha, "reference": reference_path, "reference_sha": reference_sha}
     model_registry._load_registry.cache_clear()
     model_inference._load.cache_clear()
+
+
+def _frame(seed):
+    rng = np.random.default_rng(seed)
+    pixels = rng.integers(0, 255, size=(80, 96, 3)) * rng.uniform(0.3, 1.0, size=3) + rng.uniform(0, 60)
+    return Image.fromarray(np.clip(pixels, 0, 255).astype(np.uint8))
+
+
+def _frame_bytes(seed):
+    buffer = io.BytesIO()
+    _frame(seed).save(buffer, format="PNG")
+    return buffer.getvalue()
+
+
+def _fit_reference(tmp_path, loaded, sha, scale=3.0, quantile=1.0):
+    from app.services import image_ood
+
+    network, payload, device = loaded
+    rows = [model_inference.image_features(network, payload, device, _frame(seed)) for seed in range(100, 140)]
+    stages = [np.vstack([row[index] for row in rows]) for index in range(len(rows[0]))]
+    reference = image_ood.fit_reference([stage[:30] for stage in stages], [stage[30:] for stage in stages], quantile=quantile,
+                                        metadata={"checkpoint_sha256": sha, "feature_version": model_inference.FEATURE_VERSION})
+    reference["threshold"] *= scale
+    path = tmp_path / "ood_reference.npz"
+    return path, image_ood.save_reference(path, reference)
 
 
 def _png(width=96, height=80, seed=1):
@@ -221,6 +252,8 @@ def test_research_finding_maps_only_to_confirmed_schematic_organ(client, test_us
     ({"evaluation_report_path": "missing/report.json"}, "EVALUATION_REPORT_MISSING"),
     ({"research_inference": False}, "NOT_REGISTERED_FOR_RESEARCH_INFERENCE"),
     ({"status": "WEIGHTS_MISSING"}, "STATUS_WEIGHTS_MISSING"),
+    ({"ood_reference_path": None}, "OOD_REFERENCE_MISSING"),
+    ({"ood_reference_sha256": "0" * 64}, "OOD_REFERENCE_HASH_MISMATCH"),
 ])
 def test_gate_refuses_models_without_a_verified_bundle(client, test_users, db_session, research_registry, change, blocker):
     headers = get_auth_headers(test_users["clinician_a"])
@@ -338,3 +371,51 @@ def test_document_photograph_gate_refuses_printed_pages_before_any_model(monkeyp
 
     monkeypatch.setattr(model_inference, "printed_text_lines", lambda path: None)
     assert model_inference.check_document_photograph(image_path)["status"] == "NOT_CHECKED_OCR_UNAVAILABLE"
+
+
+def test_out_of_distribution_image_is_refused_before_the_model_runs(client, test_users, db_session, research_registry, tmp_path):
+    from app.services import image_ood
+
+    headers = get_auth_headers(test_users["clinician_a"])
+    upload_id = _upload(client, headers, pseudonym="CASE-RESEARCH-OOD")
+    reference = image_ood.load_reference(research_registry["reference"], research_registry["reference_sha"], research_registry["sha"])
+    reference["threshold"] = 0.0  # every image is outside this reference
+    strict = tmp_path / "strict_reference.npz"
+    research_registry["write"](ood_reference_path=str(strict), ood_reference_sha256=image_ood.save_reference(strict, reference))
+    response = client.post(f"/api/v1/uploads/{upload_id}/research-inference", json={"model_id": MODEL_ID, "declared_input_type": "ENDOSCOPY"}, headers=headers)
+    assert response.status_code == 400 and response.json()["detail"].startswith("MODEL_INPUT_OUT_OF_DISTRIBUTION")
+    assert db_session.query(Finding).join(InferenceRun, Finding.inference_run_id == InferenceRun.id).filter(InferenceRun.file_id == upload_id).count() == 0
+
+
+def test_in_distribution_run_records_the_applicability_check(client, test_users, research_registry):
+    headers = get_auth_headers(test_users["clinician_a"])
+    upload_id = _upload(client, headers, body=_frame_bytes(7), pseudonym="CASE-RESEARCH-IN")
+    run = client.post(f"/api/v1/uploads/{upload_id}/research-inference", json={"model_id": MODEL_ID, "declared_input_type": "ENDOSCOPY"}, headers=headers)
+    assert run.status_code == 201, run.text
+    check = run.json()["research_output"]["input_content_check"]["distribution"]
+    assert check["status"] == "PASSED" and check["applicability_score"] <= check["applicability_limit"]
+
+
+def test_applicability_reference_math_and_binding(tmp_path):
+    from app.services import image_ood
+
+    rng = np.random.default_rng(3)
+    mixing = rng.normal(size=(40, 40))
+
+    def sample(n, shift=0.0):
+        return [rng.normal(size=(n, 40)) @ mixing + shift, rng.normal(size=(n, 12)) + shift]
+
+    reference = image_ood.fit_reference(sample(2000), sample(2000), quantile=0.99, metadata={"checkpoint_sha256": "a" * 64})
+    in_distribution = (image_ood.score(reference, sample(4000)) > reference["threshold"]).mean()
+    shifted = (image_ood.score(reference, sample(500, shift=3.0)) > reference["threshold"]).mean()
+    assert 0.003 <= in_distribution <= 0.03 and shifted > 0.99
+    path = tmp_path / "reference.npz"
+    digest = image_ood.save_reference(path, reference)
+    loaded = image_ood.load_reference(path, digest, "a" * 64)
+    probe = sample(5)
+    np.testing.assert_allclose(image_ood.score(loaded, probe), image_ood.score(reference, probe))
+    for sha, checkpoint, code in ((digest, "b" * 64, "OOD_REFERENCE_FOR_ANOTHER_CHECKPOINT"), ("0" * 64, "a" * 64, "OOD_REFERENCE_HASH_MISMATCH")):
+        with pytest.raises(image_ood.OodReferenceError, match=code):
+            image_ood.load_reference(path, sha, checkpoint)
+    with pytest.raises(image_ood.OodReferenceError, match="OOD_REFERENCE_MISSING"):
+        image_ood.load_reference(tmp_path / "absent.npz", digest, "a" * 64)

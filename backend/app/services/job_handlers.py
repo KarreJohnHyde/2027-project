@@ -24,6 +24,23 @@ def upload_analysis(db: Session, job: QueuedJob, context: JobContext) -> dict:
     return {"inference_run_id": run.id, "run_status": run.status.value}
 
 
+@handler("RESEARCH_SERIES_INFERENCE")
+def research_series_inference(db: Session, job: QueuedJob, context: JobContext) -> dict:
+    from app.routers.modalities import load_series
+
+    records = [db.get(UploadedFile, upload_id) for upload_id in job.payload["upload_ids"]]
+    if any(record is None or not record.is_associated or record.withdrawn_at is not None for record in records):
+        raise AnalysisNotPermitted("A file of the series no longer exists or is no longer bound to the case.")
+    actor = db.get(User, job.requested_by_id) if job.requested_by_id else None
+    context.progress(10, f"Assembling the series for {job.payload['model_id']}")
+    report = load_series(records, job.payload.get("series_reference"), load_pixels=True)
+    first = next(record for record in records if record.id == report["ordered_upload_ids"][0]) if report.get("ordered_upload_ids") else records[0]
+    context.progress(30, f"Running research model {job.payload['model_id']}")
+    run = execute_research_inference(db, first, job.payload["model_id"], job.payload["declared_input_type"], actor,
+                                     series={"report": report, "records": records})
+    return {"inference_run_id": run.id, "run_status": run.status.value}
+
+
 @handler("RESEARCH_MODEL_INFERENCE")
 def research_model_inference(db: Session, job: QueuedJob, context: JobContext) -> dict:
     file_record = db.get(UploadedFile, job.file_id)

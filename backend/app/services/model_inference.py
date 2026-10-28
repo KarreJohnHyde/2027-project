@@ -4,8 +4,9 @@ A model may run only when its registry entry allows research inference and its
 artifact bundle passes the research gate: licence verified, held-out evaluation
 report present, checkpoint present with the registered SHA-256. Outputs are
 returned in the uploaded image's own pixel coordinates and are labelled
-MODEL_INFERENCE / RESEARCH_ONLY_NOT_CLINICALLY_VALIDATED. Applicability is
-declared by the requesting user (no out-of-distribution detector exists).
+MODEL_INFERENCE / RESEARCH_ONLY_NOT_CLINICALLY_VALIDATED. Before a 2-D image model
+runs, the upload must pass the printed-document check and the model's own feature-space
+reference (app/services/image_ood.py), whatever modality the user declared.
 """
 
 from __future__ import annotations
@@ -27,7 +28,7 @@ from PIL import Image
 from sqlalchemy.orm import Session
 
 from app.models.entities import EvidenceStatus, Finding, InferenceRun, ModalityType, RepresentationLevel, UploadedFile, User
-from app.services import ecg_inference, upload_store, volume_inference
+from app.services import ecg_inference, image_ood, upload_store, volume_inference
 from app.services.audit_service import log_audit_event
 from app.services.model_registry import _load_registry, _resolve_artifact_path, _sha256
 
@@ -76,6 +77,13 @@ def research_gate(model: dict) -> dict:
         blockers.append("CHECKPOINT_MISSING")
     elif _checkpoint_hash(_resolve_artifact_path(checkpoint)) != bundle.get("checkpoint_sha256"):
         blockers.append("CHECKPOINT_HASH_MISMATCH")
+    if model.get("research_inference") and model.get("inference_input", "image_2d") == "image_2d":
+        # A 2-D model never runs without its feature-space applicability reference.
+        reference = bundle.get("ood_reference_path")
+        if not reference or not _resolve_artifact_path(reference).exists():
+            blockers.append("OOD_REFERENCE_MISSING")
+        elif _checkpoint_hash(_resolve_artifact_path(reference)) != bundle.get("ood_reference_sha256"):
+            blockers.append("OOD_REFERENCE_HASH_MISMATCH")
     return {"allowed": not blockers, "blockers": blockers}
 
 
@@ -245,16 +253,114 @@ def evaluated_precision(device):
     return torch.autocast("cpu", enabled=False), "float32 on CPU; differs from the evaluated bfloat16 CUDA configuration"
 
 
-def classify(network, payload: dict, device, image: Image.Image) -> dict:
-    import torch
+def classifier_tensor(payload: dict, image: Image.Image):
     from torchvision import transforms
 
     size = payload["image_size"]
     transform = transforms.Compose([transforms.Resize(int(size * 1.14)), transforms.CenterCrop(size), transforms.ToTensor(),
                                     transforms.Normalize(payload["normalization"]["mean"], payload["normalization"]["std"])])
+    return transform(image.convert("RGB"))[None]
+
+
+def segmenter_tensor(payload: dict, image: Image.Image):
+    from torchvision.transforms import InterpolationMode
+    from torchvision.transforms import functional as TF
+
+    size = payload["input_size"]
+    arch_params = payload.get("arch_params") or {}
+    rgb = payload.get("color") == "rgb" or arch_params.get("in_channels", 1) == 3
+    tensor = TF.to_tensor(TF.resize(image.convert("RGB" if rgb else "L"), [size, size], interpolation=InterpolationMode.BILINEAR))
+    if rgb:  # per-channel standardisation, as in ml_training.segment
+        tensor = (tensor - tensor.mean(dim=(1, 2), keepdim=True)) / (tensor.std(dim=(1, 2), keepdim=True) + 1e-6)
+    else:
+        tensor = (tensor - tensor.mean()) / (tensor.std() + 1e-6)
+    return tensor[None]
+
+
+def _unet_encoder(network) -> list:
+    """The encoder blocks of a MONAI UNet, outermost first, ending with the bottleneck."""
+    import torch
+    from monai.networks.layers.simplelayers import SkipConnection
+
+    blocks = []
+    node = network.model
+    while isinstance(node, torch.nn.Sequential) and len(node) == 3 and isinstance(node[1], SkipConnection):
+        blocks.append(node[0])
+        node = node[1].submodule
+    return blocks + [node]
+
+
+def _feature_stages(network, payload: dict) -> list:
+    if payload["kind"] == "image_classifier":
+        if payload["arch"].startswith("resnet"):
+            return [network.layer1, network.layer2, network.layer3, network.layer4]
+        return list(network.features)[1:]
+    if payload["kind"] == "object_detector":
+        body = network.backbone.body
+        return [body.layer1, body.layer2, body.layer3, body.layer4]
+    return _unet_encoder(network)
+
+
+# Recorded in each applicability reference; a reference built from other features is refused.
+FEATURE_VERSION = "input-statistics+network-stages-v1"
+
+
+def _input_statistics(tensor) -> np.ndarray:
+    """Summary of the image as the model receives it (after its own preprocessing): per-channel
+    mean and spread, intensity quantiles and, for colour input, the spread of channel differences,
+    which is zero for a greyscale image whatever the normalisation."""
+    import torch
+
+    x = tensor.float()[0] if tensor.dim() == 4 else tensor.float()
+    flat = x.reshape(x.shape[0], -1)
+    grey = flat.mean(dim=0)
+    parts = [flat.mean(dim=1), flat.std(dim=1), torch.quantile(grey, torch.tensor([0.05, 0.25, 0.5, 0.75, 0.95], device=grey.device))]
+    if x.shape[0] == 3:
+        differences = torch.stack([flat[0] - flat[1], flat[1] - flat[2]])
+        parts += [differences.std(dim=1), differences.abs().mean(dim=1)]
+    return torch.cat(parts).cpu().numpy().astype(np.float64)
+
+
+def image_features(network, payload: dict, device, image: Image.Image) -> list[np.ndarray]:
+    """The features the applicability reference is fitted on: statistics of the model's input
+    tensor, then every stage of the network (ResNet layers, EfficientNet stages, U-Net encoder
+    levels, the detector's ResNet stages) averaged over space, computed with the model's own
+    preprocessing and numeric precision."""
+    import torch
+    from torchvision.transforms import functional as F
+
+    captured: list = []
+    hooks = [stage.register_forward_hook(lambda module, inputs, output: captured.append(output.float().mean(dim=(2, 3))))
+             for stage in _feature_stages(network, payload)]
+    try:
+        with torch.no_grad():
+            if payload["kind"] == "image_classifier":
+                tensor = classifier_tensor(payload, image).to(device)
+                precision, _ = evaluated_precision(device)
+                with precision:
+                    network(tensor)
+            elif payload["kind"] == "object_detector":
+                tensor = F.to_tensor(image.convert("RGB")).to(device)
+                images, _ = network.transform([tensor])
+                network.backbone.body(images.tensors)
+            else:
+                tensor = segmenter_tensor(payload, image).to(device)
+                precision, _ = evaluated_precision(device)
+                with precision:
+                    network(tensor)
+            inputs = _input_statistics(tensor)
+    finally:
+        for hook in hooks:
+            hook.remove()
+    return [inputs] + [values.cpu().numpy()[0].astype(np.float64) for values in captured]
+
+
+def classify(network, payload: dict, device, image: Image.Image) -> dict:
+    import torch
+
     precision, precision_note = evaluated_precision(device)
     with torch.no_grad(), precision:
-        logits = network(transform(image.convert("RGB"))[None].to(device)).float().cpu().numpy()[0]
+        logits = network(classifier_tensor(payload, image).to(device)).float().cpu().numpy()[0]
     scaled = logits / payload["temperature"]
     probabilities = np.exp(scaled - scaled.max())
     probabilities /= probabilities.sum()
@@ -290,20 +396,10 @@ def mask_to_source(mask: np.ndarray, size: tuple[int, int]) -> np.ndarray:
 def segment(network, payload: dict, device, image: Image.Image) -> dict:
     import torch
     from pycocotools import mask as coco_mask
-    from torchvision.transforms import InterpolationMode
-    from torchvision.transforms import functional as TF
 
-    size = payload["input_size"]
-    arch_params = payload.get("arch_params") or {}
-    rgb = payload.get("color") == "rgb" or arch_params.get("in_channels", 1) == 3
-    tensor = TF.to_tensor(TF.resize(image.convert("RGB" if rgb else "L"), [size, size], interpolation=InterpolationMode.BILINEAR))
-    if rgb:  # per-channel standardisation, as in ml_training.segment
-        tensor = (tensor - tensor.mean(dim=(1, 2), keepdim=True)) / (tensor.std(dim=(1, 2), keepdim=True) + 1e-6)
-    else:
-        tensor = (tensor - tensor.mean()) / (tensor.std() + 1e-6)
     precision, precision_note = evaluated_precision(device)
     with torch.no_grad(), precision:
-        prediction = network(tensor[None].to(device)).float().argmax(1).cpu().numpy()[0].astype(np.uint8)
+        prediction = network(segmenter_tensor(payload, image).to(device)).float().argmax(1).cpu().numpy()[0].astype(np.uint8)
     source = mask_to_source(prediction, image.size)
     segments = []
     for index, name in enumerate(payload["classes"], start=1):
@@ -434,7 +530,33 @@ def prepare_input(model: dict, file_record: UploadedFile, companion: Optional[Up
                 return volume_inference.read_volume(plain, envelope)
     except (ecg_inference.EcgInputError, volume_inference.VolumeInputError) as exc:
         raise InferenceNotPermitted(f"MODEL_INPUT_INCOMPATIBLE: {exc}") from exc
+    if kind == "image_2d":
+        from app.services import job_queue
+
+        # The image gates need OCR and the network. With inline execution the network runs in
+        # this process anyway, so refusals come back before a job is queued; a worker runs them
+        # at execution (execute_research_inference), keeping model memory out of the API.
+        if job_queue.execution_mode() == "inline":
+            with upload_store.materialize(Path(file_record.file_path)) as plain:
+                check_document_photograph(plain)
+                check_distribution(model, plain)
     return None
+
+
+def prepare_series(model: dict, report: dict, declared_input_type: str):
+    """An assembled DICOM series as input for a volumetric model: the same checks as a NIfTI frame."""
+    if model.get("inference_input", "image_2d") != "volume_nifti":
+        raise InferenceNotPermitted(f"{model['display_name']} does not take volumes; only volumetric models run on an assembled DICOM series.")
+    if declared_input_type not in model.get("supported_modalities", []):
+        supported = ", ".join(MODALITY_LABELS.get(m, m) for m in model.get("supported_modalities", []))
+        raise InferenceNotPermitted(f"{model['display_name']} was trained only on: {supported}.")
+    if report.get("status") != "ASSEMBLED":
+        raise InferenceNotPermitted(f"SERIES_NOT_ASSEMBLED: {', '.join(report.get('issues') or ['unknown'])}.")
+    envelope = _input_envelope(model)
+    try:
+        return volume_inference.from_series(report["volume"], report["spacing_mm"], envelope)
+    except volume_inference.VolumeInputError as exc:
+        raise InferenceNotPermitted(f"MODEL_INPUT_INCOMPATIBLE: {exc}") from exc
 
 
 def run_prepared(model: dict, prepared) -> dict:
@@ -486,6 +608,47 @@ def check_document_photograph(image_path: Path) -> dict:
             "status": "NOT_CHECKED_OCR_UNAVAILABLE" if lines is None else "PASSED"}
 
 
+def ood_reference(model: dict) -> dict:
+    bundle = model["artifact_bundle"]
+    path = bundle.get("ood_reference_path")
+    try:
+        if not path:
+            raise image_ood.OodReferenceError("OOD_REFERENCE_MISSING")
+        reference = image_ood.load_reference(_resolve_artifact_path(path), bundle.get("ood_reference_sha256"), bundle.get("checkpoint_sha256"))
+        if reference["metadata"].get("feature_version") != FEATURE_VERSION:
+            raise image_ood.OodReferenceError("OOD_REFERENCE_FEATURES_MISMATCH")
+        return reference
+    except image_ood.OodReferenceError as exc:
+        raise InferenceNotPermitted(f"{exc}: the model's applicability reference is unavailable; upload inference is refused.") from exc
+
+
+def check_distribution(model: dict, image_path: Path) -> dict:
+    """Refuse an image whose features lie outside the model's training distribution, whatever
+    modality the user declared (e.g. a phone photograph of an X-ray film sent to an endoscopy model)."""
+    reference = ood_reference(model)
+    with _inference_lock:
+        network, payload, device = load_model(model)
+        with Image.open(image_path) as image:
+            image.load()
+            features = image_features(network, payload, device, image)
+    try:
+        value = float(image_ood.score(reference, [values[None] for values in features])[0])
+    except image_ood.OodReferenceError as exc:
+        raise InferenceNotPermitted(f"{exc}: the applicability reference does not match this network's feature stages.") from exc
+    meta = reference["metadata"]
+    result = {"applicability_score": round(value, 3), "applicability_limit": round(reference["threshold"], 3),
+              "score_version": meta["score_version"],
+              "calibration": f"{meta['calibration_quantile']:.3g} quantile of {meta['calibration_n']} validation images",
+              "status": "PASSED"}
+    if value > reference["threshold"]:
+        raise InferenceNotPermitted(
+            f"MODEL_INPUT_OUT_OF_DISTRIBUTION: this image is unlike the images {model['display_name']} was trained on "
+            f"(applicability score {value:.2f}; limit {reference['threshold']:.2f}, the {meta['calibration_quantile']:.3g} quantile of its "
+            "validation images). The model was not run. Check the modality and upload a native frame of the kind the model was trained on."
+        )
+    return result
+
+
 CONTENT_CHECKS = {
     "ecg_12lead": "Signal read exactly (WFDB checksums or CSV time column) and checked against the trained contract: sampling rate, duration, lead set, amplitude and flatline limits.",
     "volume_nifti": "Header and voxels checked against the recorded development envelope: one 3-D frame, square in-plane pixels, slice axis last, voxel spacing range.",
@@ -496,16 +659,31 @@ MAPPING_STATUS = {"image_2d": "NOT_MAPPABLE: RESEARCH_MODEL_OUTPUT_2D_SOURCE_COO
 
 
 def execute_research_inference(db: Session, file_record: UploadedFile, model_id: str, declared_input_type: str,
-                               actor: Optional[User], options: Optional[dict] = None) -> InferenceRun:
+                               actor: Optional[User], options: Optional[dict] = None, series: Optional[dict] = None) -> InferenceRun:
+    """Run a research model on one upload, or (``series``: the assembled report and its ordered
+    upload records) on a multi-file DICOM series, and record the output pending review."""
     model = get_model(model_id)
-    companion = check_input(model, file_record, declared_input_type, options, db)
     bundle = model["artifact_bundle"]
     kind = model.get("inference_input", "image_2d")
     prepared = None
-    if kind == "image_2d":
+    companion = None
+    series_provenance = None
+    if series is not None:
+        prepared = prepare_series(model, series["report"], declared_input_type)
+        report = series["report"]
+        series_provenance = {
+            "series_reference": report["series_reference"], "ordered_upload_ids": report["ordered_upload_ids"],
+            "file_sha256": [record.file_hash for record in series["records"]], "shape_slices_rows_columns": report["shape_slices_rows_columns"],
+            "spacing_mm": report["spacing_mm"], "assembly_warnings": report["warnings"], "input_warnings": prepared.warnings,
+        }
+        content_check = {"status": "PASSED", "checks": CONTENT_CHECKS[kind], "dicom_series": series_provenance}
+    elif kind == "image_2d":
+        check_input(model, file_record, declared_input_type, options, db)
         with upload_store.materialize(Path(file_record.file_path)) as plain:
             content_check = check_document_photograph(plain)
+            content_check["distribution"] = check_distribution(model, plain)
     else:
+        companion = check_input(model, file_record, declared_input_type, options, db)
         prepared = prepare_input(model, file_record, companion, options)
         content_check = {"status": "PASSED", "checks": CONTENT_CHECKS[kind]}
     started_at = datetime.now(timezone.utc)
@@ -538,7 +716,8 @@ def execute_research_inference(db: Session, file_record: UploadedFile, model_id:
     db.flush()
     classification = output["type"] == "classification"
     calibration = {"classification": "TEMPERATURE_SCALED_ON_INTERNAL_VALIDATION_SPLIT", "ecg_multilabel": "PLATT_SCALED_PER_CLASS_ON_INTERNAL_VALIDATION_FOLD"}
-    applicability = "Input type declared by the requesting user; no out-of-distribution detection is performed."
+    applicability = ("Input type declared by the requesting user; the image passed the printed-document check and the model's "
+                     "feature-space applicability reference (input_content_check.distribution).")
     if kind != "image_2d":
         applicability = f"Input type declared by the requesting user. {CONTENT_CHECKS[kind]} No out-of-distribution detector is used."
     finding = Finding(
@@ -559,6 +738,7 @@ def execute_research_inference(db: Session, file_record: UploadedFile, model_id:
             "anatomy_system_of_model": model.get("anatomy"), "source_file_sha256": file_record.file_hash, "output": output,
             **({"companion_file_id": companion.id, "companion_file_sha256": companion.file_hash} if companion is not None else {}),
             **({"declared_amplitude_unit": options["amplitude_unit"]} if options and options.get("amplitude_unit") else {}),
+            **({"dicom_series": series_provenance} if series_provenance is not None else {}),
         },
     )
     db.add(finding)

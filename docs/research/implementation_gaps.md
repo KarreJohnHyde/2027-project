@@ -14,11 +14,11 @@ clinical accuracy, safety, or fitness for patient care.
 | Remaining dataset tasks | `BLOCKED` | 61 dataset units / 32 tasks audited; 10 ready, 1 exploratory, 21 blocked. | Resolve licences, privacy, labels, modality/provenance, patient grouping, leakage, missing images, or sample/split limitations per task. Archive-05 requires privacy review. |
 | Clinical NLP/OCR validation | `BLOCKED` | OCR, terminology/context rules, numerical extraction, strict OCR and NLP evaluators, immutable input digests, and hash-only provenance execute. | Lawful independently annotated representative corpus, adjudication, prespecified metrics, error analysis, and executed real evaluation. |
 | External/clinical model validation | `BLOCKED` | Eleven research-runnable internal bundles exist: nine run on uploads (seven 2-D image models, the ECG classifier on digital records, the cardiac MRI segmenter on single NIfTI frames) and two survival baselines are evaluation-only. | Independent-site data, prespecified endpoints, subgroup/failure-mode analysis, applicability/OOD checks, calibration transfer, clinical review, prospective safety evidence, and activation governance. |
-| Patient spatial registration | `BLOCKED` | Mapping states, TRE calculation support, and clinician review records exist. | Reviewed patient landmarks/transforms, fitting/held-out partitions, coordinate frames, justified thresholds, and observer/external evaluation. |
+| Patient spatial registration | `BLOCKED` | Rigid fitting, held-out TRE, and reviewed landmark manifests: one verified clinician proposes landmark pairs with held-out landmarks declared up front, a second approves, and only an approved manifest whose held-out TRE is within its limit can lift a finding to L2 (`/findings/{id}/landmark-manifests`). | A landmark-placement interface, reviewed patient landmarks on real studies, justified thresholds, and an observer/external evaluation of registration accuracy. |
 | Paired multimodal fusion | `BLOCKED` | Fusion gates and tensor invariants are tested. | Authorized same-patient paired data, validated encoders, patient-level splits, and a prespecified fusion evaluation. |
 | Forecasting/treatment scenarios | `BLOCKED` | Prognosis Studio enforces eligibility/abstention; PBC and heart-failure Cox baselines have internal event/censor evaluations. | Repeated longitudinal cohort, defined time zero/population/endpoint/horizon, chronological hold-out, integrated validated forecast model, and a target-trial estimand/causal assumptions for interventions. |
-| Docker execution | `PARTIAL` | Engine 29.9 reachable; both images build locally and in CI; the frontend container serves the app and the backend image imports the full inference stack. | Compose start, migrations, container health, worker execution, persistence, security, and shutdown evidence. |
-| Production release | `NOT_STARTED` | Local research stack and software verification suite exist. | Production identity/tenant review, database/backup encryption, threat model, malware scanning, retention/deletion policy, tamper-evident audit retention, penetration testing, accessibility/human factors, clinical safety case, and regulatory assessment. |
+| Docker execution | `DONE` (local) | A full Compose run with the worker profile passed on 2026-10-28: health, migrations, worker-executed job, encrypted uploads and SQLCipher database on the volume, non-root containers, frontend security headers, restart persistence, clean shutdown. | Repeat on the deployment host; CI builds the images but does not start them. |
+| Production release | `NOT_STARTED` | Local research stack and software verification suite exist. | Production identity/tenant review, database key rotation and encrypted backups, threat model, malware scanning, retention/deletion policy, tamper-evident audit retention, penetration testing, accessibility/human factors, clinical safety case, and regulatory assessment. |
 
 ## Implemented but not clinically or externally validated
 
@@ -50,17 +50,18 @@ and `docs/validation/models/`.
 | --- | --- | --- |
 | Patient-specific L3 anatomy or lesion pin from a research image | `UNSUPPORTED` | No reviewed patient registration exists. Source-pixel geometry may become at most a clinician-confirmed schematic organ association. |
 | Personalized treatment recommendation or fabricated future risk | `UNSUPPORTED` | No validated integrated causal or longitudinal forecast model exists. Prognosis must continue to abstain. |
-| Inference on an assembled DICOM series; EEG or DeepSA workflow | `UNSUPPORTED` | Series assembly and geometry checks exist, but no model consumes an assembled series; an EEG parser, DeepSA weights and its executable are absent. HL7 v2 result import is implemented (`backend/app/services/hl7_import.py`). ECG upload inference exists for digital WFDB format-16 and CSV records only. |
+| EEG interpretation; DeepSA workflow | `UNSUPPORTED` | EDF/BDF recordings are read and displayed, but no EEG model exists; DeepSA weights and its executable are absent. Assembled DICOM series render and run through the cardiac MRI segmenter; HL7 v2 result import is implemented. ECG upload inference exists for digital WFDB format-16 and CSV records only. |
 
 ## Engineering gaps that do not remove the scientific blockers
 
-- Add objective quality/applicability/OOD gates for all seven image upload models.
-- Render and route assembled multi-file DICOM series (assembly and geometry checks exist);
-  EEG remains unsupported.
-- Add golden-image regression and broader accessibility automation.
+- Add image-quality checks; the applicability gate (`docs/validation/IMAGE_APPLICABILITY_GATE.md`)
+  still accepts most angiograms for the GastroVision classifier.
+- Verify the in-plane orientation convention of scanner-native DICOM series for the cardiac
+  MRI segmenter (the development NIfTI frames carry no orientation).
+- Add golden-image regression and automated accessibility audits to the CI browser suite.
 - Exercise worker termination/restart in a browser scenario in addition to backend tests.
 - Reduce the large Anatomy bundle and resolve non-failing React lint warnings.
-- Add production malware scanning, object storage, database/backup encryption,
+- Add production malware scanning, object storage, database key rotation and encrypted backups,
   retention/deletion policy, recovery tests, and tamper-evident audit retention.
 
 ## Completed experiments and verification

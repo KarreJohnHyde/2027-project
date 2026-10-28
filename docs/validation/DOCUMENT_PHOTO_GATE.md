@@ -1,7 +1,8 @@
 # Document-photograph content gate for 2-D research models
 
 Status: `IMPLEMENTED_TESTED` (software behaviour and in-domain false-refusal check).
-It is **not** a general out-of-distribution detector.
+It is **not** a general out-of-distribution detector; that is the applicability gate that runs after it
+(`IMAGE_APPLICABILITY_GATE.md`).
 
 ## What it does
 
@@ -39,8 +40,5 @@ memory only; no image or text was stored in the repository.
 - 175 frames is a small in-domain sample; endoscopy frames with heavier burned-in
   text could approach the limit.
 - Photographs of printed films and of ultrasound montages carry little printed text
-  (0–5 lines in the owner's examples) and **pass** this gate. They are refused only
-  when no registered model supports the declared modality. A user who declares a
-  wrong modality is not stopped by this gate. The open item is a feature-space
-  out-of-distribution check per model, calibrated on its own validation set (see
-  `docs/development/NEXT_ACTIONS.md`).
+  (0–5 lines in the owner's examples) and pass this gate. Every 2-D model's applicability
+  gate refuses them (all owner examples, 35 of 35 model checks; `IMAGE_APPLICABILITY_GATE.md`).

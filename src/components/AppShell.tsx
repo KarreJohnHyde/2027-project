@@ -24,7 +24,8 @@ function Sidebar({ onNavigate }: { onNavigate: () => void }) {
         </div>
       </div>
       <nav aria-label="Primary" className="flex-1 overflow-y-auto px-2 pb-4">
-        {NAV_SECTIONS.map((section) => (
+        {NAV_SECTIONS.map((section) => ({ ...section, items: section.items.filter((item) => user?.role !== "public" || item.personal) }))
+          .filter((section) => section.items.length > 0).map((section) => (
           <div key={section.label} className="mt-3 first:mt-1">
             <p className="px-2.5 pb-1 text-[11px] font-medium text-ink-3">{section.label}</p>
             {section.items.map((item) => {

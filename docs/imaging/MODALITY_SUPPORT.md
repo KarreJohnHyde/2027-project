@@ -12,8 +12,8 @@ scope. **No modality has a clinically validated model.**
 
 | Modality | Files accepted | Registered model state | Clinical tasks |
 | --- | --- | --- | --- |
-| CT | Single DICOM objects, NIfTI-1, NRRD, MetaImage; PNG/JPEG research slices. Multi-file DICOM series are validated and ordered by `POST /cases/{id}/dicom-series/assemble`; assembled series are not yet rendered or inferred. | TEZ kidney-stone detector is `READY_UNVALIDATED`; brain/lung adapters lack weights. | none |
-| MRI | Single DICOM objects, NIfTI-1, NRRD, MetaImage. Multi-file DICOM series are validated and ordered by series assembly; assembled series are not yet rendered or inferred. | The cardiac cine-MRI 3-D U-Net runs research-only on single NIfTI frames inside its development spacing envelope (`docs/validation/UPLOAD_INFERENCE_PARITY.md`). Brain adapter lacks weights. | none |
+| CT | Single DICOM objects, NIfTI-1, NRRD, MetaImage; PNG/JPEG research slices. Multi-file DICOM series are validated, ordered and rendered plane by plane (`/cases/{id}/dicom-series/assemble`, `/render`). | TEZ kidney-stone detector is `READY_UNVALIDATED`; brain/lung adapters lack weights. | none |
+| MRI | Single DICOM objects, NIfTI-1, NRRD, MetaImage. Multi-file DICOM series are validated, ordered and rendered plane by plane. | The cardiac cine-MRI 3-D U-Net runs research-only on single NIfTI frames and on assembled DICOM series inside its development spacing envelope (`docs/validation/UPLOAD_INFERENCE_PARITY.md`; series input reproduces the NIfTI path on 98 of 98 public test frames, `docs/validation/SERIES_INFERENCE_PARITY.json`; the in-plane orientation convention of scanner series is assumed, not verified). Brain adapter lacks weights. | none |
 | X-ray | DICOM, PNG/JPEG/BMP | MURA and lung adapters lack usable authorized weights; bone-fracture task remains audit-blocked. | none |
 | Ultrasound / Doppler | DICOM, PNG/JPEG/BMP | no runnable model | none |
 | PET / SPECT / PET-CT | Single DICOM objects and NIfTI/NRRD/MetaImage volumes; no DICOM-series assembly | no runnable model | none |
@@ -25,7 +25,7 @@ scope. **No modality has a clinically validated model.**
 | Histopathology / dermatology / retinal | PNG/JPEG/BMP; retinal also single DICOM objects | no runnable model | none |
 | Echocardiography | Single DICOM objects frame by frame | EchoNet use permission and model integration remain unavailable. | none |
 | ECG | WFDB format-16 header + signal file and CSV with a time column (`backend/app/services/ecg_inference.py`); 100 Hz, 10 s, 12 leads only, nothing resampled. Photographs or scans of printed ECGs are images, not signals. | PTB-XL baseline is `READY_UNVALIDATED` with research-only upload inference; parity with its held-out predictions in `docs/validation/UPLOAD_INFERENCE_PARITY.md`. | none |
-| EEG | EDF reader not installed (`UNSUPPORTED_MODALITY`) | no model | none |
+| EEG / physiological signals | EDF, EDF+C/D and BDF/BDF+ read exactly (`backend/app/services/edf_reader.py`): header and record-size checks, physical units from header gains, min/max envelope preview, EDF+ annotations (de-identified). Patient and recording identification fields are never displayed. EDF+D is read but not previewed. | no model | none |
 | Clinical documents | PDF (embedded text/local OCR), DOCX, XLSX, CSV/text/JSON | Rules and optional scispaCy execute but are unvalidated; MedCAT/RadGraph dependencies are missing. | none |
 | FHIR R4 | JSON resources, including coded/datetime/range Observations | no model | none |
 | HL7 v2 | `.hl7` observation-result messages (`backend/app/services/hl7_import.py`): OBR, OBX (NM, single-number SN, text and coded values; OBX-7 ranges, OBX-8 flags, OBX-11 X/D/W results withheld) and NTE. Patient, visit, order-staff and sender fields are never read. | no model | none |
@@ -35,8 +35,9 @@ scope. **No modality has a clinically validated model.**
 - The seven connected 2-D models accept an associated **PNG, JPEG, or BMP** raster
   upload. DICOM and volumetric containers are refused because these checkpoints were
   trained on 2-D raster inputs.
-- The user declares/confirms the trained input type. Modality checks prevent obvious
-  mismatches, but there is **no objective task-specific image-quality or OOD detector**.
+- The user declares/confirms the trained input type. Independently of that declaration,
+  each model refuses images unlike its training images (feature-space applicability gate,
+  `docs/validation/IMAGE_APPLICABILITY_GATE.md`). There is no image-quality detector.
 - Outputs are temperature-scaled class probabilities, validation-thresholded boxes in
   source pixels, or COCO-RLE masks mapped to source pixels with nearest-neighbour
   resampling. They remain research-only and pending review.

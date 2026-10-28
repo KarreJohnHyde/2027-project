@@ -27,3 +27,5 @@ pypdfium2==5.14.0
 wordninja==2.0.0
 # Encryption at rest for stored uploads (AES-256-GCM)
 cryptography==50.0.2
+# SQLCipher (encrypted SQLite at rest, MEDTWIN_DB_ENCRYPTION=sqlcipher)
+sqlcipher3-wheels==0.5.7

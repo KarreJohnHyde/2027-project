@@ -18,7 +18,8 @@ router = APIRouter(prefix="/cases", tags=["Case Membership"])
 
 class MembershipCreate(BaseModel):
     username: str = Field(..., max_length=64)
-    role: Literal["VIEWER", "EDITOR"]
+    # PATIENT and CAREGIVER open only the read-only portal (app/routers/portal.py), never the clinical endpoints.
+    role: Literal["VIEWER", "EDITOR", "PATIENT", "CAREGIVER"]
 
 
 def _require_owner(case: Case, user: User) -> None:
@@ -46,6 +47,9 @@ def add_member(case_id: int, payload: MembershipCreate, db: Session = Depends(ge
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No active user with that username.")
     if member.id == case.created_by_id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="The case creator already has full access.")
+    if payload.role in ("PATIENT", "CAREGIVER") and member.role != UserRole.PUBLIC:
+        # Portal links are for the person's own (self-registered) account, not a clinical account.
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Patient and caregiver access is granted to personal accounts only.")
     membership = db.query(CaseMembership).filter(CaseMembership.case_id == case_id, CaseMembership.user_id == member.id).first()
     if membership:
         membership.role = payload.role

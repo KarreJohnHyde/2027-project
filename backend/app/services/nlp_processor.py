@@ -712,9 +712,11 @@ def _reference_block(text: str, start: int, line_end: int) -> str:
     """The printed reference column for one result: the rest of its row plus continuation
     lines that hold further strata ("Female: 0.55-1.02", "55-87 yrs: 0.5-8.9", "Pregnancy:")."""
     first = text[start:line_end]
-    # On a prose line the next result or sentence ends this result's reference column.
-    stop = re.search(rf"(?<![\d.])\.(?=\s+[A-Za-z])|;|(?<=\s)(?:{VALUE_WITH_UNIT.pattern})", first, re.IGNORECASE)
-    if stop:
+    # On a prose line the next result or sentence ends this result's reference column; the upper
+    # bound of a printed range with its unit ("(Reference range 12.0 - 15.5 g/dL)") does not.
+    for stop in re.finditer(rf"(?<![\d.])\.(?=\s+[A-Za-z])|;|(?<=\s)(?:{VALUE_WITH_UNIT.pattern})", first, re.IGNORECASE):
+        if stop.group(0) not in {".", ";"} and re.search(r"(?:[-–—]|\bto)\s*$", first[:stop.start()], re.IGNORECASE):
+            continue
         return first[:stop.start()]
     lines = [first]
     position = line_end + 1

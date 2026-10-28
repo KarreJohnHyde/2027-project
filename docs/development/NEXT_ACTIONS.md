@@ -39,42 +39,43 @@ verified work table at the end and do not reopen scientific claims without new e
    acceptance criteria, and missingness/censoring policy. PBC and heart-failure Cox
    baselines are evaluation-only and do not clear this gate. Treatment comparisons also
    require a target-trial estimand and defensible causal assumptions.
-8. **Run the full Compose stack** (`PARTIAL`). Docker engine 29.9.2 is running. On
-   2026-10-28 both images built locally with the CI's non-secret key; the frontend
-   container served the app and SPA routes with the `backend` host mapped, and the backend
-   image imported the application, PyTorch 2.14.1 (CPU), MONAI 1.6.1 and the ECG/volume
-   modules. Compose startup, migrations, health/security checks, worker persistence and
-   clean shutdown remain unexecuted.
+8. **Run the full Compose stack** (`DONE`, 2026-10-28). With the worker profile on a
+   throwaway project: health and readiness, migrations (worker log), an analysis job run by
+   the worker container, AES-GCM uploads and a SQLCipher database on the volume, non-root
+   backend/worker (uid 100) and frontend (uid 101), frontend security headers, restart
+   persistence and clean shutdown (the worker previously ignored SIGTERM during start-up;
+   it now installs its handler first and Compose runs an init process).
 
 ## Engineering work still open
 
-1. **Encrypt the application database and backup path** (`NOT_STARTED`). Upload objects
-   already use tested AES-256-GCM, but SQLite pages are plaintext. Select SQLCipher or an
-   encrypted PostgreSQL deployment and verify migration, backup/restore, key rotation,
-   recovery, and operational key custody.
-2. **Add objective image-quality/applicability/OOD gates for all seven 2-D upload models**
-   (`PARTIAL`). A document-photograph content gate now refuses printed report pages
-   (0/175 in-domain held-out frames refused; `docs/validation/DOCUMENT_PHOTO_GATE.md`).
-   Photographs of printed films and ultrasound montages still pass it. Next: a per-model
-   feature-space (penultimate-layer Mahalanobis) distance with its threshold fitted on that
-   model's validation split only.
+1. **Encrypt the application database and backup path** (`PARTIAL`). SQLCipher encryption of
+   the whole SQLite file and WAL is implemented (`MEDTWIN_DB_ENCRYPTION=sqlcipher`, the Compose
+   default) with a verified plaintext-to-encrypted copy (`scripts/encrypt_database.py`).
+   Still open: key rotation (`PRAGMA rekey` procedure), backup/restore drills and operational
+   key custody; PostgreSQL deployments rely on encrypted storage.
+2. **Applicability gates for the seven 2-D upload models** (`DONE` for applicability; image
+   quality `NOT_STARTED`). Each model refuses images unlike its training images (multi-stage
+   feature Mahalanobis, limit from its validation split; `docs/validation/IMAGE_APPLICABILITY_GATE.md`).
+   Open: GastroVision accepts most angiograms, the SYNTAX segmenter a third of endoscopy
+   frames, and false refusals reach 9-12% where a test split is shifted.
 3. **Run the existing OCR and Clinical NLP evaluators on lawful independent gold data**
    (`BLOCKED` on input). Preserve immutable byte digests, independent-gold and
    de-identification attestations, adjudication records, and error categories.
 4. **Replace per-report WSL scispaCy cold startup with a persistent isolated worker**
    (`NOT_STARTED`). The adapter executes, but cold model startup is slow.
-5. **Render and route assembled DICOM series** (`PARTIAL`). Series grouping, position
-   ordering, geometry validation and identifying-tag reporting are implemented
-   (`POST /cases/{id}/dicom-series/assemble`); volumetric rendering and inference of an
-   assembled series are not.
+5. **Render and route assembled DICOM series** (`DONE`, research). Assembled series render
+   plane by plane and run through the cardiac MRI segmenter with the same input checks as a
+   NIfTI frame (98/98 identical masks on series written from the public test frames). The
+   in-plane orientation convention of scanner series is assumed, not verified.
 6. **ECG upload inference** (`DONE`, research-only). Digital WFDB format-16 pairs and CSV
    records at 100 Hz, 10 s, 12 leads run from Multimodal; parity with the held-out
    predictions is in `docs/validation/UPLOAD_INFERENCE_PARITY.md`. Other sampling rates, formats and photographed
-   ECGs are refused. EEG remains unsupported pending data, labels, formats, weights and
-   validation.
-7. **Add golden-image and broader accessibility regression** (`NOT_STARTED`). Current
-   browser QA captures screenshots and verifies headings, phone overflow, interactions,
-   WebGL counters, canvas content, and errors, but has no approved pixel baseline.
+   ECGs are refused. EDF/BDF recordings (EEG and other signals) are read and displayed; no
+   EEG model exists pending data, labels, weights and validation.
+7. **Add golden-image and broader accessibility regression** (`PARTIAL`). A Playwright
+   regression suite runs in CI against a throwaway stack (sign-in, every page, report, HL7
+   and EDF uploads, the patient portal). There is still no approved pixel baseline or
+   automated accessibility audit.
 8. **Reduce the large Anatomy bundle and resolve recorded React lint warnings**
    (`NOT_STARTED`, non-blocking). Preserve current behavior and repeat the full 43/43 run.
 9. **Production hardening** (`NOT_STARTED`): malware scanning, object storage,

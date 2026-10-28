@@ -435,6 +435,13 @@ def test_garbled_method_names_ocr_analyte_names_and_printed_flags():
     assert (hba1c["value"], hba1c["documented_flag"], hba1c["laboratory_method"]) == (6.9, "ABNORMAL", "ImmunoturbidimetryNGSP/IFCCStandardized")
 
 
+def test_printed_range_with_its_unit_inside_brackets_is_read():
+    labs = _labs("Haemoglobin 12.9 g/dL (Reference range 12.0 - 15.5 g/dL)\nUrea 30 mg/dL; Creatinine 1.1 mg/dL 0.6 to 1.2 mg/dL\n")
+    assert (labs["hemoglobin"]["reference_low"], labs["hemoglobin"]["reference_high"]) == (12.0, 15.5)
+    assert labs["urea"]["reference_low"] is None  # the next result on the line is not an interval
+    assert (labs["creatinine"]["reference_low"], labs["creatinine"]["reference_high"]) == (0.6, 1.2)
+
+
 def test_nil_with_its_final_letter_lost_still_negates_the_item():
     assessed = [(item["entity_text"], item["negation"]) for item in _statements("5.Calcification:Ni.\nMitral stenosis - Ni\nCalcification seen. Ni hardware.\n")]
     assert assessed == [("Calcification", "NEGATED"), ("Mitral stenosis", "NEGATED"), ("Calcification", "AFFIRMED")]
