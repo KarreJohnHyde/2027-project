@@ -177,6 +177,7 @@ def extract_pdf_document(content_bytes: bytes) -> tuple[list[str], list[dict]]:
                          "line_count": result.line_count, "mean_confidence": result.mean_confidence, "dpi": ocr.OCR_DPI,
                          "coordinate_space": "RENDERED_PAGE_PIXELS_TOP_LEFT",
                          "image_width": result.image_width, "image_height": result.image_height,
+                         "rotation_degrees": result.rotation_degrees,
                          # Text is retained only until de-identification maps each line
                          # to the sanitized page. It is removed before API/database output.
                          "lines": result.lines})

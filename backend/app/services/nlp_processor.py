@@ -73,12 +73,15 @@ SECTION_NAMES = (
     "recommendations", "summary", "opinion", "interpretation", "advice", "advise",
     "investigations advised", "follow-up advice", "follow up advice", "provisional diagnosis", "pre existing illness",
     "pre-existing illness", "complaints", "examination", "medicine", "observation",
+    "gross description", "microscopic description", "nature of specimen", "clinical details", "clinical information",
 )
 # Sections that state what should happen next, not what was found or done.
 PLANNED_SECTIONS = {"PLAN", "RECOMMENDATION", "RECOMMENDATIONS", "ADVICE", "ADVISE", "INVESTIGATIONS ADVISED", "FOLLOW-UP ADVICE", "FOLLOW UP ADVICE"}
 HISTORY_SECTIONS = {"HISTORY", "PAST MEDICAL HISTORY", "PRE EXISTING ILLNESS", "PRE-EXISTING ILLNESS"}
+# A heading opens a line, or follows a sentence on the same line ("...appeared normal.
+# IMPRESSION-..."), and is followed by a colon or a dash, or stands alone on its line.
 SECTION_RE = re.compile(
-    r"^[ \t]*(?P<header>" + "|".join(re.escape(name) for name in sorted(SECTION_NAMES, key=len, reverse=True)) + r")[ \t]*:",
+    r"(?:^|(?<=[.;]))[ \t]*(?P<header>" + "|".join(re.escape(name) for name in sorted(SECTION_NAMES, key=len, reverse=True)) + r")[ \t]*(?::|[-–](?![-–])|$)",
     re.IGNORECASE | re.MULTILINE,
 )
 
@@ -93,6 +96,8 @@ DANGLING_WORDS = frozenset({
     "no", "not", "nor", "neither", "or", "and", "of", "with", "without", "to", "the", "a", "an", "any", "in",
     "for", "from", "is", "are", "was", "were", "be", "by", "as", "at", "on", "than", "upto", "up", "into", "within",
 })
+# Clinical adjectives that need a following noun ("diaphragmatic", "renal", "pulmonary").
+DANGLING_ADJECTIVE = re.compile(r"(?!(?:ab)?normal$|total$|usual$|general$)[A-Za-z]{3,}(?:atic|ical|ic|al|ous|ary)", re.IGNORECASE)
 ABBREVIATION_RE = re.compile(r"\b(?:e\.g|i\.e|vs|dr|mrs|mr|ms|approx|cf|fig|resp|incl)\.", re.IGNORECASE)
 TERMINATOR_RE = re.compile(
     r"\b(?:but|however|although|though|except|apart\s+from|aside\s+from|otherwise|whereas|yet|nevertheless)\b|[,:](?=\s+(?:but|however|although)\b)"
@@ -124,7 +129,10 @@ PRE_NEGATION = _cue(
 )
 POST_NEGATION = _cue(
     r"(?:is|are|was|were|has\s+been|have\s+been)\s+(?:ruled\s+out|excluded|absent)|not\s+(?:seen|identified|present|visuali[sz]ed|demonstrated|detected|appreciated|noted)|"
-    r"(?:is|are)\s+absent|unlikely|(?:[-–—:]\s*)?(?:grade\s+)?nil|none\s+(?:seen|noted|identified)"
+    r"(?:is|are)\s+absent|unlikely|(?:[-–—:]\s*)?(?:grade\s+)?nil|none\s+(?:seen|noted|identified)|"
+    # OCR drops the thin final "l" of "Nil" ("Calcification:Ni."); only right after ":"/"-"
+    # and closing the item, where no other reading of "Ni" is possible.
+    r"(?<=[-–—:])[ \t]*(?:grade\s+)?ni(?=[ \t]*\.?[ \t]*(?:$|\n))"
 )
 # "No features suggestive of X" negates X; it is not an uncertain mention of X.
 PRE_STRONG_NEGATION = _cue(
@@ -166,10 +174,14 @@ FACILITY_LINE = re.compile(
     r"^\s*(?:facilities|services|our\s+services)\s*[:\-]|\b(?:toll\s*free|helpline|for\s+appointments?|home\s+collection|"
     r"monday\s+to\s+(?:saturday|friday)|24\s*[x/]\s*7|\(24\s*/?\s*7\)|website|e-?mail\s*:|certified\s+unit|nabh|nabl|"
     r"not\s+for\s+medico[-\s]*legal|investigations\s+have\s+their\s+limitations|printing\s+mistakes)\b|"
-    r"\ball\b[^\n]{0,80}\bservices?\b|\bservices?\s+available\b",
+    # OCR glues words ("All2D,3D,4D Color DopplorFNAC,Biopsy and Laboratory services"), so
+    # "all" needs only a non-letter after it.
+    r"\ball(?![a-z])[^\n]{0,80}?services?\b|\bservices?\s+available\b|(?:\band|&)\s*laborator(?:y|ies)\s*services?\b",
     re.IGNORECASE,
 )
 BILLING_PAGE_MIN_MARKERS = 2
+# Longer lines are paragraphs (embedded text without hard wraps): exclude by sentence.
+FACILITY_LINE_MAX = 200
 
 
 def nonclinical_ranges(text: str, page_starts: Optional[list[int]] = None) -> list[tuple[int, int, str]]:
@@ -188,7 +200,12 @@ def nonclinical_ranges(text: str, page_starts: Optional[list[int]] = None) -> li
             if len(_MONEY.findall(line)) >= 2:
                 ranges.append((start, end, "BILLING_LINE"))
             elif FACILITY_LINE.search(line):
-                ranges.append((start, end, "FACILITY_OR_DISCLAIMER_TEXT"))
+                if len(line) <= FACILITY_LINE_MAX:
+                    ranges.append((start, end, "FACILITY_OR_DISCLAIMER_TEXT"))
+                else:
+                    # A paragraph held on one line: only its advertising or disclaimer sentences.
+                    ranges += [(start + first, start + last, "FACILITY_OR_DISCLAIMER_TEXT")
+                               for first, last in split_sentences(line) if FACILITY_LINE.search(line[first:last])]
             cursor += len(line) + 1
     return ranges
 COMPARISON_CUES = (
@@ -219,11 +236,14 @@ def _sections(text: str) -> list[tuple[int, str]]:
     return [(match.start(), match.group("header").strip().upper()) for match in SECTION_RE.finditer(text)]
 
 
-def _section_at(sections: list[tuple[int, str]], offset: int) -> Optional[str]:
+def _section_at(sections: list[tuple[int, str]], offset: int, floor: int = 0) -> Optional[str]:
+    """The heading in force at ``offset``. Headings before ``floor`` (the start of the page)
+    do not carry over: a packet's next page is often another document, and a stale
+    RECOMMENDATION or HISTORY heading would change what is asserted on it."""
     current = None
     for start, name in sections:
         if start <= offset:
-            current = name
+            current = name if start >= floor else None
         else:
             break
     return current
@@ -243,9 +263,32 @@ def _line_wraps(previous: str, following: str) -> bool:
     words = WORD_RE.findall(before)
     if words and words[-1].lower() in DANGLING_WORDS:
         return True
+    if words and DANGLING_ADJECTIVE.fullmatch(words[-1]) and len(WORD_RE.findall(after)) <= 3:
+        # "...TO R/O RIGHT DIAPHRAGMATIC" / "HERNIA": an adjective cannot end the phrase.
+        return True
     if after[0].islower():
         return True
     return len(before) >= 45 and len(after) <= 40 and after.endswith(".") and not re.search(r"\d", after)
+
+
+def _starts_fragment(text: str, start: int) -> bool:
+    """A sentence that opens a line in lower case right after a line that ended a sentence
+    ("...appear normal." / "atrophy seen.") or after a blank line (OCR leaves one where it lost
+    a line) is a fragment: the words before it were lost. A label or heading line before the
+    blank line introduces the text instead."""
+    if start >= len(text) or not text[start].islower():
+        return False
+    line_start = text.rfind("\n", 0, start) + 1
+    if text[line_start:start].strip() or line_start == 0:
+        return False
+    previous = text[:line_start - 1].rstrip()
+    if not previous:
+        return False
+    if previous[-1] in ".;!?":
+        return True
+    blank_before = text[:line_start - 1].rstrip(" \t").endswith("\n")
+    previous_line = previous[previous.rfind("\n") + 1:]
+    return blank_before and previous[-1] != ":" and not SECTION_RE.match(previous_line)
 
 
 def split_sentences(text: str) -> list[tuple[int, int]]:
@@ -326,11 +369,31 @@ def _entity_matches(sentence: str) -> list[tuple[int, int, Any, str]]:
     return sorted(chosen, key=lambda item: item[0])
 
 
+_COORDINATION_GAP = re.compile(r"[\s,/&]*(?:(?:and|or|nor)(?![A-Za-z]))?[\s,/&]*", re.IGNORECASE)
+
+
+def _post_scope_end(sentence: str, entity_end: int, clause_end: int, entity_spans: tuple[tuple[int, int], ...]) -> int:
+    """A cue after an entity ("X - Nil", "X not seen") covers the entities coordinated with
+    it ("X and Y are absent") but stops at the next entity that is not: in "regurgitation -
+    Grade Trivial ... stenosis - Nil" the "Nil" belongs to the stenosis only."""
+    end = entity_end
+    for start, stop in entity_spans:
+        if start < end or start >= clause_end:
+            continue
+        if _COORDINATION_GAP.fullmatch(sentence[end:start]):
+            end = max(end, stop)
+            continue
+        return start
+    return clause_end
+
+
 def _assess(
     sentence: str, entity_start: int, entity_end: int, section: Optional[str],
     category: Optional[str] = None, procedure_spans: tuple[tuple[int, int], ...] = (),
+    entity_spans: tuple[tuple[int, int], ...] = (),
 ) -> dict[str, Any]:
     clause_start, clause_end = _clause_bounds(sentence, entity_start, entity_end)
+    post_end = _post_scope_end(sentence, entity_end, clause_end, entity_spans)
     cues: list[dict[str, Any]] = []
     consumed: list[tuple[int, int]] = []
 
@@ -360,7 +423,7 @@ def _assess(
         record("HYPOTHETICAL", hypothetical)
         certainty = "HYPOTHETICAL"
     if negation == "AFFIRMED":
-        negated = _last_pre_cue(PRE_NEGATION, sentence, clause_start, entity_start, consumed) or _first_post_cue(POST_NEGATION, sentence, entity_end, clause_end)
+        negated = _last_pre_cue(PRE_NEGATION, sentence, clause_start, entity_start, consumed) or _first_post_cue(POST_NEGATION, sentence, entity_end, post_end)
         if negated and uncertain and negated[1] <= uncertain[0] < entity_start:
             # The nearer uncertainty cue governs the entity ("without X, likely Y").
             negated = None
@@ -450,6 +513,7 @@ def extract_clinical_statements(report_text: str, page_starts: Optional[list[int
     report_text, index = normalise(source_text)
     excluded = nonclinical_ranges(source_text, page_starts)
     sections = _sections(report_text)
+    page_floors = [to_normalised(index, start) for start in (page_starts or [0])]
     statements: List[Dict[str, Any]] = []
     for sentence_start, sentence_end in split_sentences(report_text):
         source_start, source_end = to_source(index, sentence_start, sentence_end)
@@ -458,15 +522,18 @@ def extract_clinical_statements(report_text: str, page_starts: Optional[list[int
         ):
             continue
         sentence = report_text[sentence_start:sentence_end]
-        section = _section_at(sections, sentence_start)
+        floor = max((start for start in page_floors if start <= sentence_start), default=0)
+        section = _section_at(sections, sentence_start, floor)
         sites = find_sites(sentence)
         matches = _entity_matches(sentence)
         procedure_spans = tuple((start, end) for start, end, term, _ in matches if term.category == "PROCEDURE")
+        entity_spans = tuple(sorted((start, end) for start, end, _, _ in matches))
+        fragment = _starts_fragment(report_text, sentence_start)
         for entity_start, entity_end, term, surface in matches:
             entity_source = to_source(index, sentence_start + entity_start, sentence_start + entity_end)
             if any(start <= entity_source[0] and entity_source[1] <= end for start, end, _ in excluded):
                 continue
-            context = _assess(sentence, entity_start, entity_end, section, term.category, procedure_spans)
+            context = _assess(sentence, entity_start, entity_end, section, term.category, procedure_spans, entity_spans)
             clause_start, clause_end = context.pop("clause")
             in_clause = [site for site in sites if site["start"] >= clause_start and site["end"] <= clause_end]
             site = min(
@@ -479,6 +546,11 @@ def extract_clinical_statements(report_text: str, page_starts: Optional[list[int
                 site = None if term.system != "brain" or site["system"] != "nervous" else site
             if term.category == "PROCEDURE" and context["temporality"] == "CURRENT" and any(cue["type"] == "POSTOPERATIVE_CONTEXT" for cue in context["cues"]):
                 context["temporality"] = "HISTORICAL"
+            if fragment and context["certainty"] == "CERTAIN":
+                # Text before this lower-case line start was not read (e.g. OCR missed a line):
+                # the assertion's governing words may be lost, so it needs review, not belief.
+                context["certainty"] = "UNCERTAIN"
+                context["cues"].append({"type": "OCR_FRAGMENT", "text": "", "start": None, "end": None})
             for cue in context["cues"]:
                 if cue["start"] is not None:
                     cue["start"], cue["end"] = to_source(index, cue["start"] + sentence_start, cue["end"] + sentence_start)
@@ -517,7 +589,14 @@ VALUE = r"(?P<operator><=|>=|<|>|≤|≥|~)?\s*(?P<value>(?<![\d.\-–/])-?\d+(?
 SEPARATOR = r"\s*(?:\([^)\n]{1,24}\)\s*)?(?:[:=|]|\bis\b|\bof\b|\bwas\b|\bmeasures?\b|\bmeasuring\b|\bat\b)?\s*"
 # Laboratory tables print the assay method between the test name and the result
 # ("HDL Cholesterol Method:Enzymatic 48 mg/dL"); OCR often misreads "Method".
-METHOD_CHUNK = r"(?:[ \t]*\(?\s*(?:method|m[a-z][a-z ]{0,5}d)\s*[:=]\s*(?P<method>[A-Za-z][A-Za-z/()\-. ]{0,40}?)(?=[ \t]+(?:<=|>=|<|>|≤|≥)?\s*\d))?"
+# "Method: Enzymatic" between a test name and its value, including OCR-garbled forms
+# ("Mothod:", "ehod Direct": a mangled word followed by a known method name), and an
+# unlabelled method printed in faint type ("HbA1c ImmunoturbidimetryNGSP/IFCC 7.8 %").
+METHOD_CHUNK = (
+    r"(?:[ \t]*\(?\s*(?:(?:method|m[a-z][a-z ]{0,5}d)\s*[:=]\s*|[A-Za-z]{2,7}[ \t.:]+(?=(?:direct|calculated|enzymatic|kinetic|eclia|clia|hplc|biuret)\b)"
+    r"|(?=[A-Za-z/()\-.]{0,40}?(?:ngsp|ifcc|idms|metr(?:y|ic)|immuno|standardi[sz]|chromatograph)[A-Za-z/()\-.]{0,40}[ \t]+(?:<=|>=|<|>|≤|≥)?\s*\d))"
+    r"(?P<method>[A-Za-z][A-Za-z/()\-. ]{0,40}?)(?=[ \t]+(?:<=|>=|<|>|≤|≥)?\s*\d))?"
+)
 # A flag printed between the value and its unit ("7.8 * %", "175*mg/dL").
 FLAG_BETWEEN = r"(?P<preflag>[ \t]*(?:\*{1,2}|↑|↓))?"
 FLAG_RE = re.compile(r"[ \t]*(?:\(|\[)?[ \t]*(?P<flag>HH|LL|H|L|High|Low|Abnormal|Critical|\*{1,2}|↑|↓)[ \t]*(?:\)|\])?(?![A-Za-z0-9])")
@@ -537,6 +616,19 @@ QUALIFIER_DASH = re.compile(r"[ \t]*[-–—][ \t]*(?=up\s*to|upto|<|>|≤|≥)"
 REFERENCE_KEYWORD = re.compile(
     r"^\s*(?:pregnancy|level|\d?\s*(?:st|nd|rd|th)?\s*trimester|male|female|adults?|children|child|infants?|neonates?|new\s*born|"
     r"adolescents?|elderly|non[-\s]*smokers?|smokers?|therapeutic\s+goal|goal|normal|desirable|borderline|optimal|"
+    r"deficient|insufficient|sufficient|potential|non[-\s]*diabetic|pre[-\s]*diabetic|diabetic)\b",
+    re.IGNORECASE,
+)
+# "Method:..." / "Specimen:..." printed in the left column under a test name, including OCR
+# variants ("Mothod:", "Methoo.", "Mtod:", "Specmen:", "Spemn:"). The garbled forms need a "t"
+# so stratum labels ("Male:", "Mild:") never match.
+LEFT_COLUMN_META_PREFIX = r"(?:(?:m[eo]?th?[eo]?d|spe[a-z]{0,4}n|sample\s*type)\s*[:=]|m(?!on)[a-z]?t[a-z]{0,3}[:.])"
+# A sub-label printed before an ESR result ("ONE HOUR READING 5 mm/hr").
+READING_SUBLABEL = r"(?:(?:one|first|1\s*st|1)\s*h(?:ou)?r\s*(?:reading)?|reading)"
+LEFT_COLUMN_META = re.compile(rf"^[ \t]*{LEFT_COLUMN_META_PREFIX}[ \t]*", re.IGNORECASE)
+STRATUM_WORD = re.compile(
+    r"(?<![A-Za-z])(?:pregnancy|\d?\s*(?:st|nd|rd|th)?\s*trimester|male|female|adults?|children|child|infants?|neonates?|new\s*born|"
+    r"adolescents?|elderly|non[-\s]*smokers?|smokers?|therapeutic\s+goal|normal|desirable|borderline|optimal|"
     r"deficient|insufficient|sufficient|potential|non[-\s]*diabetic|pre[-\s]*diabetic|diabetic)\b",
     re.IGNORECASE,
 )
@@ -638,6 +730,15 @@ def _reference_block(text: str, start: int, line_end: int) -> str:
             break
         if value_unit and (first_range is None or value_unit.start() < first_range.start()):
             break
+        meta = LEFT_COLUMN_META.match(line)
+        if meta:
+            # The left column prints the assay and specimen under the test name, beside the
+            # next strata: keep only the reference column; a line with none is skipped.
+            line = _reference_column(line, meta.end())
+            if line is None:
+                position = end + 1
+                continue
+            first_range = REF_RANGE.search(line)
         if first_range is None:
             if not REFERENCE_KEYWORD.match(line):
                 break
@@ -646,6 +747,23 @@ def _reference_block(text: str, start: int, line_end: int) -> str:
         lines.append(line)
         position = end + 1
     return "\n".join(lines)
+
+
+def _reference_column(line: str, meta_end: int) -> Optional[str]:
+    """The reference-column part of a "Method:..."/"Specimen:..." line: from the first stratum
+    keyword, or from the label token joined to the first range ("1Month:5000-19000",
+    ":51to60-Upto12"); None when the line holds only the assay or specimen."""
+    starts = []
+    keyword = STRATUM_WORD.search(line, meta_end)
+    if keyword:
+        starts.append(keyword.start())
+    first_range = REF_RANGE.search(line, meta_end)
+    if first_range:
+        label = re.search(r"(?:[A-Za-z0-9-]*[:=])?[ \t]*$", line[meta_end:first_range.start()])
+        starts.append(meta_end + label.start() if label else first_range.start())
+    if not starts:
+        return None
+    return line[min(starts):]
 
 
 def _parse_reference_options(block: str) -> list[dict[str, Any]]:
@@ -675,7 +793,8 @@ def _parse_reference_options(block: str) -> list[dict[str, Any]]:
     for match in REF_RANGE.finditer(block):
         if match.start() < cursor:
             continue
-        if DATE_FRAGMENT.match(block, match.end()) or (match.start() >= 2 and DATE_PREFIX.fullmatch(block, match.start() - 2, match.start())):
+        if DATE_FRAGMENT.match(block, match.end()) or (
+                match.start() >= 2 and block[match.start()].isdigit() and DATE_PREFIX.fullmatch(block, match.start() - 2, match.start())):
             continue  # part of a printed date ("03-12-2026"), not an interval
         between = block[cursor:match.start()]
         age_unit = AGE_UNIT_AFTER.match(block, match.end())
@@ -785,6 +904,7 @@ def select_reference_interval(options: list[dict[str, Any]], value: float, sex: 
         status = ("SELECTED_BY_DOCUMENTED_" + "_AND_".join(used)) if used else "IDENTICAL_PRINTED_INTERVALS"
         return candidates[0], status, category
     return None, "AMBIGUOUS_PRINTED_STRATA" if candidates else "NO_STRATUM_MATCHES_DOCUMENTED_CONTEXT", category
+LEADING_FLAG = re.compile(r"^[^\n\d]*?(?<![A-Za-z])(?P<flag>HH|LL|H|L|(?i:high|low))(?![A-Za-z])[ \t]*(?=[<>≤≥]?[ \t]*\d)")
 FLAG_NAMES = {"H": "HIGH", "HIGH": "HIGH", "HH": "CRITICAL_HIGH", "L": "LOW", "LOW": "LOW", "LL": "CRITICAL_LOW", "ABNORMAL": "ABNORMAL", "CRITICAL": "CRITICAL", "*": "ABNORMAL", "**": "CRITICAL", "↑": "HIGH", "↓": "LOW"}
 
 SPECIMEN_RE = re.compile(
@@ -836,15 +956,29 @@ KIDNEY_LENGTH = re.compile(
 LIVER_SPAN = re.compile(r"\bliver\b[^.;\n]{0,20}?\b(?:span|measures?|measuring|length)\b\s*(?:of\s*)?(?P<value>\d+(?:\.\d+)?)\s*(?P<unit>cm|mm)\b", re.IGNORECASE)
 
 
-def _analyte_patterns(analyte) -> tuple[re.Pattern, Optional[re.Pattern]]:
-    """The inline pattern, plus a pattern for a unit printed alone on the next line
-    ("eGFR 41.05 >90" / "mL/min/1.73m2") when the analyte needs a unit."""
+def _analyte_patterns(analyte) -> tuple[re.Pattern, Optional[re.Pattern], tuple[re.Pattern, ...]]:
+    """The inline pattern, a pattern for a unit printed alone on the next line
+    ("eGFR 41.05 >90" / "mL/min/1.73m2") when the analyte needs a unit, and the cross-line
+    patterns for a result printed on a "Method:"/"Specimen:" line beside its test name's row.
+
+    Photographed tables drift: the result column of a three-line cell (name, method, specimen)
+    lands on the line above the name ("Specimen:... 69.7 fL Male:79.0-92.2" / "Mean Corpuscular
+    Volume (MCV) Female:...") or below it ("CEA" / "Method:ECLIA 1.1 ng/mL Non smokers <3").
+    Only a result whose unit belongs to the analyte, on a line led by the method or specimen
+    label, is paired across lines."""
     head = rf"(?P<label>\b(?:{analyte.aliases})){METHOD_CHUNK}{SEPARATOR}{VALUE}{FLAG_BETWEEN}"
     if analyte.units is None:
-        return re.compile(rf"{head}(?!\s*[A-Za-z%])", re.IGNORECASE), None
+        return re.compile(rf"{head}(?!\s*[A-Za-z%])", re.IGNORECASE), None, ()
     inline = re.compile(rf"{head}\s*(?P<unit>{analyte.units})(?![A-Za-z0-9_])", re.IGNORECASE)
     wrapped = re.compile(rf"{head}(?P<rest>[ \t]+[^\n]{{0,32}})?[ \t]*\n[ \t]*(?P<unit>{analyte.units})[ \t]*(?=\n|$)", re.IGNORECASE)
-    return inline, wrapped
+    result = rf"^[ \t]*(?:{LEFT_COLUMN_META_PREFIX}|{READING_SUBLABEL})[^\n\d]*?(?<![A-Za-z]){VALUE}{FLAG_BETWEEN}\s*(?P<unit>{analyte.units})(?![A-Za-z0-9_])"
+    above = re.compile(rf"{result}[^\n]*\n[ \t]*(?P<label>\b(?:{analyte.aliases}))", re.IGNORECASE | re.MULTILINE)
+    # Up to two method/specimen lines may sit between the name and its result line.
+    below = re.compile(
+        rf"^[ \t]*(?P<label>\b(?:{analyte.aliases}))[^\n\d]*\n(?:[ \t]*{LEFT_COLUMN_META_PREFIX}[^\n\d]*\n){{0,2}}{result}",
+        re.IGNORECASE | re.MULTILINE,
+    )
+    return inline, wrapped, (above, below)
 
 
 ANALYTE_PATTERNS = [(analyte, *_analyte_patterns(analyte)) for analyte in ANALYTES]
@@ -886,7 +1020,15 @@ def _reference_and_flag(
         if result["documented_flag"] is None:
             result["documented_flag"] = FLAG_NAMES.get(flag.group("flag").upper(), FLAG_NAMES.get(flag.group("flag")))
         cursor = flag.end()
-    options = _parse_reference_options(_reference_block(text, cursor, line_end))
+    block = _reference_block(text, cursor, line_end)
+    # Some laboratories print the flag after the unit, at the head of the reference column
+    # ("78.6 %  H 40 - 60"); it is the documented flag, not a stratum label.
+    leading = LEADING_FLAG.match(block)
+    if leading:
+        if result["documented_flag"] is None:
+            result["documented_flag"] = FLAG_NAMES.get(leading.group("flag").upper())
+        block = block[:leading.start("flag")] + block[leading.end():]
+    options = _parse_reference_options(block)
     if not options:
         return result
     selected, status, category = select_reference_interval(options, value, sex, age)
@@ -1031,15 +1173,22 @@ def extract_numeric_measurements(report_text: str, page_starts: Optional[list[in
         ))
         claimed.append((match.start(), match.end()))
 
-    for analyte, inline, wrapped in ANALYTE_PATTERNS:
+    for analyte, inline, wrapped, cross_line in ANALYTE_PATTERNS:
         forbid = re.compile(analyte.forbid_prefix, re.IGNORECASE) if analyte.forbid_prefix else None
-        candidates = [(match, False) for match in inline.finditer(report_text)]
+        candidates = [(match, "inline") for match in inline.finditer(report_text)]
         if wrapped is not None:
-            candidates += [(match, True) for match in wrapped.finditer(report_text)]
-        for match, unit_on_next_line in sorted(candidates, key=lambda item: item[0].start()):
-            if not free(match.start(), match.end()):
+            candidates += [(match, "wrapped") for match in wrapped.finditer(report_text)]
+        for pattern in cross_line:
+            for match in pattern.finditer(report_text):
+                # A name row that carries its own result is not paired with a neighbouring line.
+                if not (inline.match(report_text, match.start("label")) or wrapped.match(report_text, match.start("label"))):
+                    candidates.append((match, "cross_line"))
+        for match, layout in sorted(candidates, key=lambda item: item[0].start()):
+            # The quoted span runs from the test name or the result, whichever is first.
+            span_start = min(match.start("label"), match.start("operator") if match.group("operator") else match.start("value"))
+            if not free(span_start, match.end()):
                 continue
-            if forbid and forbid.search(report_text, max(0, match.start() - 40), match.start()):
+            if forbid and forbid.search(report_text, max(0, match.start("label") - 40), match.start("label")):
                 continue
             raw_value = match.group("value")
             raw_unit = match.group("unit") if analyte.units is not None else ""
@@ -1047,24 +1196,26 @@ def extract_numeric_measurements(report_text: str, page_starts: Optional[list[in
             code = loinc_for(analyte, unit)
             value = float(raw_value)
             sex, age = _patient_context(attributes, page_bounds, match.start())
-            if unit_on_next_line:
+            if layout == "wrapped":
                 # The interval sits between the value and the wrapped unit line.
                 reference_start = match.end("preflag") if match.group("preflag") else match.end("value")
                 reference = _reference_and_flag(report_text, reference_start, value, match.group("preflag"), sex, age,
                                                 line_end=report_text.rfind("\n", 0, match.start("unit")))
+            elif layout == "cross_line":
+                reference = _reference_and_flag(report_text, match.end("unit"), value, match.group("preflag"), sex, age)
             else:
                 reference = _reference_and_flag(report_text, match.end(), value, match.group("preflag"), sex, age)
-            method = (match.group("method") or "").strip()
+            method = (match.group("method") or "").strip() if layout != "cross_line" else ""
             extra = {"laboratory_method": method[:128]} if method else {}
             measurements.append(_measurement(
                 analyte.name, analyte.display, value, unit, raw_value, raw_unit,
-                match.start(), match.end(), report_text,
+                span_start, match.end(), report_text,
                 result_operator=_result_operator(match.group("operator")),
                 canonical_code=code, code_system=LOINC if code else None, code_mapping_status=LOINC_MAPPING_STATUS if code else None,
                 anatomy_system=analyte.system, association=analyte.association,
                 **reference, **extra,
             ))
-            claimed.append((match.start(), match.end()))
+            claimed.append((span_start, match.end()))
 
     for item in measurements:
         start, end = to_source(index, item["source_span_start"], item["source_span_end"])
@@ -1089,10 +1240,10 @@ DATE_RE = re.compile(
 )
 AGE_RE = re.compile(
     r"\b(?P<age>\d{1,3})\s*[-\s]?(?:years?|yrs?|y/o|yo)[-\s]*(?:old)?\b(?=[^.\n]{0,20}(?:male|female|man|woman|patient|boy|girl|\bm\b|\bf\b))"
-    r"|\bage(?:\s*(?:/|&|and)\s*(?:sex|gender))?\s*[:=]?\s*(?P<age2>\d{1,3})\b"
+    r"|\bage(?:\s*(?:/|&|and)\s*(?:sex|gender))?\s*[:=]?\s*(?P<age2>\d{1,3})(?!\d)"
     r"|\(\s*[mf]\s*,\s*(?P<age3>\d{1,3})\s*y(?:rs?|ears?)?\s*\)"
-    # Years-months-days ages printed by laboratory systems ("53 Y 5 M 13 D").
-    r"|\b(?P<age4>\d{1,3})\s*y\s+\d{1,2}\s*m(?:\s+\d{1,2}\s*d)?\b",
+    # Years-months-days ages printed by laboratory systems ("61 Y 4 M 2 D", "52 Yr 3 M", "52Yr3M").
+    r"|\b(?P<age4>\d{1,3})\s*(?:y|yrs?|years?)\s*\d{1,2}\s*m(?:onths?)?(?:\s*\d{1,2}\s*d(?:ays?)?)?\b",
     re.IGNORECASE,
 )
 SEX_RE = re.compile(
@@ -1192,6 +1343,9 @@ def prepare_report_document(report_path: Path) -> tuple[str, list[int], list[dic
         safe_text_lines: list[str] = []
         line_cursor = 0
         for line in raw_lines:
+            if line.get("gap_before"):
+                safe_text_lines.append("")  # ocr.LOST_LINE_GAP: a line was not read here
+                line_cursor += 1
             sanitized_line = deidentify_text(str(line.get("text", "")))
             safe_text_lines.append(sanitized_line)
             safe_lines.append({

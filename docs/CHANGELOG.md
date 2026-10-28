@@ -15,6 +15,14 @@ All work is on branch `feature/medtwin-2-integration`. This repository has no re
 | `af8e85c` | 2026-10-27 | Photographed-report extraction fixes (OCR-glued negations, printed reference strata, source-occurrence dedupe, billing/footer exclusion, documented vs calculated eGFR), restored root files, document-photograph gate. |
 | `cfbeead` | 2026-10-27 | Four-eyes correction approval applied to effective results, file versions and withdrawal, DICOM series assembly. |
 | next | 2026-10-28 | ECG and cardiac MRI upload inference with held-out parity, frontend Docker build fix (entry below). |
+| next | 2026-10-28 | Second photographed-report pass: lost OCR lines, sideways and tilted pages, lab tables with method/specimen columns (entry below). |
+
+## Photographed reports, second pass (next, 2026-10-28)
+
+- **OCR.** Rows are grouped on the de-skewed baseline; the detection box threshold is 0.3, which recovered a dropped pathology line and turned an affirmed "dysplasia/ malignancy" into the printed negation; sideways pages are read upright (orientation chosen by recognition confidence, boxes mapped back, `rotation_degrees` in page provenance); a lower-case line after a lost-line gap is preceded by a blank line; fullwidth punctuation becomes ASCII.
+- **Statements.** Fragment guard (`OCR_FRAGMENT`, `UNCERTAIN`) for lower-case starts after a sentence end or blank line; colon, dash, bare and same-line headings with a page-break reset; post-negation scope stops at the next uncoordinated entity; "Ni" for a truncated "Nil" after ":"/"-"; glued shorthand ("S/Ploopileostomy…") segmented; advert exclusion per sentence on long lines.
+- **Laboratory tables.** Method/specimen left-column lines no longer end the printed reference column; results printed on the method/specimen line above or below their test name are paired only under unit and label checks; unspaced ages ("52Yr3M"); "Upto" bounds never read as dates; unlabelled method text before a value; OCR-variant names and flags.
+- Details and the values deliberately left unread: `docs/verification/CLINICAL_NLP_ERROR_AUDIT.md` (fixes 21–31). Tests: `backend/tests/test_report_photo_extraction.py` (47; every new fixture fails on the previous code).
 
 ## ECG and cardiac MRI upload inference, Docker build fix (next, 2026-10-28)
 

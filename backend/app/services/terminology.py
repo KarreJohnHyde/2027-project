@@ -131,7 +131,8 @@ ANALYTES: tuple[Analyte, ...] = (
             forbid_prefix=r"(?:very[-\s]*)$"),
     Analyte("cholesterol_total", "Total cholesterol", r"total\s*cholesterol|cholesterol,?\s*total|\bcholesterol\b(?!\s*,?\s*(?:hdl|ldl|/))", r"mg\s*/\s*dl|mmol\s*/\s*l", None, "METABOLIC_MARKER", {"mg/dL": "2093-3"},
             forbid_prefix=r"(?:hdl|ldl|vldl|non[-\s]*hdl|lipoprotein|density)[-\s]*(?:c[-\s]*)?$"),
-    Analyte("triglycerides", "Triglycerides", r"triglycerides?|\btrigs?\b|\btg\b", r"mg\s*/\s*dl|mmol\s*/\s*l", None, "METABOLIC_MARKER", {"mg/dL": "2571-8"}),
+    # "Tniglycerides", "Trigiycerides": common OCR misreads of the long name.
+    Analyte("triglycerides", "Triglycerides", r"t[rn][il1]g[l1i]ycerides?|\btrigs?\b|\btg\b", r"mg\s*/\s*dl|mmol\s*/\s*l", None, "METABOLIC_MARKER", {"mg/dL": "2571-8"}),
     Analyte("tsh", "Thyroid-stimulating hormone", r"\btsh\b(?:\s*\(\s*thyroid[-\s]*stimulating\s*hormone\s*\))?|thyroid[-\s]*stimulating\s*hormone(?:\s*\(\s*tsh\s*\))?|thyrotropin", r"miu\s*/\s*l|mu\s*/\s*l|µiu\s*/\s*ml|uiu\s*/\s*ml|μiu\s*/\s*ml|mlu\s*/\s*l", None, "SYSTEMIC_MEASURE", {"*": "3016-3"}),
     Analyte("free_t3", "Free triiodothyronine (FT3)", r"\bft3\b|free\s*t3|free\s*triiodothyronine", r"pg\s*/\s*ml|pmol\s*/\s*l|ng\s*/\s*dl", None, "SYSTEMIC_MEASURE", {"*": "3051-0"}),
     Analyte("free_t4", "Free thyroxine (FT4)", r"\bft4\b|free\s*t4|free\s*thyroxine", r"ng\s*/\s*dl|pmol\s*/\s*l|pg\s*/\s*ml", None, "SYSTEMIC_MEASURE", {"*": "3024-7"}),
@@ -372,7 +373,7 @@ ENTITY_TERMS: tuple[EntityTerm, ...] = (
     EntityTerm(r"diverticul(?:osis|itis)", "Diverticular disease", "CONDITION", "intestines"),
     EntityTerm(r"(?:small\s+)?bowel\s+obstruction", "Bowel obstruction", "FINDING", "intestines"),
     EntityTerm(r"o?esophagitis", "Esophagitis", "CONDITION", "intestines"),
-    EntityTerm(r"(?:stricturing\s+|fistulising\s+|fistulizing\s+)?crohn'?s(?:\s+disease)?", "Crohn disease", "CONDITION", "intestines"),
+    EntityTerm(r"(?:stricturing\s*|fistulising\s*|fistulizing\s*)?crohn'?s(?:\s*disease)?", "Crohn disease", "CONDITION", "intestines"),
     EntityTerm(r"gastro[-\s]*o?esophageal\s+reflux(?:\s+disease)?|\bgo?erd\b|\bgord\b", "Gastro-oesophageal reflux", "CONDITION", "intestines"),
     EntityTerm(r"laryngo[-\s]*pharyngeal\s+reflux|\blpr\b", "Laryngopharyngeal reflux", "CONDITION", None),
     EntityTerm(r"dysplasia", "Dysplasia", "FINDING", None),

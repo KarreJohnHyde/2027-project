@@ -128,11 +128,16 @@ def normalise(text: str) -> tuple[str, Optional[list[int]]]:
     otherwise ``index[i]`` is the source offset of normalised character ``i`` and the
     final element is ``len(text)``. Inserted spaces map to the following character."""
     insertions: set[int] = _shorthand_insertions(text)
+    runs = []
     for match in ALPHA_RUN.finditer(text):
-        pieces = _segment(match.group(0))
+        # A run split by a shorthand insertion ("S/Ploopileostomy") is segmented after it.
+        cuts = [match.start()] + sorted(point for point in insertions if match.start() < point < match.end()) + [match.end()]
+        runs += [(start, end) for start, end in zip(cuts, cuts[1:]) if end - start >= 5]
+    for start, end in runs:
+        pieces = _segment(text[start:end])
         if pieces is None:
             continue
-        position = match.start()
+        position = start
         for piece in pieces[:-1]:
             position += len(piece)
             insertions.add(position)

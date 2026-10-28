@@ -362,3 +362,212 @@ def test_approximate_values_are_never_recorded_as_exact():
     approximate = [item for item in extract_numeric_measurements("LVEF ~ 68%.\n") if item["name"] == "ejection_fraction"]
     assert approximate and approximate[0]["result_operator"] == "~"
     assert (labs["ejection_fraction"]["reference_low"], labs["ejection_fraction"]["reference_high"]) in {(55, 90), (None, None)}
+
+
+# --- Laboratory tables photographed with a left column of method and specimen lines -----------
+
+def test_method_and_specimen_lines_do_not_end_the_reference_column():
+    labs = _labs(
+        "Age: 52Yr3M Sex: Male\n"
+        "HBA1C 6.1 % American Diabetes\n"
+        "Method:CATION EXCHANGE CHROMATOGRAPHY(HPLC) Association(ADA)\n"
+        "Specimen:EDTA BLOOD Non-Diabetic:<5.7\n"
+        "Pre Diabetic:5.7-6.4\nDiabetic:>=6.5\n"
+        "Total WBC Count 7100 cells/cumm Adult:4000-10000\nNew Born:10000-26000\n"
+        "Method:FLOWCYTOMETRY 1Month:5000-19000\nSpecimen:EDTA BLOOD 1Yr:6000-16000\n"
+        "Erythrocytes Sedimentation Rate(ESR) 14 mm/hour Male:17 to50-Upto10\n"
+        "Method:AUTOMATED :51to60-Upto12\nSpecimen:EDTA BLOOD :61to70-Upto14\n>70-Upto30\n"
+        "Female:17 to50-Upto 12\n"
+        "25OH Vitamin D (Total) 24.0 ng/mL Deficient:<20\nMethod:ECLIA Insufficient:20-29\nSufficient:30-100\n"
+    )
+    hba1c = labs["hba1c"]
+    assert (hba1c["reference_high"], hba1c["reference_selection"]) == (5.7, "NORMAL_BAND_PRINTED_WITH_CATEGORIES")
+    assert {option["text"] for option in hba1c["reference_options"]} >= {"<5.7", "5.7-6.4", ">=6.5"}
+    wbc = labs["white_blood_cell_count"]
+    assert (wbc["reference_low"], wbc["reference_selection"]) == (4000, "SELECTED_BY_DOCUMENTED_AGE")
+    assert not any("FLOWCYTOMETRY" in (option["label"] or "") for option in wbc["reference_options"])
+    esr = labs["esr"]
+    assert (esr["reference_high"], esr["reference_selection"]) == (12, "SELECTED_BY_DOCUMENTED_SEX_AND_AGE")
+    assert labs["vitamin_d_25oh"]["documented_category"] == "Insufficient"
+
+
+def test_result_printed_on_the_line_above_or_below_its_test_name():
+    labs = _labs(
+        "Gender: Male\n"
+        "Packed Cell Volume (PCV) 41.0 % Male:40.1-51.0\nFemale:34.1-44.9\nMethod:CALCULATED\n"
+        "Specimen:EDTA BLOOD 72.4 fL Male:79.0-92.2\nMean Corpuscular Volume (MCV) Female:79.4-94.8\nMethod:CALCULATED\n"
+        "Specimen:EDTA BLOOD 21.0 pg Male:25.7-32.2\nMean Corpuscular Haemoglobin (MCH) Female:25.6-32.2\n"
+        "CEA RESULT UNITS REFERENCE RANGE\nMethod:ECLIA 2.2 ng/mL Non smokers <3\nSpecimen:Serum Smokers <5\n"
+        "ESR\nMETHOD:Automated\nONE HOUR READING 9 mm/hr 0-15\n"
+    )
+    assert labs["hematocrit"]["value"] == 41.0
+    assert (labs["mcv"]["value"], labs["mcv"]["reference_low"], labs["mcv"]["reference_selection"]) == (72.4, 79.0, "SELECTED_BY_DOCUMENTED_SEX")
+    assert (labs["mch"]["value"], labs["mch"]["reference_high"]) == (21.0, 32.2)
+    assert (labs["cea"]["value"], labs["cea"]["reference_selection"]) == (2.2, "CATEGORY_BANDS_ONLY")
+    assert (labs["esr"]["value"], labs["esr"]["reference_high"]) == (9, 15)
+
+
+def test_a_name_row_with_its_own_result_is_never_paired_across_lines():
+    labs = extract_numeric_measurements("Specimen:EDTA BLOOD 72.4 fL\nMean Corpuscular Volume (MCV) 88.0 fL 80-97\n")
+    assert [(item["name"], item["value"]) for item in labs] == [("mcv", 88.0)]
+    # A result with a unit that belongs to another analyte is not paired with the name below it.
+    assert not extract_numeric_measurements("Specimen:Serum 4.2 g/dL\nMean Corpuscular Volume (MCV)\n")
+
+
+def test_garbled_method_prefix_is_not_a_stratum_label_and_strata_labels_are_kept():
+    creatinine = _labs("Sex: Female\nSerum Creatinine 1.15mg/dl Male:0.70-1.30\nMethoo.JeffesKinetic Female:0.55-1.02\n")["creatinine"]
+    assert {option["label"] for option in creatinine["reference_options"]} == {"Male", "Female"}
+    assert (creatinine["reference_high"], creatinine["reference_selection"]) == (1.02, "SELECTED_BY_DOCUMENTED_SEX")
+    bilirubin = _labs("Total Bilirubin 0.9 mg/dL Mild:1.2-2.0\nModerate:2.1-5.0\n")["bilirubin_total"]
+    assert [option["label"] for option in bilirubin["reference_options"]] == ["Mild", "Moderate"]
+
+
+def test_garbled_method_names_ocr_analyte_names_and_printed_flags():
+    labs = _labs(
+        "Serum HDL Cholesterol ehod Direct 47 mg/dL >45\n"
+        "Serum Tniglycerides 168*mg/dl 60-150\n"
+        "NEUTROPHILS 74.0 % H 40 - 60\n"
+    )
+    assert (labs["hdl_cholesterol"]["value"], labs["hdl_cholesterol"]["laboratory_method"]) == (47, "Direct")
+    assert (labs["triglycerides"]["value"], labs["triglycerides"]["documented_flag"], labs["triglycerides"]["reference_high"]) == (168, "ABNORMAL", 150)
+    assert labs["neutrophils_percent"]["documented_flag"] == "HIGH"
+    hba1c = _labs("Glycated Haemoglobin-HbA1c ImmunoturbidimetryNGSP/IFCCStandardized 6.9*% Up to 6%-Normal\n")["hba1c"]
+    assert (hba1c["value"], hba1c["documented_flag"], hba1c["laboratory_method"]) == (6.9, "ABNORMAL", "ImmunoturbidimetryNGSP/IFCCStandardized")
+
+
+def test_nil_with_its_final_letter_lost_still_negates_the_item():
+    assessed = [(item["entity_text"], item["negation"]) for item in _statements("5.Calcification:Ni.\nMitral stenosis - Ni\nCalcification seen. Ni hardware.\n")]
+    assert assessed == [("Calcification", "NEGATED"), ("Mitral stenosis", "NEGATED"), ("Calcification", "AFFIRMED")]
+
+
+def test_laboratory_age_formats():
+    from app.services.nlp_processor import extract_documented_attributes
+
+    for text, age in (("Age:52Yr3M", 52), ("Age : 61 Y 4 M 2 D", 61), ("Age: 7Yr", 7), ("(F, 70y)", 70)):
+        ages = {item["value_number"] for item in extract_documented_attributes(text) if item["name"] == "age_years"}
+        assert ages == {age}, text
+
+
+# --- Statements around lost OCR lines, page breaks and headings ---------------------------------
+
+def test_lower_case_text_after_a_lost_line_is_not_asserted():
+    statements = _by_entity(_statements(
+        "Inflammation extends between the muscle fibres. Focally at a\n\nevidence of dysplasia/ malignancy.\n"
+    ))
+    for entity in ("Dysplasia", "Malignancy"):
+        assert statements[entity]["certainty"] == "UNCERTAIN", entity
+        assert any(cue["type"] == "OCR_FRAGMENT" for cue in statements[entity]["cues"]), entity
+    after_sentence = _by_entity(_statements("Spinal cord appears normal.\natrophy seen.\n"))["Atrophy"]
+    assert after_sentence["certainty"] == "UNCERTAIN"
+    introduced = _by_entity(_statements("Impression:\n\nmild colitis.\n"))["Colitis"]
+    assert introduced["certainty"] == "CERTAIN"
+
+
+def test_headings_do_not_carry_over_a_page_break_and_may_stand_alone():
+    page_one = "RECOMMENDATION:\nColonoscopy\n"
+    text = page_one + "IMPRESSION\nSevere chronic active colitis.\nNo granulomas.\n"
+    by_entity = _by_entity(extract_clinical_statements(text, [0, len(page_one)]))
+    assert by_entity["Endoscopic procedure"]["certainty"] == "HYPOTHETICAL"
+    assert (by_entity["Colitis"]["certainty"], by_entity["Colitis"]["negation"]) == ("CERTAIN", "AFFIRMED")
+    assert by_entity["Colitis"]["section"] == "IMPRESSION"
+    assert by_entity["Granuloma"]["negation"] == "NEGATED"
+    next_document = _by_entity(extract_clinical_statements(page_one + "Colitis.\n", [0, len(page_one)]))["Colitis"]
+    assert next_document["section"] is None and next_document["certainty"] == "CERTAIN"
+
+
+def test_dash_headings_and_status_post_glued_to_the_procedure():
+    statements = _by_entity(_statements(
+        "CLINICAL DETAILS:\nC/O pain\nFINDINGS-BBPS-6.Anastomotic site ulcer noted\n"
+        "IMPRESSION - Stricturing crohns disease-S/Ploopileostomyanastomotic site ulcer\n"
+    ))
+    assert statements["Crohn disease"]["section"] == "IMPRESSION"
+    assert statements["Intestinal stoma procedure"]["temporality"] == "HISTORICAL"
+    ulcers = [item for item in _statements("IMPRESSION - Stricturing crohns disease-S/Ploopileostomyanastomotic site ulcer\n") if item["entity"] == "Ulcer"]
+    assert [item["temporality"] for item in ulcers] == ["CURRENT"]
+    assert normalise("S/Ploopileostomyanastomotic")[0] == "S/P loop ileostomy anastomotic"
+    inline = _by_entity(_statements("FINDINGS-Ulcer noted\nRest of the mucosa appeared normal. IMPRESSION-Stricturing crohns disease\n"))
+    assert (inline["Ulcer"]["section"], inline["Crohn disease"]["section"]) == ("FINDINGS", "IMPRESSION")
+
+
+def test_a_cue_after_one_finding_does_not_reach_the_next_uncoordinated_finding():
+    assessed = [(item["entity_text"].lower(), item["negation"]) for item in _statements(
+        "Mitral regurgitation - Grade Trivial  Aortic stenosis - Nil\nPleural effusion and pneumothorax are absent.\n"
+    )]
+    assert ("mitral regurgitation", "AFFIRMED") in assessed
+    assert ("aortic stenosis", "NEGATED") in assessed
+    assert ("pleural effusion", "NEGATED") in assessed and ("pneumothorax", "NEGATED") in assessed
+
+
+def test_wrapped_adjective_glued_condition_and_glued_facility_advert():
+    statements = _by_entity(_statements("TO R/O RIGHT DIAPHRAGMATIC\nHERNIA\nIndication: Stricturing Crohnsdisease\n"))
+    assert statements["Diaphragmatic hernia"]["certainty"] == "HYPOTHETICAL"
+    assert statements["Crohn disease"]["negation"] == "AFFIRMED"
+    advert = _statements("All2D,3D,4D Color DopplerFNAC,Biopsy and Laboratory services\n")
+    assert not any(item["entity"] == "Biopsy" for item in advert)
+
+
+# --- OCR reading order --------------------------------------------------------------------------
+
+def _detection(text, along, level, width, angle, height=40.0):
+    """A recogniser box for text whose de-skewed position is (along, level) on a page tilted by angle."""
+    import math
+
+    cos, sin = math.cos(angle), math.sin(angle)
+    corners = [(along, level), (along + width, level), (along + width, level + height), (along, level + height)]
+    return [[a * cos - b * sin, a * sin + b * cos] for a, b in corners], text, 0.95
+
+
+def test_tilted_page_rows_keep_each_result_with_its_test_name():
+    import math
+
+    from app.services.ocr import _reading_order
+
+    angle = math.radians(3)
+    rows = [("Creatinine", "1.1 mg/dL"), ("Urea", "30 mg/dL"), ("Sodium", "140 mEq/L"), ("Potassium", "4.2 mEq/L")]
+    detections = []
+    for number, (name, value) in enumerate(rows):
+        level = 200 + 100 * number
+        detections += [_detection(name, 100, level, 400, angle), _detection(value, 1700, level, 300, angle)]
+    assert [line["text"] for line in _reading_order(detections)] == [f"{name} {value}" for name, value in rows]
+
+
+def test_sideways_page_is_detected_and_boxes_map_back_to_the_rendered_page():
+    import numpy as np
+
+    from app.services.ocr import _sideways, _unrotate_box
+
+    tall = [([[100, 100 + 400 * n], [140, 100 + 400 * n], [140, 450 + 400 * n], [100, 450 + 400 * n]], "Colonoscopy findings", 0.9) for n in range(6)]
+    wide = [([[100, 100 + 60 * n], [900, 100 + 60 * n], [900, 140 + 60 * n], [100, 140 + 60 * n]], "Colonoscopy findings", 0.9) for n in range(6)]
+    assert _sideways(tall) and not _sideways(wide) and not _sideways(tall[:3])
+    page = np.zeros((100, 80), dtype=np.uint8)
+    page[10:20, 30:50] = 1
+    for turns in (1, -1):
+        rows, columns = np.nonzero(np.rot90(page, turns))
+        box = [columns.min(), rows.min(), columns.max() + 1, rows.max() + 1]
+        assert _unrotate_box(box, turns, 80, 100) == [30, 10, 50, 20], turns
+
+
+def test_advert_inside_a_long_paragraph_line_excludes_only_its_sentence():
+    paragraph = ("Colonoscopy was performed up to the terminal ileum and the mucosa was reviewed in detail. "
+                 "There is no pleural effusion. Home collection available on request. ") * 2
+    assert len(paragraph) > 200
+    statements = _statements(paragraph + "\n")
+    assert {item["entity"] for item in statements} >= {"Pleural effusion", "Endoscopic procedure"}
+    assert not _statements("Home collection available. No pleural effusion.\n")
+
+
+def test_lower_case_row_after_a_lost_line_gets_a_blank_line_and_fullwidth_is_ascii():
+    from app.services.ocr import _reading_order, page_text
+
+    detections = [
+        _detection("TSH（Thyroid Stimulating Hormone） 2.1 mIU/L", 100, 100, 1200, 0.0),
+        _detection("Inflammation is present. Focally at a", 100, 160, 1200, 0.0),
+        _detection("evidence of dysplasia.", 100, 280, 700, 0.0),
+        _detection("continued on the next line.", 100, 340, 800, 0.0),
+    ]
+    lines = _reading_order(detections)
+    assert lines[0]["text"].startswith("TSH(Thyroid Stimulating Hormone)")
+    assert [bool(line.get("gap_before")) for line in lines] == [False, False, True, False]
+    text = page_text(lines)
+    assert "Focally at a\n\nevidence of dysplasia.\ncontinued" in text
+    assert all(text[line["text_start"]:line["text_end"]] == line["text"] for line in lines)
