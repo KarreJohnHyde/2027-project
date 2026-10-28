@@ -68,8 +68,6 @@ jobs:
     name: Browser regression
     runs-on: ubuntu-latest
     needs: [frontend, backend]
-    env:
-      MEDTWIN_E2E_STATE: ${{ runner.temp }}/medtwin-e2e
     steps:
       - name: Check out source
         uses: actions/checkout@v5
@@ -111,6 +109,9 @@ jobs:
 
       - name: Run browser regression suite
         working-directory: tools/browser-qa
+        env:
+          # The runner context is available to steps, not to job-level env.
+          MEDTWIN_E2E_STATE: ${{ runner.temp }}/medtwin-e2e
         run: npx playwright test
 
       - name: Keep the report and traces of a failed run
