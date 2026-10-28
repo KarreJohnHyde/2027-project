@@ -50,7 +50,7 @@ and `docs/validation/models/`.
 | --- | --- | --- |
 | Patient-specific L3 anatomy or lesion pin from a research image | `UNSUPPORTED` | No reviewed patient registration exists. Source-pixel geometry may become at most a clinician-confirmed schematic organ association. |
 | Personalized treatment recommendation or fabricated future risk | `UNSUPPORTED` | No validated integrated causal or longitudinal forecast model exists. Prognosis must continue to abstain. |
-| Inference on an assembled DICOM series; EEG, HL7, or DeepSA workflow | `UNSUPPORTED` | Series assembly and geometry checks exist, but no model consumes an assembled series; EEG and HL7 parsers, DeepSA weights and its executable are absent. ECG upload inference exists for digital WFDB format-16 and CSV records only. |
+| Inference on an assembled DICOM series; EEG or DeepSA workflow | `UNSUPPORTED` | Series assembly and geometry checks exist, but no model consumes an assembled series; an EEG parser, DeepSA weights and its executable are absent. HL7 v2 result import is implemented (`backend/app/services/hl7_import.py`). ECG upload inference exists for digital WFDB format-16 and CSV records only. |
 
 ## Engineering gaps that do not remove the scientific blockers
 

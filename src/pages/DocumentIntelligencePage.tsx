@@ -87,7 +87,7 @@ export default function DocumentIntelligencePage() {
     return (
       <>
         <PageHeader eyebrow="Document Intelligence" title="Clinical document analysis" />
-        <EmptyState title="No report uploads" detail="Upload a de-identified PDF (embedded text), DOCX, XLSX, TXT, CSV or FHIR JSON document to extract source-linked statements and measurements." action={<Link to="/upload" className="text-sm text-accent-text hover:underline">Open the upload center</Link>} />
+        <EmptyState title="No report uploads" detail="Upload a de-identified PDF (embedded text or scanned), DOCX, XLSX, TXT, CSV, FHIR JSON or HL7 v2 result message to extract source-linked statements and measurements." action={<Link to="/upload" className="text-sm text-accent-text hover:underline">Open the upload center</Link>} />
       </>
     );
   }

@@ -28,7 +28,7 @@ scope. **No modality has a clinically validated model.**
 | EEG | EDF reader not installed (`UNSUPPORTED_MODALITY`) | no model | none |
 | Clinical documents | PDF (embedded text/local OCR), DOCX, XLSX, CSV/text/JSON | Rules and optional scispaCy execute but are unvalidated; MedCAT/RadGraph dependencies are missing. | none |
 | FHIR R4 | JSON resources, including coded/datetime/range Observations | no model | none |
-| HL7 v2 | Reader not installed (`UNSUPPORTED_MODALITY`) | no model | none |
+| HL7 v2 | `.hl7` observation-result messages (`backend/app/services/hl7_import.py`): OBR, OBX (NM, single-number SN, text and coded values; OBX-7 ranges, OBX-8 flags, OBX-11 X/D/W results withheld) and NTE. Patient, visit, order-staff and sender fields are never read. | no model | none |
 
 ## Research-model input rules
 

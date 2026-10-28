@@ -10,7 +10,7 @@ import { useSelectedCase, useWorkspace } from "../state/workspace";
 
 type Row = { id: string; file: File; status: "QUEUED" | "UPLOADING" | "STORED" | "PROCESSING" | "COMPLETED" | "ERROR"; progress: number; upload?: UploadedFile; jobStatus?: string; message?: string };
 
-const ACCEPT = ".txt,.md,.csv,.json,.pdf,.docx,.xlsx,.dcm,.nii,.gz,.nrrd,.mha,.png,.jpg,.jpeg,.bmp,.hea,.dat";
+const ACCEPT = ".txt,.md,.csv,.json,.hl7,.pdf,.docx,.xlsx,.dcm,.nii,.gz,.nrrd,.mha,.png,.jpg,.jpeg,.bmp,.hea,.dat";
 
 export default function UploadCenterPage() {
   const selected = useSelectedCase()!;

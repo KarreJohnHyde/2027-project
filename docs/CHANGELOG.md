@@ -16,6 +16,13 @@ All work is on branch `feature/medtwin-2-integration`. This repository has no re
 | `cfbeead` | 2026-10-27 | Four-eyes correction approval applied to effective results, file versions and withdrawal, DICOM series assembly. |
 | next | 2026-10-28 | ECG and cardiac MRI upload inference with held-out parity, frontend Docker build fix (entry below). |
 | next | 2026-10-28 | Second photographed-report pass: lost OCR lines, sideways and tilted pages, lab tables with method/specimen columns (entry below). |
+| next | 2026-10-28 | HL7 v2 observation-result import (entry below). |
+
+## HL7 v2 observation-result import (next, 2026-10-28)
+
+- `.hl7` uploads (content must start with an MSH, FHS or BHS segment) are clinical reports. `backend/app/services/hl7_import.py` renders only OBR, OBX and NTE content; PID, PD1, NK1, PV1, PV2, ORC, insurance and guarantor segments and the MSH sender/receiver fields are never read, so they cannot reach stored text, rules or the database. Escapes (`\F\`, `\S\`, `\T\`, `\R\`, `\E\`, `\.br\`, `\X..\`) are decoded.
+- Each OBX becomes one canonical line, and its measurement quotes that line: NM and single-number SN values (with comparator), OBX-6 units through the shared UCUM mapping, OBX-7 ranges (`a-b`, `<b`, `>=a`; inclusivity kept), OBX-8 flags, OBX-14 or OBR-7 dates, and the documented OBX-3 code (LOINC preferred from the primary or alternate triplet; a code with no MedTwin analyte keeps its own name). Results marked X, D or W in OBX-11 are rendered with that status and produce no measurement; ranges and ratios are not numbers. Text and coded results and NTE comments go through the clinical-statement rules.
+- The modality catalogue lists HL7 v2 as supported (no model). Tests: `backend/tests/test_hl7_import.py` (synthetic message with marker values that must not appear in the text).
 
 ## Photographed reports, second pass (next, 2026-10-28)
 

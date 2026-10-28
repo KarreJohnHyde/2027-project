@@ -259,6 +259,13 @@ def parse_clinical_document_with_pages(file_path: Path, content_bytes: Optional[
 
         rendered = render_fhir_text(content_bytes)
         return [rendered if rendered is not None else extract_text_from_json(content_bytes)]
+    if ext == ".hl7":
+        from app.services.hl7_import import render_hl7_text
+
+        rendered = render_hl7_text(content_bytes)
+        if rendered is None:
+            raise ValueError("The .hl7 file is not an HL7 v2 message (no MSH segment).")
+        return [rendered]
     if ext == ".csv":
         return [extract_text_from_csv(content_bytes)]
     if ext == ".docx":
@@ -271,6 +278,6 @@ def parse_clinical_document_with_pages(file_path: Path, content_bytes: Optional[
 def parse_clinical_document(file_path: Path, content_bytes: Optional[bytes] = None) -> str:
     """
     Universal dispatcher that parses any clinical report into clean text.
-    Supports .pdf, .docx, .xlsx, .json (including FHIR), .csv, .txt, .md.
+    Supports .pdf, .docx, .xlsx, .json (including FHIR), .hl7 (HL7 v2 results), .csv, .txt, .md.
     """
     return "\n".join(parse_clinical_document_with_pages(file_path, content_bytes))

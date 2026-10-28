@@ -22,7 +22,7 @@ from app.models.entities import ModalityType
 
 IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".bmp", ".dcm", ".nii", ".nii.gz", ".nrrd", ".mha")
 ECG_EXTENSIONS = (".csv", ".dat", ".hea")
-REPORT_EXTENSIONS = (".txt", ".json", ".pdf", ".docx", ".md", ".xlsx")
+REPORT_EXTENSIONS = (".txt", ".json", ".pdf", ".docx", ".md", ".xlsx", ".hl7")
 
 EXPECTED_MIME_TYPES = {
     ".png": {"image/png", "application/octet-stream"},
@@ -41,6 +41,7 @@ EXPECTED_MIME_TYPES = {
     ".pdf": {"application/pdf", "application/octet-stream"},
     ".docx": {"application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/octet-stream"},
     ".xlsx": {"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/octet-stream"},
+    ".hl7": {"x-application/hl7-v2+er7", "application/hl7-v2", "text/plain", "application/octet-stream"},
     ".dat": {"application/octet-stream", "text/plain"},
     ".hea": {"application/octet-stream", "text/plain"},
 }
@@ -116,11 +117,16 @@ def validate_signature(ext: str, head: bytes) -> None:
             ".dcm": "DICOM uploads must be Part 10 files with the 128-byte preamble and 'DICM' prefix.",
         }.get(ext, f"File content does not match the declared '{ext}' format.")
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=detail)
-    if ext in (".txt", ".md", ".csv", ".json", ".hea") and not _looks_like_text(head):
+    if ext in (".txt", ".md", ".csv", ".json", ".hea", ".hl7") and not _looks_like_text(head):
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=f"'{ext}' uploads must be text.")
 
 
 def validate_complete_content(ext: str, path: Path) -> None:
+    if ext == ".hl7":
+        from app.services.hl7_import import is_hl7
+
+        if not is_hl7(path.read_bytes()[:64]):
+            raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="HL7 upload must start with an MSH (or FHS/BHS batch) segment.")
     if ext == ".json":
         try:
             json.loads(path.read_text(encoding="utf-8"))

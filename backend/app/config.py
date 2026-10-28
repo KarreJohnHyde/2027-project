@@ -67,8 +67,8 @@ ALLOWED_EXTENSIONS: set = {
     ".png", ".jpg", ".jpeg", ".bmp", ".dcm", ".nii", ".nii.gz", ".nrrd", ".mha",
     # ECG records
     ".csv", ".dat", ".hea",
-    # Clinical reports (JSON includes FHIR R4 resources)
-    ".txt", ".json", ".pdf", ".docx", ".md", ".xlsx"
+    # Clinical reports (JSON includes FHIR R4 resources; .hl7 is HL7 v2 observation results)
+    ".txt", ".json", ".pdf", ".docx", ".md", ".xlsx", ".hl7"
 }
 
 ALLOWED_MIME_TYPES: set = {
@@ -81,6 +81,8 @@ ALLOWED_MIME_TYPES: set = {
     "text/markdown",
     "application/json",
     "application/fhir+json",
+    "application/hl7-v2",
+    "x-application/hl7-v2+er7",
     "application/pdf",
     "application/dicom",
     "application/gzip",

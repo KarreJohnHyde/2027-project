@@ -1391,10 +1391,13 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
         raise ValueError("Clinical report text file is empty.")
 
     from app.services.fhir_import import fhir_measurements
+    from app.services.hl7_import import hl7_measurements
 
     statements = extract_clinical_statements(sanitized_text, page_starts)
     excluded_segments = nonclinical_ranges(sanitized_text, page_starts)
     structured = fhir_measurements(report_path, sanitized_text)
+    if structured is None:
+        structured = hl7_measurements(report_path, sanitized_text)
     measurements = structured if structured is not None else extract_numeric_measurements(sanitized_text, page_starts)
     measurement_context = extract_measurement_context(sanitized_text)
     for measurement in measurements:

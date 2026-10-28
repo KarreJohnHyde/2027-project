@@ -55,9 +55,12 @@ def _effective(resource: dict) -> Optional[str]:
     return None
 
 
-def _unit(quantity: dict) -> str:
-    raw = str(quantity.get("code") or quantity.get("unit") or "")
+def ucum_unit(raw: str) -> str:
     return _UCUM_UNITS.get(raw.lower(), normalise_unit(raw)) if raw else ""
+
+
+def _unit(quantity: dict) -> str:
+    return ucum_unit(str(quantity.get("code") or quantity.get("unit") or ""))
 
 
 def _observation_lines(resource: dict) -> list[dict[str, Any]]:

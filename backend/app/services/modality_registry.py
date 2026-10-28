@@ -40,8 +40,8 @@ def _readers() -> dict[str, dict[str, Any]]:
         "XLSX": {"library": "openpyxl", "available": _available("openpyxl"), "extensions": [".xlsx"], "upload_accepted": True, "note": "Read-only; cached cell values, formulas are not evaluated."},
         "TEXT": {"library": None, "available": True, "extensions": [".txt", ".md", ".csv"], "upload_accepted": True},
         "JSON": {"library": None, "available": True, "extensions": [".json"], "upload_accepted": True},
+        "HL7_V2": {"library": None, "available": True, "extensions": [".hl7"], "upload_accepted": True, "note": "Observation results (ORU): OBR, OBX and NTE are read; patient, visit and staff segments are never read."},
         "FHIR_R4": {"library": None, "available": True, "extensions": [".json"], "upload_accepted": True, "note": "Observation (incl. components) and DiagnosticReport conclusion; other resource types are ignored."},
-        "HL7_V2": {"library": None, "available": False, "extensions": [".hl7"], "upload_accepted": False},
     }
 
 
@@ -75,7 +75,7 @@ MODALITY_SPECS: tuple[dict[str, Any], ...] = (
     {"id": "EEG", "label": "Electroencephalogram", "group": "SIGNAL", "dicom_codes": [], "formats": ["EDF"], "preprocessing": [], "candidate_tasks": ["Event detection"]},
     {"id": "DOCUMENT", "label": "Clinical documents", "group": "DOCUMENT", "dicom_codes": [], "formats": ["PDF", "DOCX", "XLSX", "TEXT", "JSON"], "preprocessing": ["Text extraction", "De-identification masking", "Section detection"], "candidate_tasks": ["Entity extraction", "Assertion and temporality", "Measurement extraction"]},
     {"id": "FHIR", "label": "FHIR R4 resources", "group": "INTEROPERABILITY", "dicom_codes": [], "formats": ["FHIR_R4"], "preprocessing": ["Observation rendering with source spans"], "candidate_tasks": ["Structured measurement import"]},
-    {"id": "HL7V2", "label": "HL7 v2 messages", "group": "INTEROPERABILITY", "dicom_codes": [], "formats": ["HL7_V2"], "preprocessing": [], "candidate_tasks": ["Structured import"]},
+    {"id": "HL7V2", "label": "HL7 v2 messages", "group": "INTEROPERABILITY", "dicom_codes": [], "formats": ["HL7_V2"], "preprocessing": ["OBR/OBX/NTE rendering with source spans; identifying segments dropped"], "candidate_tasks": ["Structured measurement import"]},
 )
 
 

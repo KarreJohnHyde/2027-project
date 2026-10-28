@@ -602,11 +602,10 @@ def test_bmp_microscopy_upload_is_validated_and_readable(client, test_users):
 def test_modality_registry_separates_formats_from_model_coverage(client, test_users):
     registry = client.get("/api/v1/modalities", headers=get_auth_headers(test_users["clinician_a"])).json()
     modalities = {item["id"]: item for item in registry["modalities"]}
-    for required in ("CT", "MRI", "XRAY", "US", "PET", "XA", "ENDOSCOPY", "MICROSCOPY", "ECG", "DOCUMENT", "FHIR"):
+    for required in ("CT", "MRI", "XRAY", "US", "PET", "XA", "ENDOSCOPY", "MICROSCOPY", "ECG", "DOCUMENT", "FHIR", "HL7V2"):
         assert modalities[required]["file_support_status"] == "SUPPORTED"
         assert modalities[required]["validated_tasks"] == []
     assert modalities["EEG"]["file_support_status"] == "UNSUPPORTED_MODALITY"
-    assert modalities["HL7V2"]["file_support_status"] == "UNSUPPORTED_MODALITY"
     dicom_series = next(item for item in modalities["CT"]["supported_file_formats"] if item["format"] == "DICOM_SERIES")
     assert dicom_series["available"] is False
     assert dicom_series["upload_accepted"] is False
