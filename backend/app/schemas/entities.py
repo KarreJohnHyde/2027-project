@@ -544,6 +544,8 @@ class SystemHealthResponse(BaseModel):
     gpu_name: Optional[str]
     research_notice: str
     database_status: str
+    # Database or uploads in a per-instance temp directory (serverless default); lost on restart.
+    temporary_storage: bool = False
     active_cases: int
     total_findings: int
     health_scope: str

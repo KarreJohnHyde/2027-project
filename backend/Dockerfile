@@ -10,6 +10,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1 \
     DATASET_REGISTRY_PATH=/app/dataset_registry/datasets.json \
+    DATASET_TASK_AUDIT_PATH=/app/dataset_registry/tasks.json \
     MODEL_REGISTRY_PATH=/app/model_registry/models.json \
     MEDTWIN_PROJECT_ROOT=/app/project \
     MEDTWIN_CODE_COMMIT=${MEDTWIN_CODE_COMMIT}
@@ -25,7 +26,7 @@ RUN python -m pip install --upgrade pip \
     && python -m pip install -r requirements-ml.txt
 
 COPY backend/app ./app
-COPY dataset_registry/datasets.json ./dataset_registry/datasets.json
+COPY dataset_registry/datasets.json dataset_registry/tasks.json ./dataset_registry/
 COPY model_registry/ ./model_registry/
 # Generated evidence read by the research, traceability and anatomy endpoints.
 COPY docs/research/traceability.json ./project/docs/research/traceability.json

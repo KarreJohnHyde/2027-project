@@ -22,7 +22,13 @@ from app.services.dicom_series import PLANES, assemble_series, cached_assembly, 
 from app.services import edf_reader
 from app.services.imaging_readers import ImagingReadError, read_metadata, render_slice
 from app.services.modality_registry import modality_registry
-from app.services.nlp_processor import EXTRACTOR_VERSION, prepare_report_document
+from app.services import derived_text, ocr
+from app.services.nlp_processor import (
+    EXTRACTOR_VERSION,
+    date_conflicts,
+    extract_documented_attributes,
+    privacy_screen,
+)
 
 router = APIRouter(tags=["Modalities & Imaging"])
 
@@ -205,19 +211,75 @@ def render_imaging_slice(
     )
 
 
-@router.get("/uploads/{file_id}/text")
-def get_parsed_report_text(file_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    """The de-identified text the extractor read, so source spans can be shown in context."""
-    record = _upload(file_id, db, current_user)
+def _report_upload(file_id: int, db: Session, user: User) -> UploadedFile:
+    record = _upload(file_id, db, user)
     if record.modality != ModalityType.REPORT:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="UNSUPPORTED_MODALITY: not a report upload.")
+    return record
+
+
+def _prepared(record: UploadedFile) -> derived_text.Prepared:
+    """The masked page text, from the cache the analysis left when there is one."""
+    cached = derived_text.load(record.file_hash)
+    if cached is not None:
+        return cached
     try:
         with upload_store.materialize(Path(record.file_path)) as plain:
-            text, page_starts, page_meta = prepare_report_document(plain)
+            return derived_text.prepared(plain, record.file_hash)
     except HTTPException:
         raise
     except Exception as exc:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=f"Report could not be parsed: {exc}")
+
+
+# Page images for side-by-side verification: wide enough to read, far smaller than the OCR render.
+PAGE_IMAGE_DPI = 110
+
+
+@router.get("/uploads/{file_id}/pages/{page}/image")
+def get_report_page_image(file_id: int, page: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """One page of a PDF report as a PNG, for checking extracted values against the source. Lines
+    in which the identifier masks found something are painted out; logos, signatures and
+    unlabelled names can remain, so the image is shown only to people with access to the case.
+    Embedded-text pages have no line boxes and cannot be masked; the header says so."""
+    from io import BytesIO
+
+    from PIL import ImageDraw
+
+    record = _report_upload(file_id, db, current_user)
+    if not record.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="NO_PAGE_IMAGE: only PDF reports have page images.")
+    _text, _starts, pages = _prepared(record)
+    if not 1 <= page <= len(pages):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Page not found.")
+    meta = pages[page - 1]
+    with upload_store.materialize(Path(record.file_path)) as plain:
+        image = ocr.render_pdf_page(plain.read_bytes(), page - 1, dpi=PAGE_IMAGE_DPI).convert("RGB")
+    lines = meta.get("lines") or []
+    masked = [line for line in lines if line.get("identifiers_masked")]
+    if meta.get("method") == "OCR":
+        # OCR line boxes are in the pixels of the page rendered at its OCR resolution.
+        scale = image.width / float(meta.get("image_width") or image.width)
+        draw = ImageDraw.Draw(image)
+        for line in masked:
+            x0, y0, x1, y1 = (value * scale for value in line["bbox_xyxy"])
+            draw.rectangle([x0 - 4, y0 - 4, x1 + 4, y1 + 4], fill="black")
+        masking = "APPLIED" if masked else "NO_IDENTIFIER_LINES"
+    else:
+        masking = "UNAVAILABLE_EMBEDDED_TEXT"
+    buffer = BytesIO()
+    image.save(buffer, format="PNG", optimize=True)
+    info = {"page": page, "width": image.width, "height": image.height, "masking": masking, "masked_lines": len(masked),
+            "source_image_width": meta.get("image_width"), "source_image_height": meta.get("image_height")}
+    return Response(content=buffer.getvalue(), media_type="image/png",
+                    headers={"X-MedTwin-Page": json.dumps(info, separators=(",", ":")), "Cache-Control": "private, no-store"})
+
+
+@router.get("/uploads/{file_id}/text")
+def get_parsed_report_text(file_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """The de-identified text the extractor read, so source spans can be shown in context."""
+    record = _report_upload(file_id, db, current_user)
+    text, page_starts, page_meta = _prepared(record)
     return {
         "upload_id": record.id,
         "filename": record.filename,
@@ -228,4 +290,6 @@ def get_parsed_report_text(file_id: int, db: Session = Depends(get_db), current_
         "pages": page_meta,
         "extractor_version": EXTRACTOR_VERSION,
         "deidentification_applied": True,
+        "privacy_screen": privacy_screen(page_meta),
+        "date_conflicts": date_conflicts(extract_documented_attributes(text), page_starts, len(text)),
     }

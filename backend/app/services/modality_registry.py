@@ -24,16 +24,15 @@ def _available(module: str) -> bool:
 def _readers() -> dict[str, dict[str, Any]]:
     return {
         "DICOM": {"library": "pydicom", "available": _available("pydicom"), "extensions": [".dcm"], "upload_accepted": True},
-        # A single DICOM object is readable, but MedTwin does not yet accept or
-        # assemble a multi-file series. Report that distinction explicitly so
-        # the registry cannot imply grouping that the pipeline does not perform.
-        "DICOM_SERIES": {"library": "pydicom", "available": False, "extensions": ["multi-file .dcm series"], "upload_accepted": False, "note": "NOT IMPLEMENTED: no atomic multi-file upload, SeriesInstanceUID grouping, InstanceNumber ordering, or series-level completeness validation."},
+        # Series are assembled from separately uploaded objects belonging to one
+        # case. This is not an atomic series upload or proof of scan completeness.
+        "DICOM_SERIES": {"library": "pydicom", "available": _available("pydicom"), "extensions": ["multi-file .dcm series"], "upload_accepted": True, "note": "Separately uploaded case objects are grouped by SeriesInstanceUID and ordered by ImagePositionPatient along the slice normal, with orientation, spacing and gap checks. No atomic series upload or proof that all acquired slices are present; only compatible volumes enter research inference."},
         "NIFTI": {"library": "nibabel", "available": _available("nibabel"), "extensions": [".nii", ".nii.gz"], "upload_accepted": True, "note": "NIfTI-1 only; NIfTI-2 headers are rejected by the pre-load memory-safety guard."},
         "NRRD": {"library": "SimpleITK", "available": _available("SimpleITK"), "extensions": [".nrrd"], "upload_accepted": True},
         "METAIMAGE": {"library": "SimpleITK", "available": _available("SimpleITK"), "extensions": [".mha"], "upload_accepted": True, "note": "Detached-header .mhd/.raw pairs are not accepted; use single-file .mha."},
         "RASTER": {"library": "Pillow", "available": _available("PIL"), "extensions": [".png", ".jpg", ".jpeg", ".bmp"], "upload_accepted": True},
         "ECG_CSV": {"library": "numpy", "available": True, "extensions": [".csv"], "upload_accepted": True},
-        "WFDB": {"library": "wfdb", "available": _available("wfdb"), "extensions": [".dat", ".hea"], "upload_accepted": True, "note": "Header and signal files are stored; WFDB decoding is not implemented."},
+        "WFDB": {"library": "numpy", "available": _available("numpy"), "extensions": [".dat", ".hea"], "upload_accepted": True, "note": "The local NumPy reader decodes paired .hea/.dat uploads in plain WFDB format 16, checking header, sample count, lead gain, initial values and checksums. Other formats and multi-segment records are refused. Research inference additionally requires the trained 12-lead, 100 Hz, 10-second contract; this is not a clinically validated ECG interpretation."},
         "EDF": {"library": "numpy", "available": True, "extensions": [".edf", ".bdf"], "upload_accepted": True,
                 "note": "EDF, EDF+C and BDF/BDF+C read exactly with header checks and a waveform preview; EDF+D is read but not previewed. Patient and recording identification fields are never shown."},
         "PDF": {"library": "pypdf", "available": _available("pypdf"), "extensions": [".pdf"], "upload_accepted": True, "note": "Embedded text is extracted first; image-only or sparsely textual pages use optional local pypdfium2 rendering plus RapidOCR/ONNX Runtime when both dependencies are available. OCR coordinates are retained in rendered-page pixel space."},
@@ -48,7 +47,7 @@ def _readers() -> dict[str, dict[str, Any]]:
 
 RADIOLOGY_FORMATS = ["DICOM", "DICOM_SERIES", "NIFTI", "NRRD", "METAIMAGE"]
 VOLUME_PREPROCESSING = ["Rescale slope/intercept", "Window/level display", "Voxel-index slice extraction", "Spacing and orientation metadata"]
-RASTER_PREPROCESSING = ["Validation and decode", "8-bit display", "Resize/normalise for a model input (no model configured)"]
+RASTER_PREPROCESSING = ["Validation and decode", "8-bit display", "Model-specific resize/normalise only for registered research models passing their applicability gates"]
 IMAGING_TASKS = ["Classification", "Detection", "Segmentation", "Measurement", "Registration"]
 
 MODALITY_SPECS: tuple[dict[str, Any], ...] = (

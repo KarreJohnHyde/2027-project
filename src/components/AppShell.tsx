@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Activity, CheckCircle2, LogOut, Menu, Monitor, Moon, Plus, RefreshCw, Sun, Upload, X, XCircle } from "lucide-react";
+import { Activity, AlertTriangle, CheckCircle2, LogOut, Menu, Monitor, Moon, Plus, RefreshCw, Sun, Upload, X, XCircle } from "lucide-react";
 import { Link, navigate, useLocation } from "../lib/router";
 import { usePreferences, type ThemePreference } from "../lib/preferences";
 import { NAV_SECTIONS } from "../navigation";
@@ -29,7 +29,9 @@ function Sidebar({ onNavigate }: { onNavigate: () => void }) {
           <div key={section.label} className="mt-3 first:mt-1">
             <p className="px-2.5 pb-1 text-[11px] font-medium text-ink-3">{section.label}</p>
             {section.items.map((item) => {
-              const active = item.path === "/" ? path === "/" : path === item.path || path.startsWith(`${item.path}/`);
+              // A sub-path with its own entry ("/documents/verify") is not also its parent's page.
+              const active = item.path === "/" ? path === "/" : path === item.path
+                || (path.startsWith(`${item.path}/`) && !NAV_SECTIONS.some((other) => other.items.some((entry) => entry.path !== item.path && entry.path.startsWith(`${item.path}/`) && (path === entry.path || path.startsWith(`${entry.path}/`)))));
               const Icon = item.icon;
               return (
                 <Link
@@ -62,6 +64,20 @@ function Sidebar({ onNavigate }: { onNavigate: () => void }) {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/** Serverless demonstration without a hosted database or object store: data does not persist. */
+function TemporaryStorageNotice() {
+  const temporary = useWorkspace((state) => state.health?.temporary_storage === true);
+  if (!temporary) return null;
+  return (
+    <div role="status" className="mb-4 flex items-start gap-2.5 rounded-lg border border-[color-mix(in_srgb,var(--mt-warning)_45%,transparent)] bg-surface p-3 text-sm text-warning-text">
+      <AlertTriangle aria-hidden size={16} className="mt-0.5 shrink-0" />
+      <span className="min-w-0 flex-1 text-ink">
+        Demonstration deployment: data is kept on a temporary server instance and is lost when it restarts. Use synthetic data only; do not upload patient documents.
+      </span>
     </div>
   );
 }
@@ -124,6 +140,7 @@ export function AppShell({ children, fullBleed = false }: { children: ReactNode;
           </div>
         </header>
         <main id="main" className={fullBleed ? "" : "mx-auto max-w-[1480px] px-3 py-5 sm:px-6 sm:py-6"}>
+          {!fullBleed && <TemporaryStorageNotice />}
           {!fullBleed && <NoticeBar />}
           {children}
         </main>

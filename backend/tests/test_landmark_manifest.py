@@ -39,6 +39,8 @@ def test_only_an_independently_approved_manifest_promotes_a_finding(client, db_s
     assert proposed.status_code == 201, proposed.text
     manifest = proposed.json()
     assert (manifest["status"], manifest["fit_pairs"], manifest["held_out_pairs"]) == ("PROPOSED", 6, 3)
+    assert manifest["fit_landmarks"] == body["fit_pairs"]
+    assert manifest["held_out_landmarks"] == body["held_out_pairs"]
 
     gate = f"/api/v1/findings/{finding.id}/registration-gate"
     assert client.post(gate, json={"finding_id": finding.id, "manifest_id": manifest["id"]}, headers=owner).status_code == 409
@@ -73,3 +75,24 @@ def test_manifests_are_validated_before_review(client, db_session, test_users):
     assert client.post(url, json={**base, "fit_pairs": _pairs(collinear), "held_out_pairs": _pairs(HELD_OUT)}, headers=owner).status_code == 422
     repeated = _pairs(FIT)
     assert client.post(url, json={**base, "fit_pairs": repeated, "held_out_pairs": repeated[:1]}, headers=owner).status_code == 422
+
+
+def test_reviewers_can_inspect_coordinates_but_other_cases_cannot(client, db_session, test_users):
+    owner = get_auth_headers(test_users["clinician_a"])
+    reviewer = get_auth_headers(test_users["clinician_b"])
+    case_id = _finding(client, owner)
+    finding = db_session.query(Finding).filter(Finding.case_id == case_id).first()
+    url = f"/api/v1/findings/{finding.id}/landmark-manifests"
+    payload = {"coordinate_frame": "SYNTHETIC_LPS_mm_to_Atlas_mm", "requested_region": "liver", "threshold_mm": 3.0,
+               "fit_pairs": _pairs(FIT), "held_out_pairs": _pairs(HELD_OUT, seed=1)}
+    assert client.post(url, json=payload, headers=owner).status_code == 201
+    assert client.get(url, headers=reviewer).status_code == 403
+    assert client.post(f"/api/v1/cases/{case_id}/members", json={"username": "clinician_b", "role": "EDITOR"}, headers=owner).status_code == 201
+    listed = client.get(url, headers=reviewer)
+    assert listed.status_code == 200
+    manifest = listed.json()[0]
+    assert manifest["fit_landmarks"] == payload["fit_pairs"]
+    assert manifest["held_out_landmarks"] == payload["held_out_pairs"]
+    assert manifest["coordinate_frame"] == payload["coordinate_frame"]
+    assert manifest["threshold_mm"] == payload["threshold_mm"]
+    assert manifest["requested_region"] == payload["requested_region"]

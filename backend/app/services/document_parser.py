@@ -166,12 +166,15 @@ def extract_pdf_document(content_bytes: bytes) -> tuple[list[str], list[dict]]:
     pages: list[str] = []
     meta: list[dict] = []
     available = ocr.ocr_available()
+    scanned = [index for index, text in enumerate(embedded) if len(text.strip()) < MIN_EMBEDDED_CHARACTERS]
+    # Scanned pages are read in parallel (see ocr.OCR_WORKERS).
+    read = dict(zip(scanned, ocr.ocr_pdf_pages(content_bytes, scanned))) if available and scanned else {}
     for index, text in enumerate(embedded):
         if len(text.strip()) >= MIN_EMBEDDED_CHARACTERS:
             pages.append(text)
             meta.append({"page": index + 1, "method": "EMBEDDED_TEXT"})
         elif available:
-            result = ocr.ocr_pdf_page(content_bytes, index)
+            result = read[index]
             pages.append(result.text)
             meta.append({"page": index + 1, "method": "OCR" if result.text.strip() else "OCR_NO_TEXT", "engine": result.engine,
                          "line_count": result.line_count, "mean_confidence": result.mean_confidence, "dpi": ocr.OCR_DPI,

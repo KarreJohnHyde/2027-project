@@ -5,6 +5,7 @@ import AnatomyViewport, { type TargetSummary, type ViewportApi, type ViewportLay
 import { ancestry, atlasLookup, chooseTier, loadAtlasIndex, loadManifest, selectAtlasStructures } from "../anatomy/data";
 import { AssetStatus, HierarchyList, Inspector, NoAnatomy, PerformanceOverlay, StudioBottomPanel, SystemList, VariantList, ViewerToolbar, type ToolbarState } from "../anatomy/StudioPanels";
 import type { AnatomyManifest, AtlasIndex, AtlasStructure, HybridLayer, TierName } from "../anatomy/types";
+import LandmarkManifestPanel from "../anatomy/LandmarkManifestPanel";
 import { Badge, Button, Disclosure, ErrorBlock, LoadingBlock, PageHeader, SectionTitle, SelectInput, StatusBadge, TextArea } from "../components/ui";
 import { api } from "../services/api";
 import { errorMessage, formatNumber, humanize } from "../lib/format";
@@ -161,6 +162,12 @@ function Studio({ manifest, atlas }: { manifest: AnatomyManifest; atlas: AtlasIn
     const ids = new Set((isHybrid ? Object.values(evidence.data.systems) : [evidence.data.systems[system.id]]).flatMap((item) => item?.highlight.verified_structures ?? []));
     return new Set(targets.filter((target) => ids.has(target.structureId)).map((target) => target.key));
   }, [toolbar.showEvidence, evidence.data, isHybrid, system.id, targets]);
+
+  const documentedKeys = useMemo(() => {
+    if (!toolbar.showEvidence || !evidence.data) return new Set<string>();
+    const ids = new Set((isHybrid ? Object.values(evidence.data.systems) : [evidence.data.systems[system.id]]).flatMap((item) => item?.highlight.documented_structures ?? []));
+    return new Set(targets.filter((target) => ids.has(target.structureId) && !verifiedKeys.has(target.key)).map((target) => target.key));
+  }, [toolbar.showEvidence, evidence.data, isHybrid, system.id, targets, verifiedKeys]);
 
   const schematicKeys = useMemo(() => {
     if (!toolbar.showEvidence || !evidence.data || !isHybrid) return new Set<string>();
@@ -333,6 +340,7 @@ function Studio({ manifest, atlas }: { manifest: AnatomyManifest; atlas: AtlasIn
             hidden={hidden}
             verifiedKeys={verifiedKeys}
             schematicKeys={schematicKeys}
+            documentedKeys={documentedKeys}
             onSelect={setSelected}
             onHover={setHovered}
             onTargets={onTargets}
@@ -370,6 +378,7 @@ function Studio({ manifest, atlas }: { manifest: AnatomyManifest; atlas: AtlasIn
           hasCase={Boolean(caseId)}
           onFocusAtlas={focusAtlas}
         />
+        <div className="mt-4"><LandmarkManifestPanel /></div>
         <div className="mt-4 space-y-1.5 border-t border-line pt-3">
           {system.limitations.map((limitation) => <p key={limitation} className="text-[11px] leading-4 text-ink-3">{limitation}</p>)}
           <a href={`${import.meta.env.BASE_URL}anatomy/derived/atlas/ATTRIBUTION.md`} target="_blank" rel="noreferrer" className="text-[11px] text-accent-text hover:underline">Atlas attribution</a>
@@ -382,7 +391,7 @@ function Studio({ manifest, atlas }: { manifest: AnatomyManifest; atlas: AtlasIn
 export default function AnatomyStudioPage() {
   const data = useAsync(() => Promise.all([loadManifest(), loadAtlasIndex()]), []);
   // The page keeps its heading while the anatomy library loads or is unavailable.
-  if (data.error) return <div className="p-6"><PageHeader title="Live Anatomy Studio" /><NoAnatomy message={data.error} /></div>;
+  if (data.error) return <div className="space-y-4 p-6"><PageHeader title="Live Anatomy Studio" /><NoAnatomy message={data.error} /><div className="max-w-2xl"><LandmarkManifestPanel /></div></div>;
   if (!data.data) return <div className="p-6"><PageHeader title="Live Anatomy Studio" /><LoadingBlock label="Loading anatomy manifest" /></div>;
   return <Studio manifest={data.data[0]} atlas={data.data[1]} />;
 }

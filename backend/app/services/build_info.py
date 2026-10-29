@@ -21,10 +21,12 @@ def code_revision() -> dict[str, Any]:
     """The commit and whether tracked files differ from it.
 
     MEDTWIN_CODE_COMMIT takes precedence for deployments built without a .git
-    directory; its working-tree state is then unknown (None)."""
-    configured = os.getenv("MEDTWIN_CODE_COMMIT", "").strip()
-    if configured:
-        return {"commit": configured, "source": "MEDTWIN_CODE_COMMIT", "working_tree_clean": None}
+    directory, then VERCEL_GIT_COMMIT_SHA (set by Vercel for Git deployments);
+    the working-tree state is then unknown (None)."""
+    for variable in ("MEDTWIN_CODE_COMMIT", "VERCEL_GIT_COMMIT_SHA"):
+        configured = os.getenv(variable, "").strip()
+        if configured:
+            return {"commit": configured, "source": variable, "working_tree_clean": None}
     commit = _git("rev-parse", "HEAD")
     if not commit:
         return {"commit": None, "source": "NOT_RECORDED", "working_tree_clean": None}

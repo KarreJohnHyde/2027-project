@@ -27,10 +27,17 @@ All 59 verified ZIPs were moved successfully, with equal SHA-256 values before
 and after each move. All ten incomplete/differing archives remain on D:.
 
 Permanent file deletion was rejected by automatic approval review (reported
-reason: `blocked by policy`). The recoverable alternative places verified
-archives under:
+reason: `blocked by policy`). The recoverable alternative placed verified
+archives under `C:\Users\johnn\AppData\Local\Temp\medtwin-storage-recovery-20261027\archives`.
 
-`C:\Users\johnn\AppData\Local\Temp\medtwin-storage-recovery-20261027\archives`
+**Relocated 2026-10-29.** C: then reached 0 bytes free, so the whole recovery folder
+(283 files, 22.29 GB) was moved to D:: each file was copied, compared by SHA-256 with its
+original (and, for the 59 archives, with the hash recorded on 2026-10-27) and only then
+removed from C:. No file failed. Before the move, every member of all 59 archives
+(167,633 files) was re-checked: its extracted copy still exists in the project with the
+recorded size. The folder is now:
+
+`D:\medtwin-storage-recovery-20261027\archives`
 
 The old generated build (1,147,636,485 bytes) was moved to the sibling `dist`
 directory. It can be restored from there, or regenerated with `npm run build`.
@@ -38,9 +45,8 @@ directory. It can be restored from there, or regenerated with `npm run build`.
 Private per-file audit evidence and the generated move ledger are in
 `_imports/storage-cleanup-20261027/` (ignored by Git). The ledger records each
 original path, recovery path and post-copy SHA-256. Move a recovery file back to
-its recorded source path to restore its old location. These moves free D: but
-consume the same space on C:; they are not counted as permanent machine-wide
-storage reduction. At least 20 GiB is reserved on C: by the maintenance script.
+its recorded source path to restore its old location. The original moves freed D: but consumed the same space on C:; after the
+2026-10-29 relocation the folder occupies D: again (D: had 142.81 GB free afterwards).
 
 ## Preventing repeated build copies
 

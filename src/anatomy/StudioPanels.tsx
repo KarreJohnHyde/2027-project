@@ -1,4 +1,5 @@
 import { useMemo, useState, type ReactNode } from "react";
+import { anatomyEvidenceGroupKey, groupInOrder } from "../lib/findingGroups";
 import {
   Activity,
   Box,
@@ -269,14 +270,17 @@ export function PerformanceOverlay() {
   );
 }
 
-function EvidenceItem({ item, onFocus }: { item: AnatomyEvidenceItem; onFocus?: (atlasId: string) => void }) {
+function EvidenceItem({ item, mentions = [item], onFocus }: { item: AnatomyEvidenceItem; mentions?: AnatomyEvidenceItem[]; onFocus?: (atlasId: string) => void }) {
   const style = MAPPING_STYLE[item.mapping_state];
   const atlasId = item.mapping_state === "REGION_VERIFIED" || item.mapping_state === "SPATIALLY_REGISTERED" ? item.atlas_structure_id : null;
   return (
     <li className="rounded-lg border border-line bg-surface p-2.5">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p className="text-xs font-medium text-ink">{item.label}{item.value !== undefined && <span className="tabular text-ink-2"> · {formatNumber(item.value)} {item.unit}</span>}</p>
+          <p className="text-xs font-medium text-ink">
+            {item.label}{item.value !== undefined && <span className="tabular text-ink-2"> · {formatNumber(item.value)} {item.unit}</span>}
+            {mentions.length > 1 && <span className="ml-1.5 text-[11px] font-normal text-ink-3">×{mentions.length} mentions in one report</span>}
+          </p>
           <div className="mt-1 flex flex-wrap gap-1">
             <span className="inline-flex items-center gap-1 text-[11px] text-ink-2"><span aria-hidden className={`h-2 w-2 rounded-sm ${style.swatch}`} />{style.label}</span>
             {item.assertion && <StatusBadge status={item.assertion} />}
@@ -290,7 +294,9 @@ function EvidenceItem({ item, onFocus }: { item: AnatomyEvidenceItem; onFocus?: 
           </button>
         )}
       </div>
-      {item.source_span && <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-ink-2">“{item.source_span}”</p>}
+      {[...new Set(mentions.map((mention) => mention.source_span).filter(Boolean))].map((span) => (
+        <p key={span} className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-ink-2">“{span}”</p>
+      ))}
       {item.documented_region && <p className="mt-1 text-[11px] text-ink-3">Documented region: {item.documented_region}{item.mapping_state !== "REGION_VERIFIED" && item.candidate_atlas_structure_id ? " (awaiting clinician confirmation)" : ""}</p>}
       <p className="mt-1 text-[11px] leading-4 text-ink-3">{item.reason}</p>
     </li>
@@ -362,7 +368,7 @@ export function Inspector({ selected, variant, structures, atlasStructure, atlas
           ) : items.length === 0 ? (
             <p className="text-xs text-ink-2">No case evidence is associated with this system.</p>
           ) : (
-            <ul className="space-y-1.5">{items.slice(0, 40).map((item) => <EvidenceItem key={`${item.kind}-${item.id}-${item.system}`} item={item} onFocus={variant.kind === "ATLAS_REFERENCE" || variant.system_id === "hybrid" ? onFocusAtlas : undefined} />)}</ul>
+            <ul className="space-y-1.5">{groupInOrder(items, anatomyEvidenceGroupKey).slice(0, 40).map(({ key, first, members }) => <EvidenceItem key={key} item={first} mentions={members} onFocus={variant.kind === "ATLAS_REFERENCE" || variant.system_id === "hybrid" ? onFocusAtlas : undefined} />)}</ul>
           )}
           {selected && !atlasStructure && evidence && evidence.items.length > 0 && (
             <p className="mt-2 text-[11px] leading-4 text-ink-3">This asset's segments are not linked to atlas terminology, so evidence is shown at organ level. Open the atlas variant to locate documented regions.</p>
@@ -373,6 +379,16 @@ export function Inspector({ selected, variant, structures, atlasStructure, atlas
       <section>
         <p className="mb-1.5 text-[11px] font-medium text-ink-3">Mapping categories</p>
         <MappingLegend counts={evidence?.state_counts} />
+        {(evidence?.highlight.documented_structures?.length ?? 0) > 0 && (
+          <p className="mt-1.5 flex items-start gap-2 text-xs">
+            <span aria-hidden className="mt-0.5 h-3 w-3 shrink-0 rounded-sm bg-[#ff6a00]" />
+            <span className="min-w-0">
+              <span className="font-medium text-ink">Named in a report, unconfirmed</span>
+              <span className="ml-1 tabular text-ink-3">({evidence?.highlight.documented_structures?.length} structures)</span>
+              <span className="block text-[11px] leading-4 text-ink-3">Orange in the model: atlas structures an affirmed report statement names (for example "bilateral lower lobes"). Orientation only until a clinician confirms the region; not a located finding.</span>
+            </span>
+          </p>
+        )}
       </section>
     </div>
   );

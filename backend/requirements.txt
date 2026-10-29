@@ -29,3 +29,5 @@ wordninja==2.0.0
 cryptography==50.0.2
 # SQLCipher (encrypted SQLite at rest, MEDTWIN_DB_ENCRYPTION=sqlcipher)
 sqlcipher3-wheels==0.5.7
+# PostgreSQL (DATABASE_URL postgres:// or postgresql://, e.g. a hosted database for serverless deploys)
+psycopg[binary]==3.3.6

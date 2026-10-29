@@ -1,5 +1,7 @@
 # MedTwin 2.0 - master progress
 
+> Historical session record. Consult the [2026-10-29 audit](../verification/COMPLETENESS_AUDIT_2026-10-29.md) for current capabilities and remaining work; do not interpret older NOT_STARTED/environment statements as current facts.
+
 Verified handoff snapshot for subsequent sessions. This is not a declaration that the
 full directive or any clinical-validation programme is complete. Every status below is
 backed by an executed command, saved artifact, browser walkthrough, or explicit blocker.

@@ -26,14 +26,12 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register_user(user_in: UserCreate, db: Session = Depends(get_db)):
-    # Check if username or email exists
-    existing = db.query(User).filter(
-        (User.username == user_in.username) | (User.email == user_in.email)
-    ).first()
+    # Usernames identify accounts; email addresses may be shared.
+    existing = db.query(User).filter(User.username == user_in.username).first()
     if existing:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username or email already registered."
+            detail="Username already registered."
         )
 
     # Self-registration never confers a professional or administrative role.
@@ -106,7 +104,13 @@ async def login_for_access_token(
 
     user = db.query(User).filter(User.username == username).first()
     if user is None and isinstance(username, str):
-        user = db.query(User).filter(func.lower(User.email) == username.strip().lower()).first()
+        email_matches = db.query(User).filter(func.lower(User.email) == username.lower()).limit(2).all()
+        if len(email_matches) > 1:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="This email is shared by multiple accounts. Sign in with your username.",
+            )
+        user = email_matches[0] if email_matches else None
     
     if not user or not verify_password(password, user.hashed_password):
         log_audit_event(

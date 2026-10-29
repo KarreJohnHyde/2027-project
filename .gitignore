@@ -32,7 +32,11 @@ htmlcov/
 .vscode/
 .claude-replay.*
 .tmp-*
+/.vercel/
 /.figma/design-context/
+
+# Do not ship a clinical-looking synthetic report as application evidence.
+/docs/demo/SYNTHETIC_LAB_REPORT.txt
 
 # Platform-managed agentplat state, not project source. In the
 # client-initiated single-repo workspace layout (make's `Path: "."` spec) the
@@ -209,3 +213,5 @@ htmlcov/
 /setup.py
 /tests.sh
 /test_server.py
+# Evidence staged into the Vercel backend bundle by backend/vercel_build.py
+backend/deployment_files/

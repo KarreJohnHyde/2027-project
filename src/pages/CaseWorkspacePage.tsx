@@ -3,6 +3,7 @@ import { CalendarPlus, Play, Trash2, Upload, UserPlus } from "lucide-react";
 import { CreateExaminationDialog } from "../components/CaseDialogs";
 import { FindingCard } from "../components/FindingReview";
 import { OrdersCard } from "../components/LabEntry";
+import ReviewedDemographicsCard from "../components/ReviewedDemographicsCard";
 import { Button, Card, ErrorBlock, Hash, PageHeader, SelectInput, StatusBadge, Table, TextInput } from "../components/ui";
 import { api, type CaseMemberRole } from "../services/api";
 import { errorMessage, formatBytes, formatDate, humanize } from "../lib/format";
@@ -207,6 +208,7 @@ export default function CaseWorkspacePage() {
         </Card>
       </div>
 
+      <div className="mt-4"><ReviewedDemographicsCard key={selected.id} caseId={selected.id} uploads={evidence.uploads} /></div>
       <div className="mt-4 grid gap-4 xl:grid-cols-[1.6fr_1fr]">
         <Card title="Processing history" eyebrow="Persisted jobs" padded={false}>
           {evidence.jobs.length === 0 ? <p className="p-4 text-sm text-ink-2">No jobs recorded.</p> : (

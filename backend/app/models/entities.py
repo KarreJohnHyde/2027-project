@@ -6,8 +6,8 @@ Implements the entity-relationship schema defined in Section IX (Fig. 5) of the 
 from datetime import datetime, timezone
 import enum
 from sqlalchemy import (
-    Column, Integer, String, Float, Boolean, DateTime,
-    ForeignKey, Text, Enum as SQLEnum, JSON, Index
+    Column, Integer, String, Float, Boolean, Date, DateTime,
+    ForeignKey, Text, Enum as SQLEnum, JSON, Index, UniqueConstraint
 )
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -63,7 +63,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(64), unique=True, index=True, nullable=False)
-    email = Column(String(128), unique=True, index=True, nullable=False)
+    email = Column(String(128), index=True, nullable=False)
     hashed_password = Column(String(256), nullable=False)
     full_name = Column(String(128), nullable=True)
     role = Column(SQLEnum(UserRole), default=UserRole.PUBLIC, nullable=False)
@@ -101,6 +101,32 @@ class Case(Base):
     ordered_packages = relationship("OrderedPackage", back_populates="case", cascade="all, delete-orphan")
     lab_reports = relationship("LabInvestigationReport", back_populates="case", cascade="all, delete-orphan")
     measurements = relationship("MedicalMeasurement", back_populates="case", cascade="all, delete-orphan")
+    demographic_reviews = relationship("ReviewedDemographics", cascade="all, delete-orphan")
+
+
+class ReviewedDemographics(Base):
+    """Append-only reviewer context, separate from immutable extracted attributes.
+
+    A new revision may clear incorrect values. This is a reviewer attestation,
+    not an independent clinical validation or permission to rewrite source labs.
+    """
+
+    __tablename__ = "reviewed_demographics"
+    __table_args__ = (UniqueConstraint("case_id", "revision", name="uq_demographics_case_revision"),)
+
+    id = Column(Integer, primary_key=True)
+    case_id = Column(Integer, ForeignKey("cases.id", ondelete="CASCADE"), nullable=False, index=True)
+    revision = Column(Integer, nullable=False)
+    sex = Column(String(8), nullable=False)  # M, F, UNKNOWN: laboratory context, not gender identity
+    date_of_birth = Column(Date, nullable=True)
+    source_file_id = Column(Integer, ForeignKey("uploaded_files.id", ondelete="SET NULL"), nullable=True)
+    # Immutable provenance survives SET NULL when a source object is deleted.
+    # Unlike source_file_id this is a historical reference, not a dereferenceable FK.
+    source_reference_id = Column(Integer, nullable=True)
+    source_kind = Column(String(32), nullable=True)  # FILE or REVIEWER_ATTESTATION; null for legacy unknown provenance
+    reason = Column(String(500), nullable=False)
+    reviewed_by_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
 
 
 class Examination(Base):
@@ -491,14 +517,14 @@ class DocumentedAttribute(Base):
 
 
 class CaseMembership(Base):
-    """Explicit case sharing. Creators and admins keep implicit access."""
+    """Explicit clinical or personal-portal access. Creators and admins keep implicit access."""
 
     __tablename__ = "case_memberships"
 
     id = Column(Integer, primary_key=True, index=True)
     case_id = Column(Integer, ForeignKey("cases.id", ondelete="CASCADE"), nullable=False, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
-    role = Column(String(16), nullable=False) # VIEWER or EDITOR
+    role = Column(String(16), nullable=False) # VIEWER, EDITOR, PATIENT or CAREGIVER
     granted_by_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     created_at = Column(DateTime, default=utc_now, nullable=False)
 

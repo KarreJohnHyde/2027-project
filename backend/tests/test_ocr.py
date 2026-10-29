@@ -63,3 +63,51 @@ def test_scanned_report_values_keep_decimals_and_ocr_provenance(client, test_use
     assert text["pages"][0]["method"] == "OCR"
     assert text["pages"][0]["lines"]
     assert all("text" not in line and len(line["bbox_xyxy"]) == 4 for line in text["pages"][0]["lines"])
+
+
+class _ScriptedEngine:
+    """Stands in for RapidOCR: returns scripted detections and records each call."""
+
+    def __init__(self, readings):
+        self.readings, self.calls = list(readings), []
+
+    def __call__(self, array, **options):
+        self.calls.append((array.shape, options))
+        return self.readings.pop(0), 0.0
+
+
+def _box(text, x0, y0, x1, y1, score=0.95):
+    return [[[x0, y0], [x1, y0], [x1, y1], [x0, y1]], text, score]
+
+
+def test_upright_pages_skip_the_box_classifier_and_upside_down_pages_are_turned(monkeypatch):
+    from PIL import Image
+
+    engine = _ScriptedEngine([[_box("lp/6w", 0, 0, 400, 40, score=0.40)], [_box("mg/dl", 0, 0, 400, 40, score=0.97)]])
+    monkeypatch.setattr(ocr, "_engine", lambda: engine)
+    page = ocr.ocr_image(Image.new("RGB", (1000, 800), "white"))
+    assert all(options["use_cls"] is False for _shape, options in engine.calls) and len(engine.calls) == 2
+    assert (page.text, page.rotation_degrees) == ("mg/dl", 180)
+    assert page.lines[0]["box"] == [600.0, 760.0, 1000.0, 800.0]  # back in the pixels of the page as given
+
+
+def test_an_upside_down_scanned_page_is_read_upright():
+    from PIL import Image
+
+    upright = Image.open(BytesIO(scanned_pdf_png()))
+    page = ocr.ocr_image(upright.rotate(180))
+    assert page.rotation_degrees == 180
+    assert "Hemoglobin" in page.text and "13.5" in page.text and page.mean_confidence > 0.8
+
+
+def scanned_pdf_png(lines=FIXTURE_LINES) -> bytes:
+    from PIL import Image, ImageDraw, ImageFont
+
+    image = Image.new("RGB", (2480, 900), "white")
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load_default(size=60)
+    for row, line in enumerate(lines):
+        draw.text((160, 140 + row * 140), line, fill="black", font=font)
+    buffer = BytesIO()
+    image.save(buffer, format="PNG")
+    return buffer.getvalue()

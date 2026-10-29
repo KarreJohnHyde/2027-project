@@ -578,3 +578,54 @@ def test_lower_case_row_after_a_lost_line_gets_a_blank_line_and_fullwidth_is_asc
     text = page_text(lines)
     assert "Focally at a\n\nevidence of dysplasia.\ncontinued" in text
     assert all(text[line["text_start"]:line["text_end"]] == line["text"] for line in lines)
+
+
+# --- OCR damage on photographed haematology pages and history notes --------------------
+
+def test_glued_count_names_and_slashless_units_are_still_read():
+    labs = _labs(
+        "ABSOLUTEMONOCYTECOUNT 390 CellCumm 200-800\n"
+        "TOTALWBC COUNT 7900 cells/uL 4,400-11,000\n"
+        "RBC COUNT 5.10 millioncells/PL 4.5-5.6\n"
+    )
+    monocytes = labs["absolute_monocyte_count"]
+    assert (monocytes["unit"], monocytes["reference_low"], monocytes["reference_high"]) == ("/µL", 200, 800)
+    assert (labs["white_blood_cell_count"]["value"], labs["white_blood_cell_count"]["reference_high"]) == (7900, 11000)
+    assert (labs["red_blood_cell_count"]["unit"], labs["red_blood_cell_count"]["reference_low"]) == ("10^12/L", 4.5)
+
+
+def test_unit_wrapped_under_its_column_joins_the_row_above():
+    from app.services.ocr import _reading_order
+
+    detections = [
+        _detection("RBC COUNT", 100, 100, 300, 0.0),
+        _detection("5.10", 700, 100, 100, 0.0),
+        _detection("millioncells/", 1000, 100, 260, 0.0),
+        _detection("4.5-5.6", 1400, 100, 160, 0.0),
+        _detection("PL", 1080, 150, 50, 0.0),
+        _detection("PL", 2000, 300, 50, 0.0),  # a lone token in another column stays its own line
+    ]
+    lines = _reading_order(detections)
+    assert [line["text"] for line in lines] == ["RBC COUNT 5.10 millioncells/PL 4.5-5.6", "PL"]
+
+
+def test_words_glued_to_numbers_split_only_after_lower_case_words():
+    assert normalise("History of stroke6yearsback")[0] == "History of stroke 6 years back"
+    assert normalise("VitaminD3 and HepatitisB")[0] == "Vitamin D3 and Hepatitis B"
+    for text in ("HbA1c 7.8 %", "C5-C6", "eGFR41.05", "B12", "BP:160/80mmHg", "pH 5.5"):
+        assert normalise(text)[0] == text
+    statement = _by_entity(_statements("Pre Existing Illness:\nHistory of stroke6yearsback\n"))["Stroke"]
+    assert statement["temporality"] == "HISTORICAL"
+
+
+def test_valve_findings_name_the_lesion_and_keep_their_written_severity():
+    statements = _statements(
+        "Other Doppler Indices:\nMitral regurgitation-Grade Trivial Mitral stenosis -Nil\n"
+        "IMPRESSION:\nTrivial Tricuspid regurgitation; No PAH.\nModerate to severe wedge compression deformity of D11 vertebral body.\n"
+    )
+    found = {(item["entity"], item["negation"], tuple(cue["text"] for cue in item["cues"] if cue["type"] == "SEVERITY")) for item in statements}
+    assert ("Mitral regurgitation", "AFFIRMED", ("Trivial",)) in found
+    assert ("Mitral stenosis", "NEGATED", ()) in found  # the "Grade Trivial" before it belongs to the regurgitation
+    assert ("Tricuspid regurgitation", "AFFIRMED", ("Trivial",)) in found
+    assert ("Vertebral compression deformity", "AFFIRMED", ("Moderate to severe",)) in found
+    assert not any(item["entity"] == "Valvular heart disease" for item in statements)

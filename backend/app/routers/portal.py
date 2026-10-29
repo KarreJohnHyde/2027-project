@@ -1,9 +1,10 @@
-"""Patient and caregiver portal: read-only access to one's own case.
+"""Patient and caregiver portal: account-scoped documents and reviewed results.
 
 A clinician who manages a case links a person's account to it with a PATIENT or CAREGIVER
 membership (/cases/{id}/members); a patient can also add or remove their own caregivers here.
 These memberships never open the clinical endpoints (verify_case_access admits only VIEWER and
-EDITOR members), and the portal shows only:
+EDITOR members). Public users can create a private portal case and upload de-identified files.
+The portal shows only:
   * the documents uploaded to the case, as uploaded;
   * numeric results from report findings a clinician has confirmed, with the values of approved
     corrections, and the reference interval and flag printed on the source report.
@@ -13,18 +14,23 @@ Research-model output and anything not yet reviewed are never shown.
 from __future__ import annotations
 
 from pathlib import Path
+from uuid import uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session
 
+from app.config import RATE_LIMIT_UPLOAD_PER_MINUTE, UPLOAD_DIR
 from app.database import get_db
-from app.models.entities import Case, CaseMembership, Finding, HumanReview, MedicalMeasurement, UploadedFile, User
+from app.models.entities import Case, CaseMembership, Finding, HumanReview, MedicalMeasurement, UploadedFile, User, UserRole
+from app.schemas.entities import FileUploadResponse
+from app.security import rate_limit
 from app.services import upload_store
 from app.services.audit_service import log_audit_event
 from app.services.auth import get_current_user
 from app.services.effective_evidence import approved_measurement_overrides
+from app.services.file_storage import save_uploaded_file
 from app.services.measurement_identity import duplicate_map
 
 router = APIRouter(prefix="/portal", tags=["Patient and caregiver portal"])
@@ -33,6 +39,10 @@ PORTAL_ROLES = ("PATIENT", "CAREGIVER")
 REVIEWED = {"CONFIRMED", "MODIFIED"}
 NOT_SHOWN = ("Results appear here after your clinician has reviewed the report they come from. Research-model output and "
              "results awaiting review are not shown. This page is not a diagnosis; ask your care team about any result.")
+PRIVATE_RECORD_NOTICE = (
+    "Documents in this private record are stored for you to view and download. No clinical interpretation or "
+    "diagnosis is generated here. Ask your care team to review any document."
+)
 
 
 def _membership(case_id: int, user: User, db: Session) -> CaseMembership:
@@ -104,11 +114,38 @@ def list_portal_cases(db: Session = Depends(get_db), current_user: User = Depend
     return [{"case_id": case.id, "record": case.pseudonymous_id, "relationship": membership.role} for membership, case in rows]
 
 
+@router.post("/cases", status_code=status.HTTP_201_CREATED)
+def create_personal_record(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if current_user.role != UserRole.PUBLIC:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Personal records are available to public accounts.")
+
+    existing = (db.query(CaseMembership, Case).join(Case, Case.id == CaseMembership.case_id)
+                .filter(CaseMembership.user_id == current_user.id, CaseMembership.role == "PATIENT").first())
+    if existing is not None:
+        membership, case = existing
+        return {"case_id": case.id, "record": case.pseudonymous_id, "relationship": membership.role}
+
+    case = Case(
+        pseudonymous_id=f"PERSONAL-{uuid4().hex.upper()}",
+        description="Private personal record. Uploaded documents require a de-identification attestation.",
+        created_by_id=None,
+    )
+    db.add(case)
+    db.flush()
+    db.add(CaseMembership(case_id=case.id, user_id=current_user.id, role="PATIENT", granted_by_id=current_user.id))
+    db.commit()
+    db.refresh(case)
+    log_audit_event(db=db, action="PERSONAL_RECORD_CREATED", resource_type="CASE", resource_id=str(case.id), user=current_user)
+    return {"case_id": case.id, "record": case.pseudonymous_id, "relationship": "PATIENT"}
+
+
 @router.get("/cases/{case_id}")
 def get_portal_record(case_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     membership = _membership(case_id, current_user, db)
+    case = db.get(Case, case_id)
+    notice = NOT_SHOWN if case is not None and case.created_by_id is not None else PRIVATE_RECORD_NOTICE
     record = {"case_id": case_id, "relationship": membership.role, "documents": _documents(db, case_id), "results": _results(db, case_id),
-              "notice": NOT_SHOWN}
+              "notice": notice}
     log_audit_event(db=db, action="PORTAL_RECORD_VIEWED", resource_type="CASE", resource_id=str(case_id), user=current_user,
                     details={"relationship": membership.role, "results": len(record["results"])})
     return record
@@ -124,6 +161,77 @@ def download_portal_document(case_id: int, upload_id: int, db: Session = Depends
                     details={"case_id": case_id})
     return StreamingResponse(upload_store.stream(Path(upload.file_path)), media_type=upload.mime_type or "application/octet-stream",
                              headers={"Content-Disposition": f'attachment; filename="{upload.filename}"', "Cache-Control": "no-store"})
+
+
+@router.post(
+    "/cases/{case_id}/documents",
+    response_model=FileUploadResponse,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(rate_limit("upload", RATE_LIMIT_UPLOAD_PER_MINUTE))],
+)
+async def upload_personal_document(
+    case_id: int,
+    file: UploadFile = File(...),
+    deidentified: bool = Form(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    _patient(case_id, current_user, db)
+    if not deidentified:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Upload rejected: de-identified research-data attestation is required.",
+        )
+
+    original_name, stored_name, file_hash, file_size, modality = await save_uploaded_file(file)
+    existing = db.query(UploadedFile).filter(
+        UploadedFile.case_id == case_id,
+        UploadedFile.file_hash == file_hash,
+    ).first()
+    if existing is not None:
+        log_audit_event(
+            db=db,
+            action="FILE_UPLOAD_IDEMPOTENT_HIT",
+            resource_type="FILE",
+            resource_id=str(existing.id),
+            user=current_user,
+            details={"case_id": case_id, "file_hash": file_hash, "deidentified_attested": True},
+        )
+        return existing
+
+    upload = UploadedFile(
+        case_id=case_id,
+        examination_id=None,
+        filename=original_name,
+        stored_filename=stored_name,
+        file_path=str(UPLOAD_DIR / stored_name),
+        file_hash=file_hash,
+        file_size_bytes=file_size,
+        mime_type=file.content_type or "application/octet-stream",
+        modality=modality,
+        is_associated=True,
+        association_notes="Patient-uploaded de-identified document",
+    )
+    db.add(upload)
+    db.commit()
+    db.refresh(upload)
+    log_audit_event(
+        db=db,
+        action="FILE_UPLOADED",
+        resource_type="FILE",
+        resource_id=str(upload.id),
+        user=current_user,
+        details={
+            "case_id": case_id,
+            "filename": original_name,
+            "modality": modality.value,
+            "size_bytes": file_size,
+            "file_hash": file_hash,
+            "deidentified_attested": True,
+            "upload_context": "PERSONAL_PORTAL",
+        },
+    )
+    return upload
 
 
 class CaregiverRequest(BaseModel):

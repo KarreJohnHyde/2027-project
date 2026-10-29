@@ -128,6 +128,14 @@ MIGRATIONS: tuple[tuple[str, tuple[tuple[str, str, str], ...]], ...] = (
             ),
         ),
     ),
+    (
+        "2026_10_29_001_demographic_source_provenance",
+        (
+            ("reviewed_demographics", "source_reference_id", "INTEGER"),
+            ("reviewed_demographics", "source_kind", "VARCHAR(32)"),
+        ),
+    ),
+    ("2026_10_29_002_shared_user_emails", ()),
 )
 
 
@@ -158,6 +166,50 @@ def run_migrations(engine: Engine) -> list[str]:
                 existing = {item["name"] for item in inspector.get_columns(table)}
                 if column not in existing:
                     connection.execute(text(f"ALTER TABLE {table} ADD COLUMN {column} {ddl}"))
+            if (
+                version == "2026_10_29_002_shared_user_emails"
+                and "users" in tables
+                and "email" in {item["name"] for item in inspector.get_columns("users")}
+            ):
+                # Older schemas created email as a unique index (index=True,
+                # unique=True). Preserve every user while replacing that
+                # constraint with the ordinary lookup index declared by User.
+                email_constraints = [
+                    constraint for constraint in inspector.get_unique_constraints("users")
+                    if constraint.get("column_names") == ["email"]
+                ]
+                constraint_names = {constraint.get("name") for constraint in email_constraints}
+                for constraint in email_constraints:
+                    if engine.dialect.name == "sqlite":
+                        raise RuntimeError(
+                            "Cannot safely remove a table-level unique email constraint from SQLite users."
+                        )
+                    name = engine.dialect.identifier_preparer.quote(constraint["name"])
+                    connection.execute(text(f"ALTER TABLE users DROP CONSTRAINT {name}"))
+                for index in inspector.get_indexes("users"):
+                    if (
+                        index.get("column_names") == ["email"]
+                        and index.get("unique")
+                        and not index.get("duplicates_constraint")
+                        and index["name"] not in constraint_names
+                    ):
+                        name = engine.dialect.identifier_preparer.quote(index["name"])
+                        connection.execute(text(f"DROP INDEX {name}"))
+                inspector = inspect(connection)
+                email_indexes = {
+                    index["name"] for index in inspector.get_indexes("users")
+                    if index.get("column_names") == ["email"]
+                }
+                if "ix_users_email" not in email_indexes:
+                    index_name = engine.dialect.identifier_preparer.quote("ix_users_email")
+                    connection.execute(text(f"CREATE INDEX {index_name} ON users (email)"))
+            if version == "2026_10_29_001_demographic_source_provenance" and "reviewed_demographics" in tables:
+                # Preserve known source links. A legacy NULL FK could mean either
+                # an attestation or a deleted source, so do not guess its origin.
+                connection.execute(text(
+                    "UPDATE reviewed_demographics SET source_reference_id = source_file_id, source_kind = 'FILE' "
+                    "WHERE source_file_id IS NOT NULL AND source_kind IS NULL"
+                ))
             connection.execute(
                 text("INSERT INTO schema_migrations (version, applied_at) VALUES (:version, :applied_at)"),
                 {"version": version, "applied_at": datetime.now(timezone.utc).isoformat()},

@@ -1,5 +1,7 @@
 # Next actions (resume list)
 
+> Historical backlog. OCR row geometry/rotation, DICOM-series handling, corrected evidence views, reviewer demographic context and landmark review have since progressed. Use the [2026-10-29 remaining-work matrix](../verification/COMPLETENESS_AUDIT_2026-10-29.md) before repeating this work.
+
 Only unfinished work after the 2026-10-25 verification run is listed here. Preserve the
 verified work table at the end and do not reopen scientific claims without new evidence.
 

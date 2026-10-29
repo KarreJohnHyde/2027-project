@@ -43,7 +43,7 @@ function ModelCard({ model }: { model: ModelRegistryRecord }) {
     <Card
       title={model.display_name}
       eyebrow={`${humanize(model.anatomy)} · ${humanize(model.task)}`}
-      actions={<><StatusBadge status={model.registry_state} /><StatusBadge status={model.activation.eligible ? "ACTIVATION_ELIGIBLE" : "BLOCKED"} label={model.activation.eligible ? "Activation eligible" : "Activation blocked"} /></>}
+      actions={<><StatusBadge status={model.registry_state} /><StatusBadge status={model.activation.eligible ? "GATE_PASSED" : "BLOCKED"} label={model.activation.eligible ? "Registry gate passed" : "Registry gate blocked"} /></>}
     >
       <KeyValue columns={3} items={[
         { label: "Task", value: humanize(model.task) },
@@ -60,7 +60,7 @@ function ModelCard({ model }: { model: ModelRegistryRecord }) {
         { label: "Operating thresholds", value: declared(bundle.decision_thresholds) },
         { label: "Abstention thresholds", value: declared(bundle.abstention_thresholds) },
         { label: "Output schema", value: "Not declared" },
-        { label: "Deployment readiness", value: <StatusBadge status={model.activation.eligible ? "READY" : "NOT_READY"} /> },
+        { label: "Registry artifact gate", value: <StatusBadge status={model.activation.eligible ? "GATE_PASSED" : "GATE_BLOCKED"} /> },
       ]} />
       {model.research_gate && (
         <div className="mt-3 rounded-lg border border-line p-3">
@@ -80,7 +80,7 @@ function ModelCard({ model }: { model: ModelRegistryRecord }) {
       )}
       {!model.activation.eligible && (
         <div className="mt-3 rounded-lg border border-line bg-surface-2 p-3">
-          <p className="text-xs font-medium text-ink">Activation blockers</p>
+          <p className="text-xs font-medium text-ink">Registry gate blockers</p>
           <div className="mt-1.5 flex flex-wrap gap-1">{model.activation.blockers.map((blocker) => <StatusBadge key={blocker} status={blocker} />)}</div>
           {model.activation.missing_fields.length > 0 && <p className="mt-2 text-[11px] leading-4 text-ink-3">Missing bundle fields: {model.activation.missing_fields.join(", ")}</p>}
         </div>
@@ -97,11 +97,12 @@ function EvidenceMatrix({ models }: { models: ModelRegistryRecord[] }) {
         <p className="text-sm leading-6 text-ink-2">
           A registry entry, dataset citation, installed dependency, checkpoint, runnable research path, internal evaluation, external evaluation,
           and clinical activation are different claims. A green cell in one column never upgrades another column. “Not recorded” means this
-          registry response contains no evidence for that facet.
+          registry response contains no evidence for that facet. External-report cells show references, not independently verified results.
+          The registry gate checks declared status and artifacts; passing it is not clinical approval.
         </p>
       </Card>
       <Card title="Model evidence facets" eyebrow="Current authenticated registry response" padded={false}>
-        <Table headers={["Model", "Registry state", "Dataset + licence", "Dependency", "Checkpoint hash", "Research gate", "Internal evaluation", "External evaluation", "Clinical activation"]} dense>
+        <Table headers={["Model", "Registry state", "Dataset + licence", "Dependency", "Checkpoint hash", "Research gate", "Internal evaluation", "External report reference", "Registry artifact gate"]} dense>
           {models.map((model) => {
             const bundle = model.artifact_bundle as Record<string, unknown>;
             const datasetRecorded = isRecorded(bundle.dataset_version) && isRecorded(bundle.dataset_license);
@@ -143,14 +144,14 @@ function EvidenceMatrix({ models }: { models: ModelRegistryRecord[] }) {
                   />
                 </td>
                 <td><Facet value={internalEvaluation} yes="Held-out report" no="Not recorded" yesStatus="INTERNALLY_EVALUATED" /></td>
-                <td><Facet value={externalEvaluationRecorded(model)} yes="Recorded" no="Not recorded" yesStatus="EXTERNALLY_EVALUATED" /></td>
+                <td><Facet value={externalEvaluationRecorded(model)} yes="Referenced" no="Not recorded" yesStatus="RECORDED" /></td>
                 <td>
                   <Facet
                     value={model.activation.eligible}
                     yes="Eligible"
                     no="Not eligible"
-                    yesStatus="CLINICALLY_VALIDATED"
-                    noStatus="CLINICALLY_UNVALIDATED"
+                    yesStatus="GATE_PASSED"
+                    noStatus="GATE_BLOCKED"
                   />
                 </td>
               </tr>
@@ -178,7 +179,7 @@ export default function ModelRegistryPage() {
       <PageHeader
         eyebrow="Model Registry"
         title="Models and activation gates"
-        description="A model's ability to run is not evidence that it is reliable. Activation requires a complete artifact bundle: licensed dataset and version, patient-level split, task and label definitions, preprocessing, hashed checkpoint, calibration, thresholds, held-out predictions, evaluation report and model card."
+        description="A model's ability to run is not evidence that it is reliable. The registry gate checks declared validation status and an artifact bundle: dataset licence and version, split manifest, task and labels, preprocessing, hashed checkpoint, calibration, thresholds, held-out predictions, evaluation report and model card. It does not independently establish external validation or clinical approval."
         actions={
           <Segmented
             label="Model registry view"
@@ -192,10 +193,10 @@ export default function ModelRegistryPage() {
         }
       />
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <Metric label="Registered models" value={models.length} />
+        <Metric label="Registry entries" value={models.length} note="Includes frameworks and text processors" />
         <Metric label="Internal evaluation recorded" value={internalEvaluated} note="Not external or clinical validation" />
-        <Metric label="External evaluation recorded" value={externalEvaluated} note="Independent evidence only" />
-        <Metric label="Clinical activation eligible" value={models.filter((model) => model.activation.eligible).length} note="Validated with a complete bundle" />
+        <Metric label="External report references" value={externalEvaluated} note="Metadata references, not independent verification" />
+        <Metric label="Registry gate eligible" value={models.filter((model) => model.activation.eligible).length} note="Artifact/status checks, not clinical approval" />
       </div>
       {view === "evidence" ? (
         <div className="mt-4"><EvidenceMatrix models={models} /></div>

@@ -82,6 +82,8 @@ test("a report upload is analysed and its statements and values are shown with t
     "No pleural effusion is identified.",
   ].join("\n")));
   await page.goto("/documents", { waitUntil: "networkidle" });
+  // Other specs share the stack and case; open this upload rather than whichever report is first.
+  await page.getByLabel("Report").selectOption({ label: "e2e-report.txt" });
   await expect(page.locator("[data-testid=source-statement]").first()).toBeVisible({ timeout: 30_000 });
   await expect(page.getByText(/Ha?emoglobin/i).first()).toBeVisible();
 });

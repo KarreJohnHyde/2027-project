@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { Download, UserPlus, X } from "lucide-react";
+import { useRef, useState } from "react";
+import { Download, FileUp, Plus, UserPlus, X } from "lucide-react";
 import { Button, Card, EmptyState, ErrorBlock, LoadingBlock, PageHeader, SelectInput, StatusBadge, Table, TextInput } from "../components/ui";
 import { api, type PortalRecord } from "../services/api";
 import { errorMessage, formatDate, formatNumber, humanize } from "../lib/format";
 import { useAsync } from "../lib/useAsync";
+import { useWorkspace } from "../state/workspace";
+
+const PERSONAL_UPLOAD_ACCEPT = ".txt,.md,.csv,.json,.hl7,.pdf,.docx,.xlsx,.dcm,.nii,.gz,.nrrd,.mha,.png,.jpg,.jpeg,.bmp,.hea,.dat,.edf,.bdf";
 
 function interval(result: PortalRecord["results"][number]): string {
   if (result.reference_low === null && result.reference_high === null) return "Not printed on the report";
@@ -60,10 +63,52 @@ function Caregivers({ caseId }: { caseId: number }) {
 /** Read-only view of one's own record for patients and caregivers. */
 export default function PortalPage() {
   const cases = useAsync(() => api.getPortalCases(), []);
+  const user = useWorkspace((state) => state.user);
   const [chosen, setChosen] = useState<number | null>(null);
   const active = cases.data?.find((item) => item.case_id === chosen) ?? cases.data?.[0] ?? null;
   const record = useAsync(() => (active ? api.getPortalRecord(active.case_id) : Promise.resolve(null)), [active?.case_id]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [deidentified, setDeidentified] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [downloadError, setDownloadError] = useState<string | null>(null);
+  const hasPersonalRecord = cases.data?.some((item) => item.relationship === "PATIENT") ?? false;
+
+  async function createPersonalRecord() {
+    setCreating(true);
+    setCreateError(null);
+    try {
+      const personalRecord = await api.createPersonalPortalRecord();
+      setChosen(personalRecord.case_id);
+      cases.reload();
+    } catch (failure) {
+      setCreateError(errorMessage(failure));
+    } finally {
+      setCreating(false);
+    }
+  }
+
+  async function uploadDocument() {
+    if (!active || active.relationship !== "PATIENT" || !selectedFile || !deidentified) return;
+    setUploading(true);
+    setUploadProgress(0);
+    setUploadError(null);
+    try {
+      await api.uploadPortalDocumentWithProgress(active.case_id, selectedFile, setUploadProgress);
+      setSelectedFile(null);
+      setDeidentified(false);
+      if (inputRef.current) inputRef.current.value = "";
+      record.reload();
+    } catch (failure) {
+      setUploadError(errorMessage(failure));
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function download(documentId: number, filename: string) {
     if (!active) return;
@@ -82,9 +127,19 @@ export default function PortalPage() {
 
   return (
     <>
-      <PageHeader eyebrow="My record" title="Your health record" description="Documents from your care team and results they have reviewed. This page is not a diagnosis; ask your care team about anything you see here." />
-      {cases.loading ? <LoadingBlock label="Loading" /> : cases.error ? <ErrorBlock message={cases.error} onRetry={cases.reload} /> : !active ? (
-        <EmptyState title="No record is shared with you yet" detail="Your clinician links your account to your record. Give them your username, shown under Settings." />
+      <PageHeader
+        eyebrow="My record"
+        title="Your health record"
+        description="Your private documents and results reviewed by your care team. This page is not a diagnosis; ask your care team about anything you see here."
+        actions={active && user?.role === "public" && !hasPersonalRecord ? <Button icon={Plus} loading={creating} onClick={() => void createPersonalRecord()}>Create private record</Button> : undefined}
+      />
+      {createError && <ErrorBlock message={createError} />}
+      {cases.loading || cases.data === null ? <LoadingBlock label="Loading" /> : cases.error ? <ErrorBlock message={cases.error} onRetry={cases.reload} /> : !active ? (
+        <EmptyState
+          title="No personal health record yet"
+          detail="Create a private record to store your own de-identified documents. Only this account can access it unless you explicitly share with a caregiver."
+          action={user?.role === "public" ? <Button icon={Plus} loading={creating} onClick={() => void createPersonalRecord()}>Create private record</Button> : undefined}
+        />
       ) : (
         <div className="space-y-4">
           {(cases.data?.length ?? 0) > 1 && (
@@ -120,6 +175,7 @@ export default function PortalPage() {
               </Card>
               <Card title="Documents">
                 {downloadError && <p role="alert" className="mb-2 text-xs text-critical-text">{downloadError}</p>}
+                {uploadError && <ErrorBlock message={uploadError} />}
                 {record.data.documents.length === 0 ? <p className="text-sm text-ink-2">No documents.</p> : (
                   <ul className="space-y-1 text-sm">
                     {record.data.documents.map((item) => (
@@ -129,6 +185,46 @@ export default function PortalPage() {
                       </li>
                     ))}
                   </ul>
+                )}
+                {record.data.relationship === "PATIENT" && (
+                  <div className="mt-4 border-t border-line pt-4">
+                    <p className="text-sm font-medium text-ink">Add a document</p>
+                    <p className="mt-1 text-xs leading-5 text-ink-3">Supported reports and medical files up to the server's upload limits. Remove names, dates of birth, addresses, and record numbers before uploading. Unreviewed uploads are not shown as clinical results.</p>
+                    <input
+                      ref={inputRef}
+                      type="file"
+                      accept={PERSONAL_UPLOAD_ACCEPT}
+                      className="sr-only"
+                      aria-label="Choose a de-identified document"
+                      onChange={(event) => {
+                        setSelectedFile(event.target.files?.[0] ?? null);
+                        setDeidentified(false);
+                        setUploadError(null);
+                      }}
+                    />
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <Button type="button" variant="secondary" icon={FileUp} onClick={() => inputRef.current?.click()} disabled={uploading}>Choose file</Button>
+                      {selectedFile && <span className="max-w-full truncate text-xs text-ink-2">{selectedFile.name}</span>}
+                    </div>
+                    <label className="mt-3 flex items-start gap-2 text-xs leading-5 text-ink-2">
+                      <input
+                        type="checkbox"
+                        checked={deidentified}
+                        onChange={(event) => setDeidentified(event.target.checked)}
+                        className="mt-1 accent-accent"
+                      />
+                      <span>I confirm this document has been de-identified and is appropriate to store in this research system.</span>
+                    </label>
+                    {uploading && (
+                      <div className="mt-3" role="status" aria-label="Upload progress">
+                        <div className="h-1.5 overflow-hidden rounded bg-surface-3">
+                          <div className="h-full bg-accent transition-[width]" style={{ width: `${Math.round(uploadProgress * 100)}%` }} />
+                        </div>
+                        <p className="mt-1 text-[11px] tabular text-ink-3">{Math.round(uploadProgress * 100)}% uploaded</p>
+                      </div>
+                    )}
+                    <Button type="button" className="mt-3" icon={FileUp} loading={uploading} disabled={!selectedFile || !deidentified} onClick={() => void uploadDocument()}>Upload document</Button>
+                  </div>
                 )}
               </Card>
               {record.data.relationship === "PATIENT" && <Caregivers caseId={active.case_id} />}

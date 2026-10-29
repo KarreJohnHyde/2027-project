@@ -267,7 +267,8 @@ def _research_image_models_capability() -> dict[str, Any]:
         "verification_status": "INTERNAL_HELD_OUT_EVALUATION_ONLY",
         "runnable_models": runnable,
         "limitations": ["Trained and evaluated on public datasets with internal held-out splits; no external or clinical validation.",
-                        "Input applicability is declared by the user; no out-of-distribution detection.",
+                        "User-declared applicability is checked alongside printed-document rejection and a checkpoint-bound feature-space out-of-distribution gate.",
+                        "The applicability gate has only internal cross-domain testing, can accept unsuitable images and reject suitable ones, and is not clinical or image-quality validation.",
                         "Outputs stay pending human review and are not mapped onto patient anatomy."],
     }
 
@@ -275,6 +276,7 @@ def _research_image_models_capability() -> dict[str, Any]:
 def get_capabilities() -> dict[str, Any]:
     """Expose executable boundaries independently from model readiness."""
     models = {item["model_id"]: item for item in list_models()["models"]}
+    monai_available = _module_available("monai")
     capabilities = [
         {
             "capability_id": "document_parsing",
@@ -343,8 +345,8 @@ def get_capabilities() -> dict[str, Any]:
         {
             "capability_id": "monai_framework",
             "label": "MONAI framework adapter",
-            "operational": _module_available("monai"),
-            "verification_status": "SOURCE_SMOKE_TEST_ONLY",
+            "operational": monai_available,
+            "verification_status": "INTEGRATED_NOT_CLINICALLY_VALIDATED" if monai_available else "DEPENDENCY_MISSING",
             "model_status": models["monai_runtime"]["status"],
             "limitations": models["monai_runtime"]["limitations"],
         },

@@ -602,6 +602,7 @@ export interface AnatomyEvidenceItem {
   reason: string;
   atlas_structure_id: string | null;
   candidate_atlas_structure_id?: string | null;
+  candidate_atlas_structure_ids?: string[];
   assertion?: string;
   certainty?: string;
   temporality?: string;
@@ -634,7 +635,7 @@ export interface AnatomySystemEvidence {
   items: AnatomyEvidenceItem[];
   counts: Record<MappingCategory, number>;
   state_counts: Record<MappingState, number>;
-  highlight: { organ_schematic: boolean; verified_structures: string[]; spatially_registered: string[] };
+  highlight: { organ_schematic: boolean; verified_structures: string[]; spatially_registered: string[]; documented_structures?: string[] };
 }
 
 export interface AnatomyEvidenceResponse {
@@ -752,6 +753,39 @@ export interface RenderInfo {
   plane_definition?: string;
 }
 
+export interface ReportPageType {
+  document_type: 'LABORATORY_REPORT' | 'IMAGING_REPORT' | 'PROCEDURE_REPORT' | 'PATHOLOGY_REPORT' | 'DISCHARGE_SUMMARY' | 'CONSULTATION_NOTE' | 'PRESCRIPTION' | 'BILLING' | 'UNCLASSIFIED';
+  imaging_modality: string | null;
+  cues: string[];
+  scores: Record<string, number>;
+  method: string;
+  validation_status: string;
+  /** The page continues the numbered page (it ended "P.T.O") and took its type. */
+  continued_from_page?: number;
+}
+
+export interface ReportPageLine {
+  text_start: number;
+  text_end: number;
+  confidence: number | null;
+  bbox_xyxy: [number, number, number, number];
+  identifiers_masked: boolean;
+}
+
+export interface ReportPage {
+  page: number;
+  method: string;
+  engine?: string;
+  mean_confidence?: number | null;
+  line_count?: number;
+  image_width?: number;
+  image_height?: number;
+  rotation_degrees?: number;
+  lines?: ReportPageLine[];
+  identifiers_masked?: Record<string, number>;
+  document_type?: ReportPageType;
+}
+
 export interface ReportTextResponse {
   upload_id: number;
   filename: string;
@@ -759,7 +793,56 @@ export interface ReportTextResponse {
   text: string;
   text_sha256: string;
   page_starts: number[];
+  pages?: ReportPage[];
   extractor_version: string;
+  privacy_screen?: { status: string; identifiers_masked: Record<string, number>; pages_with_identifiers: number[]; verification: string; notice: string };
+  date_conflicts?: Array<{ page: number; dates: string[] }>;
+}
+
+/** Output of the third-party chest-radiograph research model (backend app.services.cxr_research). */
+export interface ChestRadiographOutput {
+  type: 'chest_radiograph_findings';
+  coordinate_space: 'SOURCE_IMAGE_PIXELS';
+  image_size: [number, number];
+  /** The centre square the models read: left, top, side (source pixels). */
+  analysis_square: [number, number, number];
+  operating_point: number;
+  weak_margin: number;
+  findings: Array<{ finding: string; score: number; above_operating_point: boolean; weak: boolean }>;
+  attention: Array<{ finding: string; zones: Record<string, number>; outside_lungs: number; top_zone: string | null; grid: number[][] }>;
+  anatomy: Array<{ name: string; fraction: number; contours: number[][][] }>;
+  input_checks: {
+    status: string; right_lung_fraction: number; left_lung_fraction: number; heart_fraction: number; lungs_on_expected_sides: boolean;
+    autoencoder_reconstruction_error: number; autoencoder_note: string; rule: string;
+    printed_document?: { printed_text_lines: number | null; document_text_line_limit: number; status: string } | null;
+  };
+  report_comparison: Array<{ finding: string; score: number; report_status: 'AFFIRMED' | 'NEGATED'; status: 'AGREES' | 'DIFFERS' | 'MODEL_INDETERMINATE'; report_entities: string[]; report_quote: string; report_statement_ids: number[] }>;
+  summary: string;
+}
+
+export interface ChestRadiographModelCard {
+  model_id: string;
+  display_name: string;
+  output_status: string;
+  available: boolean;
+  status: string;
+  reason?: string;
+  publisher: { library: string; citation: string; training_data: string; anatomy_model: string; local_evaluation: string };
+  operating_point: number;
+  weak_margin: number;
+  weights_sha256: Record<string, string>;
+}
+
+/** A report page rendered for side-by-side checking, with its identifier lines painted out. */
+export interface ReportPageImage {
+  url: string;
+  page: number;
+  width: number;
+  height: number;
+  masking: 'APPLIED' | 'NO_IDENTIFIER_LINES' | 'UNAVAILABLE_EMBEDDED_TEXT';
+  masked_lines: number;
+  source_image_width: number | null;
+  source_image_height: number | null;
 }
 
 export interface PrognosisCapability {
@@ -1205,6 +1288,62 @@ export interface CorrectionDecision {
   decided_at: string;
 }
 
+export type EffectiveCorrectionState = 'ORIGINAL_IMMUTABLE' | 'CORRECTION_PROPOSED' | 'CORRECTION_REJECTED'
+  | 'CORRECTION_APPLIED_TO_EFFECTIVE_VIEW' | 'REMOVED_IN_EFFECTIVE_VIEW';
+
+export interface EvidenceCorrection<T> {
+  review_id: number;
+  proposed_by_id: number | null;
+  proposed_at: string;
+  state: 'CORRECTION_PROPOSED' | 'CORRECTION_APPROVED' | 'CORRECTION_REJECTED';
+  decided_by_id: number | null;
+  decided_at: string | null;
+  correction: T;
+}
+
+export interface EffectiveEvidenceRecord<T, C> {
+  correction_state: EffectiveCorrectionState;
+  original: T;
+  effective: T;
+  applied_review_id: number | null;
+  corrections: EvidenceCorrection<C>[];
+}
+
+export type EffectiveStatementFields = Pick<ReportStatement, 'entity' | 'negation' | 'temporality' | 'certainty' | 'anatomical_site' | 'laterality'>;
+export type EffectiveMeasurementFields = Pick<MedicalMeasurement, 'display_name' | 'value' | 'result_operator' | 'unit' | 'reference_low' | 'reference_high' | 'specimen' | 'laboratory_method'>;
+
+export interface EffectiveEvidenceResponse {
+  case_id: number;
+  statements: Array<EffectiveEvidenceRecord<EffectiveStatementFields, EntityCorrection> & { statement_id: number }>;
+  measurements: Array<EffectiveEvidenceRecord<EffectiveMeasurementFields, MeasurementCorrection> & { measurement_id: number }>;
+  notice: string;
+}
+
+export interface ReviewedDemographics {
+  id: number;
+  case_id: number;
+  revision: number;
+  sex: 'M' | 'F' | 'UNKNOWN';
+  date_of_birth: string | null;
+  source_file_id: number | null;
+  source_reference_id: number | null;
+  reason: string;
+  reviewed_by_id: number | null;
+  created_at: string;
+  source_state: 'ACTIVE' | 'WITHDRAWN_OR_UNASSOCIATED' | 'SOURCE_DELETED' | 'PROVENANCE_UNAVAILABLE' | 'REVIEWER_ATTESTATION';
+  provenance: 'REVIEWER_ENTERED_NOT_SOURCE_EXTRACTED';
+}
+
+export interface ReviewedDemographicsResponse {
+  case_id: number;
+  current: ReviewedDemographics | null;
+  history: ReviewedDemographics[];
+  notice: string;
+  can_record: boolean;
+}
+
+export type ReviewedDemographicsInput = Pick<ReviewedDemographics, 'sex' | 'date_of_birth' | 'source_file_id' | 'reason'> & { expected_revision: number };
+
 export interface ProvenanceEvent {
   id: number;
   user_id: number | null;
@@ -1235,6 +1374,8 @@ export interface SystemHealth {
   gpu_name: string | null;
   research_notice: string;
   database_status: string;
+  /** Data is kept only in a serverless instance's temp directory and is lost when it stops. */
+  temporary_storage?: boolean;
   active_cases: number;
   total_findings: number;
   health_scope: string;
@@ -1529,8 +1670,12 @@ class ApiClient {
         body && typeof body === 'object' && 'detail' in body
           ? (body as { detail: unknown }).detail
           : body;
-      const message =
-        typeof detail === 'string'
+      // A 413 without the API's JSON detail came from the hosting platform or proxy (Vercel
+      // accepts at most 4.5 MB per request), whose error page is not a useful message.
+      const rejectedBeforeApi = response.status === 413 && !(body && typeof body === 'object');
+      const message = rejectedBeforeApi
+        ? 'The file is larger than this server accepts, so it was rejected before reaching MedTwin (HTTP 413).'
+        : typeof detail === 'string'
           ? detail
           : (formatValidationDetail(detail) ??
             `Request failed (${response.status} ${response.statusText})`);
@@ -1742,6 +1887,14 @@ class ApiClient {
 
   /** Upload with byte-level progress (fetch cannot report upload progress). */
   uploadFileWithProgress(caseId: ResourceId, file: File, options: UploadOptions, onProgress: (fraction: number) => void): Promise<UploadedFile> {
+    return this.uploadWithProgress(`/cases/${resourcePath(caseId)}/uploads`, file, options, onProgress);
+  }
+
+  uploadPortalDocumentWithProgress(caseId: ResourceId, file: File, onProgress: (fraction: number) => void): Promise<UploadedFile> {
+    return this.uploadWithProgress(`/portal/cases/${resourcePath(caseId)}/documents`, file, { deidentified: true }, onProgress);
+  }
+
+  private uploadWithProgress(endpoint: string, file: File, options: UploadOptions, onProgress: (fraction: number) => void): Promise<UploadedFile> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('deidentified', String(options.deidentified));
@@ -1750,7 +1903,7 @@ class ApiClient {
     if (options.associationNotes) formData.append('association_notes', options.associationNotes);
     return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
-      request.open('POST', `${API_V1_BASE}/cases/${resourcePath(caseId)}/uploads`);
+      request.open('POST', `${API_V1_BASE}${endpoint}`);
       if (this.token) request.setRequestHeader('Authorization', `Bearer ${this.token}`);
       request.upload.onprogress = (event) => {
         if (event.lengthComputable) onProgress(event.loaded / event.total);
@@ -1847,6 +2000,10 @@ class ApiClient {
 
   getPortalCases(): Promise<PortalCase[]> {
     return this.request<PortalCase[]>('/portal/cases');
+  }
+
+  createPersonalPortalRecord(): Promise<PortalCase> {
+    return this.request<PortalCase>('/portal/cases', { method: 'POST' });
   }
 
   getPortalRecord(caseId: ResourceId): Promise<PortalRecord> {
@@ -2072,6 +2229,18 @@ class ApiClient {
     return this.request<DocumentedAttribute[]>(`/cases/${resourcePath(caseId)}/attributes`);
   }
 
+  getEffectiveEvidence(caseId: ResourceId): Promise<EffectiveEvidenceResponse> {
+    return this.request<EffectiveEvidenceResponse>(`/cases/${resourcePath(caseId)}/effective-evidence`);
+  }
+
+  getReviewedDemographics(caseId: ResourceId): Promise<ReviewedDemographicsResponse> {
+    return this.request<ReviewedDemographicsResponse>(`/cases/${resourcePath(caseId)}/demographics`);
+  }
+
+  recordReviewedDemographics(caseId: ResourceId, input: ReviewedDemographicsInput): Promise<ReviewedDemographics> {
+    return this.request<ReviewedDemographics>(`/cases/${resourcePath(caseId)}/demographics`, { method: 'POST', body: JSON.stringify(input) });
+  }
+
   getBiomarkerTrends(caseId: ResourceId): Promise<{ case_id: number; series: BiomarkerSeries[] }> {
     return this.request(`/cases/${resourcePath(caseId)}/biomarker-trends`);
   }
@@ -2123,6 +2292,25 @@ class ApiClient {
 
   getReportText(uploadId: ResourceId): Promise<ReportTextResponse> {
     return this.request<ReportTextResponse>(`/uploads/${resourcePath(uploadId)}/text`);
+  }
+
+  getChestRadiographModel(): Promise<ChestRadiographModelCard> {
+    return this.request<ChestRadiographModelCard>('/chest-radiograph-model');
+  }
+
+  /** Runs the third-party chest-radiograph research model; the result is a finding pending review. */
+  runChestRadiographAnalysis(uploadId: ResourceId): Promise<{ id: number; research_output: ChestRadiographOutput; research_provenance: Record<string, unknown> }> {
+    return this.request(`/uploads/${resourcePath(uploadId)}/chest-radiograph-analysis`, {
+      method: 'POST',
+      body: JSON.stringify({ attest_frontal_chest_radiograph: true }),
+    });
+  }
+
+  /** One PDF report page as an image with its identifier lines painted out (verification). */
+  async getReportPageImage(uploadId: ResourceId, page: number): Promise<ReportPageImage> {
+    const { blob, headers } = await this.requestBlob(`/uploads/${resourcePath(uploadId)}/pages/${page}/image`);
+    const info = JSON.parse(headers.get('X-MedTwin-Page') ?? '{}') as Omit<ReportPageImage, 'url'>;
+    return { ...info, url: URL.createObjectURL(blob) };
   }
 
   getPrognosisCapabilities(): Promise<PrognosisCapabilitiesResponse> {

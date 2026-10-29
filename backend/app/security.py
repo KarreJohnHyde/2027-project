@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict, deque
+import os
 import threading
 import time
 from typing import Callable
@@ -44,14 +45,26 @@ class SlidingWindowLimiter:
 limiter = SlidingWindowLimiter()
 
 
+def client_address(request: Request) -> str:
+    """The caller's address for rate limiting.
+
+    Vercel's edge overwrites X-Forwarded-For with the real client address, so it is
+    trusted there (VERCEL=1); elsewhere a proxy header could be forged, and uvicorn's
+    --proxy-headers already resolves trusted proxies into request.client."""
+    if os.getenv("VERCEL") == "1":
+        forwarded = request.headers.get("x-forwarded-for", "").split(",")[0].strip()
+        if forwarded:
+            return forwarded
+    return request.client.host if request.client else "unknown"
+
+
 def rate_limit(bucket: str, limit: int) -> Callable[[Request], None]:
     enabled = RATE_LIMIT_ENABLED and ENVIRONMENT != "test"
 
     def dependency(request: Request) -> None:
         if not enabled:
             return
-        client = request.client.host if request.client else "unknown"
-        if not limiter.allow(f"{bucket}:{client}", limit):
+        if not limiter.allow(f"{bucket}:{client_address(request)}", limit):
             raise HTTPException(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                 detail=f"Rate limit exceeded for {bucket}; try again in a minute.",

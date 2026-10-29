@@ -1,5 +1,7 @@
 # MedTwin 2.0 - final report for this session
 
+> Historical session report, not final completion of the project. The [2026-10-29 audit](../verification/COMPLETENESS_AUDIT_2026-10-29.md) records the newer implementation and validation boundaries.
+
 Date 2026-10-25, branch `feature/medtwin-2-integration` (local commits `1aedb23`,
 `3e60b8b`; this repository has no remote and its history was never pushed). A
 history-free snapshot of `3e60b8b` is published as `45c25ce` in

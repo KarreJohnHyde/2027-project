@@ -203,6 +203,9 @@ def _serialize_manifest(manifest: LandmarkManifest) -> dict:
     return {
         "id": manifest.id, "finding_id": manifest.finding_id, "case_id": manifest.case_id, "coordinate_frame": manifest.coordinate_frame,
         "requested_region": manifest.requested_region, "fit_pairs": len(manifest.fit_landmarks), "held_out_pairs": len(manifest.held_out_landmarks),
+        # Case-authorized reviewers need the actual immutable proposal, not just
+        # counts, before making an independent approval decision.
+        "fit_landmarks": manifest.fit_landmarks, "held_out_landmarks": manifest.held_out_landmarks,
         "threshold_mm": manifest.threshold_mm, "status": manifest.status, "created_by_id": manifest.created_by_id,
         "created_at": manifest.created_at.isoformat(), "decided_by_id": manifest.decided_by_id,
         "decided_at": manifest.decided_at.isoformat() if manifest.decided_at else None, "decision_comment": manifest.decision_comment,

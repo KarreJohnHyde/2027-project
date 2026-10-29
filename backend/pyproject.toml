@@ -1,0 +1,44 @@
+# Dependency manifest for the Vercel deployment of this backend (vercel.json service
+# "backend"). Vercel prefers it, with uv.lock, over requirements.txt, which Docker, CI and
+# local development keep using. The pins are requirements.txt's own (tests/test_serverless_runtime.py
+# keeps them in step) plus two Vercel-only differences:
+# - OpenCV is the headless build: RapidOCR names the GUI build, which loads libGL at import
+#   time, and Vercel's Python runtime has no libGL.
+# - vercel-blob, for durable upload copies in a private Blob store (app/services/object_store.py).
+# Regenerate the lock after changing a pin: uv lock (in backend/).
+[project]
+name = "medtwin-backend"
+version = "0.2.0"
+requires-python = "==3.12.*"
+dependencies = [
+    "fastapi==0.159.1",
+    "uvicorn[standard]==0.54.0",
+    "python-multipart==0.0.32",
+    "SQLAlchemy==2.1.6",
+    "python-jose[cryptography]==3.5.0",
+    "bcrypt==5.0.0",
+    "numpy==2.5.2",
+    "scipy==1.18.1",
+    "Pillow==12.3.0",
+    "pypdf==5.5.0",
+    "python-docx==1.1.2",
+    "openpyxl==3.1.5",
+    "psutil==7.2.2",
+    "pydicom==3.0.2",
+    "nibabel==5.4.2",
+    "SimpleITK==2.5.6",
+    "pycocotools==2.0.11",
+    "onnxruntime==1.31.0",
+    "rapidocr-onnxruntime==1.4.4",
+    "pypdfium2==5.14.0",
+    "wordninja==2.0.0",
+    "cryptography==50.0.2",
+    "sqlcipher3-wheels==0.5.7",
+    "psycopg[binary]==3.3.6",
+    "opencv-python-headless==5.0.0.93",
+    "vercel-blob==0.5.0",
+]
+
+[tool.uv]
+package = false
+override-dependencies = ["opencv-python; sys_platform == 'never'"]

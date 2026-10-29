@@ -32,6 +32,11 @@ def test_registry_exposes_truthful_non_activatable_statuses(client, test_users):
     assert models["ptbxl_ecg_baseline"]["validated"] is False
     assert models["ptbxl_ecg_baseline"]["inference_input"] == "ecg_12lead"
     assert models["medcat_adapter"]["status"] == "DEPENDENCY_MISSING"
+    assert models["monai_runtime"]["status"] == "READY_UNVALIDATED"
+    assert models["monai_runtime"]["processor_only"] is True
+    assert models["monai_runtime"]["validated"] is False
+    assert models["monai_runtime"]["artifact_bundle"]["checkpoint_path"] is None
+    assert "PROCESSOR_ONLY_NOT_ACTIVATABLE_AS_MODEL" in models["monai_runtime"]["activation"]["blockers"]
     assert all(not item["activation"]["eligible"] for item in models.values())
 
 
@@ -65,6 +70,39 @@ def test_capability_registry_separates_processing_from_inference(client, test_us
     assert capabilities["image_preprocessing"]["inference_operational"] is False
     assert capabilities["ecg_quality_preview"]["inference_operational"] is False
     assert capabilities["multimodal_fusion"]["operational"] is False
+
+
+@pytest.mark.parametrize("installed", [True, False])
+def test_monai_capability_reports_current_dependency_without_model_validation(monkeypatch, installed):
+    from app.services import model_registry
+
+    # Exercise status reporting without loading or hashing trained models.
+    monkeypatch.setattr(model_registry, "list_models", model_registry._load_registry)
+    monkeypatch.setattr(model_registry, "_module_available", lambda module: installed if module == "monai" else False)
+    monkeypatch.setattr(model_registry, "_research_image_models_capability", lambda: {"capability_id": "research_image_models", "operational": False})
+    monkeypatch.setattr(model_registry, "scispacy_mode", lambda: "disabled")
+    capabilities = {item["capability_id"]: item for item in model_registry.get_capabilities()["capabilities"]}
+    monai = capabilities["monai_framework"]
+    assert monai["operational"] is installed
+    assert monai["verification_status"] == ("INTEGRATED_NOT_CLINICALLY_VALIDATED" if installed else "DEPENDENCY_MISSING")
+    assert "not a trained or clinically validated" in " ".join(monai["limitations"])
+
+
+def test_research_image_capability_describes_limited_ood_gate(monkeypatch):
+    from app.services import model_inference, model_registry
+
+    monkeypatch.setattr(model_inference, "inference_models", lambda: [
+        {"model_id": "image-allowed", "gate": {"allowed": True}, "inference_input": "image_2d"},
+        {"model_id": "image-blocked", "gate": {"allowed": False}, "inference_input": "image_2d"},
+        {"model_id": "ecg-allowed", "gate": {"allowed": True}, "inference_input": "ecg_12lead"},
+    ])
+    capability = model_registry._research_image_models_capability()
+    assert capability["runnable_models"] == ["image-allowed"]
+    limits = " ".join(capability["limitations"])
+    assert "checkpoint-bound feature-space out-of-distribution gate" in limits
+    assert "can accept unsuitable images and reject suitable ones" in limits
+    assert "no external or clinical validation" in limits
+    assert "no out-of-distribution detection" not in limits
 
 
 def test_complete_bundle_requires_matching_checkpoint_hash(tmp_path):

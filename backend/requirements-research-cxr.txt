@@ -1,0 +1,14 @@
+# Optional: the third-party chest-radiograph research model (app.services.cxr_research).
+# Not part of the default image or CI; without it the model reports DEPENDENCY_MISSING.
+# Install on top of requirements-ml.txt (or the local GPU lock), then fetch the publisher's
+# weights once with scripts/fetch_cxr_weights.py (SHA-256 recorded in cxr_research.WEIGHT_SHA256).
+torchxrayvision==1.5.7
+scikit-image==0.26.0
+pandas==3.1.0
+imageio==2.38.1
+requests==2.34.2
+tifffile==2026.10.15
+lazy-loader==0.6
+python-dateutil==3.0.0
+urllib3==2.8.0
+charset-normalizer==3.5.2

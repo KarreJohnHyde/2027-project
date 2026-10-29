@@ -6,6 +6,7 @@ Follows IEEE manuscript specification with environment variable overrides and sa
 import json
 import os
 import secrets
+import tempfile
 from pathlib import Path
 from typing import List
 
@@ -45,14 +46,45 @@ DEV_SEED_FULL_NAME: str = os.getenv("DEV_SEED_FULL_NAME", "MedTwin Development U
 DEV_SEED_ROLE: str = os.getenv("DEV_SEED_ROLE", "clinician").strip().lower()
 DEV_SEED_CASE_ENABLED: bool = os.getenv("DEV_SEED_CASE_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
 
+
+def default_state_dir(base_dir: Path) -> Path:
+    """Directory for the default SQLite database and uploads.
+
+    Serverless platforms (Vercel) mount the code read-only. State then defaults to the
+    temp directory, which belongs to one function instance and is lost with it; set
+    DATABASE_URL and UPLOAD_DIR to durable storage before keeping data there."""
+    if os.access(base_dir, os.W_OK):
+        return base_dir
+    return Path(tempfile.gettempdir()) / "medtwin"
+
+
+STATE_DIR: Path = default_state_dir(BASE_DIR)
+if STATE_DIR != BASE_DIR:
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def normalise_database_url(url: str) -> str:
+    """Hosted PostgreSQL (Vercel/Neon, Supabase) hands out postgres:// URLs; SQLAlchemy needs
+    the installed psycopg driver named explicitly."""
+    for prefix in ("postgres://", "postgresql://"):
+        if url.startswith(prefix):
+            return "postgresql+psycopg://" + url[len(prefix):]
+    return url
+
+
 # Database Configuration
 _configured_database_url = os.getenv("DATABASE_URL", "").strip()
 if ENVIRONMENT == "test" and not _configured_database_url:
     raise RuntimeError("DATABASE_URL must be explicitly set when ENVIRONMENT=test.")
-DATABASE_URL: str = _configured_database_url or f"sqlite:///{BASE_DIR / 'medtwin.db'}"
+DATABASE_URL: str = normalise_database_url(_configured_database_url) or f"sqlite:///{STATE_DIR / 'medtwin.db'}"
 
 # File Storage & Limits
-UPLOAD_DIR: Path = Path(os.getenv("UPLOAD_DIR", os.getenv("UPLOAD_DIRECTORY", str(BASE_DIR / "uploads"))))
+_configured_upload_dir = os.getenv("UPLOAD_DIR", os.getenv("UPLOAD_DIRECTORY", "")).strip()
+UPLOAD_DIR: Path = Path(_configured_upload_dir or STATE_DIR / "uploads")
+# The database or uploads fell back to the per-instance temp directory. Uploads there are
+# still durable when an object store keeps their copies (app/services/object_store.py).
+TEMPORARY_DATABASE: bool = STATE_DIR != BASE_DIR and not _configured_database_url
+TEMPORARY_UPLOAD_DIR: bool = STATE_DIR != BASE_DIR and not _configured_upload_dir
 # Encryption at rest for stored uploads: "required" (refuse writes without a key),
 # "auto" (encrypt when a key is configured) or "off". Keys: MEDTWIN_STORAGE_KEY_FILE
 # or MEDTWIN_STORAGE_KEYS, never in the repository (see app/services/storage_crypto.py).
@@ -102,9 +134,14 @@ RATE_LIMIT_ENABLED: bool = os.getenv("RATE_LIMIT_ENABLED", "true").strip().lower
 
 # Anatomy manifests produced by tools/asset-pipeline.
 # Repository root holding generated evidence (docs/, public/anatomy/, benchmarks/results/).
-# Container images copy those files elsewhere and set MEDTWIN_PROJECT_ROOT.
-PROJECT_ROOT: Path = Path(os.getenv("MEDTWIN_PROJECT_ROOT", str(BASE_DIR.parent)))
-ANATOMY_MANIFEST_PATH: Path = Path(os.getenv("ANATOMY_MANIFEST_PATH", str(PROJECT_ROOT / "public" / "anatomy" / "manifest.json")))
+# Container images copy those files elsewhere and set MEDTWIN_PROJECT_ROOT. A Vercel Function
+# bundles only backend/, so its build step (backend/vercel_build.py) copies them into
+# backend/deployment_files/, which is used when present.
+DEPLOYMENT_FILES_DIR: Path = BASE_DIR / "deployment_files"
+PROJECT_ROOT: Path = Path(os.getenv("MEDTWIN_PROJECT_ROOT", str(DEPLOYMENT_FILES_DIR if DEPLOYMENT_FILES_DIR.is_dir() else BASE_DIR.parent)))
+# Vercel never bundles a directory named public/, so the build step stages the manifest as anatomy/manifest.json.
+_manifest_candidates = (PROJECT_ROOT / "public" / "anatomy" / "manifest.json", PROJECT_ROOT / "anatomy" / "manifest.json")
+ANATOMY_MANIFEST_PATH: Path = Path(os.getenv("ANATOMY_MANIFEST_PATH", str(next((path for path in _manifest_candidates if path.exists()), _manifest_candidates[0]))))
 
 def _cors_origins() -> List[str]:
     configured = os.getenv("CORS_ORIGINS", "").strip()

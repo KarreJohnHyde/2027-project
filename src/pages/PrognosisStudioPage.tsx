@@ -49,6 +49,10 @@ function ScenarioPanel({ scenario, evaluation, layers, shared }: {
   const images = evaluation.observed.imaging_studies;
   const baseline = images[0];
   const latest = images.length > 1 ? images[images.length - 1] : null;
+  // Without both dates the order is unknown: images are not called baseline and follow-up.
+  const ordered = Boolean(baseline?.date && latest?.date);
+  const captionFor = (role: "Baseline" | "Follow-up", image: { date: string | null }, index: number) =>
+    ordered ? `${role} ${formatDate(image.date!)}` : `Image ${index}, undated (order unknown)`;
   const capability = evaluation.capability;
   const framing = useMemo(() => ({ mode: "fit" as const }), []);
   const section = useMemo(() => ({ axis: "y" as const, offset: 0, flip: false }), []);
@@ -62,8 +66,8 @@ function ScenarioPanel({ scenario, evaluation, layers, shared }: {
 
       <h3 className="mt-4 text-xs font-semibold text-ink-2">2D medical images</h3>
       <div className="mt-2 grid grid-cols-3 gap-2">
-        {baseline ? <ImageTile upload={uploads.find((upload) => upload.id === baseline.upload_id)!} caption={`Baseline ${baseline.date ? formatDate(baseline.date) : "undated"}`} /> : <div className="hatch grid aspect-square place-items-center rounded-lg border border-line-strong p-2 text-center text-[11px] text-ink-2">No observed image</div>}
-        {latest ? <ImageTile upload={uploads.find((upload) => upload.id === latest.upload_id)!} caption={`Follow-up ${latest.date ? formatDate(latest.date) : "undated"}`} /> : <div className="hatch grid aspect-square place-items-center rounded-lg border border-line-strong p-2 text-center text-[11px] text-ink-2">No follow-up image</div>}
+        {baseline ? <ImageTile upload={uploads.find((upload) => upload.id === baseline.upload_id)!} caption={latest ? captionFor("Baseline", baseline, 1) : `Observed ${baseline.date ? formatDate(baseline.date) : "undated"}`} /> : <div className="hatch grid aspect-square place-items-center rounded-lg border border-line-strong p-2 text-center text-[11px] text-ink-2">No observed image</div>}
+        {latest ? <ImageTile upload={uploads.find((upload) => upload.id === latest.upload_id)!} caption={captionFor("Follow-up", latest, 2)} /> : <div className="hatch grid aspect-square place-items-center rounded-lg border border-line-strong p-2 text-center text-[11px] text-ink-2">No follow-up image</div>}
         <div className="hatch grid aspect-square place-items-center rounded-lg border border-line-strong p-2 text-center text-[11px] leading-4 text-ink-2" role="img" aria-label="Future image unavailable">Future image<br /><b className="font-medium">{capability.forecast_2d.reason}</b></div>
       </div>
 

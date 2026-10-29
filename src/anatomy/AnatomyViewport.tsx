@@ -31,6 +31,7 @@ export type ViewportProps = {
   hidden: Set<string>;
   verifiedKeys?: Set<string>;
   schematicKeys?: Set<string>;
+  documentedKeys?: Set<string>;
   onSelect: (target: TargetSummary | null) => void;
   onHover: (target: TargetSummary | null) => void;
   onTargets?: (targets: TargetSummary[], interiorKey: string | null) => void;
@@ -45,6 +46,7 @@ const COLORS = {
   hover: new THREE.Color("#ffffff"),
   verified: new THREE.Color("#3987e5"),
   schematic: new THREE.Color("#86b6ef"),
+  documented: new THREE.Color("#ff6a00"),
 };
 const AXES = { x: new THREE.Vector3(1, 0, 0), y: new THREE.Vector3(0, 1, 0), z: new THREE.Vector3(0, 0, 1) };
 const CAMERA_HOME = new THREE.Vector3(0, 0.15, 3.7);
@@ -223,7 +225,7 @@ function PerformanceProbe() {
 type SceneProps = Omit<ViewportProps, "onApi" | "resetToken" | "projection" | "measurePerformance">;
 
 function SceneContent(props: SceneProps) {
-  const { layers, framing, viewMode, opacity, section, isolate, labels, selectedKey, hoveredKey, hidden, verifiedKeys = EMPTY, schematicKeys = EMPTY } = props;
+  const { layers, framing, viewMode, opacity, section, isolate, labels, selectedKey, hoveredKey, hidden, verifiedKeys = EMPTY, schematicKeys = EMPTY, documentedKeys = EMPTY } = props;
   const invalidate = useThree((state) => state.invalidate);
   const callbacks = useLatest({ onSelect: props.onSelect, onHover: props.onHover, onTargets: props.onTargets });
   const root = useRef<THREE.Group>(null);
@@ -287,6 +289,7 @@ function SceneContent(props: SceneProps) {
       hoveredKey,
       verifiedKeys,
       schematicKeys,
+      documentedKeys,
       translucentKeys: interiorKey ? new Set([interiorKey]) : EMPTY,
       viewMode,
       opacity,
@@ -294,7 +297,7 @@ function SceneContent(props: SceneProps) {
       colors: COLORS,
     });
     invalidate();
-  }, [targets, hidden, isolate, selectedKey, hoveredKey, verifiedKeys, schematicKeys, interiorKey, viewMode, opacity, section.axis, section.offset, section.flip, plane, invalidate]);
+  }, [targets, hidden, isolate, selectedKey, hoveredKey, verifiedKeys, schematicKeys, documentedKeys, interiorKey, viewMode, opacity, section.axis, section.offset, section.flip, plane, invalidate]);
 
   function pick(event: ThreeEvent<PointerEvent | MouseEvent>): TargetSummary | null {
     const hit = event.intersections.find((intersection) => {

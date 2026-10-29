@@ -18,6 +18,7 @@ const ROUTES: Record<string, Route> = {
   "/cases": { component: page(() => import("./pages/CaseWorkspacePage")), needsCase: true, title: "Case Workspace" },
   "/upload": { component: page(() => import("./pages/UploadCenterPage")), needsCase: true, title: "Upload Center" },
   "/documents": { component: page(() => import("./pages/DocumentIntelligencePage")), needsCase: true, title: "Document Intelligence" },
+  "/documents/verify": { component: page(() => import("./pages/DocumentVerificationPage")), needsCase: true, title: "Document Verification" },
   "/imaging": { component: page(() => import("./pages/MedicalImagingPage")), title: "Medical Imaging" },
   "/biomarkers": { component: page(() => import("./pages/BiomarkerAnalyticsPage")), needsCase: true, title: "Biomarker Analytics" },
   "/history": { component: page(() => import("./pages/HistoricalComparisonPage")), needsCase: true, title: "Historical Comparison" },

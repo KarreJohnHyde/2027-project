@@ -31,6 +31,7 @@ from typing import Any, Dict, List, Optional
 
 from app.services.document_parser import parse_clinical_document_pages, parse_clinical_document_with_pages  # noqa: F401
 from app.services.ocr_text import normalise, to_normalised, to_source
+from app.services.page_classifier import classify_pages
 from app.services.terminology import (
     ANALYTES,
     ENTITY_PATTERNS,
@@ -46,15 +47,109 @@ EXTRACTOR_VERSION = "rules-v2.0.0"
 # De-identification patterns (PHI sanitisation applied before extraction).
 # Identifier patterns require a digit in the identifier so ordinary prose
 # ("record of", "patient identified") is not masked.
+# Report headers print identifiers after a label, and OCR joins the header columns ("Patient
+# Name :A B Report Date :..."), so a labelled value runs to the next header field or the end of
+# the line. A header word ends the value only when it reads as a label, with its separator
+# ("Report Date :", "Age/Sex:", "Ward No -") or its value ("Age 45", "Sex M", "45Y/M"); a
+# surname that is also a header word ("JOHN WARD", "DOE, BILL") stays part of the name. Any
+# other word followed by a colon is taken for an unknown label. The label is kept so the page
+# still reads as a header.
+_HEADER_LABEL = (
+    r"age(?:[ \t]*(?:[/&]|and)[ \t]*(?:sex|gender))?|sex|gender|d\.?o\.?b|date(?:[ \t]*of[ \t]*birth)?|"
+    r"report(?:ed)?(?:[ \t]*(?:date|on|out[ \t]*on|time))?|ref(?:erred)?\.?(?:[ \t]*(?:by|dr|doctor))?|referring[ \t]+(?:doctor|physician)|"
+    r"uhid|mr\.?[ \t]*no|mrno|ip[ \t]*no|op[ \t]*no|lab[ \t]*n[o0]|bill(?:[ \t]*(?:no|date))?|visit(?:[ \t]*(?:date|id|no))?|"
+    r"sample(?:[ \t]*(?:collected(?:[ \t]*on)?|date|id|no|type|received(?:[ \t]*on)?))?|collected(?:[ \t]*on)?|received(?:[ \t]*on)?|"
+    r"reg(?:istration|n)?\.?[ \t]*no|procedure(?:[ \t]*date)?|admission(?:[ \t]*(?:type|date))?|patient[ \t]*id|id|time|"
+    r"ward(?:[ \t]*no)?|bed(?:[ \t]*no)?|company|consultant|specimen|phone|ph|mob(?:ile)?|cell|tel|contact|address|e-?mail"
+)
+_FIELD_STOP = (
+    r"(?=[ \t,]*(?:(?<![A-Za-z])(?i:" + _HEADER_LABEL + r")[ \t.]*(?:[:=]|[-–](?=[ \t\d]))"
+    r"|(?<![A-Za-z])(?i:age)[ \t]*\d|(?<![A-Za-z])(?i:sex|gender)[ \t]+(?i:m|f|male|female)\b|(?<![A-Za-z])(?i:date|dated)[ \t]+\d"
+    r"|\d{1,3}[ \t]*(?i:y(?:ea)?rs?|y)\b|(?<![A-Za-z])[A-Za-z][A-Za-z./&]*[ \t]*[:=]|\[REDACTED_"
+    r"|[|]|$))"
+)
+_FIELD_VALUE = r"[^\n|:]{1,60}?" + _FIELD_STOP
+# A person's name after a title: capitalised words or initials ("Q.RAM PRASAD", "A Sample"),
+# stopping before a header label that follows on the same line.
+_NAME_TAIL = r"(?:[ \t]?(?!(?i:date|age|sex|report|ref|uhid|time)\b)[A-Z][A-Za-z]*\.?){0,3}"
+_NAME_WORDS = r"(?:[A-Z][A-Za-z]*\.?)" + _NAME_TAIL
+# After an upper-case "MR."/"MS." the name opens with an initial or a 3+ letter word, so
+# "Trivial MR. MS noted" (two valve lesions) is not read as a title and a name.
+_NAME_WORDS_STRICT = r"(?:[A-Z]\.|[A-Z][A-Za-z]{2,}\.?)" + _NAME_TAIL
+_ID_LABELS = (
+    r"mrn|mr\.?\s*no|mrno|uhid|u\.h\.i\.d|ip\s*no|op\s*no|lab\s*n[o0]|bill\s*no|reg(?:istration|n)?[\s.\-]*no|patient\s*id|"
+    r"visit\s*(?:id|no)|sample\s*(?:id|no)|accession(?:\s*(?:number|no\.?))?|barcode|medical\s+record\s+(?:number|no\.?)|"
+    r"record\s+(?:number|no\.?)|aadha?ar(?:\s*no)?|abha(?:\s*(?:id|no))?"
+)
+
+
+def _door_number(match: re.Match) -> str:
+    """A street address, unless the numbers are a blood pressure ("BP 120/80, Pulse 72")."""
+    before = match.string[max(0, match.start() - 24):match.start()]
+    if re.search(r"(?i)\bbp\b|pressure", before) or re.match(r"[^,]*,[ \t]*(?i:pulse|hr|heart|spo2|rr|temp)", match.group(0)):
+        return match.group(0)
+    return "[REDACTED_ADDRESS]"
+
+
+def _keep_label(category: str):
+    return lambda match: match.group("label") + f"[REDACTED_{category}]"
+
+
+# (pattern, replacement, category). Identifier patterns require a digit in the identifier so
+# ordinary prose ("record of", "patient identified") is not masked. Order matters: an ID label
+# ("MR.NO:") is masked before the honorific pattern could read "MR." as a title.
 PHI_PATTERNS = [
-    (re.compile(r'\b(?:MRN|Patient\s+ID|Medical\s+record\s+(?:number|no\.?)|Record\s+(?:number|no\.?)|Accession(?:\s+(?:number|no\.?))?)\s*[:#]?\s*[A-Za-z0-9-]*\d[A-Za-z0-9-]*', re.IGNORECASE), "[REDACTED_ID]"),
-    (re.compile(r'\b(DOB|Date of Birth|Birth date)[:\s]+(?:\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}|\d{4}-\d{2}-\d{2})\b', re.IGNORECASE), "[REDACTED_DOB]"),
-    (re.compile(r'\bDr\.\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)?\b'), "[REDACTED_PROVIDER]"),
-    (re.compile(r'\b(Mr\.|Mrs\.|Ms\.|Miss)\s+[A-Z][a-z]+\b'), "[REDACTED_NAME]"),
-    (re.compile(r'\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b'), "[REDACTED_EMAIL]"),
+    (re.compile(r"\b(?:" + _ID_LABELS + r")\.?\s*[:#.\-]?\s*[A-Za-z0-9/-]*\d[A-Za-z0-9/-]*", re.IGNORECASE), "[REDACTED_ID]", "ID"),
+    # "ID:" opening a header field, also as OCR reads it ("1D:").
+    (re.compile(r"(?<![A-Za-z0-9])(?:ID|[1l]D)[ \t]*[:#][ \t]*[A-Za-z0-9/-]*\d[A-Za-z0-9/-]*"), "[REDACTED_ID]", "ID"),
+    (re.compile(r'\b(DOB|Date of Birth|Birth date)[:\s]+(?:\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}|\d{4}-\d{2}-\d{2})\b', re.IGNORECASE), "[REDACTED_DOB]", "DOB"),
+    (re.compile(r"(?P<label>\b(?i:patient'?s?\s*name|pt\.?\s*name|name\s+of\s+(?:the\s+)?patient)[ \t]*[:.\-]*[ \t]*|^[ \t]*(?i:name)[ \t]*[:\-]+[ \t]*)"
+                + _FIELD_VALUE, re.MULTILINE), _keep_label("NAME"), "NAME"),
+    (re.compile(r"(?P<label>\b(?i:ref(?:erred)?\.?[ \t]*by|referring\s+(?:doctor|physician)|ref\.?[ \t]*(?:doc(?:tor)?|dr|phy(?:sician)?))\.?[ \t]*[:.\-]*[ \t]*"
+                r"|\b(?i:consultant|radiologist|pathologist|physician|doctor)[ \t]*[:\-]+[ \t]*"
+                # A signature line's "Performed BY:" or "Reported by:"; not a clinical "caused by:".
+                r"|\b(?!(?i:caused|induced|followed|accompanied|characteri[sz]ed|complicated|surrounded|supplied|compressed|"
+                r"covered|replaced|associated|indicated|mediated|explained|evidenced|suggested|manifested)\b)"
+                r"[A-Za-z]{2,}(?i:ed)[ \t.]*(?i:by)[ \t]*:[ \t]*)" + _FIELD_VALUE, re.MULTILINE),
+     _keep_label("PROVIDER"), "PROVIDER"),
+    # "Dr" in title case, or "DR." with its dot: a bare "DR" is also diabetic retinopathy.
+    (re.compile(r"\bDr\.?[ \t]*" + _NAME_WORDS + r"|\bDR\.[ \t]*" + _NAME_WORDS_STRICT), "[REDACTED_PROVIDER]", "PROVIDER"),
+    # Title-case honorifics, or capitalised ones with their dot: a bare "MR" or "MS" is a valve lesion.
+    (re.compile(r"\b(?:Mr|Mrs|Ms|Miss|Smt|Shri|Sri|Kum|Master|Baby)\.?[ \t]*" + _NAME_WORDS
+                + r"|\b(?:MR|MRS|MS|SMT|SHRI)\.[ \t]*" + _NAME_WORDS_STRICT), "[REDACTED_NAME]", "NAME"),
+    # An upper-case name printed with the sex in brackets ("ALEX EXAMPLE(M)"), often glued by OCR.
+    (re.compile(r"\b[A-Z][A-Za-z.]+(?:[ \t][A-Z][A-Za-z.]*){0,4}(?=\((?:[A-Za-z]|(?i:male|female))\))"), "[REDACTED_NAME]", "NAME"),
+    (re.compile(r'\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b'), "[REDACTED_EMAIL]", "EMAIL"),
+    (re.compile(r"(?P<label>\b(?i:address|addr)\.?[ \t]*[:\-]+[ \t]*|^[ \t]*(?i:address)\b[ \t]*)[^\n]+", re.MULTILINE), _keep_label("ADDRESS"), "ADDRESS"),
+    (re.compile(r"\b(?:pin\s*(?:code)?|pincode)\s*[:\-]?\s*\d{3}\s?\d{3}\b", re.IGNORECASE), "[REDACTED_ADDRESS]", "ADDRESS"),
+    # A town and its six-digit postal code ("Townville-521301"); not a count with its unit or a range.
+    # A month name is a date ("Aug-202410:22" is 29-Aug-2024 10:22 glued by OCR).
+    (re.compile(r"\b(?!(?i:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[ \t]*[-–])[A-Z][A-Za-z]{2,}[ \t]*[-–][ \t]*[1-8]\d{5}\b"
+                r"(?![ \t]*(?:[/A-Za-z%µμ]|[-–][ \t]*\d))"), "[REDACTED_ADDRESS]", "ADDRESS"),
+    # A door number opening a street address ("12/345,Station Road"), to the end of the line.
+    (re.compile(r"\b\d{1,4}[ \t]*/[ \t]*\d{1,4}[A-Za-z]?[ \t]*,[ \t]*[A-Z][a-z][^\n]*"), _door_number, "ADDRESS"),
+    (re.compile(r"(?P<label>\b(?i:ph(?:one)?|mob(?:ile)?|cell|tel(?:ephone)?|contact|whats\s*app)\.?[ \t]*(?i:no)?\.?[ \t]*[:.\-]?[ \t]*)"
+                r"(?P<number>\+?\d[\d \-()]{6,}\d)"), lambda match: _labelled_phone(match), "PHONE"),
+    # A ten-digit mobile number glued to the word before it ("Contact98765 43210"), which the
+    # unlabelled phone rule below skips so that glued result values are not read as numbers.
+    (re.compile(r"(?<=[A-Za-z])(?:\+?91[ \-]?)?[6-9]\d{4}[ \-]?\d{5}(?!\d)"), "[REDACTED_PHONE]", "PHONE"),
 ]
 PHONE_CANDIDATE = re.compile(r"(?<![\w.])\+?\(?\d[\d ().-]{6,}\d(?![\w.])")
 NUMERIC_RANGE = re.compile(r"\d+(?:\.\d+)?\s*[-–]\s*\d+(?:\.\d+)?")
+PRIVACY_SCREEN_NOTICE = (
+    "Automated pattern masking of labelled names, providers, identifiers, contact details and addresses. "
+    "It is not a de-identification determination: unlabelled names, facility names, dates and images can remain."
+)
+
+
+def _labelled_phone(match: re.Match) -> str:
+    """A number after a phone label, unless it is short or a numeric range ("Cell: 4000-11000").
+    Ten or more digits are a phone number even when written like a range ("08674-244444")."""
+    number = match.group("number")
+    digits = len(re.sub(r"\D", "", number))
+    if digits < 8 or (digits < 10 and NUMERIC_RANGE.fullmatch(number.strip())):
+        return match.group(0)
+    return match.group("label") + "[REDACTED_PHONE]"
 
 
 def _redact_phone(match: re.Match) -> str:
@@ -208,12 +303,17 @@ def nonclinical_ranges(text: str, page_starts: Optional[list[int]] = None) -> li
                                for first, last in split_sentences(line) if FACILITY_LINE.search(line[first:last])]
             cursor += len(line) + 1
     return ranges
+# "Increased echotexture" or "reduced attenuation" describes the tissue now, not a change since
+# an earlier study.
+_TISSUE_DESCRIPTOR = r"(?!\s*(?:echo\w*|(?:hyper|hypo)?echogenic\w*|density|densities|attenuation|signal|uptake|vascularity|opacit\w*|" \
+                     r"(?:broncho)?vascular\s+markings|markings|enhancement|wall\s+thickness|thickness|reflectivity|lucency|tone)\b)"
 COMPARISON_CUES = (
     ("RESOLVED", _cue(r"resolved|resolution\s+of|no\s+longer\s+(?:seen|present|visible|identified|evident)")),
     ("NEW", _cue(r"new(?:ly)?|interval\s+development\s+of|not\s+(?:seen|present)\s+(?:on|in)\s+(?:the\s+)?(?:prior|previous)")),
     ("STABLE", _cue(r"stable|unchanged|no\s+(?:significant\s+|interval\s+)?change|similar\s+(?:to|compared\s+(?:with|to))|grossly\s+stable")),
-    ("INCREASED", _cue(r"increas(?:ed|ing|e)\s*(?:in\s+size)?|enlarg(?:ed|ing)|larger|progress(?:ed|ion|ing|ive)|worsen(?:ed|ing)|grow(?:n|ing|th)|interval\s+increase")),
-    ("DECREASED", _cue(r"decreas(?:ed|ing|e)\s*(?:in\s+size)?|smaller|reduc(?:ed|tion)|regress(?:ed|ion|ing)|improv(?:ed|ing|ement)|resolving|shrink(?:ing|age)?|interval\s+decrease")),
+    ("INCREASED", _cue(r"increas(?:ed|ing|e)" + _TISSUE_DESCRIPTOR + r"\s*(?:in\s+size)?|enlarg(?:ed|ing)|larger|progress(?:ed|ion|ing|ive)|worsen(?:ed|ing)|grow(?:n|ing|th)|interval\s+increase")),
+    ("DECREASED", _cue(r"decreas(?:ed|ing|e)" + _TISSUE_DESCRIPTOR + r"\s*(?:in\s+size)?|smaller|reduc(?:ed|tion)" + _TISSUE_DESCRIPTOR
+                       + r"|regress(?:ed|ion|ing)|improv(?:ed|ing|ement)|resolving|shrink(?:ing|age)?|interval\s+decrease")),
     ("PERSISTENT", _cue(r"persist(?:ent|s|ing)|again\s+(?:seen|noted|demonstrated)|redemonstrat(?:ed|es|ion)|remains?")),
 )
 COMPARISON_REFERENCE = _cue(r"compared\s+(?:with|to)|since\s+(?:the\s+)?(?:prior|previous|last)|from\s+(?:the\s+)?(?:prior|previous)|relative\s+to")
@@ -224,12 +324,27 @@ PRE_WINDOW_WORDS = 8
 POST_WINDOW_WORDS = 5
 
 
+def deidentify_with_counts(raw_text: str) -> tuple[str, dict[str, int]]:
+    """Apply the identifier masks before any extraction; also count what each category masked."""
+    counts: dict[str, int] = {}
+
+    def masker(replacement, category: str):
+        def mask(match: re.Match) -> str:
+            masked = replacement(match) if callable(replacement) else replacement
+            if masked != match.group(0):
+                counts[category] = counts.get(category, 0) + 1
+            return masked
+        return mask
+
+    sanitized = raw_text
+    for pattern, replacement, category in PHI_PATTERNS:
+        sanitized = pattern.sub(masker(replacement, category), sanitized)
+    return PHONE_CANDIDATE.sub(masker(_redact_phone, "PHONE"), sanitized), counts
+
+
 def deidentify_text(raw_text: str) -> str:
     """Apply de-identification masks before any extraction."""
-    sanitized = raw_text
-    for pattern, replacement in PHI_PATTERNS:
-        sanitized = pattern.sub(replacement, sanitized)
-    return PHONE_CANDIDATE.sub(_redact_phone, sanitized)
+    return deidentify_with_counts(raw_text)[0]
 
 
 def _sections(text: str) -> list[tuple[int, str]]:
@@ -269,6 +384,32 @@ def _line_wraps(previous: str, following: str) -> bool:
     if after[0].islower():
         return True
     return len(before) >= 45 and len(after) <= 40 and after.endswith(".") and not re.search(r"\d", after)
+
+
+_SEVERITY = r"(trivial|trace|mild|moderate|severe)"
+# "Trivial mitral regurgitation", "mild to moderate aortic stenosis" (before the finding) or
+# "Mitral regurgitation - Grade Trivial", "aortic stenosis (mild)" (after it). A "Grade X" that
+# ends the text before a finding belongs to the finding before that: OCR joins table columns
+# ("Mitral regurgitation-Grade Trivial Mitral stenosis -Nil").
+SEVERITY_BEFORE = re.compile(rf"(?:(grade)\s*)?\b{_SEVERITY}(?:\s*(?:to|-)\s*{_SEVERITY})?\s*$", re.I)
+SEVERITY_AFTER = re.compile(rf"\s*[-–—:,(]?\s*(?:grade\s*)?{_SEVERITY}\b(?:\s*(?:to|-)\s*{_SEVERITY}\b)?", re.I)
+
+
+def _severity_cue(sentence: str, start: int, end: int) -> Optional[Dict[str, Any]]:
+    """A SEVERITY cue for the severity words written next to a finding ("Trivial", "mild to
+    moderate"), with sentence-relative offsets like every other cue; None when there are none."""
+    window = max(0, start - 40)
+    before = SEVERITY_BEFORE.search(sentence, window, start)
+    if before and not before.group(1):
+        first, last = 2, 3
+        match = before
+    else:
+        match = SEVERITY_AFTER.match(sentence, end)
+        first, last = 1, 2
+    if not match or match.group(first) is None:
+        return None
+    cue_end = match.end(last) if match.group(last) else match.end(first)
+    return {"type": "SEVERITY", "text": sentence[match.start(first):cue_end], "start": match.start(first), "end": cue_end}
 
 
 def _starts_fragment(text: str, start: int) -> bool:
@@ -551,6 +692,9 @@ def extract_clinical_statements(report_text: str, page_starts: Optional[list[int
                 # the assertion's governing words may be lost, so it needs review, not belief.
                 context["certainty"] = "UNCERTAIN"
                 context["cues"].append({"type": "OCR_FRAGMENT", "text": "", "start": None, "end": None})
+            severity = _severity_cue(sentence, entity_start, entity_end)
+            if severity:
+                context["cues"].append(severity)
             for cue in context["cues"]:
                 if cue["start"] is not None:
                     cue["start"], cue["end"] = to_source(index, cue["start"] + sentence_start, cue["end"] + sentence_start)
@@ -594,7 +738,10 @@ SEPARATOR = r"\s*(?:\([^)\n]{1,24}\)\s*)?(?:[:=|]|\bis\b|\bof\b|\bwas\b|\bmeasur
 # unlabelled method printed in faint type ("HbA1c ImmunoturbidimetryNGSP/IFCC 7.8 %").
 METHOD_CHUNK = (
     r"(?:[ \t]*\(?\s*(?:(?:method|m[a-z][a-z ]{0,5}d)\s*[:=]\s*|[A-Za-z]{2,7}[ \t.:]+(?=(?:direct|calculated|enzymatic|kinetic|eclia|clia|hplc|biuret)\b)"
-    r"|(?=[A-Za-z/()\-.]{0,40}?(?:ngsp|ifcc|idms|metr(?:y|ic)|immuno|standardi[sz]|chromatograph)[A-Za-z/()\-.]{0,40}[ \t]+(?:<=|>=|<|>|≤|≥)?\s*\d))"
+    r"|(?=[A-Za-z/()\-.]{0,40}?(?:ngsp|ifcc|idms|metr(?:y|ic)|immuno|standardi[sz]|chromatograph)[A-Za-z/()\-.]{0,40}[ \t]+(?:<=|>=|<|>|≤|≥)?\s*\d)"
+    # One OCR-mangled small-print word, recognisable by capitals inside it ("dtyGSStrdi" for
+    # "Latex Immunoturbidometry - NGSP/IFCC Standardized"); ordinary words have none.
+    r"|(?=(?-i:[A-Za-z]{0,12}[a-z][A-Z]{2}[A-Za-z]{0,12})[ \t]+(?:<=|>=|<|>|≤|≥)?\s*\d))"
     r"(?P<method>[A-Za-z][A-Za-z/()\-. ]{0,40}?)(?=[ \t]+(?:<=|>=|<|>|≤|≥)?\s*\d))?"
 )
 # A flag printed between the value and its unit ("7.8 * %", "175*mg/dL").
@@ -933,6 +1080,122 @@ def extract_measurement_context(report_text: str) -> dict[str, str]:
         "laboratory_name": laboratory.group("value").strip()[:128] if laboratory else "NOT_DOCUMENTED",
     }
 
+
+# Photographed laboratory pages print a specimen line under each result ("Specimen:EDTA BLOOD")
+# or once above a panel ("SPECIMEN:WHOLEBLOOD-EDTA"), with OCR misspellings ("Specmen",
+# "SerumPlasma", "Senum/Piasma", "EOTA").
+ROW_SPECIMEN_RE = re.compile(
+    r"^[ \t]*(?:spe[a-z]{0,4}n|sample(?:\s*type)?)[ \t]*[:=][ \t]*"
+    r"(?P<value>(?:e[do]ta[ \t]*[-–]?[ \t]*)?(?:whole[ \t]*)?blood(?:[ \t]*[-–(]?[ \t]*e[do]ta\)?)?"
+    r"|se[rn]um[ \t]*/?[ \t]*p[il]asma|se[rn]um|p[il]asma|urine|stool|faeces|feces|csf|cerebrospinal\s+fluid|saliva|sputum|tissue)"
+    r"(?![a-z])",
+    re.IGNORECASE | re.MULTILINE,
+)
+ROW_METHOD_RE = re.compile(
+    r"^[ \t]*(?:assay|test\s+method|laboratory\s+method|m[eo]?th?[eo]?d)[ \t]*[:=]?[ \t]*(?P<value>[A-Za-z][^\n|]{1,127})",
+    re.IGNORECASE | re.MULTILINE,
+)
+# The specimen printed in the test name ("Serum Creatinine", "Urine Albumin"). "Blood urea" and
+# "blood sugar" are names, not specimens, so blood is not read from a name.
+NAME_SPECIMEN_RE = re.compile(r"\b(?P<value>se[rn]um|p[il]asma|urine|urinary)\b", re.IGNORECASE)
+# Beyond the row's own lines, at most this many lines below a result belong to it.
+ROW_BLOCK_LINES = 3
+
+
+def canonical_specimen(raw: str) -> str:
+    text = re.sub(r"\s+", "", raw.lower())
+    if "blood" in text:
+        if re.search(r"e[do]ta", text):
+            return "Whole blood (EDTA)"
+        return "Whole blood" if "whole" in text else "Blood"
+    if re.fullmatch(r"se[rn]um/?p[il]asma", text):
+        return "Serum/plasma"
+    return {"senum": "Serum", "serum": "Serum", "piasma": "Plasma", "plasma": "Plasma", "urinary": "Urine",
+            "cerebrospinalfluid": "CSF"}.get(text, raw.strip().capitalize())
+
+
+# Dates on one page further apart than this are reported as a conflict (a sampling and a report
+# date a few days apart are ordinary).
+DATE_CONFLICT_DAYS = 7
+
+
+def _page_bounds(text_length: int, page_starts: Optional[list[int]]) -> list[tuple[int, int]]:
+    starts = list(page_starts or [0])
+    return [(start, starts[number + 1] - 1 if number + 1 < len(starts) else text_length) for number, start in enumerate(starts)]
+
+
+def assign_measurement_context(report_text: str, page_starts: Optional[list[int]], measurements: List[Dict[str, Any]]) -> None:
+    """Give each measurement the specimen, method and laboratory printed for it, never another
+    page's. The specimen is the one in the test name, else a specimen line among the result's
+    own lines (before the next result), else the nearest specimen line above it on the same page.
+    A method is the result's own or one heading the page; a laboratory name one on the same page."""
+    bounds = _page_bounds(len(report_text), page_starts)
+    specimen_lines = [(match.start(), canonical_specimen(match.group("value"))) for match in ROW_SPECIMEN_RE.finditer(report_text)]
+    method_lines = [(match.start(), match.group("value").strip()[:128]) for match in ROW_METHOD_RE.finditer(report_text)]
+    laboratories = [(match.start(), match.group("value").strip()[:128]) for match in LAB_NAME_RE.finditer(report_text)]
+    ordered = sorted(measurements, key=lambda item: item["source_span_start"])
+    for index, item in enumerate(ordered):
+        start = item["source_span_start"]
+        page_start, page_end = next(((low, high) for low, high in bounds if low <= start <= high), (0, len(report_text)))
+        line_start = report_text.rfind("\n", 0, start) + 1
+        # A second result on the same line starts its own row.
+        previous_end = ordered[index - 1]["source_span_end"] if index else 0
+        row_start = max(line_start, previous_end) if previous_end <= start else line_start
+        block_end = min(page_end, ordered[index + 1]["source_span_start"] if index + 1 < len(ordered) else page_end)
+        cursor = item["source_span_end"]
+        for _ in range(ROW_BLOCK_LINES):
+            newline = report_text.find("\n", cursor)
+            if newline == -1 or newline >= block_end:
+                cursor = block_end
+                break
+            cursor = newline + 1
+        block_end = min(block_end, max(cursor, item["source_span_end"]))
+        in_block = lambda lines: next((value for offset, value in lines if line_start <= offset < block_end), None)  # noqa: E731
+        if item.get("specimen") in (None, "", "NOT_DOCUMENTED"):
+            named = NAME_SPECIMEN_RE.search(report_text, row_start, item["source_span_end"])
+            above = [value for offset, value in specimen_lines if page_start <= offset < line_start]
+            item["specimen"] = (canonical_specimen(named.group("value")) if named else None) or in_block(specimen_lines) or (above[-1] if above else "NOT_DOCUMENTED")
+        if item.get("laboratory_method") in (None, "", "NOT_DOCUMENTED"):
+            # A method line above every result on the page heads the page; one between results
+            # belongs to the result above it.
+            first_on_page = next(other["source_span_start"] for other in ordered if other["source_span_start"] >= page_start)
+            heading = [value for offset, value in method_lines if page_start <= offset < first_on_page]
+            item["laboratory_method"] = in_block(method_lines) or (heading[-1] if heading else "NOT_DOCUMENTED")
+        if item.get("laboratory_name") in (None, "", "NOT_DOCUMENTED"):
+            item["laboratory_name"] = next((value for offset, value in laboratories if page_start <= offset <= page_end), "NOT_DOCUMENTED")
+
+
+def assign_documented_dates(attributes: List[Dict[str, Any]], page_starts: Optional[list[int]], text_length: int,
+                            measurements: List[Dict[str, Any]]) -> None:
+    """A measurement's date is its own page's sampling date, else that page's report, study or
+    document date; a date printed on another page of a packet belongs to another document."""
+    bounds = _page_bounds(text_length, page_starts)
+
+    def page_of(offset: int) -> tuple[int, int]:
+        return next(((low, high) for low, high in bounds if low <= offset <= high), (0, text_length))
+
+    for item in measurements:
+        if item.get("documented_date"):
+            continue
+        low, high = page_of(item["source_span_start"])
+        on_page = [attribute for attribute in attributes if attribute["value_text"] and low <= attribute["source_span_start"] <= high]
+        sampling = next((attribute for attribute in on_page if attribute["name"] == "sampling_date"), None)
+        reported = next((attribute for attribute in on_page if attribute["name"] in {"report_date", "study_date", "document_date"}), None)
+        item["documented_date"] = (sampling or reported or {}).get("value_text")
+
+
+def date_conflicts(attributes: List[Dict[str, Any]], page_starts: Optional[list[int]], text_length: int) -> List[Dict[str, Any]]:
+    """Pages whose documented dates disagree with each other (a reprinted or misfiled page),
+    reported for review rather than resolved."""
+    conflicts = []
+    for number, (low, high) in enumerate(_page_bounds(text_length, page_starts), start=1):
+        dates = sorted({attribute["value_text"] for attribute in attributes
+                        if attribute["value_text"] and attribute["name"] in {"sampling_date", "report_date", "study_date", "document_date"}
+                        and low <= attribute["source_span_start"] <= high})
+        if len(dates) > 1 and (date.fromisoformat(dates[-1]) - date.fromisoformat(dates[0])).days > DATE_CONFLICT_DAYS:
+            conflicts.append({"page": number, "dates": dates})
+    return conflicts
+
 BLOOD_PRESSURE = re.compile(
     r"\b(?:blood\s*pressure|\bbp\b)\s*(?:[:=|]|is|of|was)?\s*"
     r"(?P<systolic>\d{2,3}(?:\.\d+)?)\s*/\s*(?P<diastolic>\d{2,3}(?:\.\d+)?)\s*(?P<unit>mm\s*hg)\b",
@@ -1235,9 +1498,13 @@ MONTHS = {name: index for index, names in enumerate(
     start=1) for name in names}
 DATE_RE = re.compile(
     r"(?P<label>collection\s*date|date\s*(?:of\s*)?collection|collected(?:\s*on)?|sample\s*(?:collection\s*)?date|specimen\s*(?:collection\s*)?date|"
-    r"sampling\s*date|report(?:ed)?\s*date|date\s*(?:of\s*)?report|date\s*reported|reported(?:\s*on)?|study\s*date|exam(?:ination)?\s*date|"
+    r"sampling\s*date|report(?:ed)?\s*date|date\s*(?:of\s*)?report|date\s*reported|reported(?:\s*on)?|report\s*(?:out|generated|released)\s*on|"
+    r"study\s*date|exam(?:ination)?\s*date|"
     r"date\s*of\s*(?:exam(?:ination)?|study|service|procedure)|\bdate\b)\s*[:\-]?\s*"
-    r"(?P<date>\d{4}-\d{2}-\d{2}|\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}|\d{1,2}\s+[A-Za-z]{3,9}\.?\s+\d{4}|[A-Za-z]{3,9}\.?\s+\d{1,2},?\s+\d{4})",
+    # Month names also come hyphenated ("29-Aug-2024") or glued by OCR ("August29th2024", "AUG292024").
+    r"(?P<date>\d{4}-\d{2}-\d{2}|\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}|\d{1,2}(?:st|nd|rd|th)?[ \t-]*[A-Za-z]{3,9}\.?[ \t-]*\d{4}"
+    # OCR reads a superscript ordinal as one letter ("AUG27T2026").
+    r"|[A-Za-z]{3,9}\.?[ \t]*\d{1,2}(?:st|nd|rd|th|[th])?,?[ \t]*\d{4})",
     re.IGNORECASE,
 )
 AGE_RE = re.compile(
@@ -1261,13 +1528,16 @@ SEX_RE = re.compile(
 
 def _parse_date(raw: str) -> tuple[Optional[str], str]:
     text = raw.strip().lower().replace(",", "")
+    if re.search(r"[a-z]", text):
+        text = re.sub(r"(?<=\d)(?:st|nd|rd|th|[th])(?=[\s\d]|$)", "", text)
+        text = re.sub(r"(?<=[a-z.])[ \t-]*(?=\d)|(?<=\d)[ \t-]*(?=[a-z])", " ", text)
     try:
         if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
             return date.fromisoformat(text).isoformat(), "PARSED_ISO_8601"
         match = re.fullmatch(r"(\d{1,2})\s+([a-z]{3,9})\.?\s+(\d{4})", text)
         if match and match.group(2) in MONTHS:
             return date(int(match.group(3)), MONTHS[match.group(2)], int(match.group(1))).isoformat(), "PARSED_DAY_MONTH_NAME"
-        match = re.fullmatch(r"([a-z]{3,9})\.?\s+(\d{1,2})\s+(\d{4})", text)
+        match = re.fullmatch(r"([a-z]{3,9})\.?\s+(\d{1,2})\s*(\d{4})", text)
         if match and match.group(1) in MONTHS:
             return date(int(match.group(3)), MONTHS[match.group(1)], int(match.group(2))).isoformat(), "PARSED_MONTH_NAME_DAY"
         match = re.fullmatch(r"(\d{1,2})[/.-](\d{1,2})[/.-](\d{2,4})", text)
@@ -1338,8 +1608,17 @@ def prepare_report_document(report_path: Path) -> tuple[str, list[int], list[dic
     sanitized_pages: list[str] = []
     for page, meta in zip(pages, page_meta):
         raw_lines = meta.get("lines") if meta.get("method") == "OCR" else None
+        masked: dict[str, int] = {}
+        meta["identifiers_masked"] = masked
+
+        def screen(text: str) -> str:
+            safe, counts = deidentify_with_counts(text)
+            for category, count in counts.items():
+                masked[category] = masked.get(category, 0) + count
+            return safe
+
         if not raw_lines:
-            sanitized_pages.append(deidentify_text(page))
+            sanitized_pages.append(screen(page))
             continue
         safe_lines: list[dict[str, Any]] = []
         safe_text_lines: list[str] = []
@@ -1348,23 +1627,45 @@ def prepare_report_document(report_path: Path) -> tuple[str, list[int], list[dic
             if line.get("gap_before"):
                 safe_text_lines.append("")  # ocr.LOST_LINE_GAP: a line was not read here
                 line_cursor += 1
-            sanitized_line = deidentify_text(str(line.get("text", "")))
+            before = sum(masked.values())
+            sanitized_line = screen(str(line.get("text", "")))
             safe_text_lines.append(sanitized_line)
             safe_lines.append({
                 "text_start": line_cursor,
                 "text_end": line_cursor + len(sanitized_line),
                 "confidence": line.get("confidence"),
                 "bbox_xyxy": line.get("box"),
+                # Page images shown for verification paint these lines out.
+                "identifiers_masked": sum(masked.values()) > before,
             })
             line_cursor += len(sanitized_line) + 1
         sanitized_pages.append("\n".join(safe_text_lines))
         meta["lines"] = safe_lines
+    for meta, kind in zip(page_meta, classify_pages(sanitized_pages)):
+        meta["document_type"] = kind
     starts = []
     cursor = 0
     for page in sanitized_pages:
         starts.append(cursor)
         cursor += len(page) + 1
     return "\n".join(sanitized_pages), starts, page_meta
+
+
+def privacy_screen(page_meta: list[dict]) -> dict[str, Any]:
+    """What the identifier masks found. Finding identifiers in an upload attested as
+    de-identified means the attestation was wrong, so it is reported, not hidden."""
+    totals: dict[str, int] = {}
+    for meta in page_meta:
+        for category, count in (meta.get("identifiers_masked") or {}).items():
+            totals[category] = totals.get(category, 0) + count
+    return {
+        "method": "AUTOMATED_PATTERN_MASKING",
+        "status": "IDENTIFIERS_FOUND_AND_MASKED" if totals else "NO_LABELLED_IDENTIFIER_FOUND",
+        "identifiers_masked": dict(sorted(totals.items())),
+        "pages_with_identifiers": [meta.get("page", number) for number, meta in enumerate(page_meta, start=1) if meta.get("identifiers_masked")],
+        "verification": "NOT_VERIFIED_BY_A_PERSON",
+        "notice": PRIVACY_SCREEN_NOTICE,
+    }
 
 
 def prepare_report_text(report_path: Path) -> tuple[str, list[int]]:
@@ -1384,8 +1685,10 @@ def summarise_statements(statements: List[Dict[str, Any]]) -> str:
 
 def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]:
     """Read, de-identify, and extract structured evidence from a clinical report."""
+    from app.services import derived_text
+
     try:
-        sanitized_text, page_starts, page_meta = prepare_report_document(report_path)
+        sanitized_text, page_starts, page_meta = derived_text.prepared(report_path, file_hash)
     except Exception as e:
         raise ValueError(f"Unable to parse clinical report: {str(e)}") from e
 
@@ -1401,12 +1704,8 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
     if structured is None:
         structured = hl7_measurements(report_path, sanitized_text)
     measurements = structured if structured is not None else extract_numeric_measurements(sanitized_text, page_starts)
-    measurement_context = extract_measurement_context(sanitized_text)
+    assign_measurement_context(sanitized_text, page_starts, measurements)
     for measurement in measurements:
-        for key, value in measurement_context.items():
-            # A method printed on the result row takes precedence over a document-wide one.
-            if measurement.get(key) in (None, "", "NOT_DOCUMENTED"):
-                measurement[key] = value
         measurement.setdefault("extractor_version", EXTRACTOR_VERSION)
     attributes = extract_documented_attributes(sanitized_text)
     multi_page = len(page_starts) > 1
@@ -1432,11 +1731,7 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
                 item["source_bbox_coordinate_space"] = meta.get("coordinate_space")
                 item["source_image_width"] = meta.get("image_width")
                 item["source_image_height"] = meta.get("image_height")
-    sampling = next((item for item in attributes if item["name"] == "sampling_date" and item["value_text"]), None)
-    reported = next((item for item in attributes if item["name"] in {"report_date", "study_date", "document_date"} and item["value_text"]), None)
-    documented_date = (sampling or reported or {}).get("value_text")
-    for item in measurements:
-        item.setdefault("documented_date", documented_date)
+    assign_documented_dates(attributes, page_starts, len(sanitized_text), measurements)
 
     from app.services import scispacy_adapter
 
@@ -1465,7 +1760,7 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
         "mapping_status": "L1_GENERIC: Text reports provide symbolic assertions, not 3D spatial coordinates.",
         "model_name": "Rule-Based Clinical Text Baseline",
         "model_version": EXTRACTOR_VERSION,
-        "preprocessing_version": "document-parser-v2+deidentification-v2+context-rules-v2",
+        "preprocessing_version": "document-parser-v2+deidentification-v3+page-type-rules-v1+context-rules-v2",
         "evidence_status": "PENDING_HUMAN_REVIEW",
         "is_demo": False,
         "provenance": {
@@ -1485,6 +1780,8 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
             "source_format": report_path.suffix.lower(),
             "pipeline_type": "FHIR_STRUCTURED_IMPORT" if structured is not None else "TRANSPARENT_RULE_AND_MEASUREMENT_BASELINE",
             "deidentification_applied": True,
+            "privacy_screen": privacy_screen(page_meta),
+            "date_conflicts": date_conflicts(attributes, page_starts, len(sanitized_text)),
             "validation_status": "BASELINE_NOT_EVALUATED_ON_ANNOTATED_CORPUS",
             "research_notice": "Report extraction identifies text assertions only; it does not formulate independent diagnoses.",
         },

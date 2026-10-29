@@ -113,19 +113,19 @@
       "task": "training_and_inference_framework",
       "anatomy": "multi_system",
       "framework": "monai",
-      "adapter": "planned.monai.runtime",
+      "adapter": "ml_training.volumetric",
       "source_repository": "MONAI-dev",
       "dependency_environment": ".venv",
       "weights_path": null,
       "device": "auto",
       "supported_inputs": [],
       "supported_classes": [],
-      "status": "DISCOVERED",
+      "status": "READY_UNVALIDATED",
       "validated": false,
       "processor_only": true,
       "limitations": [
-        "A source-tree CUDA UNet smoke test passed, but MONAI is not installed as a pinned runtime dependency.",
-        "A framework import is not a trained or validated medical model."
+        "MONAI 1.6.1 is pinned in the CPU and local GPU dependency locks and integrated into the 2-D and 3-D segmentation pipelines; runtime availability is checked separately.",
+        "This entry is a framework, not a trained or clinically validated medical model; its presence does not validate any model using it."
       ],
       "artifact_bundle": {
         "dataset_version": null,
@@ -144,7 +144,7 @@
         "model_card_path": null
       },
       "supported_modalities": [],
-      "source_display_name": "MONAI source-tree runtime adapter"
+      "source_display_name": "MONAI segmentation framework runtime"
     },
     {
       "model_id": "medcat_adapter",
@@ -401,8 +401,8 @@
       "validated": false,
       "processor_only": false,
       "limitations": [
-        "Kvasir/Gastrovision data require license and split verification.",
-        "No checkpoint, calibration, or held-out evaluation is registered."
+        "Legacy generic placeholder only; the separate Kvasir v2, GastroVision and Kvasir-SEG entries have task-specific trained research checkpoints and internal evaluations.",
+        "No checkpoint or evaluation is registered for this generic adapter; the separate GI models remain externally and clinically unvalidated."
       ],
       "artifact_bundle": {
         "dataset_version": null,
@@ -1886,6 +1886,73 @@
         "readiness": "INTERNAL_HELD_OUT_ONLY",
         "run_scope": "RESEARCH"
       }
+    },
+    {
+      "model_id": "cxr_torchxrayvision_densenet121",
+      "display_name": "Chest radiograph findings, 18 labels (TorchXRayVision DenseNet-121, third-party)",
+      "domain": "medical_imaging",
+      "task": "multilabel_image_classification",
+      "anatomy": "lungs",
+      "framework": "pytorch",
+      "adapter": "app.services.cxr_research",
+      "source_repository": "github.com/mlmed/torchxrayvision (release v1 weights)",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/third_party/torchxrayvision",
+      "device": "auto",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg",
+        "image/bmp"
+      ],
+      "supported_classes": [
+        "Atelectasis",
+        "Consolidation",
+        "Infiltration",
+        "Pneumothorax",
+        "Edema",
+        "Emphysema",
+        "Fibrosis",
+        "Effusion",
+        "Pneumonia",
+        "Pleural_Thickening",
+        "Cardiomegaly",
+        "Nodule",
+        "Mass",
+        "Hernia",
+        "Lung Lesion",
+        "Fracture",
+        "Lung Opacity",
+        "Enlarged Cardiomediastinum"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "Third-party pretrained weights (Cohen et al., MIDL 2022) trained on public digital chest radiographs; MedTwin has no labelled chest radiographs and has not evaluated them.",
+        "Publisher-scaled outputs (0.5 = operating point) are not probabilities and are not calibrated for any local population.",
+        "A photograph of a printed film is outside the training data; scores near the operating point are reported as weak.",
+        "Grad-CAM attention by lung zone shows where a score depends on, not a lesion outline; nothing is registered to 3-D anatomy.",
+        "Runs from Medical Imaging only after the user states the upload is a frontal chest radiograph and both lungs are found on their expected sides."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "Publisher training: NIH ChestX-ray14, PadChest, CheXpert, MIMIC-CXR, Google, OpenI, RSNA/Kaggle",
+        "dataset_license": "Library Apache-2.0; weights trained on datasets with their own research-use terms",
+        "split_manifest_path": null,
+        "task_definition": "18 thoracic findings, multi-label, frontal chest radiograph",
+        "label_definition": "TorchXRayVision default pathologies",
+        "preprocessing_version": "torchxrayvision-1.5.7: grey levels to [-1024, 1024], centre square crop, 224 px classifier / 512 px anatomy",
+        "checkpoint_path": "artifacts/third_party/torchxrayvision/nih-pc-chex-mimic_ch-google-openi-kaggle-densenet121-d121-tw-lr001-rot45-tr15-sc15-seed0-best.pt",
+        "checkpoint_sha256": "56524913dd16a906422e8d8b66a7a5c46be1d82eb7ac012d8103776f1aa68899",
+        "calibration": null,
+        "decision_thresholds": "Publisher operating points (each output scaled so 0.5 is the threshold)",
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "XRAY"
+      ]
     }
   ]
 }

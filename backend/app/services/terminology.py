@@ -58,9 +58,11 @@ class Analyte:
     forbid_prefix: Optional[str] = None
 
 
+# Photographed reports lose the slash of "Cell/Cumm" and read the µ of µL as "P"; cells per
+# picolitre is never a count unit, so "/pL" in a count unit can only be a misread µL.
 _COUNT_UNITS = (
     r"(?:x\s*)?10\s*(?:\^|\*|e)?\s*9\s*/\s*l|(?:x\s*)?10\s*(?:\^|\*|e)?\s*3\s*/\s*(?:µl|ul|μl|mm3|mm\^3)"
-    r"|k\s*/\s*(?:µl|ul|μl)|(?:cells?\s*)?/\s*(?:µl|ul|μl|mm3|cu\.?\s*mm|cumm)"
+    r"|k\s*/\s*(?:µl|ul|μl)|(?:cells?\s*)?/\s*(?:µl|ul|μl|pl|mm3|cu\.?\s*mm|cumm)|cells?\s*cumm"
 )
 _PERCENT = r"%|percent"
 
@@ -85,9 +87,9 @@ ANALYTES: tuple[Analyte, ...] = (
             forbid_prefix=r"(?:corpuscular|glycosylated|glycated|cell|mean)[-\s(]*$"),
     Analyte("hematocrit", "Hematocrit", r"ha?ematocrit|\bhct\b|\bpcv\b|packed\s*cell\s*volume(?:\s*\(\s*pcv\s*\))?", r"%|l\s*/\s*l", None, "SYSTEMIC_MEASURE", {"*": "4544-3"}),
     Analyte("rdw", "Red cell distribution width", r"\brdw(?:\s*[-\s]*cv)?\b|red\s*(?:blood\s*)?cell\s*distribution\s*width(?:\s*[-\s]*cv)?", _PERCENT, None, "SYSTEMIC_MEASURE", {"%": "788-0"}),
-    Analyte("white_blood_cell_count", "White blood cell count", r"white\s*blood\s*cell(?:s|\s*count)?|(?:total\s*)?\bwbc\b(?:\s*count)?|total\s*leu[ck]ocyte\s*count|\btlc\b|leu[ck]ocytes", _COUNT_UNITS, None, "SYSTEMIC_MEASURE", {"*": "6690-2"}),
+    Analyte("white_blood_cell_count", "White blood cell count", r"white\s*blood\s*cell(?:s|\s*count)?|(?:\btotal\s*|\b)wbc\b(?:\s*count)?|total\s*leu[ck]ocyte\s*count|\btlc\b|leu[ck]ocytes", _COUNT_UNITS, None, "SYSTEMIC_MEASURE", {"*": "6690-2"}),
     Analyte("platelet_count", "Platelet count", r"platelets?(?:\s*count)?|\bplt\b", _COUNT_UNITS + r"|lakhs?\s*/\s*(?:cumm|cu\.?\s*mm|mm3|µl|ul|μl)", None, "SYSTEMIC_MEASURE", {"*": "777-3"}),
-    Analyte("red_blood_cell_count", "Red blood cell count", r"red\s*blood\s*cell(?:s|\s*count)?|(?:total\s*)?\brbc\b(?:\s*count)?|erythrocytes(?!\s*sedimentation)", r"(?:x\s*)?10\s*(?:\^|\*|e)?\s*12\s*/\s*l|(?:x\s*)?10\s*(?:\^|\*|e)?\s*6\s*/\s*(?:µl|ul|μl)|m\s*/\s*(?:µl|ul)|millions?\s*(?:cells\s*)?/\s*(?:µl|ul|μl|mm3|cumm|cu\.?\s*mm)", None, "SYSTEMIC_MEASURE", {"*": "789-8"}),
+    Analyte("red_blood_cell_count", "Red blood cell count", r"red\s*blood\s*cell(?:s|\s*count)?|(?:\btotal\s*|\b)rbc\b(?:\s*count)?|erythrocytes(?!\s*sedimentation)", r"(?:x\s*)?10\s*(?:\^|\*|e)?\s*12\s*/\s*l|(?:x\s*)?10\s*(?:\^|\*|e)?\s*6\s*/\s*(?:µl|ul|μl)|m\s*/\s*(?:µl|ul)|millions?\s*(?:cells\s*)?/\s*(?:µl|ul|μl|pl|mm3|cumm|cu\.?\s*mm)", None, "SYSTEMIC_MEASURE", {"*": "789-8"}),
     Analyte("mcv", "Mean corpuscular volume", r"\bmcv\b|mean\s*corpuscular\s*volume(?:\s*\(\s*mcv\s*\))?", r"fl", None, "SYSTEMIC_MEASURE", {"*": "787-2"}),
     Analyte("mpv", "Mean platelet volume", r"mean\s*platelet\s*volume(?:\s*\(\s*mpv\s*\))?|\bmpv\b", r"fl", None, "SYSTEMIC_MEASURE", {"*": "32623-1"}),
     Analyte("rdw_sd", "Red cell distribution width (SD)", r"\brdw\s*[-\s]*sd\b", r"fl", None, "SYSTEMIC_MEASURE", {"*": "21000-5"}),
@@ -272,11 +274,11 @@ def normalise_unit(raw_unit: str) -> str:
         return _UNIT_ALIASES[compact]
     if re.fullmatch(r"(?:x)?10(?:\^|\*|e)?9/l|(?:x)?10(?:\^|\*|e)?3/(?:µl|ul|μl|mm3|mm\^3)|k/(?:µl|ul|μl)", compact):
         return "10^9/L"
-    if re.fullmatch(r"(?:cells?)?/(?:µl|ul|μl|mm3|cumm|cu\.?mm)", compact):
+    if re.fullmatch(r"(?:cells?)?/(?:µl|ul|μl|pl|mm3|cumm|cu\.?mm)|cells?cumm", compact):
         return "/µL"
     if compact in {"gm/dl"}:
         return "g/dL"
-    if re.fullmatch(r"(?:x)?10(?:\^|\*|e)?12/l|(?:x)?10(?:\^|\*|e)?6/(?:µl|ul|μl)|m/(?:µl|ul)|millions?(?:cells)?/(?:µl|ul|μl|mm3|cumm|cu\.?mm)", compact):
+    if re.fullmatch(r"(?:x)?10(?:\^|\*|e)?12/l|(?:x)?10(?:\^|\*|e)?6/(?:µl|ul|μl)|m/(?:µl|ul)|millions?(?:cells)?/(?:µl|ul|μl|pl|mm3|cumm|cu\.?mm)", compact):
         return "10^12/L"
     return compact
 
@@ -325,7 +327,12 @@ ENTITY_TERMS: tuple[EntityTerm, ...] = (
     EntityTerm(r"regional\s+wall\s+motion\s+abnormalit(?:y|ies)|\brwma\b", "Regional wall motion abnormality", "FINDING", "heart"),
     EntityTerm(r"pulmonary\s+(?:arterial\s+)?hypertension|\bpah\b", "Pulmonary hypertension", "CONDITION", "heart"),
     EntityTerm(r"(?:intracardiac|lv|la|left\s+(?:atrial|ventricular)(?:\s+appendage)?)\s+(?:clot|thrombus)|clot\s*/\s*vegetations?|vegetations?", "Intracardiac clot or vegetation", "FINDING", "heart"),
-    EntityTerm(r"(?:aortic|mitral|tricuspid|pulmonic|pulmonary)\s+(?:valve\s+)?(?:stenosis|regurgitation|insufficiency)", "Valvular heart disease", "FINDING", "heart"),
+    # The valve and lesion as written; how severe it is (often "trivial") is the statement's severity.
+    *(
+        EntityTerm(rf"{valve}\s+(?:valve\s+)?{lesion}", f"{valve_name} {lesion_name}", "FINDING", "heart")
+        for valve, valve_name in (("aortic", "Aortic"), ("mitral", "Mitral"), ("tricuspid", "Tricuspid"), ("(?:pulmonic|pulmonary)", "Pulmonary"))
+        for lesion, lesion_name in (("stenosis", "stenosis"), ("(?:regurgitation|insufficiency)", "regurgitation"))
+    ),
     EntityTerm(r"coronary\s+artery\s+disease|\bcad\b", "Coronary artery disease", "CONDITION", "heart"),
     EntityTerm(r"pleural\s+effusions?", "Pleural effusion", "FINDING", "lungs"),
     EntityTerm(r"pneumothorax", "Pneumothorax", "FINDING", "lungs"),
@@ -454,6 +461,12 @@ SITE_TERMS: tuple[SiteTerm, ...] = (
     SiteTerm(r"right\s+lower\s+lobe|\brll\b", "Inferior lobe of right lung", "lungs", "right"),
     SiteTerm(r"left\s+upper\s+lobe|\blul\b", "Superior lobe of left lung", "lungs", "left"),
     SiteTerm(r"left\s+lower\s+lobe|\blll\b", "Inferior lobe of left lung", "lungs", "left"),
+    # Both lungs' lobes ("honeycombing in bilateral lower lobes"): one site naming two structures
+    # (bilateral_atlas_structures); the generic "bilateral lungs" below is less specific.
+    SiteTerm(r"(?:bilateral|both)\s+lower\s+lobes?|lower\s+lobes?\s+of\s+both\s+lungs", None, "lungs", "bilateral"),
+    SiteTerm(r"(?:bilateral|both)\s+upper\s+lobes?|upper\s+lobes?\s+of\s+both\s+lungs", None, "lungs", "bilateral"),
+    SiteTerm(r"right\s+hemi-?diaphragm|right\s+dome\s+of\s+(?:the\s+)?diaphragm", "Diaphragm", "lungs", "right"),
+    SiteTerm(r"left\s+hemi-?diaphragm|left\s+dome\s+of\s+(?:the\s+)?diaphragm", "Diaphragm", "lungs", "left"),
     SiteTerm(r"lingula", None, "lungs", "left"),
     SiteTerm(r"right\s+lung", "Right lung", "lungs", "right"),
     SiteTerm(r"left\s+lung", "Left lung", "lungs", "left"),
@@ -561,6 +574,21 @@ def resolve_atlas_structure(name: Optional[str], side: Optional[str]) -> Optiona
         return unsided[0]
     # Left and right structures exist but the text gives no side: ambiguous.
     return candidates[0] if len(candidates) == 1 else None
+
+
+BILATERAL_LOBES = (
+    (re.compile(r"lower\s+lobe", re.IGNORECASE), ("Inferior lobe of right lung", "Inferior lobe of left lung")),
+    (re.compile(r"upper\s+lobe", re.IGNORECASE), ("Superior lobe of right lung", "Superior lobe of left lung")),
+)
+
+
+def bilateral_atlas_structures(site_text: Optional[str]) -> list[str]:
+    """The two atlas structures a bilateral lobe site names ("bilateral lower lobes")."""
+    for pattern, names in BILATERAL_LOBES:
+        if site_text and pattern.search(site_text):
+            resolved = [resolve_atlas_structure(name, side) for name, side in zip(names, ("right", "left"))]
+            return [item["id"] for item in resolved if item]
+    return []
 
 
 def find_sites(text: str) -> list[dict]:

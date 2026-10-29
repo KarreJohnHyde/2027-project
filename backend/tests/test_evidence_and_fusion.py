@@ -20,7 +20,8 @@ from app.models.entities import (
     Case, Examination, UploadedFile, Finding, ClinicalReportStatement,
     ModalityType, EvidenceStatus, RepresentationLevel, LabInvestigationReport
 )
-from app.services.fusion_service import GatedMultimodalFusionLayer, evaluate_multimodal_fusion
+from app.services.fusion_layer import GatedMultimodalFusionLayer
+from app.services.fusion_service import evaluate_multimodal_fusion
 from app.services.concordance_service import evaluate_report_concordance
 from app.services.registration_service import (
     fit_rigid_transform_arun,

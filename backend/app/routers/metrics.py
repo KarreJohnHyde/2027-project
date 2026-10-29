@@ -18,6 +18,7 @@ from typing import Any, Dict, List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.config import PROJECT_ROOT
 from app.database import get_db
 from app.models.entities import Case, Finding, ForecastRecord, MultimodalFusionRecord, User
 from app.services import model_registry
@@ -271,7 +272,7 @@ def _not_run(reason: str) -> Dict[str, Any]:
 
 def _latest_software_benchmark() -> Dict[str, Any]:
     """Load a completed local-serving artifact without treating it as model validation."""
-    results_dir = Path(__file__).resolve().parents[3] / "benchmarks" / "results"
+    results_dir = PROJECT_ROOT / "benchmarks" / "results"
     for artifact in sorted(results_dir.glob("http-benchmark-*.json"), reverse=True):
         try:
             payload_bytes = artifact.read_bytes()
@@ -291,7 +292,7 @@ def _latest_software_benchmark() -> Dict[str, Any]:
                 "endpoint": payload.get("workload", {}).get("path"),
                 "generated_at_utc": payload.get("generated_at_utc"),
                 "profiles": profiles,
-                "artifact": str(artifact.relative_to(Path(__file__).resolve().parents[3])),
+                "artifact": artifact.relative_to(PROJECT_ROOT).as_posix(),
                 "artifact_sha256": hashlib.sha256(payload_bytes).hexdigest(),
             },
             "reason": "Same-host HTTP-serving measurement only; no model inference or clinical performance was measured.",

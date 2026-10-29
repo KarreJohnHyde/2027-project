@@ -1,5 +1,7 @@
 # MedTwin implementation status
 
+> Historical snapshot. The [2026-10-29 audit](verification/COMPLETENESS_AUDIT_2026-10-29.md) supersedes current-status claims below. DICOM-series and constrained WFDB inference, independently approved correction views, SQLCipher and the landmark-manifest workflow now exist; their clinical validation remains incomplete.
+
 Last verified 25 October 2026 on branch `feature/medtwin-2-integration` at baseline
 commit `c67342f4503d`, with uncommitted implementation work present. This is a
 software-research status record, not evidence of clinical safety, diagnostic

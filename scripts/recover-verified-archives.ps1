@@ -9,7 +9,7 @@ param([switch]$Apply, [switch]$Named)
 
 $ErrorActionPreference = 'Stop'
 $projectRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path.TrimEnd('\')
-$recoveryRoot = 'C:\Users\johnn\AppData\Local\Temp\medtwin-storage-recovery-20261027\archives'
+$recoveryRoot = 'D:\medtwin-storage-recovery-20261027\archives'
 $reportName = if ($Named) { 'named-archive-verification.json' } else { 'archive-verification.json' }
 $reportPath = Join-Path $projectRoot (Join-Path '_imports\storage-cleanup-20261027' $reportName)
 $ledgerPath = Join-Path $projectRoot '_imports\storage-cleanup-20261027\archive-moves.json'

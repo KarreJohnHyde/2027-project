@@ -21,6 +21,14 @@ from functools import lru_cache
 from typing import Optional
 
 ALPHA_RUN = re.compile(r"[A-Za-z]{5,}")
+# A word glued to a number ("stroke6yearsback", "InAugust2023") hides it from word-boundary
+# rules. Only runs of four lower-case letters are split off, so D3, B12, HbA1c, eGFR, C5 and
+# units after a value (5mg, 80mmHg) stay as read.
+DIGIT_JOIN = re.compile(r"(?<=[a-z]{4})(?=\d)|(?<=\d)(?=[a-z]{4})")
+# A lone capital ending a run after four lower-case letters is its own word ("VitaminD3",
+# "HepatitisB"); otherwise the segmenter reads "VitaminD" as "Vita minD". pH, mmHg, eGFR and
+# HbA1c do not qualify.
+CAPITAL_TAIL = re.compile(r"(?<=[a-z]{4})(?=[A-Z](?![A-Za-z]))")
 COMMON_RANK_LIMIT = 40_000  # pieces must be among the most frequent English words
 WHOLE_WORD_RANK_LIMIT = 200_000  # a run that is itself a reasonably common word is kept
 # Pieces of three letters or fewer must be function words: a domain prefix plus a short
@@ -127,7 +135,7 @@ def normalise(text: str) -> tuple[str, Optional[list[int]]]:
     """Return (normalised text, offset map). The map is None when nothing changed;
     otherwise ``index[i]`` is the source offset of normalised character ``i`` and the
     final element is ``len(text)``. Inserted spaces map to the following character."""
-    insertions: set[int] = _shorthand_insertions(text)
+    insertions: set[int] = _shorthand_insertions(text) | {match.start() for pattern in (DIGIT_JOIN, CAPITAL_TAIL) for match in pattern.finditer(text)}
     runs = []
     for match in ALPHA_RUN.finditer(text):
         # A run split by a shorthand insertion ("S/Ploopileostomy") is segmented after it.

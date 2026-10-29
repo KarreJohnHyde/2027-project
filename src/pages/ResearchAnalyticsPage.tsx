@@ -79,6 +79,17 @@ function ChartFor({ chart }: { chart: AnalyticsChart }) {
       </ChartFrame>
     );
   }
+  if (chart.id.startsWith("ocr_")) {
+    // One group per engine, one bar per page condition (benchmarks/ocr_benchmark.py).
+    const conditions = Object.keys(chart.data[0] ?? {}).filter((key) => key !== "engine");
+    return (
+      <ChartFrame title={chart.title} subtitle="Synthetic report pages; see limitations" status={chart.status} provenance={chart.provenance}
+        columns={["Engine", ...conditions.map((condition) => humanize(condition))]}
+        rows={chart.data.map((row) => [String(row.engine), ...conditions.map((condition) => (row[condition] == null ? "—" : formatNumber(row[condition] as number, 2)))])}>
+        <GroupedBars data={chart.data} category="engine" series={conditions.map((condition) => ({ key: condition, label: humanize(condition) }))} />
+      </ChartFrame>
+    );
+  }
   if (chart.id === "evaluation_runs") {
     return (
       <Card title={chart.title} padded={false}>
@@ -94,6 +105,7 @@ function ChartFor({ chart }: { chart: AnalyticsChart }) {
 const SECTION_TITLES: Record<string, string> = {
   datasets: "Datasets",
   software: "Software performance",
+  ocr: "OCR engine comparison",
   anatomy: "Anatomy asset pipeline",
   models: "Models and evaluation",
   cases: "Authorised case evidence",

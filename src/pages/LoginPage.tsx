@@ -6,6 +6,7 @@ import { Button, ErrorBlock, Field, IconButton, SelectInput, TextInput } from ".
 
 type Mode = "login" | "register";
 
+const REMEMBERED_LOGIN_KEY = "medtwin:remembered-login";
 const PASSWORD_AUTOCOMPLETE: Record<Mode, string> = { login: "current-password", register: "new-password" };
 const REQUESTED_ROLES: Array<{ value: RequestedRole; label: string }> = [
   { value: "standard_user", label: "Normal user" },
@@ -52,7 +53,10 @@ const DEPARTMENT_ROLES: RequestedRole[] = ["doctor", "surgeon", "department_expe
 
 export default function LoginPage({ onLoginSuccess }: { onLoginSuccess: (user: User) => void }) {
   const [mode, setMode] = useState<Mode>("login");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(() =>
+    typeof window === "undefined" ? "" : window.localStorage.getItem(REMEMBERED_LOGIN_KEY) ?? "",
+  );
+  const [rememberLogin, setRememberLogin] = useState(true);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [requestedRole, setRequestedRole] = useState<RequestedRole>("standard_user");
@@ -98,11 +102,16 @@ export default function LoginPage({ onLoginSuccess }: { onLoginSuccess: (user: U
         setConfirmPassword("");
         setSuccess(
           registration.profileRequestSaved
-            ? "Your unverified standard account has been created and your profile request recorded. Sign in with your new username and password. Professional access must be authorised and provisioned separately."
-            : "Your account was created, but this server does not support saving profile or department requests. Contact the administrator to have your requested profile recorded. Your account remains unverified.",
+            ? "Your free, unverified standard account has been created and your profile request recorded. Sign in with your new username and password. It is limited to personal-record access; professional access must be authorised and provisioned separately."
+            : "Your free account was created, but this server does not support saving profile or department requests. Contact the administrator to have your requested profile recorded. Your account remains unverified and limited to personal-record access.",
         );
       } else {
         const session = await api.login(username.trim(), password);
+        if (rememberLogin) {
+          window.localStorage.setItem(REMEMBERED_LOGIN_KEY, username.trim());
+        } else {
+          window.localStorage.removeItem(REMEMBERED_LOGIN_KEY);
+        }
         onLoginSuccess(session.user);
       }
     } catch (requestError) {
@@ -125,11 +134,11 @@ export default function LoginPage({ onLoginSuccess }: { onLoginSuccess: (user: U
         <div className="w-full max-w-sm rounded-2xl border border-line bg-surface p-6 shadow-card">
           <div className="mb-5">
             <LockKeyhole aria-hidden className="text-accent-text" size={22} />
-            <h1 className="mt-3 text-lg font-semibold">{mode === "register" ? "Create your account" : "Sign in"}</h1>
+            <h1 className="mt-3 text-lg font-semibold">{mode === "register" ? "Create a free account" : "Sign in"}</h1>
             <p className="mt-1 text-xs leading-5 text-ink-2">
               {mode === "register"
-                ? "Register with your own username and password. New accounts are non-privileged and unverified; professional access is provisioned separately."
-                : "Sign in with your account, or create a new account to get started."}
+                ? "No payment is required. Free accounts are unverified and limited to personal-record access; they do not grant clinical or professional permissions."
+                : "Sign in with your account, or create a free account to get started."}
             </p>
           </div>
           <form onSubmit={submit} autoComplete={mode === "register" ? "off" : undefined} className="space-y-3.5">
@@ -214,6 +223,17 @@ export default function LoginPage({ onLoginSuccess }: { onLoginSuccess: (user: U
                 />
               </span>
             </Field>
+            {mode === "login" && (
+              <label className="flex items-start gap-2 text-xs leading-5 text-ink-2">
+                <input
+                  type="checkbox"
+                  checked={rememberLogin}
+                  onChange={(event) => setRememberLogin(event.target.checked)}
+                  className="mt-1 accent-accent"
+                />
+                <span>Remember username or email on this device. Your password is never saved here.</span>
+              </label>
+            )}
             {mode === "register" && (
               <Field label="Confirm password" htmlFor="register-confirm-password">
                 <span className="relative block">
@@ -255,7 +275,7 @@ export default function LoginPage({ onLoginSuccess }: { onLoginSuccess: (user: U
             )}
             {success && <p role="status" className="rounded-lg border border-[color-mix(in_srgb,var(--mt-good)_35%,transparent)] bg-[color-mix(in_srgb,var(--mt-good)_8%,transparent)] px-3 py-2 text-xs leading-5 text-good-text">{success}</p>}
             <Button type="submit" variant="primary" loading={busy} className="w-full">
-              {mode === "register" ? "Create account" : "Sign in"}
+              {mode === "register" ? "Create free account" : "Sign in"}
             </Button>
           </form>
           <p className="mt-4 text-center text-xs text-ink-2">
@@ -277,7 +297,7 @@ export default function LoginPage({ onLoginSuccess }: { onLoginSuccess: (user: U
                 setSuccess(null);
               }}
             >
-              {mode === "register" ? "Sign in" : "Create an account"}
+              {mode === "register" ? "Sign in" : "Create a free account"}
             </button>
           </p>
         </div>

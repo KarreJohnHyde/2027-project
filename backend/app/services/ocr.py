@@ -13,8 +13,12 @@ from __future__ import annotations
 
 import io
 import math
+import os
+import re
 import statistics
 import threading
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from functools import lru_cache
 from typing import Optional
@@ -32,7 +36,7 @@ class OcrPage:
     image_width: int
     image_height: int
     lines: list[dict] = field(default_factory=list)
-    # Counter-clockwise turn applied before reading a sideways page (0, 90 or -90).
+    # Counter-clockwise turn applied before reading a sideways or upside-down page (0, 90, -90 or 180).
     rotation_degrees: int = 0
 
 
@@ -55,14 +59,40 @@ def ocr_available() -> bool:
     return True
 
 
-_lock = threading.Lock()
+# Recognition takes most of the time on a page (long table lines), and one engine does not use
+# the cores well on it, so the pages of a document are read in parallel: OCR runs only on these
+# worker threads, each with its own engine and about three cores. Measured on a 16-core
+# machine, five photographed pages took 26 s on one engine and 17 s on five.
+OCR_WORKERS = max(1, min(6, (os.cpu_count() or 1) // 3))
+OCR_THREADS_PER_ENGINE = max(1, (os.cpu_count() or 1) // OCR_WORKERS)
+_WORKER_PREFIX = "medtwin-ocr"
+# PDFium is not thread-safe; every render in the process takes this lock.
+PDFIUM_LOCK = threading.Lock()
+_pool: Optional[ThreadPoolExecutor] = None
+_pool_lock = threading.Lock()
+_local = threading.local()
 
 
-@lru_cache(maxsize=1)
+def _executor() -> ThreadPoolExecutor:
+    global _pool
+    with _pool_lock:
+        if _pool is None:
+            _pool = ThreadPoolExecutor(max_workers=OCR_WORKERS, thread_name_prefix=_WORKER_PREFIX)
+        return _pool
+
+
 def _engine():
-    from rapidocr_onnxruntime import RapidOCR
+    """This worker thread's engine (an ONNX session serves one call at a time)."""
+    engine = getattr(_local, "engine", None)
+    if engine is None:
+        from rapidocr_onnxruntime import RapidOCR
 
-    return RapidOCR()
+        engine = _local.engine = RapidOCR(intra_op_num_threads=OCR_THREADS_PER_ENGINE)
+    return engine
+
+
+def _on_worker() -> bool:
+    return threading.current_thread().name.startswith(_WORKER_PREFIX)
 
 
 # Text-detection box score threshold (the engine default is 0.5). Lines on curved or
@@ -76,6 +106,9 @@ MAX_SKEW_RADIANS = math.radians(15)
 SIDEWAYS_ASPECT = 2.0
 SIDEWAYS_MIN_BOXES = 5
 SIDEWAYS_FRACTION = 0.6
+# Upright photographed report pages read at 0.89-0.95 character-weighted confidence; a page
+# below this is also read turned 180 degrees and the more confident reading is kept.
+UPSIDE_DOWN_CHECK_BELOW = 0.85
 # The recognition model sometimes emits fullwidth punctuation ("TSH（Thyroid…）"); map the
 # fullwidth ASCII block to ASCII one-for-one so lengths and offsets are unchanged.
 FULLWIDTH_TO_ASCII = {code: code - 0xFEE0 for code in range(0xFF01, 0xFF5F)}
@@ -83,6 +116,8 @@ FULLWIDTH_TO_ASCII = {code: code - 0xFEE0 for code in range(0xFF01, 0xFF5F)}
 # follows a line the recogniser did not return ("...Focally at a" / [lost line] / "evidence of
 # dysplasia/ malignancy."). Joining across it would silently drop the lost words.
 LOST_LINE_GAP = 2.0
+# Denominators that print on their own line under a wrapped unit; "PL" is µL read as P.
+UNIT_TAIL = re.compile(r"[µμuUpP][lL]|[cC]umm|mm3|[dD]?[lL]")
 
 
 def _page_skew(items: list[dict]) -> float:
@@ -133,7 +168,27 @@ def _rows(detections: list) -> list[list[dict]]:
         rows.append([item])
     for row in rows:
         row.sort(key=lambda cell: cell["along"])
-    return rows
+    return _join_wrapped_units(rows)
+
+
+def _join_wrapped_units(rows: list[list[dict]]) -> list[list[dict]]:
+    """A unit wrapped under its own column ("millioncells/" over "µL") is one token: a row
+    holding only a unit tail is appended to the cell above that ends in "/" and overlaps it
+    horizontally. The joined text is the two readings concatenated, nothing more."""
+    joined: list[list[dict]] = []
+    for row in rows:
+        if joined and len(row) == 1 and UNIT_TAIL.fullmatch(row[0]["text"].strip()):
+            tail = row[0]
+            head = next((cell for cell in joined[-1] if cell["text"].endswith("/")
+                         and cell["box"][0] <= tail["box"][2] and tail["box"][0] <= cell["box"][2]), None)
+            if head is not None:
+                head["text"] += tail["text"].strip()
+                head["box"] = [min(head["box"][0], tail["box"][0]), min(head["box"][1], tail["box"][1]),
+                               max(head["box"][2], tail["box"][2]), max(head["box"][3], tail["box"][3])]
+                head["confidence"] = min(head["confidence"], tail["confidence"])
+                continue
+        joined.append(row)
+    return joined
 
 
 def _reading_order(detections: list) -> list[dict]:
@@ -193,31 +248,53 @@ def _unrotate_box(box: list[float], turns: int, width: int, height: int) -> list
     x0, y0, x1, y1 = box
     if turns == 1:  # rotated[r, c] = page[c, width - r]
         xs, ys = (width - y0, width - y1), (x0, x1)
+    elif turns == 2:  # rotated[r, c] = page[height - r, width - c]
+        xs, ys = (width - x0, width - x1), (height - y0, height - y1)
     else:  # turns == -1: rotated[r, c] = page[height - c, r]
         xs, ys = (y0, y1), (height - x0, height - x1)
     return [min(xs), min(ys), max(xs), max(ys)]
 
 
 def ocr_image(image) -> OcrPage:
-    """OCR one PIL image. A sideways page is read turned upright; reported boxes stay in the
-    pixels of the image as given."""
+    """OCR one PIL image. A sideways or upside-down page is read turned upright; reported
+    boxes stay in the pixels of the image as given."""
+    if _on_worker():
+        return _read_page(image)
+    return _executor().submit(_read_page, image).result()
+
+
+def ocr_images(images: list) -> list[OcrPage]:
+    """OCR several images in parallel, results in input order."""
+    return list(_executor().map(_read_page, images))
+
+
+def _read_page(image) -> OcrPage:
     import numpy as np
 
     array = np.asarray(image.convert("RGB"))
     height, width = int(array.shape[0]), int(array.shape[1])
     turns = 0
-    with _lock:  # the ONNX sessions are shared; serialise calls
-        detections, _elapsed = _engine()(array, box_thresh=DETECTION_BOX_THRESHOLD)
-        if detections and _sideways(detections):
-            # Turn both ways and read without the 180-degree classifier: the upright turn reads
-            # with clearly higher confidence than the upside-down one.
-            readings = []
-            for candidate in (1, -1):
-                found, _ = _engine()(np.ascontiguousarray(np.rot90(array, candidate)), use_cls=False, box_thresh=DETECTION_BOX_THRESHOLD)
-                readings.append((_read_confidence(found or []), candidate, found or []))
-            confidence, candidate, found = max(readings, key=lambda reading: reading[0])
-            if confidence > _read_confidence(detections):
-                turns, detections = candidate, found
+    engine = _engine()
+    # Read without the per-box 180-degree classifier. On photographed reports it turned
+    # upright boxes over: units read as garbage ("mg/dl" as "Ip/Bw", "g/dL" as "1p/6"), and
+    # a whole negated line ("...no features suggestive of myelomalacia / cord") was read
+    # upside down below the text score and dropped. A page that is upside down as a whole
+    # reads with low confidence and is retried turned around.
+    detections, _elapsed = engine(array, use_cls=False, box_thresh=DETECTION_BOX_THRESHOLD)
+    if detections and _sideways(detections):
+        # Turn both ways: the upright turn reads with clearly higher confidence than the
+        # upside-down one.
+        readings = []
+        for candidate in (1, -1):
+            found, _ = engine(np.ascontiguousarray(np.rot90(array, candidate)), use_cls=False, box_thresh=DETECTION_BOX_THRESHOLD)
+            readings.append((_read_confidence(found or []), candidate, found or []))
+        confidence, candidate, found = max(readings, key=lambda reading: reading[0])
+        if confidence > _read_confidence(detections):
+            turns, detections = candidate, found
+    elif detections and _read_confidence(detections) < UPSIDE_DOWN_CHECK_BELOW:
+        found, _ = engine(np.ascontiguousarray(np.rot90(array, 2)), use_cls=False, box_thresh=DETECTION_BOX_THRESHOLD)
+        if _read_confidence(found or []) > _read_confidence(detections):
+            turns, detections = 2, found
     lines = _reading_order(detections or [])
     if turns:
         for line in lines:
@@ -235,14 +312,36 @@ def ocr_image(image) -> OcrPage:
     )
 
 
-def ocr_pdf_page(content_bytes: bytes, index: int, dpi: int = OCR_DPI) -> OcrPage:
+def render_pdf_page(content_bytes: bytes, index: int, dpi: int = OCR_DPI):
+    """One PDF page as a PIL image. PDFium is not thread-safe, so pages are rendered on the
+    calling thread and only the OCR runs on the workers."""
     import pypdfium2
 
-    document = pypdfium2.PdfDocument(io.BytesIO(content_bytes))
-    try:
-        page = document[index]
-        image = page.render(scale=dpi / 72).to_pil()
-        page.close()
-    finally:
-        document.close()
-    return ocr_image(image)
+    with PDFIUM_LOCK:
+        document = pypdfium2.PdfDocument(io.BytesIO(content_bytes))
+        try:
+            page = document[index]
+            image = page.render(scale=dpi / 72).to_pil()
+            page.close()
+        finally:
+            document.close()
+    return image
+
+
+def ocr_pdf_page(content_bytes: bytes, index: int, dpi: int = OCR_DPI) -> OcrPage:
+    return ocr_image(render_pdf_page(content_bytes, index, dpi))
+
+
+def ocr_pdf_pages(content_bytes: bytes, indices: list[int], dpi: int = OCR_DPI) -> list[OcrPage]:
+    """OCR several PDF pages, results in input order. The next page is rendered as soon as a
+    worker is free, so at most OCR_WORKERS rendered pages are held in memory."""
+    results: list[Optional[OcrPage]] = [None] * len(indices)
+    in_flight: deque = deque()
+    for position, index in enumerate(indices):
+        if len(in_flight) >= OCR_WORKERS:
+            done, future = in_flight.popleft()
+            results[done] = future.result()
+        in_flight.append((position, _executor().submit(_read_page, render_pdf_page(content_bytes, index, dpi))))
+    for done, future in in_flight:
+        results[done] = future.result()
+    return results  # type: ignore[return-value]

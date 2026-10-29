@@ -30,7 +30,7 @@ from sqlalchemy.orm import Session
 from app.models.entities import ClinicalReportStatement, Finding, HumanReview, MedicalMeasurement, ModalityType, UploadedFile
 from app.services import upload_store
 from app.services.imaging_readers import ImagingReadError, read_metadata
-from app.services.terminology import ANALYTES_BY_NAME, ANATOMY_SYSTEMS
+from app.services.terminology import ANALYTES_BY_NAME, ANATOMY_SYSTEMS, bilateral_atlas_structures
 
 SYSTEM_LABELS = {
     "heart": "Heart", "lungs": "Lungs", "brain": "Brain", "liver": "Liver", "pancreas": "Pancreas",
@@ -106,6 +106,9 @@ def _statement_item(statement: ClinicalReportStatement, review: HumanReview | No
         "system": statement.anatomy_system,
         "atlas_structure_id": None,
         "candidate_atlas_structure_id": statement.atlas_structure_id,
+        # A bilateral site ("bilateral lower lobes") names two structures and has no single atlas id.
+        "candidate_atlas_structure_ids": [statement.atlas_structure_id] if statement.atlas_structure_id else (
+            bilateral_atlas_structures(statement.anatomical_site) if (statement.laterality or "").lower() == "bilateral" else []),
     }
     if not statement.anatomy_system:
         return _mapped(base, "NOT_MAPPABLE", "No organ is documented or implied by the entity.")
@@ -248,6 +251,14 @@ def build_case_anatomy_evidence(db: Session, case_id: int) -> dict[str, Any]:
             "highlight": {
                 "organ_schematic": state_counts["SCHEMATIC_ORGAN_ONLY"] > 0,
                 "verified_structures": sorted({item["atlas_structure_id"] for item in scoped if item["mapping_state"] == "REGION_VERIFIED"}),
+                # Structures an affirmed, certain, current statement names, not yet confirmed by a
+                # clinician: shown apart from verified regions, never as a located finding.
+                "documented_structures": sorted({
+                    structure for item in scoped
+                    if item["kind"] == "REPORT_STATEMENT" and item["mapping_state"] == "SCHEMATIC_ORGAN_ONLY" and item.get("assertion") == "AFFIRMED"
+                    and item.get("certainty") == "CERTAIN" and item.get("temporality") == "CURRENT"
+                    for structure in item.get("candidate_atlas_structure_ids") or []
+                }),
                 "spatially_registered": sorted({item["atlas_structure_id"] for item in scoped if item["mapping_state"] == "SPATIALLY_REGISTERED" and item["atlas_structure_id"]}),
             },
         }

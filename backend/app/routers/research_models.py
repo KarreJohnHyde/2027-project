@@ -5,6 +5,7 @@ RESEARCH_ONLY_NOT_CLINICALLY_VALIDATED and pending human review; boxes and masks
 are returned in the source image's pixel coordinates for overlay.
 """
 
+from pathlib import Path
 from typing import Literal, Optional
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
@@ -13,10 +14,10 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.entities import Finding, InferenceRun, UploadedFile, User
+from app.models.entities import Finding, InferenceRun, ModalityType, UploadedFile, User
 from app.routers.jobs import serialize_analysis_job
 from app.services import job_handlers  # noqa: F401 - registers the job handlers
-from app.services import job_queue, model_inference
+from app.services import cxr_research, job_queue, model_inference, upload_store
 from app.services.auth import get_current_user, verify_case_access
 from app.services.model_registry import RegistryConfigurationError
 
@@ -113,6 +114,50 @@ def run_research_inference(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=job.last_error[len(refusal):])
     raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                         detail="Research inference failed; the error state was recorded in provenance.")
+
+
+class ChestRadiographRequest(BaseModel):
+    """The requesting user states that the upload is a frontal chest radiograph."""
+
+    attest_frontal_chest_radiograph: Literal[True]
+
+    model_config = ConfigDict(extra="forbid")
+
+
+@router.get("/chest-radiograph-model")
+def get_chest_radiograph_model(current_user: User = Depends(get_current_user)):
+    """The third-party chest-radiograph model: availability, publisher and weight hashes."""
+    return cxr_research.model_card()
+
+
+@router.post("/uploads/{file_id}/chest-radiograph-analysis", status_code=status.HTTP_201_CREATED)
+def run_chest_radiograph_analysis(
+    file_id: int,
+    request: ChestRadiographRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Research analysis of a chest radiograph with TorchXRayVision's pretrained models
+    (app.services.cxr_research). Not trained or evaluated by MedTwin; the output is a finding
+    pending human review."""
+    file_record = db.get(UploadedFile, file_id)
+    if file_record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found.")
+    verify_case_access(file_record.case_id, current_user, db)
+    if file_record.modality != ModalityType.IMAGE or not file_record.filename.lower().endswith((".png", ".jpg", ".jpeg", ".bmp")):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="UNSUPPORTED_INPUT: a PNG, JPEG or BMP image upload is required.")
+    try:
+        with upload_store.materialize(Path(file_record.file_path)) as plain:
+            content_check = model_inference.check_document_photograph(plain)
+        with model_inference._inference_lock:  # one research model on the GPU at a time
+            run = cxr_research.execute(db, file_record, current_user, content_check)
+    except model_inference.InferenceNotPermitted as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+    except cxr_research.CxrNotApplicable as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"MODEL_INPUT_INCOMPATIBLE: {exc}")
+    except cxr_research.CxrUnavailable as exc:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc))
+    return serialize_research_run(run)
 
 
 class SeriesInferenceRequest(BaseModel):

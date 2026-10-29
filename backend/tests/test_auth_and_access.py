@@ -57,6 +57,42 @@ def test_user_registration_and_login(client):
     assert email_login.json()["username"] == "dr_watson"
 
 
+def test_multiple_accounts_can_share_email_and_must_login_by_username(client):
+    email = "shared-registration@test.medtwin"
+    first_password = "share1!"
+    second_password = "share2!"
+    first = client.post(
+        "/api/v1/auth/register",
+        json={"username": "shared_user_one", "email": email, "password": first_password},
+    )
+    second = client.post(
+        "/api/v1/auth/register",
+        json={"username": "shared_user_two", "email": email, "password": second_password},
+    )
+
+    assert first.status_code == 201, first.text
+    assert second.status_code == 201, second.text
+    assert first.json()["id"] != second.json()["id"]
+
+    ambiguous_email_login = client.post(
+        "/api/v1/auth/login",
+        json={"username": email, "password": first_password},
+    )
+    assert ambiguous_email_login.status_code == 400
+    assert "Sign in with your username" in ambiguous_email_login.json()["detail"]
+
+    for username, password in (
+        ("shared_user_one", first_password),
+        ("shared_user_two", second_password),
+    ):
+        response = client.post(
+            "/api/v1/auth/login",
+            json={"username": username, "password": password},
+        )
+        assert response.status_code == 200
+        assert response.json()["username"] == username
+
+
 def test_public_registration_cannot_self_assign_privileged_role(client):
     res = client.post(
         "/api/v1/auth/register",
@@ -244,6 +280,33 @@ def test_verification_migration_marks_legacy_users_unverified():
             text("SELECT verification_status FROM users WHERE id = 1")
         ).scalar_one()
     assert status_value == "UNVERIFIED"
+
+
+def test_shared_email_migration_preserves_users_and_replaces_unique_index():
+    from app.migrations import run_migrations
+
+    engine = create_engine("sqlite:///:memory:")
+    with engine.begin() as connection:
+        connection.execute(text(
+            "CREATE TABLE users (id INTEGER PRIMARY KEY, username VARCHAR(64) NOT NULL, email VARCHAR(128) NOT NULL)"
+        ))
+        connection.execute(text("CREATE UNIQUE INDEX ix_users_username ON users (username)"))
+        connection.execute(text("CREATE UNIQUE INDEX ix_users_email ON users (email)"))
+        connection.execute(text(
+            "INSERT INTO users (id, username, email) VALUES (1, 'existing_user', 'shared@test.medtwin')"
+        ))
+
+    applied = run_migrations(engine)
+
+    assert "2026_10_29_002_shared_user_emails" in applied
+    indexes = {index["name"]: index for index in inspect(engine).get_indexes("users")}
+    assert not indexes["ix_users_email"]["unique"]
+    with engine.begin() as connection:
+        connection.execute(text(
+            "INSERT INTO users (id, username, email) VALUES (2, 'second_user', 'shared@test.medtwin')"
+        ))
+        assert connection.execute(text("SELECT COUNT(*) FROM users")).scalar_one() == 2
+    assert run_migrations(engine) == []
 
 
 def test_cross_case_access_isolation(client, db_session, test_users):

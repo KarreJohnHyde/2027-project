@@ -116,6 +116,48 @@ def benchmark_charts() -> list[dict[str, Any]]:
     )]
 
 
+OCR_BENCHMARK_GLOB = str(PROJECT_ROOT / "benchmarks" / "results" / "ocr-benchmark-*.json")
+
+
+def ocr_benchmark_charts() -> list[dict[str, Any]]:
+    """The latest OCR engine comparison (benchmarks/ocr_benchmark.py) on synthetic pages."""
+    paths = sorted(glob.glob(OCR_BENCHMARK_GLOB))
+    payload = _read_json(Path(paths[-1])) if paths else None
+    common: dict[str, Any] = dict(source="benchmarks/results/ocr-benchmark-*.json (benchmarks/ocr_benchmark.py)", sample_semantics="synthetic report pages")
+    if not payload or payload.get("status") != "completed":
+        return [chart("ocr_lab_value_recall", "OCR engines: laboratory values read correctly", None, sample_count=None, population="—",
+                      time_frame=None, metric="—", limitations=["Run benchmarks/ocr_benchmark.py."], **common)]
+    # Short axis labels; the full descriptions stay in the benchmark file.
+    short = {"rapidocr_medtwin": "RapidOCR (MedTwin)", "rapidocr_angle_classifier": "+ angle classifier",
+             "rapidocr_default_threshold": "Default threshold", "windows_ocr": "Windows OCR", "tesseract": "Tesseract"}
+    labels = {engine["id"]: short.get(engine["id"], engine["label"]) for engine in payload["engines"]}
+    conditions = list(payload["corpus"]["conditions"])
+
+    def grouped(field: str, percent: bool) -> list[dict[str, Any]]:
+        rows: dict[str, dict[str, Any]] = {}
+        for result in payload["results"]:
+            value = result.get(field)
+            row = rows.setdefault(result["engine"], {"engine": labels.get(result["engine"], result["engine"])})
+            row[result["condition"]] = None if value is None else round(value * 100, 1) if percent else value
+        return list(rows.values())
+
+    pages = payload["corpus"]["pages_per_condition"] * len(conditions)
+    not_run = [engine["label"] for engine in payload["engines"] if engine["status"] != "COMPLETED"]
+    shared = dict(
+        sample_count=pages, population=f"{pages} seeded synthetic pages ({', '.join(conditions)}); {payload['corpus']['lab_rows_per_page']} lab rows each",
+        time_frame=f"Run {payload['generated_at_utc']}",
+        limitations=payload["limitations"] + ([f"Not installed here, so not compared: {', '.join(not_run)}."] if not_run else []), **common,
+    )
+    return [
+        chart("ocr_lab_value_recall", "OCR engines: laboratory values read correctly (%)", grouped("lab_value_recall", True),
+              metric="Share of (analyte, value) pairs MedTwin extracts from the rendered text that it also extracts from the OCR text", **shared),
+        chart("ocr_character_error", "OCR engines: character error rate (%)", grouped("cer", True),
+              metric="Edit distance between the OCR text and the rendered text over the rendered length (whitespace collapsed)", **shared),
+        chart("ocr_seconds_per_page", "OCR engines: seconds per page (median)", grouped("seconds_per_page_median", False),
+              metric="Median single-page reading time on the benchmark machine, model loading excluded", **shared),
+    ]
+
+
 def anatomy_charts() -> list[dict[str, Any]]:
     manifest = _read_json(ANATOMY_MANIFEST_PATH)
     derivatives = _read_json(DERIVATIVES_PATH)
@@ -209,6 +251,7 @@ def research_overview(db: Session, user: User) -> dict[str, Any]:
         "sections": {
             "datasets": dataset_charts(),
             "software": benchmark_charts(),
+            "ocr": ocr_benchmark_charts(),
             "anatomy": anatomy_charts(),
             "models": model_charts(db),
             "cases": case_charts(db, user),

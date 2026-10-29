@@ -26,6 +26,7 @@ from app.services.terminology import convert
 
 # Calculated and documented eGFR are compared only for review; neither replaces the other.
 EGFR_REVIEW_DIFFERENCE = 5.0  # mL/min/1.73 m², an arbitrary review prompt, not a clinical threshold
+AGE_TOLERANCE_YEARS = 1  # documents months apart can straddle a birthday
 
 CKD_EPI_2021 = {
     "equation_id": "CKD_EPI_2021_CREATININE",
@@ -83,9 +84,13 @@ def egfr_for_case(db: Session, case_id: int) -> dict[str, Any]:
             missing.append(f"CREATININE_UNIT_NOT_CONVERTIBLE ({measurement.unit})")
         same_source_age = [row for row in _attribute(attributes, "age_years", measurement.source_file_id) if row.value_number is not None]
         any_age = [row for row in _attribute(attributes, "age_years") if row.value_number is not None]
-        age_row = same_source_age[0] if same_source_age else (any_age[0] if len({row.value_number for row in any_age}) == 1 else None)
+        # The creatinine's own document decides; a packet whose pages print different ages
+        # ("75yrs" on one page, "5Yrs" on another) gives no usable age, rather than its first one.
+        ages = same_source_age or any_age
+        documented_ages = sorted({row.value_number for row in ages})
+        age_row = ages[0] if ages and documented_ages[-1] - documented_ages[0] <= AGE_TOLERANCE_YEARS else None
         if age_row is None:
-            missing.append("AGE_NOT_DOCUMENTED_OR_CONFLICTING" if any_age else "AGE_NOT_DOCUMENTED")
+            missing.append(f"AGE_CONFLICTING ({', '.join(f'{value:g}' for value in documented_ages)})" if ages else "AGE_NOT_DOCUMENTED")
         elif age_row.value_number < 18:
             missing.append("AGE_BELOW_EQUATION_POPULATION")
         if len(sexes) != 1:

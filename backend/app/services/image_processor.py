@@ -7,14 +7,16 @@ does not emit a diagnostic class, confidence, or attribution map.
 
 from pathlib import Path
 from typing import Dict, Any, Tuple
+import numpy as np
 from PIL import Image
-import torch
-import torchvision.transforms as T
 
 from app.models.entities import RepresentationLevel
 
+IMAGENET_MEAN = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+IMAGENET_STD = np.array([0.229, 0.224, 0.225], dtype=np.float32)
 
-def preprocess_image(image_path: Path) -> Tuple[torch.Tensor, Tuple[int, int]]:
+
+def preprocess_image(image_path: Path) -> Tuple[np.ndarray, Tuple[int, int]]:
     """
     Validates image readability and applies standardized normalization.
     """
@@ -28,13 +30,10 @@ def preprocess_image(image_path: Path) -> Tuple[torch.Tensor, Tuple[int, int]]:
         img_rgb = img.convert("RGB")
         original_size = img_rgb.size # (width, height)
 
-        # Standard transformation: 224x224, normalized with ImageNet stats
-        transform = T.Compose([
-            T.Resize((224, 224)),
-            T.ToTensor(),
-            T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        ])
-        tensor = transform(img_rgb).unsqueeze(0) # (1, 3, 224, 224)
+        # Standard transformation: 224x224, normalized with ImageNet stats. Plain NumPy: only the
+        # shape is recorded, so this metadata path needs no PyTorch on slim deployments.
+        resized = np.asarray(img_rgb.resize((224, 224), Image.BILINEAR), dtype=np.float32) / 255.0
+        tensor = ((resized - IMAGENET_MEAN) / IMAGENET_STD).transpose(2, 0, 1)[np.newaxis]  # (1, 3, 224, 224)
 
     return tensor, original_size
 

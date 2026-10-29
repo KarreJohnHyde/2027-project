@@ -13,8 +13,8 @@ export type StyleTarget = {
 
 export type PreparedLayer = { root: THREE.Object3D; targets: StyleTarget[]; dispose: () => void };
 
-type OriginalStyle = { opacity: number; transparent: boolean; depthWrite: boolean; side: THREE.Side; emissive: THREE.Color | null; emissiveIntensity: number };
-type StylableMaterial = THREE.Material & { emissive?: THREE.Color; emissiveIntensity?: number };
+type OriginalStyle = { opacity: number; transparent: boolean; depthWrite: boolean; side: THREE.Side; emissive: THREE.Color | null; emissiveIntensity: number; color: THREE.Color | null };
+type StylableMaterial = THREE.Material & { emissive?: THREE.Color; emissiveIntensity?: number; color?: THREE.Color };
 
 const SECTION_CAP = new THREE.Color("#b8a99a");
 
@@ -44,6 +44,7 @@ function rememberOriginal(material: StylableMaterial): void {
     side: material.side,
     emissive: material.emissive ? material.emissive.clone() : null,
     emissiveIntensity: material.emissiveIntensity ?? 1,
+    color: material.color ? material.color.clone() : null,
   };
   material.userData.medtwinOriginal = original;
 }
@@ -199,11 +200,13 @@ export type StyleState = {
   hoveredKey: string | null;
   verifiedKeys: Set<string>;
   schematicKeys: Set<string>;
+  /** Named in an affirmed report statement, not yet confirmed by a clinician. */
+  documentedKeys: Set<string>;
   translucentKeys: Set<string>;
   viewMode: ViewMode;
   opacity: number;
   plane: THREE.Plane | null;
-  colors: { selected: THREE.Color; hover: THREE.Color; verified: THREE.Color; schematic: THREE.Color };
+  colors: { selected: THREE.Color; hover: THREE.Color; verified: THREE.Color; schematic: THREE.Color; documented: THREE.Color };
 };
 
 export function applyStyles(targets: StyleTarget[], state: StyleState): void {
@@ -230,6 +233,13 @@ export function applyStyles(targets: StyleTarget[], state: StyleState): void {
       }
       material.opacity = opacity;
       material.depthWrite = opacity >= 0.999 ? original.depthWrite : false;
+      if (material.color && original.color) {
+        // A documented region also tints the surface: an emissive glow alone washes out on
+        // pale tissue under tone mapping. Selection and hover keep their own colours.
+        const documented = state.documentedKeys.has(target.key) && target.key !== state.selectedKey && target.key !== state.hoveredKey
+          && !state.verifiedKeys.has(target.key);
+        material.color.copy(documented ? state.colors.documented : original.color);
+      }
       if (material.emissive && original.emissive) {
         if (target.key === state.selectedKey) {
           material.emissive.copy(state.colors.selected);
@@ -240,6 +250,9 @@ export function applyStyles(targets: StyleTarget[], state: StyleState): void {
         } else if (state.verifiedKeys.has(target.key)) {
           material.emissive.copy(state.colors.verified);
           material.emissiveIntensity = 0.5;
+        } else if (state.documentedKeys.has(target.key)) {
+          material.emissive.copy(state.colors.documented);
+          material.emissiveIntensity = 0.35;
         } else if (state.schematicKeys.has(target.key)) {
           material.emissive.copy(state.colors.schematic);
           material.emissiveIntensity = 0.22;

@@ -12,12 +12,13 @@ A plaintext database is converted with scripts/encrypt_database.py, which writes
 copy and never deletes the original.
 """
 
+import contextlib
 import os
 import re
 from pathlib import Path
-from typing import Optional
+from typing import Iterator, Optional
 
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.pool import QueuePool
 from sqlalchemy.engine import URL, Engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
@@ -87,6 +88,25 @@ def encryption_status() -> dict:
     if DATABASE_URL.startswith("postgresql"):
         return {"ready": True, "mode": "DELEGATED_TO_STORAGE", "scope": "PostgreSQL relies on encrypted storage underneath", "optional": True}
     return {"ready": True, "mode": "NONE", "scope": "plain SQLite file; set MEDTWIN_DB_ENCRYPTION=sqlcipher", "optional": True}
+
+# Names MedTwin's schema-change advisory lock in a shared PostgreSQL database.
+SCHEMA_LOCK_KEY = 2026102901
+
+
+@contextlib.contextmanager
+def schema_lock(bind: Engine) -> Iterator[None]:
+    """Serialise table creation and migrations across instances that start together
+    (serverless cold starts) with a PostgreSQL advisory lock; SQLite needs none."""
+    if bind.dialect.name != "postgresql":
+        yield
+        return
+    with bind.connect() as connection:
+        connection.execute(text("SELECT pg_advisory_lock(:key)"), {"key": SCHEMA_LOCK_KEY})
+        try:
+            yield
+        finally:
+            connection.execute(text("SELECT pg_advisory_unlock(:key)"), {"key": SCHEMA_LOCK_KEY})
+
 
 def get_db():
     """Dependency that yields a database session and closes it cleanly."""

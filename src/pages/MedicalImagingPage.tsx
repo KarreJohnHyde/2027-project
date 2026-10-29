@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent, type WheelEvent } from "react";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import ResearchModelPanel, { ResultView, VolumeSliceLayer, type OverlayState, type ResearchInput } from "../components/ResearchModelPanel";
+import ChestRadiographPanel from "../components/ChestRadiographPanel";
 import { Badge, Button, Card, Disclosure, EmptyState, ErrorBlock, KeyValue, LoadingBlock, PageHeader, Segmented, SelectInput, StatusBadge, Table, TextInput } from "../components/ui";
 import { api, type DicomSeriesReport, type ImagingMetadata, type RenderInfo, type ResearchRun, type SeriesRenderInfo, type UploadedFile } from "../services/api";
 import { errorMessage, formatDate, formatNumber, humanize } from "../lib/format";
@@ -370,6 +371,7 @@ export default function MedicalImagingPage() {
             {active?.examination_id && <span className="text-xs text-ink-3">Examination {formatDate(exams.get(active.examination_id)?.exam_date)}</span>}
           </div>
           {active && <Viewer key={active.id} uploadId={active.id} />}
+          {active && /\.(png|jpe?g|bmp)$/i.test(active.filename) && <ChestRadiographPanel key={`cxr-${active.id}`} upload={active} />}
         </>
       )}
     </>

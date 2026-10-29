@@ -491,7 +491,7 @@ def check_input(model: dict, file_record: UploadedFile, declared_input_type: str
     if declared_input_type not in model.get("supported_modalities", []):
         supported = ", ".join(MODALITY_LABELS.get(m, m) for m in model.get("supported_modalities", []))
         raise InferenceNotPermitted(f"{model['display_name']} was trained only on: {supported}.")
-    if not Path(file_record.file_path).exists() or (companion is not None and not Path(companion.file_path).exists()):
+    if not upload_store.available(Path(file_record.file_path)) or (companion is not None and not upload_store.available(Path(companion.file_path))):
         raise InferenceNotPermitted("Stored file missing from disk store.")
     return companion
 

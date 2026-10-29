@@ -1,0 +1,44 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "app": {
+      "root": ".",
+      "framework": "vite",
+      "installCommand": "npm ci",
+      "buildCommand": "npm run build",
+      "outputDirectory": "dist",
+      "headers": [
+        {
+          "source": "/(.*)",
+          "headers": [
+            { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; media-src 'self' blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" },
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            { "key": "X-Frame-Options", "value": "DENY" },
+            { "key": "Referrer-Policy", "value": "no-referrer" },
+            { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+            { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
+          ]
+        },
+        {
+          "source": "/assets/(.*)",
+          "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        }
+      ],
+      "rewrites": [{ "source": "/((?!.*\\.[A-Za-z0-9]+$).*)", "destination": "/index.html" }]
+    },
+    "backend": {
+      "root": "backend",
+      "framework": "fastapi",
+      "entrypoint": "app.main:app",
+      "buildCommand": "python3 vercel_build.py",
+      "functions": {
+        "app/main.py": { "maxDuration": 300 }
+      }
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "backend" } },
+    { "source": "/health", "destination": { "service": "backend" } },
+    { "source": "/(.*)", "destination": { "service": "app" } }
+  ]
+}

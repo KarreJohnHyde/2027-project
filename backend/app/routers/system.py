@@ -5,14 +5,18 @@ System Telemetry, Health, and Audit Inspection Router.
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 import psutil
-import torch
 from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 
-from app.config import ANATOMY_MANIFEST_PATH, PROJECT_NAME, UPLOAD_DIR, VERSION, RESEARCH_ONLY_NOTICE
+try:
+    import torch
+except ImportError:  # slim installs (Vercel) omit the ML stack; research models then report it missing
+    torch = None
+
+from app.config import ANATOMY_MANIFEST_PATH, PROJECT_NAME, TEMPORARY_DATABASE, TEMPORARY_UPLOAD_DIR, UPLOAD_DIR, VERSION, RESEARCH_ONLY_NOTICE
 from app.database import encryption_status as database_encryption_status, engine, get_db
 from app.migrations import migration_status
-from app.services import job_queue, upload_store
+from app.services import job_queue, object_store, upload_store
 from app.services.model_registry import list_models
 from app.models.entities import Case, Finding, AuditEvent, QueuedJob, User, UserRole
 from app.schemas.entities import SystemHealthResponse, AuditEventResponse
@@ -21,13 +25,18 @@ from app.services.auth import get_current_user, require_role
 router = APIRouter(prefix="/system", tags=["System & Telemetry"])
 
 
+def temporary_storage() -> bool:
+    """Whether data written now is lost when this instance stops (serverless temp directory)."""
+    return TEMPORARY_DATABASE or (TEMPORARY_UPLOAD_DIR and not object_store.configured())
+
+
 @router.get("/health", response_model=SystemHealthResponse)
 @router.get("/status")
 def get_system_health(db: Session = Depends(get_db)):
     """
     Returns framework telemetry, PyTorch CUDA status, and database statistics.
     """
-    cuda_avail = torch.cuda.is_available()
+    cuda_avail = torch is not None and torch.cuda.is_available()
     gpu_name = torch.cuda.get_device_name(0) if cuda_avail else None
 
     cases_count = db.query(Case).count()
@@ -43,6 +52,7 @@ def get_system_health(db: Session = Depends(get_db)):
         "research_notice": RESEARCH_ONLY_NOTICE,
         "notice": RESEARCH_ONLY_NOTICE,
         "database_status": "CONNECTED",
+        "temporary_storage": temporary_storage(),
         "health_scope": "API_AND_DATABASE_ONLY",
         "active_cases": cases_count,
         "active_cases_count": cases_count,
@@ -76,7 +86,8 @@ def get_readiness(db: Session = Depends(get_db)):
         probe = UPLOAD_DIR / ".readiness-probe"
         probe.write_bytes(b"ok")
         probe.unlink()
-        checks["upload_storage"] = {"ready": True}
+        checks["upload_storage"] = {"ready": True, "temporary": TEMPORARY_UPLOAD_DIR and not object_store.configured(),
+                                    "durable_copies": "OBJECT_STORE" if object_store.configured() else "NONE"}
     except OSError as exc:
         checks["upload_storage"] = {"ready": False, "error": type(exc).__name__}
     try:
@@ -107,16 +118,17 @@ def get_gpu_telemetry(current_user: User = Depends(get_current_user)):
 
     process = psutil.Process()
     memory = psutil.virtual_memory()
+    cuda_available = torch is not None and torch.cuda.is_available()
     payload = {
-        "cuda_available": torch.cuda.is_available(),
-        "torch_version": torch.__version__,
-        "cuda_build": torch.version.cuda,
+        "cuda_available": cuda_available,
+        "torch_version": torch.__version__ if torch is not None else None,
+        "cuda_build": torch.version.cuda if torch is not None else None,
         "host_memory": {"total_bytes": memory.total, "available_bytes": memory.available, "process_rss_bytes": process.memory_info().rss},
         "loaded_models": resident_model_ids(),
         "telemetry_scope": "API_PROCESS_ONLY",
         "inference_concurrency_limit": 1,
     }
-    if torch.cuda.is_available():
+    if cuda_available:
         free, total = torch.cuda.mem_get_info()
         payload["device"] = {
             "name": torch.cuda.get_device_name(0),

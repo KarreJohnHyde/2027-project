@@ -52,7 +52,7 @@ def check_runnable(file_record: UploadedFile) -> Path:
     if not file_record.is_associated:
         raise AnalysisNotPermitted("File is marked as UNASSOCIATED. Unassociated files cannot enter case-level processing.")
     path = Path(file_record.file_path)
-    if not path.exists():
+    if not upload_store.available(path):
         raise AnalysisNotPermitted("Stored file missing from disk store.")
     return path
 

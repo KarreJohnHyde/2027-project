@@ -35,6 +35,7 @@ public/models/
 !backend/app/**
 !dataset_registry/
 !dataset_registry/datasets.json
+!dataset_registry/tasks.json
 !model_registry/
 !model_registry/**
 !docs/

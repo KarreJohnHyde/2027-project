@@ -1,7 +1,14 @@
 # Encryption at rest — design and executed tests
 
-Status: **IMPLEMENTED_TESTED** for uploaded files. The SQLite database itself is
-**not** encrypted (readiness reports `database_encrypted: false`); see "Not covered".
+Current reconciliation (2026-10-29): uploaded-file encryption and optional whole-database
+SQLCipher encryption are implemented. Actual database protection depends on runtime
+configuration; plain SQLite is not encrypted merely because the feature exists.
+See `backend/app/database.py`, `scripts/encrypt_database.py` and the
+[current audit](../verification/COMPLETENESS_AUDIT_2026-10-29.md).
+
+The remaining sections are the earlier uploaded-file test/design snapshot. Their
+"Not covered" statements are historical, not a current claim that SQLCipher is absent.
+Key rotation, backup/restore drills and production key custody still need verification.
 
 ## What is encrypted
 

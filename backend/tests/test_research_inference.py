@@ -228,6 +228,7 @@ def test_research_finding_maps_only_to_confirmed_schematic_organ(client, test_us
         "organ_schematic": False,
         "verified_structures": [],
         "spatially_registered": [],
+        "documented_structures": [],
     }
 
     review = client.post(f"/api/v1/reviews/{finding.id}", json={"review_status": "CONFIRMED"}, headers=headers)
@@ -243,6 +244,7 @@ def test_research_finding_maps_only_to_confirmed_schematic_organ(client, test_us
         "organ_schematic": True,
         "verified_structures": [],
         "spatially_registered": [],
+        "documented_structures": [],
     }
 
 

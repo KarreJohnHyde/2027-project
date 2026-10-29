@@ -1,5 +1,7 @@
 # Modality support
 
+> **2026-10-29 reconciliation:** constrained ECG upload inference and cardiac MRI NIfTI/DICOM-series research inference are implemented. Older evaluation-only/unsupported wording below is historical. See [upload parity](../validation/UPLOAD_INFERENCE_PARITY.md) and the [current audit](../verification/COMPLETENESS_AUDIT_2026-10-29.md); parity is not independent clinical validation.
+
 Source of truth: `GET /api/v1/modalities` and
 `backend/app/services/modality_registry.py`, shown in **Medical Imaging -> Modality
 support**. Opening a file is not interpreting it. File acceptance, preprocessing,

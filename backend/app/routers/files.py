@@ -180,7 +180,7 @@ def download_file(
         raise HTTPException(status_code=status.HTTP_410_GONE, detail={"code": "FILE_WITHDRAWN", "reason": file_record.withdrawal_reason})
     target_path = Path(file_record.file_path)
 
-    if not target_path.exists() or not target_path.is_file():
+    if not upload_store.available(target_path) or not target_path.is_file():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found.")
 
     # Prevent symlink traversal outside UPLOAD_DIR

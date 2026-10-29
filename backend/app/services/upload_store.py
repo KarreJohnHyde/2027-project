@@ -4,6 +4,9 @@ Every component that touches an uploaded file goes through this module:
 `store()` when writing, `materialize()` for libraries that need a file path,
 `stream()` for downloads. Decrypted copies live only for the duration of a
 `materialize()` block, in UPLOAD_DIR/.work, which is purged at start-up.
+
+With an object store configured (app.services.object_store), every stored object
+is also kept there and an instance that lacks a local copy fetches it on first read.
 """
 
 from __future__ import annotations
@@ -17,6 +20,7 @@ from typing import Iterator
 from fastapi import HTTPException, status
 
 from app import config
+from app.services import object_store
 from app.services.storage_crypto import (
     KeyRing,
     StorageCryptoError,
@@ -56,19 +60,44 @@ def encryption_active() -> bool:
 
 
 def store(plain_temporary: Path, target: Path) -> None:
-    """Moves a validated plaintext temporary file into storage, encrypting it when configured."""
+    """Moves a validated plaintext temporary file into storage, encrypting it when configured,
+    and keeps the durable copy when an object store is configured."""
     if mode() == "required" and not keyring().enabled:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                             detail="Storage encryption is required but no key is configured; the upload was not stored.")
+    durable = object_store.configured()
+    if durable and not encryption_active():
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                            detail="Durable object storage holds encrypted uploads only; configure a storage key. The upload was not stored.")
     if encryption_active():
         encrypt_file(plain_temporary, target, keyring())
         plain_temporary.unlink(missing_ok=True)
     else:
         os.replace(plain_temporary, target)
+    if durable:
+        try:
+            object_store.put(target)
+        except object_store.ObjectStoreError as exc:
+            target.unlink(missing_ok=True)
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=f"{exc} The upload was not stored.") from exc
+
+
+def available(path: Path) -> bool:
+    """Whether the stored object exists here, first fetching its durable copy when this
+    instance lacks it. Only content-addressed objects directly in UPLOAD_DIR are fetched."""
+    if path.exists():
+        return True
+    if not object_store.configured() or path.parent.resolve(strict=False) != config.UPLOAD_DIR.resolve(strict=False):
+        return False
+    try:
+        return object_store.fetch(path)
+    except object_store.ObjectStoreError as exc:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
 
 
 @contextlib.contextmanager
 def materialize(path: Path) -> Iterator[Path]:
+    available(path)
     try:
         with plaintext_path(path, keyring(), work_dir()) as plain:
             yield plain
@@ -78,6 +107,7 @@ def materialize(path: Path) -> Iterator[Path]:
 
 
 def stream(path: Path) -> Iterator[bytes]:
+    available(path)
     return iter_plaintext(path, keyring())
 
 
@@ -100,7 +130,7 @@ def readiness() -> dict:
 
 
 def stored_file_encrypted(path: Path) -> bool:
-    return path.exists() and is_encrypted(path)
+    return available(path) and is_encrypted(path)
 
 
 def resolve_managed_file(path: Path, stored_filename: str) -> Path | None:
@@ -125,7 +155,7 @@ def resolve_managed_file(path: Path, stored_filename: str) -> Path | None:
         raise ManagedStorageDeletionError("Recorded object is outside the managed upload root.")
     if recorded.is_symlink():
         raise ManagedStorageDeletionError("Managed upload objects may not be symbolic links.")
-    if not recorded.exists():
+    if not available(recorded):
         return None
     if not recorded.is_file():
         raise ManagedStorageDeletionError("Recorded upload object is not a regular file.")
@@ -148,4 +178,13 @@ def delete_managed_file(path: Path, stored_filename: str) -> bool:
         target.unlink()
     except OSError as exc:
         raise ManagedStorageDeletionError("Managed upload object could not be deleted.") from exc
+    # Its cached masked text (app.services.derived_text) goes with it; the name starts with the hash.
+    file_hash = stored_filename.split(".", 1)[0]
+    for derived in (config.UPLOAD_DIR / ".derived").glob(f"{file_hash}-*.json"):
+        derived.unlink(missing_ok=True)
+    if object_store.configured():
+        try:
+            object_store.delete(stored_filename)
+        except object_store.ObjectStoreError as exc:
+            raise ManagedStorageDeletionError(str(exc)) from exc
     return True

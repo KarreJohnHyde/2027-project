@@ -25,7 +25,7 @@ from app.config import (
     PROJECT_NAME,
     VERSION,
 )
-from app.database import Base, SessionLocal, engine, get_db
+from app.database import Base, SessionLocal, engine, get_db, schema_lock
 from app.migrations import run_migrations
 from app.models.entities import (
     AnatomicalAsset,
@@ -41,6 +41,7 @@ from app.routers import (
     anatomy_studio,
     auth,
     cases,
+    demographics,
     catalog,
     comparison,
     concordance,
@@ -154,8 +155,9 @@ def seed_development_data(db: Session) -> None:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    Base.metadata.create_all(bind=engine)
-    run_migrations(engine)
+    with schema_lock(engine):
+        Base.metadata.create_all(bind=engine)
+        run_migrations(engine)
     upload_store.startup_cleanup()
     with SessionLocal() as db:
         seed_reference_assets(db)
@@ -188,6 +190,7 @@ for router in (
     members.router,
     portal.router,
     cases.router,
+    demographics.router,
     files.router,
     analysis.router,
     jobs.router,

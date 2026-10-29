@@ -72,3 +72,74 @@ def test_patient_manages_caregivers_and_caregivers_cannot_extend_access(client, 
     assert [item["username"] for item in client.get(f"/api/v1/portal/cases/{case_id}/caregivers", headers=patient).json()] == ["portal_caregiver"]
     assert client.delete(f"/api/v1/portal/cases/{case_id}/caregivers/{caregiver_user.id}", headers=patient).status_code == 204
     assert client.get(f"/api/v1/portal/cases/{case_id}", headers=caregiver).status_code == 404
+
+
+def test_public_user_can_create_private_record_and_upload_only_deidentified_documents(client, db_session):
+    patient_user = _personal(db_session, "self_upload_patient")
+    patient = get_auth_headers(patient_user)
+
+    created = client.post("/api/v1/portal/cases", headers=patient)
+    assert created.status_code == 201, created.text
+    personal_record = created.json()
+    assert personal_record["relationship"] == "PATIENT"
+    assert personal_record["record"].startswith("PERSONAL-")
+
+    repeated = client.post("/api/v1/portal/cases", headers=patient)
+    assert repeated.status_code == 201
+    assert repeated.json() == personal_record
+    assert client.get("/api/v1/portal/cases", headers=patient).json() == [personal_record]
+
+    case_id = personal_record["case_id"]
+    assert client.get(f"/api/v1/cases/{case_id}", headers=patient).status_code == 403
+    assert all(item["id"] != case_id for item in client.get("/api/v1/cases", headers=patient).json())
+
+    missing_attestation = client.post(
+        f"/api/v1/portal/cases/{case_id}/documents",
+        files={"file": ("labs.txt", REPORT, "text/plain")},
+        headers=patient,
+    )
+    assert missing_attestation.status_code == 400
+
+    denied = client.post(
+        f"/api/v1/portal/cases/{case_id}/documents",
+        files={"file": ("labs.txt", REPORT, "text/plain")},
+        data={"deidentified": "false"},
+        headers=patient,
+    )
+    assert denied.status_code == 400
+
+    uploaded = client.post(
+        f"/api/v1/portal/cases/{case_id}/documents",
+        files={"file": ("labs.txt", REPORT, "text/plain")},
+        data={"deidentified": "true"},
+        headers=patient,
+    )
+    assert uploaded.status_code == 201, uploaded.text
+    assert uploaded.json()["case_id"] == case_id
+    duplicate = client.post(
+        f"/api/v1/portal/cases/{case_id}/documents",
+        files={"file": ("labs.txt", REPORT, "text/plain")},
+        data={"deidentified": "true"},
+        headers=patient,
+    )
+    assert duplicate.status_code == 201
+    assert duplicate.json()["id"] == uploaded.json()["id"]
+
+    record = client.get(f"/api/v1/portal/cases/{case_id}", headers=patient)
+    assert record.status_code == 200
+    assert [document["filename"] for document in record.json()["documents"]] == ["labs.txt"]
+    assert record.json()["results"] == []
+    assert "No clinical interpretation or diagnosis is generated" in record.json()["notice"]
+
+    stranger = get_auth_headers(_personal(db_session, "self_upload_stranger"))
+    assert client.post(
+        f"/api/v1/portal/cases/{case_id}/documents",
+        files={"file": ("labs.txt", REPORT, "text/plain")},
+        data={"deidentified": "true"},
+        headers=stranger,
+    ).status_code == 404
+
+
+def test_only_public_accounts_can_create_personal_records(client, db_session, test_users):
+    clinician = get_auth_headers(test_users["clinician_a"])
+    assert client.post("/api/v1/portal/cases", headers=clinician).status_code == 403

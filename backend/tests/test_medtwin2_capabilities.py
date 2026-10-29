@@ -181,6 +181,17 @@ def test_egfr_requires_every_documented_input(client, test_users):
     assert computed[0]["interpretation"] is None
 
 
+def test_egfr_refuses_an_age_its_own_document_contradicts(client, test_users):
+    headers = get_auth_headers(test_users["clinician_a"])
+    case = _case(client, headers, "CASE-EGFR-AGES")
+    packet = b"Creatinine 1.2 mg/dL. Age: 75yrs & Sex: Female\nAge&Sex: 5Yrs/Female"
+    upload = _upload(client, headers, case["id"], "packet.txt", packet, "text/plain").json()
+    _analyse(client, headers, upload["id"])
+    result = client.get(f"/api/v1/cases/{case['id']}/calculations/egfr", headers=headers).json()["results"][0]
+    assert result["value"] is None
+    assert "AGE_CONFLICTING (5, 75)" in result["missing_or_invalid_inputs"]
+
+
 # --------------------------------------------------------------- trends
 
 def test_biomarker_trend_statistics_are_tiered_and_unit_safe(client, test_users):
@@ -606,9 +617,15 @@ def test_modality_registry_separates_formats_from_model_coverage(client, test_us
         assert modalities[required]["file_support_status"] == "SUPPORTED"
         assert modalities[required]["validated_tasks"] == []
     dicom_series = next(item for item in modalities["CT"]["supported_file_formats"] if item["format"] == "DICOM_SERIES")
-    assert dicom_series["available"] is False
-    assert dicom_series["upload_accepted"] is False
+    assert dicom_series["available"] is True
+    assert dicom_series["upload_accepted"] is True
     assert "SeriesInstanceUID" in dicom_series["note"]
+    assert "ImagePositionPatient" in dicom_series["note"]
+    assert "No atomic series upload" in dicom_series["note"]
+    wfdb = next(item for item in modalities["ECG"]["supported_file_formats"] if item["format"] == "WFDB")
+    assert wfdb["available"] is True
+    assert wfdb["library"] == "numpy"
+    assert "plain WFDB format 16" in wfdb["note"]
     nifti = next(item for item in modalities["CT"]["supported_file_formats"] if item["format"] == "NIFTI")
     assert "NIfTI-1 only" in nifti["note"]
     pdf = next(item for item in modalities["DOCUMENT"]["supported_file_formats"] if item["format"] == "PDF")

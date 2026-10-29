@@ -1,5 +1,7 @@
 # MedTwin Software Verification Report
 
+> Historical verification evidence. For the current code, test run and limitations, use the [2026-10-29 audit](verification/COMPLETENESS_AUDIT_2026-10-29.md).
+
 > **Historical verification (23 October 2026).** The current executed evidence is `docs/testing/EXECUTED_TEST_RESULTS.md` and the raw record named there. The 51-test/four-asset statements below are not the current baseline.
 
 **Verified:** 23 October 2026  

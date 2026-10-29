@@ -8,12 +8,10 @@ from pathlib import Path
 from typing import Any
 
 
-DEFAULT_DATASET_REGISTRY_PATH = (
-    Path(__file__).resolve().parents[3] / "dataset_registry" / "datasets.json"
-)
-DEFAULT_DATASET_TASK_AUDIT_PATH = (
-    Path(__file__).resolve().parents[3] / "dataset_registry" / "tasks.json"
-)
+from app.config import PROJECT_ROOT  # honours MEDTWIN_PROJECT_ROOT and the Vercel bundle layout
+
+DEFAULT_DATASET_REGISTRY_PATH = PROJECT_ROOT / "dataset_registry" / "datasets.json"
+DEFAULT_DATASET_TASK_AUDIT_PATH = PROJECT_ROOT / "dataset_registry" / "tasks.json"
 
 
 class DatasetRegistryUnavailableError(RuntimeError):

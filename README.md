@@ -1,5 +1,7 @@
 # MedTwin 2.0
 
+> **Current verification (2026-10-29):** see the [completeness audit](docs/verification/COMPLETENESS_AUDIT_2026-10-29.md) and [working-app demonstration guide](docs/demo/DEMONSTRATION_GUIDE.md). Older test counts and capability statements below are historical. The research roadmap is not clinically validated; Vercel configuration is a blocked local draft, not a deployment.
+
 MedTwin is a software-only research prototype for authenticated, provenance-preserving review of de-identified clinical evidence. It is not a validated medical device, does not replace a clinician, and must not be used with identifiable patient data in this development phase.
 
 The application uses one backend entry point, `backend/app/main.py` (`app.main:app`), and one versioned API contract under `/api/v1`. The previous standalone backend is archived at `backend/legacy/main_pre_v1.py` and is not a supported server.
@@ -9,7 +11,7 @@ Every patient-facing result traces to an uploaded source and a recorded computat
 ## What is operational
 
 - **Workspace:** 16 sections (Overview, Case Workspace, Document Intelligence, Medical Imaging, Biomarker Analytics, Historical Comparison, Live Anatomy Studio, Prognosis Studio, Multimodal Intelligence, Risk & Explainability, Research Analytics, Model Registry, Dataset Registry, Validation Center, Reports, Settings) plus a unified Upload Center, with light and dark themes.
-- **Access control:** JWT authentication, case-scoped authorization, case sharing (viewer/editor), rate limiting, security headers, readiness checks and audit history. Patients and caregivers use personal accounts linked to their own case by a clinician; they see a read-only "My record" page with their documents and clinician-confirmed results only, never research-model output or unreviewed extraction, and a patient decides which caregivers can see it.
+- **Access control:** JWT authentication, case-scoped authorization, case sharing (viewer/editor), rate limiting, security headers, readiness checks and audit history. Patients and caregivers use a scoped "My record" portal. Public users may create a private record and upload only de-identified documents to it; clinician-linked records can also be viewed. The portal shows documents and clinician-confirmed results only, never research-model output or unreviewed extraction, and a patient decides which caregivers can see their record. Portal access does not grant access to clinical case APIs.
 - **Uploads:** content-signature checks and SHA-256 storage for PDF, DOCX, TXT, CSV, XLSX, JSON/FHIR, HL7 v2, PNG/JPEG/BMP, DICOM, NIfTI, NRRD, MHA, digital ECG (WFDB `.hea`/`.dat`, CSV) and EDF/EDF+/BDF recordings (EEG and other physiological signals). A de-identification attestation is required. Stored files are encrypted at rest with AES-256-GCM whenever a storage key is configured (`MEDTWIN_STORAGE_ENCRYPTION=required` makes it mandatory); files can be versioned or withdrawn without altering the original bytes. The SQLite database can be SQLCipher-encrypted (`MEDTWIN_DB_ENCRYPTION=sqlcipher`, the Compose default); `scripts/encrypt_database.py` converts an existing database into a verified encrypted copy.
 - **OCR:** born-digital text is read directly; scanned PDF pages and photographed reports are read with local RapidOCR at 300 DPI, with tilted rows de-skewed and sideways pages read upright. Text after a line OCR could not read is marked uncertain rather than asserted. A photograph of a printed document is refused by the image models.
 - **Documents:** the clinical-text rules baseline `rules-v2.0.0` scopes negation, uncertainty, hypothetical, historical, family and comparison context per clause, so "No evidence of…" or "Rule out…" never becomes a diagnosis. Measurements keep source spans, documented intervals, flags and dates; FHIR Observations and HL7 v2 result messages (OBR/OBX/NTE; patient, visit and staff segments are never read) are imported with their documented codes. All outputs await clinician review; the baseline has not been evaluated on an annotated corpus.
@@ -66,6 +68,8 @@ Infrastructure health is intentionally unversioned at `GET /health`. Application
 ## Optional development seed
 
 There are no embedded or fallback credentials. Development seeding is opt-in, is rejected outside `development` or `test`, and requires an explicit username, password, and email. The password must contain at least 12 characters.
+
+Self-registration requires a unique username, but multiple accounts may use the same email address. Email sign-in is available only when that address belongs to one account; accounts sharing an address must sign in with their usernames. Professional access is never granted by registration.
 
 Set these in the terminal that starts the backend:
 
