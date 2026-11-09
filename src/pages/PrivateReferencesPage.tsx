@@ -3,6 +3,7 @@ import { Download, LockKeyhole } from "lucide-react";
 import { Button, Card, LoadingBlock, PageHeader, StatusBadge, Table } from "../components/ui";
 import { useAsync } from "../lib/useAsync";
 import { api } from "../services/api";
+import { Link } from "../lib/router";
 import { useWorkspace } from "../state/workspace";
 import type { ReferenceReport, SourceRef } from "../types/privateReferences";
 
@@ -76,6 +77,7 @@ function ReferenceLibrary({ owner }: { owner: number | undefined }) {
   const detail = useAsync(() => current ? api.getPrivateReference(current) : null, [owner, current]);
   return <div className="space-y-4">
     <PageHeader eyebrow="Private reference cases" title="Your saved case reports" description="Review the supplied records, source pages and prepared explanations together. These reports belong only to this account and are separate from shared cases and public demonstrations."><p className="mt-2 inline-flex items-center gap-2 text-xs text-ink-3"><LockKeyhole size={14} /> Encrypted local storage · Clinical review pending</p></PageHeader>
+    <p className="text-sm text-ink-2">For sharing, open the <Link to="/examples" className="text-accent-text underline">public teaching examples</Link>. They use fictional names, records and values.</p>
     {list.loading && <LoadingBlock label="Loading private references" />}
     {list.error && <Card title="Private cases unavailable"><p role="alert" className="text-sm text-ink-2">{list.error}</p><Button onClick={list.reload}>Try again</Button></Card>}
     {list.data?.length === 0 && <Card title="No private reference cases for this account"><p className="text-sm text-ink-2">Sign in to the account that owns the imported references. Public demonstrations contain fictional records only.</p></Card>}

@@ -17,6 +17,7 @@ const ROUTES: Record<string, Route> = {
   "/": { component: page(() => import("./pages/OverviewPage")), title: "Overview Dashboard" },
   "/cases": { component: page(() => import("./pages/CaseWorkspacePage")), needsCase: true, title: "Case Workspace" },
   "/private-references": { component: page(() => import("./pages/PrivateReferencesPage")), title: "Private reference cases" },
+  "/examples": { component: page(() => import("./pages/PublicExamplesPage")), title: "Public case examples" },
   "/upload": { component: page(() => import("./pages/UploadCenterPage")), needsCase: true, title: "Upload Center" },
   "/documents": { component: page(() => import("./pages/DocumentIntelligencePage")), needsCase: true, title: "Document Intelligence" },
   "/documents/verify": { component: page(() => import("./pages/DocumentVerificationPage")), needsCase: true, title: "Document Verification" },
@@ -63,16 +64,21 @@ function App() {
   const selected = useSelectedCase();
   const { path } = useLocation();
   const route = ROUTES[path];
+  const publicExamples = path === "/examples";
   const title = route?.title ?? NAV_ITEMS.find((item) => item.path === path)?.label ?? "Not found";
 
   useEffect(() => {
-    void bootstrap();
-  }, [bootstrap]);
+    if (!publicExamples) void bootstrap();
+  }, [bootstrap, publicExamples]);
 
   useEffect(() => {
     document.title = `${title} · MedTwin 2.0`;
   }, [title]);
 
+  if (publicExamples && route) {
+    const PublicPage = route.component;
+    return <Suspense fallback={<LoadingBlock label="Loading public examples" />}><PublicPage /></Suspense>;
+  }
   if (booting) {
     return (
       <div className="grid min-h-screen place-items-center bg-page text-sm text-ink-2">

@@ -36,6 +36,7 @@ export const NAV_SECTIONS: Array<{ label: string; items: NavItem[] }> = [
       { path: "/", label: "Overview Dashboard", icon: Activity, summary: "Case, capability and system status at a glance." },
       { path: "/cases", label: "Case Workspace", icon: FolderKanban, summary: "Examinations, uploads, processing history and sharing.", needsCase: true },
       { path: "/private-references", label: "Private reference cases", icon: FileText, summary: "Your private source records, saved case reports and review limits." },
+      { path: "/examples", label: "Public case examples", icon: FileText, summary: "Three fictional teaching cases with source text, explanations and evidence limits." },
       { path: "/documents", label: "Document Intelligence", icon: FileSearch, summary: "Source-linked statements, context and measurements.", needsCase: true },
       { path: "/documents/verify", label: "Document Verification", icon: FileCheck2, summary: "Each page beside what was extracted from it, checked item by item.", needsCase: true },
       { path: "/imaging", label: "Medical Imaging", icon: ScanLine, summary: "Viewer, modality support and model coverage.", needsCase: true },

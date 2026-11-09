@@ -3,6 +3,7 @@ import { Activity, ArrowRight, PlayCircle, UserRound } from "lucide-react";
 import { api, type User, type VisitorEntry } from "../services/api";
 import { errorMessage } from "../lib/format";
 import { rememberCase } from "../state/workspace";
+import { Link } from "../lib/router";
 import { Button, Disclosure, ErrorBlock, Field, SelectInput, TextInput } from "../components/ui";
 
 /** The key of an entry-page workspace, kept in this browser so the person can continue later. */
@@ -167,6 +168,7 @@ export default function EntryPage({ onEnter }: { onEnter: (user: User) => void }
             This browser remembers who you are; clearing its data means entering again.
           </p>
           <div className="border-t border-line pt-4">
+            <Link to="/examples" className="mb-4 flex items-center justify-center gap-2 rounded-lg border border-line px-3 py-2.5 text-sm font-medium text-accent-text hover:bg-accent-soft">Explore public case examples <ArrowRight size={15} /></Link>
             <Button variant="secondary" icon={PlayCircle} loading={busy === "demo"} disabled={busy !== null} className="w-full" onClick={demo}>Try the demo</Button>
             <p className="mt-2 text-center text-[11px] leading-4 text-ink-3">A temporary workspace with a fictional sample case (two lab reports and a CT report), open for 24 hours.</p>
           </div>
