@@ -56,6 +56,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Audit npm and pnpm dependency locks
+        # Figma Make uses pnpm; CI and the native launcher use npm. Both locks
+        # must stay installable and free of reported advisories.
+        run: |
+          npm audit --package-lock-only --audit-level=low
+          npx --yes pnpm@10.34.3 install --lockfile-only --frozen-lockfile --ignore-scripts
+          npx --yes pnpm@10.34.3 audit --audit-level=low
+          git diff --exit-code -- package.json package-lock.json pnpm-lock.yaml
+
       - name: Type-check, lint, and build
         run: npm run check
 
