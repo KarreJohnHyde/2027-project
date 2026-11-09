@@ -1,7 +1,8 @@
 // Actual application screens on the isolated QA stack. Optional supplied report
 // inputs must be identity-redacted derivatives; they never enter the repository.
 import { expect, test } from "@playwright/test";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { randomUUID } from "node:crypto";
 import path from "node:path";
 
 test.use({ viewport: { width: 1536, height: 1024 }, launchOptions: { args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] } });
@@ -15,7 +16,7 @@ async function post(page, endpoint, token, data, multipart) {
 async function session(page, pseudonym) {
   const login = await post(page, "/auth/login", null, { username: process.env.MEDTWIN_E2E_USERNAME, password: process.env.MEDTWIN_E2E_PASSWORD });
   const token = login.access_token;
-  const caseRecord = await post(page, "/cases", token, { pseudonymous_id: pseudonym, description: "Isolated browser acceptance test. Research only; no patient identity or clinical validation." });
+  const caseRecord = await post(page, "/cases", token, { pseudonymous_id: `${pseudonym}-${randomUUID().slice(0, 8)}`, description: "Isolated browser acceptance test. Research only; no patient identity or clinical validation." });
   // A normal API-issued QA credential in a fresh browser context. No user browser
   // state, account password UI or privileged authentication shortcut is used.
   await page.addInitScript(({ token, caseId }) => {
@@ -49,6 +50,8 @@ test("report and photographed film remain usable across the complete application
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
   const folder = artifacts(testInfo);
+  const lobarAssetAvailable = process.env.MEDTWIN_E2E_NO_DERIVED_ASSETS !== "1" && existsSync(new URL("../../../public/anatomy/derived/brain-lobes-versal/standard.glb", import.meta.url));
+  if (!lobarAssetAvailable) await page.route("**/anatomy/derived/**", (route) => route.fulfill({ status: 404, body: "Optional anatomy derivative is not published." }));
   const { token, caseId } = await session(page, "REPORT-FILM-BROWSER-ACCEPTANCE");
   const supplied = process.env.MEDTWIN_E2E_REPORT_FILE;
   const reportName = supplied ? "identity-redacted-report.pdf" : "synthetic-neuro-report.txt";
@@ -108,7 +111,15 @@ test("report and photographed film remain usable across the complete application
   await capture(page, folder, "05-multimodal-synthesis");
   await page.getByRole("link", { name: "View reported brain region" }).first().click();
   await expect(page.locator("canvas").first()).toBeVisible({ timeout: 60_000 });
-  await expect(page.locator("section").filter({ has: page.getByText("Selected structure", { exact: true }) }).getByText("Parietal lobe", { exact: true })).toBeVisible({ timeout: 60_000 });
+  if (lobarAssetAvailable) {
+    await expect(page.locator("section").filter({ has: page.getByText("Selected structure", { exact: true }) }).getByText("Parietal lobe", { exact: true })).toBeVisible({ timeout: 60_000 });
+  } else {
+    // Clean CI checkouts omit derived geometry. Keep the report association
+    // visible and require an explicit asset failure, without claiming a mesh.
+    await expect(page.getByRole("alert").filter({ hasText: "Asset could not be rendered" })).toBeVisible();
+    await expect(page.getByText(/Documented region: Parietal lobe/).first()).toBeVisible();
+    await expect(page.getByText("Click a structure in the model or the hierarchy.", { exact: false })).toBeVisible();
+  }
   await capture(page, folder, "06-reported-atlas-region");
   for (const [route, name] of [["/documents/verify", "07-verification"], ["/history", "08-insufficient-history"], ["/prognosis-studio?organ=brain", "09-conditional-prognosis"], ["/models", "10-model-registry"], ["/datasets", "11-dataset-registry"]]) {
     await page.goto(route);
@@ -125,7 +136,8 @@ test("report and photographed film remain usable across the complete application
   expect(exported.case_workflow.case_id).toBe(caseId);
   expect(exported.forecast_evaluation_history).toHaveLength(0);
   await capture(page, folder, "12-research-report");
-  expect(errors).toEqual([]);
+  const unexpectedErrors = errors.filter((message) => lobarAssetAvailable || !message.startsWith("Could not load /anatomy/derived/brain-lobes-versal/standard.glb:"));
+  expect(unexpectedErrors).toEqual([]);
 });
 
 test("synthetic reviewed history supports real comparison and baseline output", async ({ page }, testInfo) => {

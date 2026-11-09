@@ -1,5 +1,27 @@
 // New research workflows on the isolated QA stack. No patient inputs or inference.
 import { expect, test } from "@playwright/test";
+import { randomUUID } from "node:crypto";
+
+// Exercise UI contracts with explicit synthetic availability, independently of
+// private checkpoints. Uploads/auth remain real; no inference response is faked
+// or executed. Backend routing/gate tests separately exercise real availability.
+async function syntheticModelAvailability(page) {
+  await page.route("**/api/v1/research-models", async (route) => {
+    const response = await route.fetch();
+    const listing = await response.json();
+    await route.fulfill({ json: { ...listing, notice: "SYNTHETIC UI AVAILABILITY FIXTURE", models: listing.models.map((model) => ({ ...model, gate: { ...model.gate, allowed: true, blockers: [] } })) } });
+  });
+}
+
+function syntheticSelection(request) {
+  const input = request.postDataJSON();
+  const selected = input.task === "segmentation" && input.declared_input_type === "ENDOSCOPY";
+  return { status: selected ? "SELECTED" : input.task === "forecast" ? "NOT_AVAILABLE" : "AMBIGUOUS",
+    reason: selected ? "Synthetic UI fixture: unique compatible task." : input.task === "forecast" ? "No validated upload forecast model (synthetic UI fixture)." : "Multiple distinct supported tasks (synthetic UI fixture).",
+    selected_model_id: selected ? "gi_kvasir_seg_polyp_segmenter" : null,
+    declared_input_type: input.declared_input_type,
+    candidates: [], rejected: [], notice: "SYNTHETIC UI FIXTURE; no model executed." };
+}
 
 async function session(page, pseudonym) {
   const response = await page.request.post("/api/v1/auth/login", { data: {
@@ -8,8 +30,8 @@ async function session(page, pseudonym) {
   expect(response.ok()).toBeTruthy();
   const { access_token: token } = await response.json();
   const headers = { Authorization: `Bearer ${token}` };
-  const created = await page.request.post("/api/v1/cases", { headers, data: { pseudonymous_id: pseudonym } });
-  expect(created.ok()).toBeTruthy();
+  const created = await page.request.post("/api/v1/cases", { headers, data: { pseudonymous_id: `${pseudonym}-${randomUUID().slice(0, 8)}` } });
+  expect(created.ok(), `Case creation HTTP ${created.status()}`).toBeTruthy();
   const { id: caseId } = await created.json();
   await page.addInitScript(({ token, caseId }) => {
     localStorage.setItem("medtwin_token", token);
@@ -35,6 +57,8 @@ test("case pages load while optional model metadata is delayed or unavailable", 
 
 test("task routing refuses ambiguity and selects a unique registered segmentation task", async ({ page }, testInfo) => {
   const { headers, caseId } = await session(page, "SYNTHETIC-ROUTING-BROWSER");
+  await syntheticModelAvailability(page);
+  await page.route("**/model-selection", (route) => route.fulfill({ json: syntheticSelection(route.request()) }));
   await page.goto("/models");
   const encoded = await page.evaluate(() => {
     const canvas = document.createElement("canvas"); canvas.width = 96; canvas.height = 80;
@@ -50,6 +74,13 @@ test("task routing refuses ambiguity and selects a unique registered segmentatio
   } });
   expect(response.ok()).toBeTruthy();
   const { id } = await response.json();
+  const actualListing = await (await page.request.get("/api/v1/research-models", { headers })).json();
+  if (!actualListing.models.some((item) => item.supported_modalities.includes("ENDOSCOPY") && item.gate.allowed)) {
+    // Browser-only availability fixtures must never activate the real server.
+    const actualPlan = await (await page.request.post(`/api/v1/uploads/${id}/model-selection`, { headers, data: { declared_input_type: "ENDOSCOPY", task: "segmentation" } })).json();
+    expect(actualPlan.selected_model_id).toBeNull();
+    expect(actualPlan.status).not.toBe("SELECTED");
+  }
   await page.goto(`/imaging?upload=${id}`);
   await page.getByLabel("Research image type", { exact: true }).selectOption("ENDOSCOPY");
   await expect(page.getByLabel("Research model", { exact: true })).toHaveValue("");
@@ -70,7 +101,7 @@ test("task routing refuses ambiguity and selects a unique registered segmentatio
   const releaseResponse = new Promise((resolve) => { release = resolve; });
   const requestCaptured = new Promise((resolve) => { captured = resolve; });
   await page.route("**/model-selection", async (route) => {
-    const response = await route.fetch(); captured(); await releaseResponse; await route.fulfill({ response });
+    const response = syntheticSelection(route.request()); captured(); await releaseResponse; await route.fulfill({ json: response });
   });
   await page.getByLabel("Automatic model task").selectOption("segmentation");
   await page.getByRole("button", { name: "Find compatible model", exact: true }).click();
@@ -83,14 +114,23 @@ test("task routing refuses ambiguity and selects a unique registered segmentatio
   await page.screenshot({ path: testInfo.outputPath("task-routing.png"), fullPage: true });
 });
 
-test("model registry displays measured learning results with clinical activation disabled", async ({ page }, testInfo) => {
+test("model registry renders supplied benchmark metrics with clinical activation disabled", async ({ page }, testInfo) => {
   const { headers } = await session(page, "SYNTHETIC-LEARNING-BROWSER");
+  await page.route("**/api/v1/research-learning", (route) => route.fulfill({ json: {
+    notice: "SYNTHETIC UI BENCHMARK FIXTURE; no experiment executed.", strategies: [],
+    benchmark: { dataset: "Synthetic benchmark fixture", status: "SYNTHETIC_UI_FIXTURE", labeled_rows: 10, unlabeled_rows: 20, pseudo_labeled_rows: 0,
+      metrics: { supervised_seed: { accuracy: 0.7 }, semi_supervised: { accuracy: 0.696 }, offline_workflow_policy: { coverage: 0, selective_accuracy: null } } },
+  } }));
+  await page.route("**/api/v1/system/research-jobs", (route) => route.fulfill({ json: {
+    available: true, observed_at: "2024-01-01T00:00:00Z", scope: "Synthetic UI job fixture, not a real download.", notice: "SYNTHETIC SOFTWARE TEST ONLY",
+    jobs: [{ id: "synthetic-download", label: "Synthetic acquisition job", status: "COMPLETED", completed: 2, expected: 2, failed: 0, last_event_at: null }],
+  } }));
   const registryCount = (await (await page.request.get("/api/v1/models", { headers })).json()).models.length;
   await page.goto("/models");
   await expect(page.getByRole("heading", { name: "Experimental learning strategies" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Research job progress" })).toBeVisible();
-  await expect(page.getByText("MSD liver acquisition", { exact: true })).toBeVisible();
-  await expect(page.getByText("BloodMNIST28", { exact: true })).toBeVisible();
+  await expect(page.getByText("Synthetic acquisition job", { exact: true })).toBeVisible();
+  await expect(page.getByText("Synthetic benchmark fixture", { exact: true })).toBeVisible();
   await expect(page.getByText("Disabled; benchmark results only", { exact: true })).toBeVisible();
   await expect(page.getByText("70% / 69.6%", { exact: true })).toBeVisible();
   await expect(page.getByText("Registry entries", { exact: true }).locator("../..").getByText(String(registryCount), { exact: true })).toBeVisible({ timeout: 60_000 });
@@ -99,6 +139,7 @@ test("model registry displays measured learning results with clinical activation
 
 test("skin fusion requires documented attributes and clears them when the model changes", async ({ page }) => {
   const { headers, caseId } = await session(page, "SYNTHETIC-SKIN-FUSION-BROWSER");
+  await syntheticModelAvailability(page);
   await page.goto("/models");
   const encoded = await page.evaluate(() => {
     const canvas = document.createElement("canvas"); canvas.width = 128; canvas.height = 128;
