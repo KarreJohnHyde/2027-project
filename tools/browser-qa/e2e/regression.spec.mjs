@@ -3,6 +3,7 @@
 
 import { expect, test } from "@playwright/test";
 import { mkdirSync, writeFileSync } from "node:fs";
+import { randomUUID } from "node:crypto";
 import path from "node:path";
 
 const ROUTES = ["/", "/cases", "/upload", "/documents", "/imaging", "/biomarkers", "/history", "/anatomy-studio", "/prognosis-studio",
@@ -114,14 +115,20 @@ test("an EDF recording is read and drawn without showing its patient field", asy
 });
 
 test("a patient account sees only the results its clinician has reviewed", async ({ page, browser }) => {
-  const { token, caseId } = await signIn(page);
+  const { token } = await signIn(page);
   const auth = { Authorization: `Bearer ${token}` };
+  const suffix = randomUUID().slice(0, 8);
+  const username = `e2e_patient_${suffix}`;
+  const created = await page.request.post("/api/v1/cases", { headers: auth, data: { pseudonymous_id: `SYNTHETIC-PORTAL-${suffix}` } });
+  expect(created.status()).toBe(201);
+  const { id: caseId } = await created.json();
+  await page.evaluate((id) => localStorage.setItem("medtwin.selectedCase", String(id)), caseId);
   const password = `Pt-${Date.now()}-aA1!`;
   const registered = await page.request.post("/api/v1/auth/register", { data: {
-    username: "e2e_patient", email: "e2e_patient@example.invalid", password, full_name: "Synthetic Patient", requested_role: "patient",
+    username, email: `${username}@example.invalid`, password, full_name: "Synthetic Patient", requested_role: "patient",
   } });
   expect(registered.status()).toBe(201);
-  expect((await page.request.post(`/api/v1/cases/${caseId}/members`, { headers: auth, data: { username: "e2e_patient", role: "PATIENT" } })).status()).toBe(201);
+  expect((await page.request.post(`/api/v1/cases/${caseId}/members`, { headers: auth, data: { username, role: "PATIENT" } })).status()).toBe(201);
   await upload(page, fixture("e2e-portal.txt", "SYNTHETIC E2E FIXTURE\nReport date: 2026-10-24\nPotassium 4.6 mmol/L (Reference range 3.5 - 5.1 mmol/L)\n"));
   const measurements = await (await page.request.get(`/api/v1/cases/${caseId}/measurements`, { headers: auth })).json();
   const findingId = measurements.find((item) => item.name === "potassium").finding_id;
@@ -129,11 +136,11 @@ test("a patient account sees only the results its clinician has reviewed", async
   const patient = await browser.newPage();
   await patient.goto("/");
   await patient.getByText("Have a username and password from before?").click();
-  await patient.fill("#login-username", "e2e_patient");
+  await patient.fill("#login-username", username);
   await patient.fill("#login-password", password);
   await patient.getByRole("button", { name: "Open my existing workspace" }).click();
   // Every account has every page (2026-10-30); the personal record stays at /portal.
-  await expect(patient.getByRole("link", { name: "Document Intelligence" })).toBeVisible({ timeout: 30_000 });
+  await expect(patient.getByRole("link", { name: "Document Intelligence", exact: true })).toBeVisible({ timeout: 30_000 });
   await patient.goto("/portal");
   await expect(patient.getByRole("heading", { name: "Your health record" })).toBeVisible({ timeout: 30_000 });
   await expect(patient.getByText("No reviewed results yet.", { exact: false })).toBeVisible();

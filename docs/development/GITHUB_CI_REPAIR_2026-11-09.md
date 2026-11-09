@@ -22,4 +22,6 @@ The subsequent clean-runner browser check exposed workstation-only fixture assum
 
 The full browser suite then passed again (14 passed, one optional skip) with its backend reading the clean publication checkout and optional derived geometry deliberately absent. Twelve routing and job-progress backend tests also passed.
 
+A later runner exposed an ambiguous patient-navigation locator matching both the sidebar and overview card. Use an exact accessible name, a fresh case and a unique patient account per attempt. The complete patient review/portal flow passed three consecutive runs against one throwaway stack, so retries cannot inherit another attempt's account or reviewed findings.
+
 The separate Vercel `backend` project also lacked the documented large-function opt-in. Its 834.76 MB uncompressed bundle failed the standard 500 MB limit. Add the non-secret `VERCEL_SUPPORT_LARGE_FUNCTIONS=1` setting to that project's Production and Preview environments, then rebuild the same reviewed Git deployment. The rebuilt backend reached Ready and its health endpoints responded successfully. This configuration repair does not establish clinical or commercial readiness.
