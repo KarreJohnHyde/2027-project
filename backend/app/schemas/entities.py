@@ -25,6 +25,26 @@ class Token(BaseModel):
     verification_status: VerificationStatus
 
 
+class VisitorEntry(BaseModel):
+    """The entry page: who is using MedTwin. Self-reported; nothing here grants or limits access."""
+    name: str = Field(..., min_length=1, max_length=80)
+    age: int = Field(..., ge=0, le=120)
+    gender: Literal["female", "male", "other", "prefer_not_to_say"]
+    role: Literal["patient", "caregiver", "doctor", "nurse", "lab_expert", "radiologist", "surgeon", "researcher", "student", "other"]
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class VisitorSession(Token):
+    expires_at: datetime
+
+
+class GuestSession(Token):
+    """A temporary demo sign-in and the synthetic case created for it."""
+    case_id: int
+    expires_at: datetime
+
+
 class TokenData(BaseModel):
     username: Optional[str] = None
     role: Optional[UserRole] = None
@@ -114,6 +134,11 @@ class UserResponse(BaseModel):
     role: UserRole
     verification_status: VerificationStatus
     is_active: bool
+    is_guest: bool = False
+    is_visitor: bool = False
+    age: Optional[int] = None
+    gender: Optional[str] = None
+    stated_role: Optional[str] = None
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
@@ -266,6 +291,7 @@ class FusionResponse(BaseModel):
     gated_weights: Optional[Dict[str, float]] = None
     fused_status: EvidenceStatus
     fused_prediction: Optional[Dict[str, Any]] = None
+    evidence_synthesis: Optional[Dict[str, Any]] = None
     paired_data_validated: bool
     abstention_reason: Optional[str] = None
     notice: str = "RESEARCH ONLY. NOT A DIAGNOSTIC PREDICTION."
@@ -341,7 +367,9 @@ class ForecastRequest(BaseModel):
     case_id: int
     target_metric: str = "Joint Space Width"
     unit: str = "mm"
-    horizon_days: int = 180
+    horizon_days: int = Field(default=180, ge=1, le=3650)
+    method: Literal["eligibility_only", "persistence", "linear"] = "eligibility_only"
+    same_patient_confirmed: bool = False
 
 
 class ForecastResponse(BaseModel):
@@ -359,6 +387,7 @@ class ForecastResponse(BaseModel):
     eligibility_status: EvidenceStatus
     ineligibility_reason: Optional[str]
     chronological_series: List[Dict[str, Any]] = []
+    baseline_analysis: Optional[Dict[str, Any]] = None
     notice: str = "EXPERIMENTAL ESTIMATE ONLY. NOT A MEDICAL PREDICTION."
 
 

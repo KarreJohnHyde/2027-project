@@ -6,7 +6,7 @@ import { Button, EmptyState, LoadingBlock } from "./components/ui";
 import { useLocation } from "./lib/router";
 import "./lib/preferences";
 import { NAV_ITEMS } from "./navigation";
-import LoginPage from "./pages/LoginPage";
+import EntryPage from "./pages/EntryPage";
 import { useSelectedCase, useWorkspace } from "./state/workspace";
 
 type Route = { component: ComponentType; needsCase?: boolean; fullBleed?: boolean; title: string };
@@ -79,11 +79,11 @@ function App() {
       </div>
     );
   }
-  if (!user) return <LoginPage onLoginSuccess={(next) => void signedIn(next)} />;
+  if (!user) return <EntryPage onEnter={(next) => void signedIn(next)} />;
 
-  // Personal (patient or caregiver) accounts see only their own record, settings and attribution.
-  const personal = user.role === "public";
-  const Page = personal && !PERSONAL_PATHS.has(path) ? ROUTES["/portal"].component : route?.component ?? NotFound;
+  // Every account has the whole workspace; each sees only its own cases and those shared with it.
+  const Page = route?.component ?? NotFound;
+  const personal = PERSONAL_PATHS.has(path);
   return (
     <AppShell fullBleed={route?.fullBleed}>
       <Suspense fallback={<div className={route?.fullBleed ? "p-6" : ""}><LoadingBlock label={`Loading ${title}`} /></div>}>

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "jurisdiction": "India",
+  "intended_use": "Commercial clinician decision support",
+  "training_purpose": "commercial_development",
+  "intended_use_status": "TASK_POPULATION_AND_CLINICAL_WORKFLOW_NOT_YET_FINALISED",
+  "clinical_release": "NOT_APPROVED",
+  "commercial_rights": "REVIEW_REQUIRED_PER_DATASET_AND_CHECKPOINT",
+  "regulatory_classification": "NOT_ASSESSED_FOR_FINAL_INTENDED_USE",
+  "privacy_review": "INDIA_PROCESSING_AND_PHASED_COMMENCEMENT_REVIEW_REQUIRED",
+  "off_host_recovery": "DESTINATION_NOT_CONFIGURED_LOCAL_VOLUMES_SHARE_DISK_0",
+  "release_review_document": "docs/deployment/INDIA_COMMERCIAL_RELEASE_REVIEW_2026-11-09.md",
+  "owner_instruction_date": "2026-11-09",
+  "notice": "This records the owner's intended direction, not regulatory classification, permission to use non-commercial datasets or release approval."
+}

@@ -1,0 +1,240 @@
+{
+  "scope": "OFFLINE_CHECKPOINT_PARITY_NOT_UPLOAD_AUTHORIZATION",
+  "model_id": "ct_kidney_tumour_segresnet",
+  "checkpoint_sha256": "9acfa4f810ff7eb7be0e35c9ff465f1dee9385f7dc4ce9141ee54ae6e58651a2",
+  "test_cases": 32,
+  "accepted_by_gate": 32,
+  "refused_by_gate": {},
+  "identical_cases": 0,
+  "differing_voxels_total": 1128,
+  "max_differing_voxels_in_a_case": 156,
+  "differing_share_of_foreground": 8.01609643534567e-05,
+  "device": "cuda",
+  "cases": [
+    {
+      "case_id": "case_00001",
+      "voxels": 157810688,
+      "differing_voxels": 88,
+      "foreground_voxels_either": 1945842,
+      "identical": false
+    },
+    {
+      "case_id": "case_00010",
+      "voxels": 13107200,
+      "differing_voxels": 18,
+      "foreground_voxels_either": 228114,
+      "identical": false
+    },
+    {
+      "case_id": "case_00013",
+      "voxels": 24117248,
+      "differing_voxels": 23,
+      "foreground_voxels_either": 248962,
+      "identical": false
+    },
+    {
+      "case_id": "case_00026",
+      "voxels": 79167488,
+      "differing_voxels": 45,
+      "foreground_voxels_either": 405128,
+      "identical": false
+    },
+    {
+      "case_id": "case_00032",
+      "voxels": 49545216,
+      "differing_voxels": 26,
+      "foreground_voxels_either": 254228,
+      "identical": false
+    },
+    {
+      "case_id": "case_00038",
+      "voxels": 8388608,
+      "differing_voxels": 12,
+      "foreground_voxels_either": 160654,
+      "identical": false
+    },
+    {
+      "case_id": "case_00039",
+      "voxels": 23592960,
+      "differing_voxels": 22,
+      "foreground_voxels_either": 176353,
+      "identical": false
+    },
+    {
+      "case_id": "case_00049",
+      "voxels": 175636480,
+      "differing_voxels": 44,
+      "foreground_voxels_either": 1501507,
+      "identical": false
+    },
+    {
+      "case_id": "case_00050",
+      "voxels": 25165824,
+      "differing_voxels": 34,
+      "foreground_voxels_either": 426752,
+      "identical": false
+    },
+    {
+      "case_id": "case_00051",
+      "voxels": 17825792,
+      "differing_voxels": 21,
+      "foreground_voxels_either": 237985,
+      "identical": false
+    },
+    {
+      "case_id": "case_00052",
+      "voxels": 176422912,
+      "differing_voxels": 65,
+      "foreground_voxels_either": 1312351,
+      "identical": false
+    },
+    {
+      "case_id": "case_00054",
+      "voxels": 27262976,
+      "differing_voxels": 8,
+      "foreground_voxels_either": 139510,
+      "identical": false
+    },
+    {
+      "case_id": "case_00057",
+      "voxels": 20971520,
+      "differing_voxels": 24,
+      "foreground_voxels_either": 254555,
+      "identical": false
+    },
+    {
+      "case_id": "case_00064",
+      "voxels": 13893632,
+      "differing_voxels": 13,
+      "foreground_voxels_either": 164781,
+      "identical": false
+    },
+    {
+      "case_id": "case_00067",
+      "voxels": 74711040,
+      "differing_voxels": 104,
+      "foreground_voxels_either": 672772,
+      "identical": false
+    },
+    {
+      "case_id": "case_00074",
+      "voxels": 20971520,
+      "differing_voxels": 34,
+      "foreground_voxels_either": 206329,
+      "identical": false
+    },
+    {
+      "case_id": "case_00075",
+      "voxels": 23592960,
+      "differing_voxels": 14,
+      "foreground_voxels_either": 160039,
+      "identical": false
+    },
+    {
+      "case_id": "case_00076",
+      "voxels": 17301504,
+      "differing_voxels": 7,
+      "foreground_voxels_either": 183204,
+      "identical": false
+    },
+    {
+      "case_id": "case_00092",
+      "voxels": 25690112,
+      "differing_voxels": 13,
+      "foreground_voxels_either": 191679,
+      "identical": false
+    },
+    {
+      "case_id": "case_00138",
+      "voxels": 19922944,
+      "differing_voxels": 29,
+      "foreground_voxels_either": 349981,
+      "identical": false
+    },
+    {
+      "case_id": "case_00139",
+      "voxels": 27000832,
+      "differing_voxels": 19,
+      "foreground_voxels_either": 144636,
+      "identical": false
+    },
+    {
+      "case_id": "case_00143",
+      "voxels": 24117248,
+      "differing_voxels": 10,
+      "foreground_voxels_either": 130032,
+      "identical": false
+    },
+    {
+      "case_id": "case_00149",
+      "voxels": 25427968,
+      "differing_voxels": 19,
+      "foreground_voxels_either": 376773,
+      "identical": false
+    },
+    {
+      "case_id": "case_00152",
+      "voxels": 9961472,
+      "differing_voxels": 10,
+      "foreground_voxels_either": 174208,
+      "identical": false
+    },
+    {
+      "case_id": "case_00155",
+      "voxels": 141033472,
+      "differing_voxels": 156,
+      "foreground_voxels_either": 1479361,
+      "identical": false
+    },
+    {
+      "case_id": "case_00172",
+      "voxels": 23855104,
+      "differing_voxels": 14,
+      "foreground_voxels_either": 137451,
+      "identical": false
+    },
+    {
+      "case_id": "case_00175",
+      "voxels": 28049408,
+      "differing_voxels": 14,
+      "foreground_voxels_either": 193380,
+      "identical": false
+    },
+    {
+      "case_id": "case_00189",
+      "voxels": 38273024,
+      "differing_voxels": 58,
+      "foreground_voxels_either": 292654,
+      "identical": false
+    },
+    {
+      "case_id": "case_00191",
+      "voxels": 91488256,
+      "differing_voxels": 55,
+      "foreground_voxels_either": 719153,
+      "identical": false
+    },
+    {
+      "case_id": "case_00195",
+      "voxels": 25690112,
+      "differing_voxels": 22,
+      "foreground_voxels_either": 187619,
+      "identical": false
+    },
+    {
+      "case_id": "case_00203",
+      "voxels": 162529280,
+      "differing_voxels": 86,
+      "foreground_voxels_either": 834449,
+      "identical": false
+    },
+    {
+      "case_id": "case_00209",
+      "voxels": 26738688,
+      "differing_voxels": 21,
+      "foreground_voxels_either": 181245,
+      "identical": false
+    }
+  ],
+  "comparison_status": "DIFFERENCES_RECORDED_NOT_EXACT"
+}

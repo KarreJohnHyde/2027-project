@@ -49,6 +49,8 @@ class AnalysisFailed(Exception):
 
 
 def check_runnable(file_record: UploadedFile) -> Path:
+    if file_record.withdrawn_at is not None or file_record.superseded_by_file_id is not None:
+        raise AnalysisNotPermitted("Evidence is withdrawn or superseded; it cannot enter case-level processing.")
     if not file_record.is_associated:
         raise AnalysisNotPermitted("File is marked as UNASSOCIATED. Unassociated files cannot enter case-level processing.")
     path = Path(file_record.file_path)
@@ -67,7 +69,8 @@ def _persist_report_outputs(db: Session, file_record: UploadedFile, finding: Fin
             certainty=s.get("certainty"), experiencer=s.get("experiencer"), comparison=s.get("comparison"),
             section=(s.get("section") or "")[:48] or None, anatomical_site=(s.get("anatomical_site") or "")[:128] or None,
             laterality=s.get("laterality"), anatomy_system=s.get("anatomy_system"), atlas_structure_id=s.get("atlas_structure_id"),
-            cues=s.get("cues"), extractor_version=s.get("extractor_version") or result.get("model_version"),
+              cues=s.get("cues"), extractor_version=s.get("extractor_version") or result.get("model_version"),
+              source_page=s.get("source_page"),
         ))
     for m in result.get("measurements", []):
         db.add(MedicalMeasurement(

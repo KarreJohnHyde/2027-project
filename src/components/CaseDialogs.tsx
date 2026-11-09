@@ -49,11 +49,11 @@ export function CreateCaseDialog({ onClose }: { onClose: () => void }) {
   );
 }
 
-export function CreateExaminationDialog({ caseRecord, onClose }: { caseRecord: Case; onClose: () => void }) {
+export function CreateExaminationDialog({ caseRecord, onClose, initialDate }: { caseRecord: Case; onClose: () => void; initialDate?: string }) {
   const refreshCases = useWorkspace((state) => state.refreshCases);
   const setNotice = useWorkspace((state) => state.setNotice);
   const [modality, setModality] = useState<"REPORT" | "IMAGE" | "ECG">("REPORT");
-  const [examDate, setExamDate] = useState(todayInputValue);
+  const [examDate, setExamDate] = useState(initialDate ?? todayInputValue);
   const [indication, setIndication] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);

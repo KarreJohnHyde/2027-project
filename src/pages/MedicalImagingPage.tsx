@@ -2,6 +2,11 @@ import { useEffect, useRef, useState, type PointerEvent, type WheelEvent } from 
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import ResearchModelPanel, { ResultView, VolumeSliceLayer, type OverlayState, type ResearchInput } from "../components/ResearchModelPanel";
 import ChestRadiographPanel from "../components/ChestRadiographPanel";
+import VideoFramePanel from "../components/VideoFramePanel";
+import EchoEfPanel from "../components/EchoEfPanel";
+import WsiPanel from "../components/WsiPanel";
+import FilmPanelPreview from "../components/FilmPanelPreview";
+import MultimodelPanel from "../components/MultimodelPanel";
 import { Badge, Button, Card, Disclosure, EmptyState, ErrorBlock, KeyValue, LoadingBlock, PageHeader, Segmented, SelectInput, StatusBadge, Table, TextInput } from "../components/ui";
 import { api, type DicomSeriesReport, type ImagingMetadata, type RenderInfo, type ResearchRun, type SeriesRenderInfo, type UploadedFile } from "../services/api";
 import { errorMessage, formatDate, formatNumber, humanize } from "../lib/format";
@@ -24,6 +29,8 @@ function PanZoomImage({ src, alt, overlay }: { src: string; alt: string; overlay
     setView((current) => ({ ...current, scale: Math.min(16, Math.max(0.25, current.scale * factor)) }));
   }
   function onPointerDown(event: PointerEvent<HTMLDivElement>) {
+    // Capturing the pointer for a drag would retarget the click away from the viewer's own buttons.
+    if (event.target instanceof Element && event.target.closest("button")) return;
     drag.current = { x: event.clientX - view.x, y: event.clientY - view.y };
     event.currentTarget.setPointerCapture(event.pointerId);
   }
@@ -51,7 +58,8 @@ function PanZoomImage({ src, alt, overlay }: { src: string; alt: string; overlay
   );
 }
 
-function Viewer({ uploadId }: { uploadId: number }) {
+function Viewer({ upload }: { upload: UploadedFile }) {
+  const uploadId = upload.id;
   const metadata = useAsync(() => api.getImagingMetadata(uploadId), [uploadId]);
   const raster = metadata.data?.container === "PNG" || metadata.data?.container === "JPEG" || metadata.data?.container === "BMP";
   const [axis, setAxis] = useState<"axial" | "coronal" | "sagittal">("axial");
@@ -89,11 +97,14 @@ function Viewer({ uploadId }: { uploadId: number }) {
   const data: ImagingMetadata = metadata.data;
   const info = image?.info ?? null;
   const volume = data.container === "NIFTI" || data.container === "NRRD" || data.container === "METAIMAGE";
-  const researchInput: ResearchInput | null = raster ? "image_2d" : data.container === "NIFTI" ? "volume_nifti" : null;
+  const dicom = data.container === "DICOM";
+  // A DICOM frame runs through the 2-D models (converted server-side); NRRD and MetaImage volumes through the volume models.
+  const researchInput: ResearchInput | null = raster || dicom ? "image_2d" : volume ? "volume_nifti" : null;
   // Volume masks are per axial index plane, so the overlay follows the displayed axial slice only.
-  const axialSlice = data.container === "NIFTI" && axis === "axial" && info ? info.slice_index : null;
+  const axialSlice = volume && axis === "axial" && info ? info.slice_index : null;
   const hounsfield = info?.rescale?.units === "HU";
   const sliceCount = info?.slice_count ?? data.slices ?? 1;
+  const film = data.input_assessment?.inference_eligibility === "ABSTAIN_FILM_INPUT";
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
@@ -104,8 +115,10 @@ function Viewer({ uploadId }: { uploadId: number }) {
             <span>Possible residual identifiers despite the de-identification attestation: {data.deidentification_warnings.join("; ")}. Values are never displayed; review and re-export the file.</span>
           </div>
         )}
-        {renderError ? <ErrorBlock message={renderError} /> : image ? <PanZoomImage src={image.url} alt={`${data.filename} ${info ? `slice ${info.slice_index + 1}` : ""}`} overlay={raster || axialSlice !== null ? overlay : null} /> : <LoadingBlock label="Rendering" />}
-        {!raster && (
+        {film && data.input_assessment && <FilmPanelPreview key={uploadId} uploadId={uploadId} assessment={data.input_assessment} />}
+        {film ? <Disclosure summary="Original film montage — source pixels"><p className="mb-2 text-xs text-ink-3">Candidate panels are viewing crops. Original image, labels and source marks are preserved.</p>{renderError ? <ErrorBlock message={renderError} /> : image ? <PanZoomImage src={image.url} alt={data.filename} /> : <LoadingBlock label="Rendering" />}</Disclosure> : renderError ? <ErrorBlock message={renderError} /> : image ? <PanZoomImage src={image.url} alt={`${data.filename} ${info ? `slice ${info.slice_index + 1}` : ""}`} overlay={raster || dicom || axialSlice !== null ? overlay : null} /> : <LoadingBlock label="Rendering" />}
+        {data.container === "WSI" && data.wsi && <div className="mt-4"><WsiPanel uploadId={uploadId} slide={data.wsi} /></div>}
+        {!raster && data.container !== "WSI" && (
           <div className="mt-3 flex flex-wrap items-end gap-3">
             {volume && <Segmented label="Plane" value={axis} onChange={(next) => { setAxis(next); setIndex(null); }} options={[{ value: "axial", label: "Axial idx" }, { value: "coronal", label: "Coronal idx" }, { value: "sagittal", label: "Sagittal idx" }]} size="sm" />}
             {sliceCount > 1 && (
@@ -134,25 +147,28 @@ function Viewer({ uploadId }: { uploadId: number }) {
             </form>
           </div>
         )}
-        <p className="mt-3 text-[11px] leading-4 text-ink-3">Clinical inference: {data.inference.reason}</p>
+        {!film && data.input_assessment && <FilmPanelPreview key={uploadId} uploadId={uploadId} assessment={data.input_assessment} />}
+        <p className="mt-3 text-xs leading-5 text-ink-2">{data.inference.reason}</p>
       </Card>
       <div className="space-y-4">
         <Card title="Research models" eyebrow="Research only · overlay in source pixels">
-          <ResearchModelPanel uploadId={uploadId} input={researchInput} axialSlice={axialSlice} onOverlay={setOverlay} />
+          <ResearchModelPanel key={uploadId} uploadId={uploadId} input={researchInput} assessment={data.input_assessment} axialSlice={axialSlice} onOverlay={setOverlay} imageUrl={raster || dicom ? image?.url ?? null : null} sliceImageUrl={axialSlice !== null ? image?.url ?? null : null} exifOrientation={data.exif_orientation ?? 1}
+            dicomFrames={dicom ? sliceCount : null} displayedFrame={dicom ? info?.slice_index ?? 0 : null} />
+          {(raster || (dicom && sliceCount === 1)) && <MultimodelPanel key={uploadId} uploadId={uploadId} assessment={data.input_assessment} />}
         </Card>
         <Card title="Spatial metadata">
           <KeyValue items={[
-            { label: "Dimensions", value: data.dimensions.filter((value) => value !== null).join(" × ") },
-            { label: "Slices / frames", value: String(data.slices) },
-            { label: "Spacing (mm)", value: data.spacing_mm ? data.spacing_mm.map((value) => formatNumber(value, 4)).join(" × ") : "Not available" },
-            { label: "Spatial frame", value: humanize(data.spatial_metadata) },
+            { label: raster ? "Image dimensions (pixels)" : "Dimensions", value: data.dimensions.filter((value) => value !== null).join(" × ") },
+            { label: raster ? "Raster frames (not CT slices)" : "Slices / frames", value: String(data.slices) },
+            { label: "Spacing (mm)", value: data.spacing_mm ? data.spacing_mm.map((value) => formatNumber(value, 4)).join(" × ") : raster ? "Uncalibrated raster — millimetres cannot be recovered" : "Not available" },
+            { label: "Spatial frame", value: raster ? "Source pixels only; no patient coordinates" : humanize(data.spatial_metadata) },
             ...(data.orientation ? [{ label: "Orientation (axcodes)", value: data.orientation }] : []),
-            { label: "Body part (DICOM)", value: data.body_part ?? "Not recorded" },
-            { label: "Associated systems", value: (data.body_part_systems ?? []).length ? (data.body_part_systems ?? []).map(humanize).join(", ") : "None (no anatomical metadata)" },
+            ...(!raster ? [{ label: "Body part (DICOM)", value: data.body_part ?? "Not recorded" }, { label: "Associated systems", value: (data.body_part_systems ?? []).length ? (data.body_part_systems ?? []).map(humanize).join(", ") : "None (no anatomical metadata)" }] : []),
             { label: "SHA-256", value: data.sha256, mono: true },
           ]} />
         </Card>
-        {info && (
+        {/* A whole-slide thumbnail has no intensity window; its pyramid and resolution are in the slide panel. */}
+        {info && info.window && (
           <Card title="Display mapping">
             <KeyValue columns={1} items={[
               { label: "Window", value: `${formatNumber(info.window.low, 1)} to ${formatNumber(info.window.high, 1)} (${humanize(info.window.source)})` },
@@ -168,6 +184,7 @@ function Viewer({ uploadId }: { uploadId: number }) {
           </Disclosure>
         )}
       </div>
+      {raster && !film && <div className="xl:col-span-2"><ChestRadiographPanel key={`cxr-${upload.id}`} upload={upload} /></div>}
     </div>
   );
 }
@@ -184,9 +201,17 @@ function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFi
   const [error, setError] = useState<string | null>(null);
   const [attested, setAttested] = useState(false);
   const [run, setRun] = useState<ResearchRun | null>(null);
+  const [phase, setPhase] = useState<number>(0);
+  const [modelId, setModelId] = useState("");
   const listing = useAsync(() => api.getResearchModels(), []);
-  const model = (listing.data?.models ?? []).find((item) => item.gate.allowed && item.inference_input === "volume_nifti") ?? null;
+  // Series reach the single-sequence volume models (cardiac segmenter, CT volume models) and the neighbouring-slice head CT models.
+  const seriesModels = (listing.data?.models ?? []).filter((item) => item.gate.allowed && (item.inference_input === "head_ct_series"
+    || (item.inference_input === "volume_nifti" && ["MRI", "CT_ABDOMEN_VOLUME", "CT_CHEST_VOLUME"].some((type) => item.supported_modalities.includes(type)))));
+  const model = seriesModels.find((item) => item.model_id === modelId) ?? seriesModels[0] ?? null;
+  const declaredInput: "MRI" | "CT_ABDOMEN_VOLUME" | "CT_CHEST_VOLUME" | "HEAD_CT_SERIES" = model?.inference_input === "head_ct_series" ? "HEAD_CT_SERIES"
+    : model?.supported_modalities.includes("MRI") ? "MRI" : model?.supported_modalities.includes("CT_CHEST_VOLUME") ? "CT_CHEST_VOLUME" : "CT_ABDOMEN_VOLUME";
   const ordered = report?.status === "ASSEMBLED" ? report.ordered_upload_ids ?? null : null;
+  const phaseChoice = report?.cardiac_phases && (report.issues.includes("CARDIAC_PHASE_REQUIRED") || report.phase !== undefined) ? report : null;
 
   useEffect(() => {
     if (!ordered) return;
@@ -209,14 +234,14 @@ function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFi
     };
   }, [caseId, ordered, axis, index, windowing]);
 
-  async function assemble() {
+  async function assemble(selectedPhase: number | null = null) {
     setBusy("Assembling");
     setError(null);
     setRun(null);
     setImage(null);
     setIndex(null);
     try {
-      setReport(await api.assembleDicomSeries(caseId, chosen));
+      setReport(await api.assembleDicomSeries(caseId, chosen, selectedPhase));
     } catch (failure) {
       setError(errorMessage(failure));
     } finally {
@@ -229,7 +254,9 @@ function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFi
     setBusy("Running");
     setError(null);
     try {
-      setRun(await api.runSeriesResearchModel(caseId, ordered, model.model_id, (job) => setBusy(`${humanize(job.status)}${job.message ? ` · ${job.message}` : ""}`)));
+      // The ordered uploads already hold one image per position (the assembled phase), so no phase is sent again.
+      setRun(await api.runSeriesResearchModel(caseId, ordered, model.model_id, (job) => setBusy(`${humanize(job.status)}${job.message ? ` · ${job.message}` : ""}`),
+        { declaredInputType: declaredInput, shortAxisAttested: declaredInput === "MRI" && attested }));
     } catch (failure) {
       setError(errorMessage(failure));
     } finally {
@@ -277,7 +304,19 @@ function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFi
               </label>
             ))}
           </div>
-          <Button className="mt-3" size="sm" disabled={chosen.length < 2 || busy !== null} loading={busy === "Assembling"} onClick={assemble}>Assemble series</Button>
+          <Button className="mt-3" size="sm" disabled={chosen.length < 2 || busy !== null} loading={busy === "Assembling"} onClick={() => void assemble()}>Assemble series</Button>
+          {phaseChoice && (
+            <div className="mt-3 space-y-2 border-t border-line pt-3">
+              <p className="text-[11px] leading-4 text-ink-2">{phaseChoice.phase_semantics}</p>
+              <label className="block text-xs text-ink-2">
+                Cardiac phase ({phaseChoice.cardiac_phases} per slice position)
+                <SelectInput aria-label="Cardiac phase" value={String(phase)} onChange={(event) => setPhase(Number(event.target.value))}>
+                  {(phaseChoice.phase_trigger_times_ms ?? []).map((time, ordinal) => <option key={ordinal} value={ordinal}>Phase {ordinal + 1} · trigger {formatNumber(time, 0)} ms</option>)}
+                </SelectInput>
+              </label>
+              <Button size="sm" disabled={busy !== null} onClick={() => void assemble(phase)}>Assemble this phase</Button>
+            </div>
+          )}
         </Card>
         {report && (
           <Card title="Geometry" actions={<StatusBadge status={report.status} />}>
@@ -291,15 +330,35 @@ function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFi
           </Card>
         )}
         {ordered && (
-          <Card title="Research model on this series" eyebrow="Research only · cardiac cine-MRI short-axis frames">
+          <Card title="Research model on this series" eyebrow="Research only · cardiac short-axis cine MRI or abdominal CT">
             {!model ? (
-              <p className="text-xs text-ink-2">No volumetric research model passes the gate on this server.</p>
+              <p className="text-xs text-ink-2">No volumetric research model that takes a single-sequence series passes the gate on this server.</p>
             ) : (
               <div className="space-y-3">
-                <p className="text-[11px] leading-4 text-ink-2">{model.display_name}. The series must be one short-axis cine frame inside the development spacing range; it is read with i = column, j = row, k = slice position, an assumed convention (the development frames carry no orientation).</p>
+                {seriesModels.length > 1 && (
+                  <label className="block text-xs text-ink-2">
+                    Model
+                    <SelectInput aria-label="Series research model" value={model.model_id} onChange={(event) => { setModelId(event.target.value); setAttested(false); setRun(null); }}>
+                      {seriesModels.map((item) => <option key={item.model_id} value={item.model_id}>{item.display_name}</option>)}
+                    </SelectInput>
+                  </label>
+                )}
+                <p className="text-[11px] leading-4 text-ink-2">
+                  {declaredInput === "MRI"
+                    ? `${model.display_name}. The development frames carry no patient orientation, so the server runs the model under all 16 axis conventions, keeps the one whose ventricle layout matches the development frames, and requires the right ventricle to lie anterior-right of the left ventricle in this series' patient coordinates. The slice normal must be oblique (short-axis stacks are double-oblique).`
+                    : declaredInput === "HEAD_CT_SERIES"
+                      ? `${model.display_name}. Every slice is windowed as the training images were, stacked with its neighbours and checked against the model's applicability reference; slices outside it are not analysed, and a series with more than half of them outside is refused.`
+                      : `${model.display_name}. The series is permuted and flipped into the development orientation from its DICOM geometry (exact, no resampling) and must hold Hounsfield units inside the development range.`}
+                </p>
                 <label className="flex items-start gap-2 text-xs text-ink-2">
                   <input type="checkbox" checked={attested} onChange={(event) => setAttested(event.target.checked)} className="mt-0.5" />
-                  This series is a cardiac cine-MRI short-axis stack of a single phase.
+                  {declaredInput === "MRI"
+                    ? "This series is a cardiac cine-MRI short-axis stack at end-diastole or end-systole (tags cannot show the view or the phase)."
+                    : declaredInput === "HEAD_CT_SERIES"
+                      ? "This series is a non-contrast axial head CT (every slice of one series)."
+                      : declaredInput === "CT_CHEST_VOLUME"
+                        ? "This series is a thoracic CT volume."
+                        : "This series is a contrast-enhanced abdominal CT volume."}
                 </label>
                 <Button size="sm" disabled={!attested || busy !== null} loading={busy !== null && busy !== "Assembling"} onClick={segment}>{busy && busy !== "Assembling" ? busy : "Run segmenter"}</Button>
                 {run && <ResultView run={run} />}
@@ -353,7 +412,7 @@ export default function MedicalImagingPage() {
       <PageHeader
         eyebrow="Medical Imaging"
         title="Imaging viewer and modality coverage"
-        description="CT, MRI, X-ray, ultrasound, PET, angiography, endoscopy and other containers are read and displayed with their spatial metadata; multi-file DICOM series are assembled by slice position. No clinically validated model is configured. Research-only models trained on public datasets can be run on PNG/JPEG/BMP uploads (after an applicability check against each model's training images), on single-frame NIfTI cardiac MRI volumes and on assembled cardiac MRI series; their outputs are labelled as research and stay pending review."
+        description="CT, MRI, X-ray, ultrasound, PET, angiography, endoscopy and other containers are read and displayed with their spatial metadata; multi-file DICOM series are assembled by slice position. No clinically validated model is configured. Research-only models trained on public datasets can be run on PNG/JPEG/BMP uploads (after an applicability check against each model's training images), on NIfTI volumes (cardiac cine MRI frames, brain diffusion MRI for stroke lesions, multi-sequence brain MRI for gliomas), on assembled cardiac MRI series and frame by frame on GI endoscopy videos (MP4/AVI); their outputs are labelled as research and stay pending review."
         actions={<Segmented label="Imaging view" value={tab} onChange={setTab} options={[{ value: "viewer", label: "Viewer" }, { value: "series", label: "DICOM series" }, { value: "support", label: "Modality support" }]} />}
       />
       {tab === "support" ? <ModalitySupport /> : tab === "series" && selected ? (
@@ -370,8 +429,12 @@ export default function MedicalImagingPage() {
             <div className="w-80"><SelectInput aria-label="Imaging upload" value={active?.id ?? ""} onChange={(event) => setUploadId(Number(event.target.value))}>{images.map((upload) => <option key={upload.id} value={upload.id}>{upload.filename}</option>)}</SelectInput></div>
             {active?.examination_id && <span className="text-xs text-ink-3">Examination {formatDate(exams.get(active.examination_id)?.exam_date)}</span>}
           </div>
-          {active && <Viewer key={active.id} uploadId={active.id} />}
-          {active && /\.(png|jpe?g|bmp)$/i.test(active.filename) && <ChestRadiographPanel key={`cxr-${active.id}`} upload={active} />}
+          {active && (/\.(mp4|avi)$/i.test(active.filename) ? (
+            <div className="space-y-4">
+              <EchoEfPanel key={`echo-${active.id}`} upload={active} />
+              <VideoFramePanel key={`video-${active.id}`} upload={active} />
+            </div>
+          ) : <Viewer key={active.id} upload={active} />)}
         </>
       )}
     </>

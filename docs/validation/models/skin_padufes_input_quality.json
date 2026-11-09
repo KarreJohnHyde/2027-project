@@ -1,0 +1,64 @@
+{
+  "fitted_on": "PAD train only",
+  "quantile": 0.005,
+  "minimum_chroma_255": 5.358334350585937,
+  "definition": "mean(abs(R-G)+abs(G-B))/2 on an RGB 128-pixel thumbnail",
+  "frozen_split_false_refusal": {
+    "train": {
+      "n": 1637,
+      "rate": 0.005497861942577886
+    },
+    "test": {
+      "n": 304,
+      "rate": 0.0
+    },
+    "val": {
+      "n": 357,
+      "rate": 0.0056022408963585435
+    }
+  },
+  "cross_domain": {
+    "GI endoscopy": {
+      "images": 100,
+      "colour_gate_refusal_rate": 0.0
+    },
+    "Coronary angiography": {
+      "images": 100,
+      "colour_gate_refusal_rate": 1.0
+    },
+    "CT": {
+      "images": 100,
+      "colour_gate_refusal_rate": 1.0
+    },
+    "Blood-cell microscopy": {
+      "images": 100,
+      "colour_gate_refusal_rate": 0.17
+    },
+    "Musculoskeletal radiograph": {
+      "images": 100,
+      "colour_gate_refusal_rate": 1.0
+    },
+    "Head CT": {
+      "images": 100,
+      "colour_gate_refusal_rate": 1.0
+    }
+  },
+  "scope": "Colour gate alone. Separate feature-space gate also runs; no clinical adequacy or universal modality guarantee.",
+  "metadata_serving_eligibility": {
+    "train": {
+      "n": 1637,
+      "eligible": 1637,
+      "refused_reasons": {}
+    },
+    "test": {
+      "n": 304,
+      "eligible": 304,
+      "refused_reasons": {}
+    },
+    "val": {
+      "n": 357,
+      "eligible": 357,
+      "refused_reasons": {}
+    }
+  }
+}

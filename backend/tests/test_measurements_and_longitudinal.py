@@ -134,6 +134,7 @@ def test_report_measurements_persist_and_compare_across_examinations(client, tes
         json={
             "prior_exam_id": examinations[0]["id"],
             "current_exam_id": examinations[1]["id"],
+            "same_patient_confirmed": True,
         },
         headers=headers,
     )

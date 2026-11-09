@@ -41,5 +41,238 @@
     "reference_precision": "saved masks came from float16 autocast on CUDA; CUDA kernels in this path are not deterministic",
     "served_precision": "float16 autocast on CUDA",
     "seconds": 5.1
-  }
+  },
+  "images": [
+    {
+      "model_id": "gi_kvasir_seg_polyp_segmenter",
+      "checkpoint_sha256": "a5a2c88dc5af67a8993210ca8a3d40ea79b9cd5e0a7cd5f422c1356828115c36",
+      "held_out_split": "internal test split (split manifest)",
+      "test_images": 120,
+      "model_grid": "352x352",
+      "served_grid_identical_to_saved": 8,
+      "served_grid_pixel_agreement": {
+        "min": 0.99954,
+        "mean": 0.99992
+      },
+      "served_rle_decodes_to_resized_grid": 120,
+      "reference_comparison": {
+        "saved_predictions_at_model_grid": {
+          "images": 120,
+          "mean_foreground_dice_per_image": 0.7679,
+          "foreground_dice": 0.7679,
+          "foreground_iou": 0.6696
+        },
+        "served_predictions_at_model_grid": {
+          "images": 120,
+          "mean_foreground_dice_per_image": 0.7679,
+          "foreground_dice": 0.7679,
+          "foreground_iou": 0.6696
+        },
+        "served_masks_in_source_pixels": {
+          "images": 120,
+          "mean_foreground_dice_per_image": 0.7677,
+          "foreground_dice": 0.7677,
+          "foreground_iou": 0.6694
+        },
+        "note": "Source-pixel scores compare the mask the viewer draws (nearest-neighbour mapped back to each image's own size) with the publisher's mask at that size."
+      },
+      "applicability_gate": {
+        "test_images_checked": 120,
+        "accepted": 106,
+        "refused_as_out_of_distribution": 14,
+        "acceptance_rate": 0.8833
+      },
+      "served_precision": "bfloat16 autocast on CUDA, as in the held-out evaluation",
+      "seconds": 7.1
+    },
+    {
+      "model_id": "angiography_syntax_segmenter",
+      "checkpoint_sha256": "3a3882071f72192edaec39a3cfd2449faf6d93f367d11dccf3455ba8824ab0a0",
+      "held_out_split": "internal test split (split manifest)",
+      "test_images": 300,
+      "model_grid": "512x512",
+      "served_grid_identical_to_saved": 3,
+      "served_grid_pixel_agreement": {
+        "min": 0.99987,
+        "mean": 0.99996
+      },
+      "served_rle_decodes_to_resized_grid": 300,
+      "reference_comparison": {
+        "saved_predictions_at_model_grid": {
+          "images": 300,
+          "mean_foreground_dice_per_image": 0.307,
+          "foreground_dice": 0.6829,
+          "foreground_iou": 0.5352
+        },
+        "served_predictions_at_model_grid": {
+          "images": 300,
+          "mean_foreground_dice_per_image": 0.3072,
+          "foreground_dice": 0.6829,
+          "foreground_iou": 0.5352
+        },
+        "served_masks_in_source_pixels": {
+          "images": 300,
+          "mean_foreground_dice_per_image": 0.3072,
+          "foreground_dice": 0.6829,
+          "foreground_iou": 0.5352
+        },
+        "note": "Source-pixel scores compare the mask the viewer draws (nearest-neighbour mapped back to each image's own size) with the publisher's mask at that size."
+      },
+      "applicability_gate": {
+        "test_images_checked": 300,
+        "accepted": 300,
+        "refused_as_out_of_distribution": 0,
+        "acceptance_rate": 1.0
+      },
+      "served_precision": "bfloat16 autocast on CUDA, as in the held-out evaluation",
+      "seconds": 25.4
+    },
+    {
+      "model_id": "kidney_stone_detector",
+      "checkpoint_sha256": "e9267f9a6e9fb36cc08fd27a888096209febf023ce2f140c5f7d38f6839b9fcb",
+      "held_out_split": "internal test split (split manifest)",
+      "test_images": 196,
+      "reference_boxes": 402,
+      "display_score_threshold": 0.85,
+      "images_with_different_box_count_at_threshold": 0,
+      "matched_box_max_coordinate_difference_px": {
+        "max": 0.195,
+        "mean": 0.0022
+      },
+      "matched_box_score_difference": {
+        "max": 0.00322
+      },
+      "operating_point_served": {
+        "threshold": 0.85,
+        "tp": 221,
+        "fp": 77,
+        "fn": 181,
+        "precision": 0.7416107382550335,
+        "recall": 0.5497512437810945,
+        "f1": 0.6314285714285715
+      },
+      "operating_point_saved": {
+        "threshold": 0.85,
+        "tp": 221,
+        "fp": 77,
+        "fn": 181,
+        "precision": 0.7416107382550335,
+        "recall": 0.5497512437810945,
+        "f1": 0.6314285714285715
+      },
+      "applicability_gate": {
+        "test_images_checked": 196,
+        "accepted": 186,
+        "refused_as_out_of_distribution": 10,
+        "acceptance_rate": 0.949
+      },
+      "note": "Boxes are in source image pixels; served boxes are clipped to the image as the API returns them.",
+      "seconds": 18.2
+    },
+    {
+      "model_id": "angiography_stenosis_detector",
+      "checkpoint_sha256": "d06224b406d7e9104f25c03921fcbe78c2aedae0752ce74e9bcbfefae49c05b8",
+      "held_out_split": "internal test split (split manifest)",
+      "test_images": 300,
+      "reference_boxes": 386,
+      "display_score_threshold": 0.75,
+      "images_with_different_box_count_at_threshold": 1,
+      "matched_box_max_coordinate_difference_px": {
+        "max": 192.698,
+        "mean": 0.3102
+      },
+      "matched_box_score_difference": {
+        "max": 0.10728
+      },
+      "operating_point_served": {
+        "threshold": 0.75,
+        "tp": 147,
+        "fp": 537,
+        "fn": 239,
+        "precision": 0.2149122807017544,
+        "recall": 0.38082901554404147,
+        "f1": 0.27476635514018694
+      },
+      "operating_point_saved": {
+        "threshold": 0.75,
+        "tp": 147,
+        "fp": 536,
+        "fn": 239,
+        "precision": 0.21522693997071743,
+        "recall": 0.38082901554404147,
+        "f1": 0.27502338634237605
+      },
+      "applicability_gate": {
+        "test_images_checked": 300,
+        "accepted": 272,
+        "refused_as_out_of_distribution": 28,
+        "acceptance_rate": 0.9067
+      },
+      "note": "Boxes are in source image pixels; served boxes are clipped to the image as the API returns them.",
+      "seconds": 20.2
+    },
+    {
+      "model_id": "gi_kvasir_v2_classifier",
+      "checkpoint_sha256": "6d7494d19e52c0b5462f90637e35f474d9db1950217e5a40e95cda4bec27a8e4",
+      "held_out_split": "internal test split (split manifest)",
+      "test_images": 1202,
+      "top_class_agreement_with_saved": 1202,
+      "probability_abs_difference": {
+        "max": 0.014351,
+        "mean": 8.72e-05
+      },
+      "accuracy_served": 0.926,
+      "accuracy_saved": 0.926,
+      "applicability_gate": {
+        "test_images_checked": 1202,
+        "accepted": 1195,
+        "refused_as_out_of_distribution": 7,
+        "acceptance_rate": 0.9942
+      },
+      "reference_precision": "saved probabilities are temperature-scaled and rounded to 6 decimals",
+      "seconds": 35.3
+    },
+    {
+      "model_id": "gi_gastrovision_27class_classifier",
+      "checkpoint_sha256": "464986a86033a6415af2870ac26a75d06c787e86caf3b9f74b865e4f5ba757f9",
+      "held_out_split": "internal test split (split manifest)",
+      "test_images": 1225,
+      "top_class_agreement_with_saved": 1224,
+      "probability_abs_difference": {
+        "max": 0.014057,
+        "mean": 0.001653
+      },
+      "accuracy_served": 0.7363,
+      "accuracy_saved": 0.7371,
+      "applicability_gate": {
+        "test_images_checked": 1225,
+        "accepted": 1217,
+        "refused_as_out_of_distribution": 8,
+        "acceptance_rate": 0.9935
+      },
+      "reference_precision": "saved probabilities are temperature-scaled and rounded to 6 decimals",
+      "seconds": 49.9
+    },
+    {
+      "model_id": "hematology_cnmc_all_classifier",
+      "checkpoint_sha256": "f5ea1fafc826ae524c8d335a5e32019243c58dcd0bda19ef0e9722823ca82736",
+      "held_out_split": "internal test split (split manifest)",
+      "test_images": 1867,
+      "top_class_agreement_with_saved": 1867,
+      "probability_abs_difference": {
+        "max": 0.004348,
+        "mean": 0.0004424
+      },
+      "accuracy_served": 0.8072,
+      "accuracy_saved": 0.8072,
+      "applicability_gate": {
+        "test_images_checked": 1867,
+        "accepted": 1831,
+        "refused_as_out_of_distribution": 36,
+        "acceptance_rate": 0.9807
+      },
+      "reference_precision": "saved probabilities are temperature-scaled and rounded to 6 decimals",
+      "seconds": 62.6
+    }
+  ]
 }

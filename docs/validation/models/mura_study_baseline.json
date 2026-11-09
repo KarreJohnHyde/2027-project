@@ -1,0 +1,451 @@
+{
+  "model_id": "mura_study_baseline",
+  "run_id": "mura_study_baseline-20261031T115458Z",
+  "task_id": "mura-study-abnormality",
+  "dataset": "MURA v1.1 musculoskeletal radiographs (Stanford AIMI)",
+  "dataset_id": "mura-v1.1",
+  "dataset_version": "873c4587ca667acf4f1e22723195a4c3d77dca45450ad93057334efbfa07323d",
+  "dataset_license": {
+    "status": "PERMISSION_UNVERIFIED",
+    "authorization_status": "VERIFIED",
+    "authorization_reason": "Repository owner confirmed on 2026-10-31 that they accepted the Stanford AIMI Research Use Agreement when downloading MURA.",
+    "authorized_by": "repository owner (recorded interactive decision)",
+    "authorized_on": "2026-10-31",
+    "authorization_scope": "personal, non-commercial research training and evaluation; no redistribution of images",
+    "name": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
+    "source": "https://aimi.stanford.edu/datasets/mura-msk-xrays",
+    "verified_on": "2026-10-25",
+    "citation": "Rajpurkar P, Irvin J, Bagul A, et al. MURA: Large Dataset for Abnormality Detection in Musculoskeletal Radiographs. arXiv:1712.06957 (2017)."
+  },
+  "split_method": "publisher validation split frozen as test; publisher training patients divided into train/validation, seed 20261024; labels per study from the publisher's CSV; group unit: patient",
+  "split_counts": {
+    "train": 30370,
+    "val": 6438,
+    "test": 3197
+  },
+  "test_n": 3197,
+  "test_groups": 783,
+  "group_unit": "patient",
+  "classes": [
+    "abnormal",
+    "normal"
+  ],
+  "validation_readiness": {
+    "validation_ready": true,
+    "readiness": "READY_FOR_TRAINING",
+    "run_scope": "STANDARD_INTERNAL_EVALUATION",
+    "minimum_samples_per_class": null,
+    "classes_below_minimum": [],
+    "source_flags": [
+      "TASK_SUPPORTED_BY_LABELS",
+      "LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES"
+    ],
+    "effective_flags": [
+      "TASK_SUPPORTED_BY_LABELS",
+      "LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES"
+    ]
+  },
+  "run_scope": "STANDARD_INTERNAL_EVALUATION",
+  "class_distribution": {
+    "per_split": {
+      "train": {
+        "abnormal": 12319,
+        "normal": 18051
+      },
+      "val": {
+        "abnormal": 2554,
+        "normal": 3884
+      },
+      "test": {
+        "abnormal": 1530,
+        "normal": 1667
+      }
+    },
+    "total": {
+      "abnormal": 16403,
+      "normal": 23602
+    }
+  },
+  "class_imbalance": {
+    "strategy": "inverse_frequency",
+    "enabled": true,
+    "formula": "w_c = N_train / (K * n_train,c)",
+    "computed_from": "training split only",
+    "training_counts": {
+      "abnormal": 12319,
+      "normal": 18051
+    },
+    "weights_by_class": {
+      "abnormal": 1.2326487539573017,
+      "normal": 0.8412276328181264
+    },
+    "normalization": "equal aggregate training-loss contribution per observed class"
+  },
+  "selection": {
+    "criterion": "validation macro-F1",
+    "candidates": {
+      "resnet18": {
+        "val_macro_f1": 0.781445303180152,
+        "best_epoch": 7
+      },
+      "efficientnet_b0": {
+        "val_macro_f1": 0.8084654923092338,
+        "best_epoch": 8
+      }
+    },
+    "selected": "efficientnet_b0"
+  },
+  "calibration": {
+    "method": "temperature_scaling",
+    "fitted_on": "validation split",
+    "temperature": 1.2500369548797607
+  },
+  "metrics": {
+    "accuracy": 0.821707851110416,
+    "balanced_accuracy": 0.819741541887701,
+    "macro_f1": 0.8205299570758642,
+    "macro_auroc_one_vs_rest": 0.8868021667003632,
+    "ece_uncalibrated": 0.031441843729672445,
+    "ece_temperature_scaled": 0.022626754004842677,
+    "brier_multiclass": 0.2612587880050232
+  },
+  "confidence_intervals_95": {
+    "accuracy": {
+      "status": "COMPUTED",
+      "low": 0.8020761076007417,
+      "high": 0.840121078860031,
+      "resamples": 1000,
+      "unit": "patient"
+    },
+    "macro_f1": {
+      "status": "COMPUTED",
+      "low": 0.800646915270047,
+      "high": 0.8385586191616832,
+      "resamples": 1000,
+      "unit": "patient"
+    },
+    "balanced_accuracy": {
+      "status": "COMPUTED",
+      "low": 0.8000736241687825,
+      "high": 0.8380257389159086,
+      "resamples": 1000,
+      "unit": "patient"
+    }
+  },
+  "per_class": [
+    {
+      "class": "abnormal",
+      "support": 1530,
+      "precision": 0.8409090909090909,
+      "recall": 0.7738562091503268,
+      "f1": 0.8059904697072838,
+      "auroc_one_vs_rest": 0.8868036270141602
+    },
+    {
+      "class": "normal",
+      "support": 1667,
+      "precision": 0.8065958636109558,
+      "recall": 0.865626874625075,
+      "f1": 0.8350694444444444,
+      "auroc_one_vs_rest": 0.8868007063865662
+    }
+  ],
+  "confusion_matrix": [
+    [
+      1184,
+      346
+    ],
+    [
+      224,
+      1443
+    ]
+  ],
+  "study_level": {
+    "aggregation": "mean calibrated P(abnormal) over the study's views; threshold 0.5",
+    "unit": "study",
+    "group_unit": "patient",
+    "studies": 1199,
+    "abnormal": 538,
+    "auroc": 0.8980268152905646,
+    "accuracy": 0.841534612176814,
+    "sensitivity": 0.7713754646840149,
+    "specificity": 0.8986384266263238,
+    "cohen_kappa": 0.6765661292429311,
+    "confidence_intervals_95": {
+      "auroc": {
+        "status": "COMPUTED",
+        "low": 0.8795866140262427,
+        "high": 0.9167784313544818,
+        "resamples": 1000,
+        "unit": "patient"
+      },
+      "cohen_kappa": {
+        "status": "COMPUTED",
+        "low": 0.6315900826844171,
+        "high": 0.7176853360888005,
+        "resamples": 1000,
+        "unit": "patient"
+      }
+    },
+    "per_body_part": {
+      "XR_ELBOW": {
+        "studies": 158,
+        "abnormal": 66,
+        "auroc": 0.8916337285902504,
+        "accuracy": 0.8670886075949367,
+        "sensitivity": 0.7727272727272727,
+        "specificity": 0.9347826086956522,
+        "cohen_kappa": 0.7214105793450881
+      },
+      "XR_FINGER": {
+        "studies": 175,
+        "abnormal": 83,
+        "auroc": 0.8605945521215296,
+        "accuracy": 0.7885714285714286,
+        "sensitivity": 0.6987951807228916,
+        "specificity": 0.8695652173913043,
+        "cohen_kappa": 0.5727482678983834
+      },
+      "XR_FOREARM": {
+        "studies": 133,
+        "abnormal": 64,
+        "auroc": 0.9173460144927537,
+        "accuracy": 0.8421052631578947,
+        "sensitivity": 0.703125,
+        "specificity": 0.9710144927536232,
+        "cohen_kappa": 0.680690522464845
+      },
+      "XR_HAND": {
+        "studies": 167,
+        "abnormal": 66,
+        "auroc": 0.8660366036603661,
+        "accuracy": 0.8263473053892215,
+        "sensitivity": 0.6515151515151515,
+        "specificity": 0.9405940594059405,
+        "cohen_kappa": 0.6197691764151683
+      },
+      "XR_HUMERUS": {
+        "studies": 135,
+        "abnormal": 67,
+        "auroc": 0.9282265144863916,
+        "accuracy": 0.8962962962962963,
+        "sensitivity": 0.9104477611940298,
+        "specificity": 0.8823529411764706,
+        "cohen_kappa": 0.7926267281105991
+      },
+      "XR_SHOULDER": {
+        "studies": 194,
+        "abnormal": 95,
+        "auroc": 0.8831472620946306,
+        "accuracy": 0.7989690721649485,
+        "sensitivity": 0.8315789473684211,
+        "specificity": 0.7676767676767676,
+        "cohen_kappa": 0.598365006900945
+      },
+      "XR_WRIST": {
+        "studies": 237,
+        "abnormal": 97,
+        "auroc": 0.92639911634757,
+        "accuracy": 0.8776371308016878,
+        "sensitivity": 0.8041237113402062,
+        "specificity": 0.9285714285714286,
+        "cohen_kappa": 0.7432861464908678
+      }
+    }
+  },
+  "highest_confidence_errors": [
+    [
+      "MURA-v1.1/valid/XR_ELBOW/patient11763/study1_negative/image1.png",
+      "normal",
+      "abnormal",
+      0.9987548589706421
+    ],
+    [
+      "MURA-v1.1/valid/XR_WRIST/patient11326/study1_negative/image2.png",
+      "normal",
+      "abnormal",
+      0.9969810843467712
+    ],
+    [
+      "MURA-v1.1/valid/XR_ELBOW/patient11763/study1_negative/image2.png",
+      "normal",
+      "abnormal",
+      0.9946475625038147
+    ],
+    [
+      "MURA-v1.1/valid/XR_FINGER/patient11930/study1_negative/image1.png",
+      "normal",
+      "abnormal",
+      0.9922312498092651
+    ],
+    [
+      "MURA-v1.1/valid/XR_WRIST/patient11326/study1_negative/image1.png",
+      "normal",
+      "abnormal",
+      0.9881659746170044
+    ],
+    [
+      "MURA-v1.1/valid/XR_FINGER/patient11930/study1_negative/image3.png",
+      "normal",
+      "abnormal",
+      0.9859346151351929
+    ],
+    [
+      "MURA-v1.1/valid/XR_HUMERUS/patient11675/study1_negative/image2.png",
+      "normal",
+      "abnormal",
+      0.9855837821960449
+    ],
+    [
+      "MURA-v1.1/valid/XR_HUMERUS/patient11339/study1_negative/image2.png",
+      "normal",
+      "abnormal",
+      0.9848558306694031
+    ],
+    [
+      "MURA-v1.1/valid/XR_HUMERUS/patient11339/study1_negative/image1.png",
+      "normal",
+      "abnormal",
+      0.9799128770828247
+    ],
+    [
+      "MURA-v1.1/valid/XR_WRIST/patient11360/study1_negative/image4.png",
+      "normal",
+      "abnormal",
+      0.9794148802757263
+    ],
+    [
+      "MURA-v1.1/valid/XR_FOREARM/patient11429/study1_positive/image2.png",
+      "abnormal",
+      "normal",
+      0.9778472185134888
+    ],
+    [
+      "MURA-v1.1/valid/XR_FINGER/patient11941/study1_negative/image3.png",
+      "normal",
+      "abnormal",
+      0.9758703708648682
+    ],
+    [
+      "MURA-v1.1/valid/XR_SHOULDER/patient11601/study2_negative/image3.png",
+      "normal",
+      "abnormal",
+      0.9734002947807312
+    ],
+    [
+      "MURA-v1.1/valid/XR_WRIST/patient11360/study1_negative/image3.png",
+      "normal",
+      "abnormal",
+      0.9710384607315063
+    ],
+    [
+      "MURA-v1.1/valid/XR_FOREARM/patient11416/study1_positive/image2.png",
+      "abnormal",
+      "normal",
+      0.9699650406837463
+    ],
+    [
+      "MURA-v1.1/valid/XR_WRIST/patient11360/study1_negative/image2.png",
+      "normal",
+      "abnormal",
+      0.9699650406837463
+    ],
+    [
+      "MURA-v1.1/valid/XR_FINGER/patient11315/study1_positive/image1.png",
+      "abnormal",
+      "normal",
+      0.969598650932312
+    ],
+    [
+      "MURA-v1.1/valid/XR_FOREARM/patient11416/study1_positive/image1.png",
+      "abnormal",
+      "normal",
+      0.9669108390808105
+    ],
+    [
+      "MURA-v1.1/valid/XR_FINGER/patient11935/study1_negative/image1.png",
+      "normal",
+      "abnormal",
+      0.9661015868186951
+    ],
+    [
+      "MURA-v1.1/valid/XR_HUMERUS/patient11676/study1_negative/image1.png",
+      "normal",
+      "abnormal",
+      0.9652732610702515
+    ],
+    [
+      "MURA-v1.1/valid/XR_HUMERUS/patient11675/study1_negative/image1.png",
+      "normal",
+      "abnormal",
+      0.9650631546974182
+    ],
+    [
+      "MURA-v1.1/valid/XR_HUMERUS/patient11615/study1_positive/image1.png",
+      "abnormal",
+      "normal",
+      0.9622179269790649
+    ],
+    [
+      "MURA-v1.1/valid/XR_FOREARM/patient11402/study1_positive/image1.png",
+      "abnormal",
+      "normal",
+      0.9608307480812073
+    ],
+    [
+      "MURA-v1.1/valid/XR_WRIST/patient11253/study1_positive/image2.png",
+      "abnormal",
+      "normal",
+      0.9568889141082764
+    ],
+    [
+      "MURA-v1.1/valid/XR_ELBOW/patient11495/study1_negative/image2.png",
+      "normal",
+      "abnormal",
+      0.955845832824707
+    ]
+  ],
+  "checkpoint": {
+    "path": "artifacts/training/mura_study_baseline-20261031T115458Z/model.pt",
+    "sha256": "e5604f7efe4c480bc58e0a29d159255fb4ba8a08644cfa10de76f665595215be"
+  },
+  "held_out_predictions": "artifacts/training/mura_study_baseline-20261031T115458Z/predictions_test.csv",
+  "training_seconds": 1435.2,
+  "config": {
+    "task_id": "mura-study-abnormality",
+    "model_id": "mura_study_baseline",
+    "display_name": "Upper-limb radiograph abnormality classifier, MURA (research)",
+    "modality": "XRAY",
+    "anatomy": "skeletal",
+    "archs": "resnet18,efficientnet_b0",
+    "epochs": 8,
+    "batch_size": 32,
+    "image_size": 288,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "class_weighting": "inverse_frequency",
+    "exploratory": false,
+    "workers": 4,
+    "seed": 20261024
+  },
+  "reporting_context": {
+    "dataset": "MURA v1.1 musculoskeletal radiographs (Stanford AIMI)",
+    "dataset_version": "873c4587ca667acf",
+    "split": "test",
+    "checkpoint": "sha256:e5604f7efe4c480bc58e0a29d159255fb4ba8a08644cfa10de76f665595215be",
+    "reporting_status": "INTERNAL_HELD_OUT"
+  },
+  "limitations": [
+    "Training used inverse-frequency weighted cross-entropy computed from the training split only. Weighting changes optimisation but does not create rare-class evidence or correct evaluation uncertainty.",
+    "Pseudonymous patient ids come from the publisher's folders. The publisher's validation split, used as the test set, shares no patient with its training split; training patients were divided into train and validation, and the bootstrap resamples patients.",
+    "Internal held-out test from the same source distribution; no external validation.",
+    "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+    "Research-only output; not validated for clinical use."
+  ],
+  "report_corrections": [
+    {
+      "date": "2026-10-31",
+      "change": "Bootstrap unit labels corrected from 'near-duplicate group' to 'patient' and the patient-separation sentence corrected: the bootstrap resampled group_id, which for MURA is the publisher's patient folder id. No value changed."
+    }
+  ]
+}

@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { Badge, Card, KeyValue, Metric, PageHeader, Segmented, StatusBadge, Table } from "../components/ui";
-import type { ModelRegistryRecord } from "../services/api";
+import { Badge, Card, ErrorBlock, KeyValue, Metric, PageHeader, Segmented, StatusBadge, Table } from "../components/ui";
+import { api, type ModelRegistryRecord } from "../services/api";
+import { useAsync } from "../lib/useAsync";
 import { frameworkLabel, publicText, runtimeLabel } from "../lib/displayNames";
 import { formatNumber, humanize } from "../lib/format";
 import { useWorkspace } from "../state/workspace";
+import CapabilityCoverage from "../components/CapabilityCoverage";
+import ResearchJobProgress from "../components/ResearchJobProgress";
 
 function declared(value: unknown): string {
   if (value === null || value === undefined || value === "" || (typeof value === "object" && Object.keys(value as object).length === 0)) return "Not declared";
   return typeof value === "object" ? JSON.stringify(value) : String(value);
 }
 
-type RegistryView = "evidence" | "cards";
+type RegistryView = "evidence" | "cards" | "coverage";
 
 function isRecorded(value: unknown): boolean {
   return value !== null && value !== undefined && value !== "" && value !== "UNKNOWN" && value !== "UNVERIFIED";
@@ -78,6 +81,17 @@ function ModelCard({ model }: { model: ModelRegistryRecord }) {
           )}
         </div>
       )}
+      {(model.inference_route || model.local_evaluation) && (
+        <div className="mt-3 rounded-lg border border-line p-3 text-[11px] leading-4 text-ink-2">
+          {model.inference_route && <p>Runs through its own endpoint: <code>{model.inference_route}</code>.</p>}
+          {model.local_evaluation && (
+            <p className={model.inference_route ? "mt-1" : ""}>
+              Local check, {model.local_evaluation.scope.toLowerCase()}: {publicText(model.local_evaluation.headline)} ({publicText(model.local_evaluation.dataset)}).
+              This is narrower than a held-out evaluation of the model's outputs.
+            </p>
+          )}
+        </div>
+      )}
       {!model.activation.eligible && (
         <div className="mt-3 rounded-lg border border-line bg-surface-2 p-3">
           <p className="text-xs font-medium text-ink">Registry gate blockers</p>
@@ -135,15 +149,23 @@ function EvidenceMatrix({ models }: { models: ModelRegistryRecord[] }) {
                   />
                 </td>
                 <td>
-                  <Facet
-                    value={model.research_gate?.allowed === true}
-                    yes="Runnable"
-                    no="Blocked / not routed"
-                    yesStatus="RESEARCH_ONLY_UNVALIDATED"
-                    noStatus="BLOCKED"
-                  />
+                  {!model.research_gate && model.inference_route && model.activation.checkpoint_hash_matches ? (
+                    <span title={model.inference_route}><StatusBadge status="RESEARCH_ONLY_UNVALIDATED" label="Runnable (own route)" /></span>
+                  ) : (
+                    <Facet
+                      value={model.research_gate?.allowed === true}
+                      yes="Runnable"
+                      no="Blocked / not routed"
+                      yesStatus="RESEARCH_ONLY_UNVALIDATED"
+                      noStatus="BLOCKED"
+                    />
+                  )}
                 </td>
-                <td><Facet value={internalEvaluation} yes="Held-out report" no="Not recorded" yesStatus="INTERNALLY_EVALUATED" /></td>
+                <td>
+                  {!internalEvaluation && model.local_evaluation ? (
+                    <span title={`${model.local_evaluation.headline} (${model.local_evaluation.dataset})`}><StatusBadge status="PARTIAL" label={`Local check: ${model.local_evaluation.scope}`} /></span>
+                  ) : <Facet value={internalEvaluation} yes="Held-out report" no="Not recorded" yesStatus="INTERNALLY_EVALUATED" />}
+                </td>
                 <td><Facet value={externalEvaluationRecorded(model)} yes="Referenced" no="Not recorded" yesStatus="RECORDED" /></td>
                 <td>
                   <Facet
@@ -164,7 +186,11 @@ function EvidenceMatrix({ models }: { models: ModelRegistryRecord[] }) {
 }
 
 export default function ModelRegistryPage() {
-  const models = useWorkspace((state) => state.models);
+  const learning = useAsync(() => api.getResearchLearning(), []);
+  const registry = useAsync(() => api.getModels(), []);
+  const workspaceModels = useWorkspace((state) => state.models);
+  // Registry evidence should not wait for unrelated dataset inventories in shell loading.
+  const models = registry.data?.models ?? workspaceModels;
   const [state, setState] = useState("ALL");
   const [view, setView] = useState<RegistryView>("evidence");
   const states = [...new Set(models.map((model) => model.registry_state))].sort();
@@ -188,17 +214,36 @@ export default function ModelRegistryPage() {
             options={[
               { value: "evidence", label: "Evidence matrix" },
               { value: "cards", label: "Model cards" },
+              { value: "coverage", label: "Organ / test coverage" },
             ]}
           />
         }
       />
+      <ResearchJobProgress />
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <Metric label="Registry entries" value={models.length} note="Includes frameworks and text processors" />
+        <Metric label="Registry entries" value={registry.loading && models.length === 0 ? "Loading" : models.length} note="Includes frameworks and text processors" />
         <Metric label="Internal evaluation recorded" value={internalEvaluated} note="Not external or clinical validation" />
         <Metric label="External report references" value={externalEvaluated} note="Metadata references, not independent verification" />
         <Metric label="Registry gate eligible" value={models.filter((model) => model.activation.eligible).length} note="Artifact/status checks, not clinical approval" />
       </div>
-      {view === "evidence" ? (
+      {registry.error && <ErrorBlock message={registry.error} onRetry={registry.reload} />}
+      <div className="mt-4"><Card title="Experimental learning strategies" eyebrow="Public-data research only">
+        <p className="text-sm text-ink-2">{learning.data?.notice ?? "Unsupervised novelty, semi-supervised self-training, and offline reinforcement learning run as isolated research experiments. No automatic training on uploads or treatment selection."}</p>
+        {learning.loading && <p className="mt-2 text-xs text-ink-2">Reading experiment report...</p>}
+        {learning.error && <p className="mt-2 text-xs text-ink-2">Experiment report unavailable.</p>}
+        {learning.data?.strategies.map((strategy) => <p className="mt-2 text-xs text-ink-2" key={strategy}>{strategy}</p>)}
+        {learning.data?.benchmark && <KeyValue columns={3} items={[
+          { label: "Benchmark", value: learning.data.benchmark.dataset },
+          { label: "Seed labeled / unlabeled", value: `${learning.data.benchmark.labeled_rows} / ${learning.data.benchmark.unlabeled_rows}` },
+          { label: "Supervised / semi-supervised accuracy", value: `${formatNumber(learning.data.benchmark.metrics.supervised_seed.accuracy * 100, 1)}% / ${formatNumber(learning.data.benchmark.metrics.semi_supervised.accuracy * 100, 1)}%` },
+          { label: "Offline policy coverage", value: `${formatNumber(learning.data.benchmark.metrics.offline_workflow_policy.coverage * 100, 1)}%` },
+          { label: "Policy accuracy on accepted samples", value: learning.data.benchmark.metrics.offline_workflow_policy.selective_accuracy === null ? "No accepted samples" : `${formatNumber(learning.data.benchmark.metrics.offline_workflow_policy.selective_accuracy * 100, 1)}%` },
+          { label: "Clinical activation", value: "Disabled; benchmark results only" },
+        ]} />}
+      </Card></div>
+      {view === "coverage" ? (
+        <div className="mt-4"><CapabilityCoverage models={models} /></div>
+      ) : view === "evidence" ? (
         <div className="mt-4"><EvidenceMatrix models={models} /></div>
       ) : (
         <>

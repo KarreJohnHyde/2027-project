@@ -7,6 +7,8 @@ errors, or L2 anatomical states.
 """
 
 from typing import Any, Dict, Optional
+from types import SimpleNamespace
+import math
 
 from sqlalchemy.orm import Session
 
@@ -21,6 +23,10 @@ from app.models.entities import (
     UploadedFile,
 )
 from app.services.terminology import ANALYTES_BY_NAME
+from app.services.anatomy_evidence import _latest_reviews
+from app.services.effective_evidence import MEASUREMENT_FIELDS, STATEMENT_FIELDS, correction_index, effective_record
+from app.services.evidence_synthesis import eligible_upload, _site
+from app.services.report_runs import current_statements as current_analysis_statements
 
 
 # Only documented qualifiers participate in statement identity. A missing site
@@ -39,7 +45,13 @@ STATEMENT_IDENTITY_FIELDS = (
 
 
 def _statement_identity(row: ClinicalReportStatement) -> tuple[Any, ...]:
-    return tuple(getattr(row, field) for field in STATEMENT_IDENTITY_FIELDS)
+    values = []
+    for field in STATEMENT_IDENTITY_FIELDS:
+        value = getattr(row, field)
+        if field == "anatomical_site": value = _site(value)
+        elif field == "laterality": value = (value or "").upper() or None
+        values.append(value)
+    return tuple(values)
 
 
 def _statement_identity_payload(identity: tuple[Any, ...]) -> dict[str, Any]:
@@ -55,6 +67,10 @@ def _statement_payload(row: ClinicalReportStatement) -> dict[str, Any]:
         "comparison": row.comparison,
         "source_span": row.source_span,
         "source_file_id": row.finding.inference_run.file_id,
+        "source_page": getattr(row, "source_page", None),
+        "correction_state": getattr(row, "correction_state", "ORIGINAL_IMMUTABLE"),
+        "correction_review_id": getattr(row, "correction_review_id", None),
+        "original_values": getattr(row, "original_values", None),
     }
 
 
@@ -153,17 +169,26 @@ class ComparisonService:
                 "case_id": case.id,
             }
 
+        measurement_corrections, statement_corrections = correction_index(db, case.id)
+        review_index = _latest_reviews(db, {f.id for f in db.query(Finding).filter(Finding.case_id == case.id)})
+        excluded_evidence = []
+        excluded_statements = {}
+        report_exam_ids = {u.examination_id for u in db.query(UploadedFile).filter(UploadedFile.case_id == case.id, UploadedFile.modality == ModalityType.REPORT)
+                           if eligible_upload(u, case.id)}
+
         prior_images = db.query(UploadedFile).filter(
             UploadedFile.case_id == case.id,
             UploadedFile.examination_id == prior_exam.id,
             UploadedFile.modality == ModalityType.IMAGE,
             UploadedFile.is_associated.is_(True),
+            UploadedFile.withdrawn_at.is_(None), UploadedFile.superseded_by_file_id.is_(None),
         ).count()
         current_images = db.query(UploadedFile).filter(
             UploadedFile.case_id == case.id,
             UploadedFile.examination_id == current_exam.id,
             UploadedFile.modality == ModalityType.IMAGE,
             UploadedFile.is_associated.is_(True),
+            UploadedFile.withdrawn_at.is_(None), UploadedFile.superseded_by_file_id.is_(None),
         ).count()
 
         def statement_snapshot(examination_id: int) -> dict[tuple[Any, ...], list[dict[str, Any]]]:
@@ -175,14 +200,35 @@ class ComparisonService:
                 .filter(
                     UploadedFile.case_id == case.id,
                     UploadedFile.examination_id == examination_id,
-                    UploadedFile.is_associated.is_(True),
+                    ClinicalReportStatement.case_id == case.id,
+                    Finding.case_id == case.id, InferenceRun.case_id == case.id,
+                    current_analysis_statements(db, [case.id]),
                 )
                 .order_by(ClinicalReportStatement.id.asc())
                 .all()
             )
             snapshot: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
             for row in rows:
-                snapshot.setdefault(_statement_identity(row), []).append(_statement_payload(row))
+                original = {field: getattr(row, field) for field in STATEMENT_FIELDS.values()}
+                resolved = effective_record(original, statement_corrections.get(row.id, []), STATEMENT_FIELDS)
+                values = {field: getattr(row, field) for field in STATEMENT_IDENTITY_FIELDS}
+                values.update(resolved["effective"])
+                if any(values[field] != original[field] for field in ("entity", "anatomical_site", "laterality")):
+                    values.update(atlas_structure_id=None, anatomy_system=None)
+                view = SimpleNamespace(**values, id=row.id, finding=row.finding, comparison=row.comparison,
+                    source_span=row.source_span, source_page=row.source_page,
+                    correction_state=resolved["correction_state"], correction_review_id=resolved["applied_review_id"], original_values=original)
+                review = review_index.get(row.finding_id)
+                reason = ("INACTIVE_SOURCE" if not eligible_upload(row.finding.inference_run.file, case.id) else
+                    "REJECTED_FINDING" if review and review.review_status == "REJECTED" else
+                    "FAILED_FINDING" if row.finding.failure_reason else
+                    "REMOVED_BY_APPROVED_CORRECTION" if resolved["correction_state"] == "REMOVED_IN_EFFECTIVE_VIEW" else
+                    "NON_PATIENT_EVIDENCE" if (row.experiencer or "PATIENT") != "PATIENT" else None)
+                if reason:
+                    excluded_evidence.append({"kind": "STATEMENT", "id": row.id, "reason": reason, "source_file_id": row.finding.inference_run.file_id})
+                    excluded_statements.setdefault(examination_id, set()).add(_statement_identity(view))
+                    continue
+                snapshot.setdefault(_statement_identity(view), []).append(_statement_payload(view))
             return snapshot
 
         prior_statements = statement_snapshot(prior_exam.id)
@@ -193,6 +239,13 @@ class ComparisonService:
         for identity in sorted(statement_identities, key=lambda value: tuple("" if item is None else str(item) for item in value)):
             prior_rows = prior_statements.get(identity, [])
             current_rows = current_statements.get(identity, [])
+            if ((not prior_rows and identity in excluded_statements.get(prior_exam.id, set())) or
+                (not current_rows and identity in excluded_statements.get(current_exam.id, set())) or
+                (not prior_rows and prior_exam.id not in report_exam_ids) or
+                (not current_rows and current_exam.id not in report_exam_ids)):
+                semantic_comparison_blockers.append({"entity": identity[0], "identity": _statement_identity_payload(identity),
+                    "reason": "EXCLUDED_EVIDENCE_PREVENTS_ABSENCE_INFERENCE", "prior": prior_rows, "current": current_rows})
+                continue
             unmatched_prior, unmatched_current = _cancel_exact_statement_matches(prior_rows, current_rows)
             if not unmatched_prior and not unmatched_current:
                 continue
@@ -270,7 +323,19 @@ class ComparisonService:
             )
             snapshot: dict[tuple[str, str], list[MedicalMeasurement]] = {}
             for row in rows:
-                snapshot.setdefault((row.name, row.unit), []).append(row)
+                original = {field: getattr(row, field) for field in MEASUREMENT_FIELDS.values()}
+                resolved = effective_record(original, measurement_corrections.get(row.id, []), MEASUREMENT_FIELDS)
+                review = review_index.get(row.finding_id)
+                reason = ("INACTIVE_SOURCE" if not eligible_upload(row.source_file, case.id) else
+                    "INVALID_FINDING_PROVENANCE" if row.finding.case_id != case.id or row.finding.failure_reason else
+                    "REJECTED_FINDING" if review and review.review_status == "REJECTED" else
+                    "REMOVED_BY_APPROVED_CORRECTION" if resolved["correction_state"] == "REMOVED_IN_EFFECTIVE_VIEW" else None)
+                if reason:
+                    excluded_evidence.append({"kind": "MEASUREMENT", "id": row.id, "reason": reason, "source_file_id": row.source_file_id})
+                    continue
+                view = SimpleNamespace(**resolved["effective"], id=row.id, name=row.name, source_file_id=row.source_file_id,
+                    source_span=row.source_span, original_value=row.value, correction_review_id=resolved["applied_review_id"])
+                snapshot.setdefault((row.name, view.unit), []).append(view)
             return snapshot
 
         prior_measurements = measurement_snapshot(prior_exam.id)
@@ -285,6 +350,9 @@ class ComparisonService:
                 numeric_comparison_blockers.append({**blocker, "reason": "REPEATED_MEASUREMENTS_REQUIRE_EXPLICIT_PAIRING"})
                 continue
             prior_value, current_value = prior_rows[0], current_rows[0]
+            if not all(math.isfinite(row.value) for row in (prior_value, current_value)):
+                numeric_comparison_blockers.append({**blocker, "reason": "NON_FINITE_MEASUREMENT"})
+                continue
             if (prior_value.result_operator or "=") != "=" or (current_value.result_operator or "=") != "=":
                 numeric_comparison_blockers.append({**blocker, "reason": "CENSORED_RESULT_IS_NOT_AN_EXACT_VALUE"})
                 continue
@@ -302,6 +370,9 @@ class ComparisonService:
                     continue
             delta = current_value.value - prior_value.value
             percent_change = None if prior_value.value == 0 else (delta / abs(prior_value.value)) * 100.0
+            if not math.isfinite(delta) or (percent_change is not None and not math.isfinite(percent_change)):
+                numeric_comparison_blockers.append({**blocker, "reason": "NUMERICAL_RANGE_UNSUPPORTED"})
+                continue
             numeric_deltas.append({
                 "name": prior_value.name,
                 "display_name": prior_value.display_name,
@@ -309,12 +380,14 @@ class ComparisonService:
                 "prior": {
                     "measurement_id": prior_value.id,
                     "value": prior_value.value,
+                    "original_value": prior_value.original_value, "correction_review_id": prior_value.correction_review_id,
                     "source_file_id": prior_value.source_file_id,
                     "source_span": prior_value.source_span,
                 },
                 "current": {
                     "measurement_id": current_value.id,
                     "value": current_value.value,
+                    "original_value": current_value.original_value, "correction_review_id": current_value.correction_review_id,
                     "source_file_id": current_value.source_file_id,
                     "source_span": current_value.source_span,
                 },
@@ -355,6 +428,8 @@ class ComparisonService:
             "semantic_comparison_blockers": semantic_comparison_blockers,
             "numeric_deltas": numeric_deltas,
             "numeric_comparison_blockers": numeric_comparison_blockers,
+            "excluded_evidence": excluded_evidence,
+            "evidence_view": "ACTIVE_SOURCES_WITH_APPROVED_CORRECTIONS",
             "image_comparison": {
                 "status": "NOT_RUN",
                 "is_comparable": False,

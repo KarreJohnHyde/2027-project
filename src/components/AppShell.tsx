@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
-import { Activity, AlertTriangle, CheckCircle2, LogOut, Menu, Monitor, Moon, Plus, RefreshCw, Sun, Upload, X, XCircle } from "lucide-react";
+import { Activity, AlertTriangle, CheckCircle2, Info, LogOut, Menu, Monitor, Moon, Plus, RefreshCw, Sun, Upload, X, XCircle } from "lucide-react";
 import { Link, navigate, useLocation } from "../lib/router";
+import { humanize } from "../lib/format";
 import { usePreferences, type ThemePreference } from "../lib/preferences";
 import { NAV_SECTIONS } from "../navigation";
 import { useWorkspace } from "../state/workspace";
@@ -24,8 +25,7 @@ function Sidebar({ onNavigate }: { onNavigate: () => void }) {
         </div>
       </div>
       <nav aria-label="Primary" className="flex-1 overflow-y-auto px-2 pb-4">
-        {NAV_SECTIONS.map((section) => ({ ...section, items: section.items.filter((item) => user?.role !== "public" || item.personal) }))
-          .filter((section) => section.items.length > 0).map((section) => (
+        {NAV_SECTIONS.map((section) => (
           <div key={section.label} className="mt-3 first:mt-1">
             <p className="px-2.5 pb-1 text-[11px] font-medium text-ink-3">{section.label}</p>
             {section.items.map((item) => {
@@ -57,10 +57,12 @@ function Sidebar({ onNavigate }: { onNavigate: () => void }) {
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-medium text-ink">{user.full_name || user.username}</p>
               <p className="text-[11px] text-ink-3">
-                <span className="capitalize">{user.role}</span> · {user.verification_status.toLowerCase()}
+                {user.stated_role
+                  ? <>{humanize(user.stated_role)}{user.age != null ? ` · ${user.age}` : ""} · self-described</>
+                  : <><span className="capitalize">{user.role}</span> · {user.verification_status.toLowerCase()}</>}
               </p>
             </div>
-            <IconButton label="Sign out" icon={LogOut} onClick={logout} />
+            <IconButton label={user.is_visitor ? "Leave (continue later from this browser)" : "Sign out"} icon={LogOut} onClick={logout} />
           </div>
         )}
       </div>
@@ -77,6 +79,20 @@ function TemporaryStorageNotice() {
       <AlertTriangle aria-hidden size={16} className="mt-0.5 shrink-0" />
       <span className="min-w-0 flex-1 text-ink">
         Demonstration deployment: data is kept on a temporary server instance and is lost when it restarts. Use synthetic data only; do not upload patient documents.
+      </span>
+    </div>
+  );
+}
+
+/** "Try the demo" sign-in: says the sample case is fictional and the sign-in is temporary. */
+function GuestNotice() {
+  const guest = useWorkspace((state) => state.user?.is_guest === true);
+  if (!guest) return null;
+  return (
+    <div role="status" className="mb-4 flex items-start gap-2.5 rounded-lg border border-line bg-surface p-3 text-sm">
+      <Info aria-hidden size={16} className="mt-0.5 shrink-0 text-accent-text" />
+      <span className="min-w-0 flex-1 text-ink">
+        Guest demo: the sample case and its documents are fictional, and this workspace closes after 24 hours. Every feature is open to you. To keep your own work, leave and enter with your name and details.
       </span>
     </div>
   );
@@ -100,6 +116,8 @@ function NoticeBar() {
 export function AppShell({ children, fullBleed = false }: { children: ReactNode; fullBleed?: boolean }) {
   const [mobileNav, setMobileNav] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
+  // Every account has the case controls; a self-registered account works on its own cases.
+  const workspace = true;
   const cases = useWorkspace((state) => state.cases);
   const caseId = useWorkspace((state) => state.caseId);
   const selectCase = useWorkspace((state) => state.selectCase);
@@ -120,13 +138,17 @@ export function AppShell({ children, fullBleed = false }: { children: ReactNode;
       <div className="lg:pl-60 print:pl-0">
         <header className="sticky top-0 z-20 flex h-14 items-center gap-2 border-b border-line bg-[color-mix(in_srgb,var(--mt-page)_88%,transparent)] px-3 backdrop-blur-md print:hidden sm:px-5">
           <IconButton label="Open navigation" icon={Menu} className="lg:hidden" onClick={() => setMobileNav(true)} />
-          <div className="w-48 min-w-0 sm:w-64">
-            <SelectInput aria-label="Selected case" value={caseId ?? ""} onChange={(event) => selectCase(event.target.value ? Number(event.target.value) : null)}>
-              {cases.length === 0 && <option value="">No cases yet</option>}
-              {cases.map((record) => <option key={record.id} value={record.id}>{record.pseudonymous_id}</option>)}
-            </SelectInput>
-          </div>
-          <Button size="sm" icon={Plus} onClick={() => setCreateOpen(true)} className="hidden sm:inline-flex">New case</Button>
+          {workspace && (
+            <>
+              <div className="w-48 min-w-0 sm:w-64">
+                <SelectInput aria-label="Selected case" value={caseId ?? ""} onChange={(event) => selectCase(event.target.value ? Number(event.target.value) : null)}>
+                  {cases.length === 0 && <option value="">No cases yet</option>}
+                  {cases.map((record) => <option key={record.id} value={record.id}>{record.pseudonymous_id}</option>)}
+                </SelectInput>
+              </div>
+              <Button size="sm" icon={Plus} onClick={() => setCreateOpen(true)} className="hidden sm:inline-flex">New case</Button>
+            </>
+          )}
           <div className="ml-auto flex items-center gap-1.5">
             <span className="hidden items-center gap-1.5 rounded-md border border-line px-2 py-1 text-[11px] text-ink-2 md:inline-flex" title={health?.health_scope}>
               <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${health?.status === "HEALTHY" ? "bg-good" : "bg-ink-3"}`} />
@@ -134,13 +156,16 @@ export function AppShell({ children, fullBleed = false }: { children: ReactNode;
             </span>
             <IconButton label="Refresh evidence" icon={RefreshCw} className={loadingEvidence ? "[&_svg]:animate-spin" : ""} onClick={() => void loadShell()} />
             <IconButton label={`Theme: ${theme} (click to change)`} icon={ThemeIcon} onClick={() => setTheme(THEME_ORDER[(THEME_ORDER.indexOf(theme) + 1) % THEME_ORDER.length])} />
-            <Button size="sm" variant="primary" icon={Upload} disabled={!caseId} onClick={() => navigate("/upload")}>
-              <span className="hidden sm:inline">Add evidence</span>
-            </Button>
+            {workspace && (
+              <Button size="sm" variant="primary" icon={Upload} disabled={!caseId} onClick={() => navigate("/upload")}>
+                <span className="hidden sm:inline">Add evidence</span>
+              </Button>
+            )}
           </div>
         </header>
         <main id="main" className={fullBleed ? "" : "mx-auto max-w-[1480px] px-3 py-5 sm:px-6 sm:py-6"}>
           {!fullBleed && <TemporaryStorageNotice />}
+          {!fullBleed && <GuestNotice />}
           {!fullBleed && <NoticeBar />}
           {children}
         </main>

@@ -13,9 +13,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.entities import AuditEvent, ReviewedDemographics, UploadedFile, User, UserRole, VerificationStatus
+from app.models.entities import AuditEvent, ReviewedDemographics, UploadedFile, User
 from app.request_context import get_request_id
-from app.services.auth import get_current_user, require_role, verify_case_access
+from app.services.auth import get_current_user, verify_case_access
 
 router = APIRouter(prefix="/cases", tags=["Reviewed demographic context"])
 NOTICE = (
@@ -66,7 +66,8 @@ def serialize(row: ReviewedDemographics, db: Session) -> dict:
 @router.get("/{case_id}/demographics")
 def get_demographics(case_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     verify_case_access(case_id, user, db, access="read")
-    can_record = user.role in (UserRole.CLINICIAN, UserRole.RESEARCHER, UserRole.ADMIN) and user.verification_status == VerificationStatus.VERIFIED
+    # Every account may record demographics on a case it can write to.
+    can_record = True
     if can_record:
         try:
             verify_case_access(case_id, user, db, access="write")
@@ -82,7 +83,7 @@ def get_demographics(case_id: int, db: Session = Depends(get_db), user: User = D
 @router.post("/{case_id}/demographics", status_code=201)
 def record_demographics(
     case_id: int, payload: DemographicsInput, db: Session = Depends(get_db),
-    user: User = Depends(require_role(UserRole.CLINICIAN, UserRole.RESEARCHER)),
+    user: User = Depends(get_current_user),
 ):
     verify_case_access(case_id, user, db)
     latest = db.query(ReviewedDemographics).filter_by(case_id=case_id).order_by(ReviewedDemographics.revision.desc()).first()

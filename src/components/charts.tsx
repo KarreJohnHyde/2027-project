@@ -30,7 +30,7 @@ function subscribeTheme(callback: () => void) {
 }
 
 /** Resolve chart tokens for the active theme (SVG attributes need concrete colours). */
-export function useChartColors(): ChartColors {
+function useChartColors(): ChartColors {
   const theme = useSyncExternalStore(subscribeTheme, () => document.documentElement.dataset.theme ?? "light", () => "light");
   return useMemo(() => {
     const styles = getComputedStyle(document.documentElement);

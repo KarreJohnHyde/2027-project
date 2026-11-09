@@ -1,6 +1,6 @@
 # Deploying MedTwin on Vercel (Services)
 
-`vercel.json` deploys the repository as one Vercel project with two services. Nothing has been deployed from this repository by its maintainers; this page is the operator's guide. MedTwin remains a research prototype: a deployment is not clinical validation, and real patient documents must not be uploaded to a deployment that is not approved for them.
+`vercel.json` deploys the repository as one Vercel project with two services. The owner's first deployment (2026-10-30, project `medtwin`, https://medtwin-seven.vercel.app, public, open registration) was made with the CLI from a staged copy of exactly the allowlisted files (see "Deploying from a staged copy"); this page is the operator's guide. MedTwin remains a research prototype: a deployment is not clinical validation, and real patient documents must not be uploaded to a deployment that is not approved for them.
 
 ## Topology
 
@@ -21,8 +21,8 @@ Vercel Services and large functions are Beta; the Python runtime is generally av
 - `backend/pyproject.toml` and `backend/uv.lock`, which Vercel uses instead of `requirements.txt`, pin the same versions with two differences: OpenCV is the headless build (the GUI build that RapidOCR names needs libGL, which Vercel's runtime lacks), and `vercel-blob` is added. A backend test fails if the pins drift or the lock is stale; regenerate it with `uv lock` in `backend/`.
 - PyTorch is not installed. The API starts without it; the research models report the missing dependency (their checkpoints are not in Git either).
 - `backend/vercel_build.py` copies the evidence the API reads (model and dataset registries, validation reports, traceability, anatomy manifest, benchmark results) into the bundle, because Vercel bundles only `backend/`.
-- The installed bundle is about 850 MB uncompressed, above the standard 500 MB Python limit, so it uses large functions (up to 5 GB). New projects have them by default; an existing project needs the environment variable `VERCEL_SUPPORT_LARGE_FUNCTIONS=1`.
-- `.vercelignore` is a closed allowlist: a CLI deploy from a working copy uploads build inputs and evidence only, never datasets, databases, uploads, keys or model weights.
+- The installed bundle is about 850 MB uncompressed, above the standard 500 MB Python limit, so it uses large functions (up to 5 GB). Set the environment variable `VERCEL_SUPPORT_LARGE_FUNCTIONS=1` (Production and Preview): the project created on 2026-10-30 (Hobby plan) did not have them by default and the first build failed with `LAMBDA_SIZE_EXCEEDED` (837 MB).
+- `.vercelignore` is a closed allowlist: a CLI deploy from a working copy uploads build inputs and evidence only, never datasets, databases, uploads, keys or model weights. Folders are re-opened by name (`!backend`), never with a trailing slash: the CLI tests folder paths without one, so `!backend/` left every folder closed and only 9 top-level files were uploaded (`scripts/vercel-config.test.mjs` now checks this).
 
 ## Two ways to run it
 
@@ -72,6 +72,14 @@ An existing self-registered account is verified and given the role without touch
 - Research-model inference (no PyTorch, no checkpoints in Git), GPU telemetry and the background worker.
 - Uploads above 4.5 MB (photographed report packets are usually smaller; DICOM series and volumes often are not).
 - The derived anatomy library (not in Git; only the simplified reference models are published).
+
+## Deploying from a staged copy
+
+The 2026-10-30 deployment copied the files the allowlist admits (260 files, 8.8 MB) into a folder outside the
+repository with no Git metadata, ran `scripts/privacy_scan.py --paths` on that folder (exit 0), built it with
+`npm ci` and `npm run build`, and deployed it with `vercel link --project medtwin` and `vercel deploy --prod`. The
+CLI's debug output (`--debug`, "Found N files") confirms the uploaded count matches the staged count. A production
+deployment is public: Vercel's deployment protection applies to preview URLs only.
 
 ## Checking a deployment
 

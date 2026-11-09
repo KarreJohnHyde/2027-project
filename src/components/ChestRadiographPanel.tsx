@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Play } from "lucide-react";
 import { Badge, Button, Card, ErrorBlock, KeyValue, LoadingBlock, SelectInput, StatusBadge, Table, Unavailable } from "./ui";
-import { api, type ChestRadiographOutput, type UploadedFile } from "../services/api";
+import { api, type ChestRadiographModelCard, type ChestRadiographOutput, type UploadedFile } from "../services/api";
 import { errorMessage, formatNumber, humanize } from "../lib/format";
 import { useAsync } from "../lib/useAsync";
 import { useWorkspace } from "../state/workspace";
@@ -43,13 +43,16 @@ function ScoreBar({ score, operatingPoint, margin }: { score: number; operatingP
   );
 }
 
-function ResultView({ upload, output }: { upload: UploadedFile; output: ChestRadiographOutput }) {
+function ResultView({ upload, output, localisation }: { upload: UploadedFile; output: ChestRadiographOutput; localisation: ChestRadiographModelCard["attention_localisation"] }) {
   const imageUrl = useAsync(() => api.getUploadObjectUrl(upload.id), [upload.id]);
   const [attentionFinding, setAttentionFinding] = useState(output.attention[0]?.finding ?? "");
   const [outlines, setOutlines] = useState(true);
+  const [marks, setMarks] = useState(true);
   useEffect(() => () => { if (imageUrl.data) URL.revokeObjectURL(imageUrl.data); }, [imageUrl.data]);
   const attention = output.attention.find((item) => item.finding === attentionFinding) ?? output.attention[0];
+  const measured = attention ? localisation?.per_finding[attention.finding] : undefined;
   const [width, height] = output.image_size;
+  const stroke = Math.max(2, width / 300);
   const [left, top, side] = output.analysis_square;
   const square = { left: `${(left / width) * 100}%`, top: `${(top / height) * 100}%`, width: `${(side / width) * 100}%`, height: `${(side / height) * 100}%` };
   return (
@@ -63,6 +66,7 @@ function ResultView({ upload, output }: { upload: UploadedFile; output: ChestRad
             </SelectInput>
           </label>
           <label className="mt-4 flex items-center gap-1.5 text-[11px] text-ink-2"><input type="checkbox" checked={outlines} onChange={(event) => setOutlines(event.target.checked)} /> Anatomy outlines</label>
+          {attention?.peak_xy && <label className="mt-4 flex items-center gap-1.5 text-[11px] text-ink-2"><input type="checkbox" checked={marks} onChange={(event) => setMarks(event.target.checked)} /> Attention peak and region</label>}
         </div>
         <div className="relative overflow-hidden rounded-lg border border-line bg-black">
           {imageUrl.data ? <img src={imageUrl.data} alt="Chest radiograph analysed by the research model" className="block w-full" /> : <LoadingBlock label="Loading image" />}
@@ -72,13 +76,37 @@ function ResultView({ upload, output }: { upload: UploadedFile; output: ChestRad
             {outlines && output.anatomy.flatMap((structure) => structure.contours.map((contour, index) => (
               <polyline key={`${structure.name}-${index}`} points={contour.map(([x, y]) => `${x},${y}`).join(" ")} fill="none" stroke={OUTLINE_COLORS[structure.name] ?? "white"} strokeWidth={3} />
             )))}
+            {marks && attention?.region_box_xyxy && (() => {
+              const [x1, y1, x2, y2] = attention.region_box_xyxy;
+              return <rect x={x1} y={y1} width={x2 - x1} height={y2 - y1} fill="none" stroke="var(--mt-overlay-model)" strokeWidth={stroke} strokeDasharray={`${stroke * 3} ${stroke * 2}`} />;
+            })()}
+            {marks && attention?.peak_xy && (() => {
+              const [x, y] = attention.peak_xy;
+              const arm = stroke * 7;
+              return (
+                <g stroke="var(--mt-overlay-model)" strokeWidth={stroke}>
+                  <circle cx={x} cy={y} r={arm * 0.6} fill="none" />
+                  <line x1={x - arm} y1={y} x2={x + arm} y2={y} />
+                  <line x1={x} y1={y - arm} x2={x} y2={y + arm} />
+                </g>
+              );
+            })()}
           </svg>
         </div>
         <div className="mt-2 flex flex-wrap gap-3 text-[11px] text-ink-2">
           {output.anatomy.map((structure) => <span key={structure.name} className="flex items-center gap-1"><span aria-hidden className="h-0.5 w-4" style={{ background: OUTLINE_COLORS[structure.name] ?? "white" }} />{structure.name === "Facies Diaphragmatica" ? "Diaphragm" : structure.name}</span>)}
           <span className="flex items-center gap-1"><span aria-hidden className="h-2.5 w-4 rounded-sm bg-gradient-to-r from-yellow-300 to-red-600" />Grad-CAM attention (not a lesion outline)</span>
           <span className="flex items-center gap-1"><span aria-hidden className="h-2.5 w-4 border border-dashed border-ink-3" />Square the models read</span>
+          {attention?.peak_xy && <span className="flex items-center gap-1"><span aria-hidden className="h-2.5 w-4 border-2 border-dashed border-[var(--mt-overlay-model)]" />Attention peak (cross) and region (dashed): not a detection</span>}
         </div>
+        {attention?.peak_xy && (
+          <p className="mt-1 text-[11px] leading-4 text-ink-3">
+            {measured
+              ? `On ${formatNumber(measured.boxes, 0)} NIH radiologist boxes of ${humanize(attention.finding)}, the attention peak fell inside the box ${formatNumber(measured.pointing_hit_rate * 100, 0)}% of the time (a random point: ${formatNumber(measured.chance_hit_rate * 100, 0)}%); mean overlap (IoU) of the region with the box ${formatNumber(measured.mean_iou, 2)}.`
+              : `No radiologist boxes exist for ${humanize(attention.finding)}, so where its attention points has not been measured.`}{" "}
+            {attention.region_rule}
+          </p>
+        )}
         {attention && (
           <div className="mt-3">
             <p className="text-[11px] font-medium text-ink-3">Where the {humanize(attention.finding)} score depends on, by lung zone (patient's right and left; each lung's height in thirds)</p>
@@ -169,7 +197,7 @@ export default function ChestRadiographPanel({ upload }: { upload: UploadedFile 
       )}
       {output && (
         <div className="mt-4 space-y-4 border-t border-line pt-4">
-          <ResultView upload={upload} output={output} />
+          <ResultView upload={upload} output={output} localisation={card.data?.attention_localisation ?? null} />
           <div className="grid gap-4 xl:grid-cols-2">
             <div>
               <p className="mb-1 text-xs font-medium text-ink">What the case's reports state, beside the model</p>

@@ -9,13 +9,13 @@ from typing import List, Optional
 from urllib.parse import quote
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, status
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.config import RATE_LIMIT_UPLOAD_PER_MINUTE, UPLOAD_DIR
 from app.database import get_db
 from app.security import rate_limit
-from app.models.entities import UploadedFile, User, Examination
+from app.models.entities import UploadedFile, User, Examination, DocumentedAttribute, MedicalMeasurement
 from app.schemas.entities import FileUploadResponse, FileWithdrawal
 from app.services.auth import get_current_user, verify_case_access
 from app.services import upload_store
@@ -317,6 +317,47 @@ def withdraw_file(
 class FileAssociationUpdate(BaseModel):
     is_associated: bool
     association_notes: Optional[str] = None
+
+
+class ExaminationLinkRequest(BaseModel):
+    examination_id: int = Field(gt=0)
+    same_patient_confirmed: bool
+    source_date_attribute_id: Optional[int] = Field(default=None, gt=0)
+
+
+@router.patch("/uploads/{file_id}/examination", response_model=FileUploadResponse)
+def link_examination(file_id: int, request: ExaminationLinkRequest, db: Session = Depends(get_db),
+                     current_user: User = Depends(get_current_user)):
+    upload = db.get(UploadedFile, file_id)
+    if upload is None:
+        raise HTTPException(status_code=404, detail="File not found.")
+    verify_case_access(upload.case_id, current_user, db)
+    if not request.same_patient_confirmed:
+        raise HTTPException(status_code=400, detail="SAME_PATIENT_CONFIRMATION_REQUIRED")
+    if not upload.is_associated or upload.withdrawn_at is not None or upload.superseded_by_file_id is not None:
+        raise HTTPException(status_code=409, detail="Upload is not active evidence.")
+    exam = db.get(Examination, request.examination_id)
+    if exam is None or exam.case_id != upload.case_id:
+        raise HTTPException(status_code=400, detail="Examination does not belong to this case.")
+    source = None
+    if request.source_date_attribute_id:
+        source = db.get(DocumentedAttribute, request.source_date_attribute_id)
+        if source is None or source.case_id != upload.case_id or source.name not in {"study_date", "report_date", "document_date"} or source.value_text != exam.exam_date.date().isoformat():
+            raise HTTPException(status_code=400, detail="Date source does not match the selected examination.")
+        source_file = db.get(UploadedFile, source.source_file_id)
+        if source_file is None or source_file.withdrawn_at or not source_file.is_associated:
+            raise HTTPException(status_code=400, detail="Date source is inactive.")
+    previous = upload.examination_id
+    upload.examination_id = exam.id
+    for measurement in db.query(MedicalMeasurement).filter(MedicalMeasurement.source_file_id == upload.id):
+        measurement.examination_id = exam.id
+    db.commit()
+    log_audit_event(db=db, action="EVIDENCE_EXAMINATION_LINKED", resource_type="FILE", resource_id=str(upload.id), user=current_user,
+                    details={"case_id": upload.case_id, "previous_examination_id": previous, "examination_id": exam.id,
+                             "same_patient_confirmed": True, "date_source_attribute_id": source.id if source else None,
+                             "date_review": "USER_CONFIRMED" if source else "MANUALLY_SELECTED_EXAMINATION"})
+    db.refresh(upload)
+    return upload
 
 
 @router.patch("/uploads/{file_id}/association", response_model=FileUploadResponse)

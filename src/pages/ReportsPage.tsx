@@ -1,4 +1,5 @@
 import { useState } from "react";
+import EvidenceSynthesisPanel from "../components/EvidenceSynthesisPanel";
 import { Download, Printer, RefreshCw } from "lucide-react";
 import { Button, Card, ErrorBlock, LoadingBlock, PageHeader, StatusBadge, Table } from "../components/ui";
 import { api, type EvidenceCorrection, type EntityCorrection, type MeasurementCorrection } from "../services/api";
@@ -35,16 +36,17 @@ export default function ReportsPage() {
   const capabilities = useWorkspace((state) => state.capabilities);
   const health = useWorkspace((state) => state.health);
   const report = useAsync(() => loadingEvidence ? null : (async () => {
-    const [reviewed, trends, anatomy, egfr, prognosis] = await Promise.all([
+    const [reviewed, trends, anatomy, egfr, prognosis, synthesis, forecasts, workflow] = await Promise.all([
       api.getEffectiveEvidence(selected.id), api.getBiomarkerTrends(selected.id),
-      api.getAnatomyEvidence(selected.id), api.getEgfr(selected.id), api.getPrognosisEvaluations(selected.id),
+      api.getAnatomyEvidence(selected.id), api.getEgfr(selected.id), api.getPrognosisEvaluations(selected.id), api.getEvidenceSynthesis(selected.id),
+      api.getForecastHistory(selected.id), api.getCaseWorkflow(selected.id),
     ]);
     const view = buildReportEvidence(selected.id, evidence.statements, evidence.measurements, reviewed, evidence.uploads);
     assertReportTrendConsistency(view, trends.series);
     return {
       caseId: selected.id, evidenceVersion, source: evidence, reviewed,
       view,
-      trends, anatomy, egfr, prognosis, generatedAt: new Date().toISOString(),
+      trends, anatomy, egfr, prognosis, synthesis, forecasts, workflow, generatedAt: new Date().toISOString(),
     };
   })(), [selected.id, evidenceVersion, loadingEvidence]);
   // useAsync retains previous data during reload; never render/export it for a new case or revision.
@@ -59,7 +61,7 @@ export default function ReportsPage() {
     setError(null);
     try {
       const payload = {
-        schema_version: "medtwin-evidence-export-3.0.0",
+        schema_version: "medtwin-evidence-export-4.0.0",
         exported_at: new Date().toISOString(),
         evidence_loaded_at: snapshot.generatedAt,
         api_version: health?.version ?? null,
@@ -78,6 +80,10 @@ export default function ReportsPage() {
           anatomy: availability.anatomyWithheld ? "WITHHELD_PENDING_EFFECTIVE_EVIDENCE_MAPPING" : "MAPPED_FROM_ORIGINAL_EXTRACTION",
         },
         prognosis_evaluations: snapshot.prognosis,
+        evidence_synthesis: snapshot.synthesis,
+        case_workflow: snapshot.workflow,
+        forecast_evaluation_history: snapshot.forecasts,
+        forecast_history_scope: "MOST_RECENT_100_SAVED_EVALUATIONS",
         provenance: snapshot.source.provenance,
         capability_snapshot: capabilities,
       };
@@ -98,6 +104,7 @@ export default function ReportsPage() {
   const affirmed = snapshot?.view.activeStatements.filter(({ original, effective }) => effective.negation === "AFFIRMED" && effective.certainty === "CERTAIN" && original.experiencer === "PATIENT").length ?? 0;
   return (
     <>
+      <EvidenceSynthesisPanel key={selected.id} caseId={selected.id} />
       <div className="print:hidden">
         <PageHeader
           eyebrow="Reports"
@@ -209,9 +216,14 @@ export default function ReportsPage() {
             ) : <p className="text-xs text-ink-2">Mapping summary withheld: approved corrections or inactive sources exist, but anatomical associations still use original extraction. Effective-evidence remapping is required before including this summary.</p>}
           </Card>
           <Card title="Prognosis and risk">
-            <p className="text-xs leading-5 text-ink-2">No validated prognostic or risk model is registered; no forecast, risk score or treatment effect is reported. {snapshot.prognosis.length ? `${snapshot.prognosis.length} scenario evaluation request(s) were recorded, returning ${[...new Set(snapshot.prognosis.map((row) => humanize(row.status)))].join(", ")}.` : ""}</p>
+            <p className="text-xs leading-5 text-ink-2">No clinically validated prognostic or risk model is registered. Saved research baseline evaluations are shown below with their original status; they are not a medical prognosis. {snapshot.prognosis.length ? `${snapshot.prognosis.length} scenario evaluation request(s) were recorded, returning ${[...new Set(snapshot.prognosis.map((row) => humanize(row.status)))].join(", ")}.` : ""}</p>
           </Card>
         </div>
+
+        <Card title="Saved longitudinal forecast evaluations" padded={false}>
+          {snapshot.forecasts.length ? <Table headers={["Run / variable", "Method / horizon", "Historical result", "Validation"]} dense>{snapshot.forecasts.map((row) => <tr key={row.id}><td>#{row.id} · {row.target_metric}</td><td>{humanize(row.baseline_analysis?.method ?? "eligibility_only")} · {row.horizon_days} days</td><td>{row.predicted_value === null ? "No estimate produced" : `${formatNumber(row.predicted_value, 4)} ${row.unit}`}<span className="block text-xs text-ink-3">{humanize(row.baseline_analysis?.status ?? row.eligibility_status)}</span></td><td>{row.baseline_analysis ? humanize(row.baseline_analysis.validation_status) : "No forecast model evaluated"}{row.baseline_analysis?.backtest && <span className="block text-xs text-ink-3">Backtest MAE {formatNumber(row.baseline_analysis.backtest.mae, 4)} · RMSE {formatNumber(row.baseline_analysis.backtest.rmse, 4)} {row.unit}</span>}</td></tr>)}</Table> : <p className="p-4 text-xs text-ink-2">No saved forecast evaluations. No trajectory is estimated from qualitative report findings.</p>}
+          <p className="border-t border-line p-3 text-xs text-ink-2">The most recent 100 historical evaluation snapshots retain their source series in JSON. Re-evaluate in Prognosis Studio after a source, review or date changes. No calibrated prediction interval or clinical risk is implied.</p>
+        </Card>
 
         <Card title="Limitations">
           <ul className="list-disc space-y-0.5 pl-4 text-xs leading-5 text-ink-2">

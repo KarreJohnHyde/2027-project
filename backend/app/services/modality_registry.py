@@ -31,6 +31,8 @@ def _readers() -> dict[str, dict[str, Any]]:
         "NRRD": {"library": "SimpleITK", "available": _available("SimpleITK"), "extensions": [".nrrd"], "upload_accepted": True},
         "METAIMAGE": {"library": "SimpleITK", "available": _available("SimpleITK"), "extensions": [".mha"], "upload_accepted": True, "note": "Detached-header .mhd/.raw pairs are not accepted; use single-file .mha."},
         "RASTER": {"library": "Pillow", "available": _available("PIL"), "extensions": [".png", ".jpg", ".jpeg", ".bmp"], "upload_accepted": True},
+        "VIDEO": {"library": "OpenCV", "available": _available("cv2"), "extensions": [".mp4", ".avi"], "upload_accepted": True,
+                  "note": "Decoded with OpenCV (the first frame must decode on upload). GI endoscopy videos can be sampled at a fixed interval and each frame scored by a still-image endoscopy research model after its applicability check; no model is trained or evaluated on video, and there is no tracking."},
         "ECG_CSV": {"library": "numpy", "available": True, "extensions": [".csv"], "upload_accepted": True},
         "WFDB": {"library": "numpy", "available": _available("numpy"), "extensions": [".dat", ".hea"], "upload_accepted": True, "note": "The local NumPy reader decodes paired .hea/.dat uploads in plain WFDB format 16, checking header, sample count, lead gain, initial values and checksums. Other formats and multi-segment records are refused. Research inference additionally requires the trained 12-lead, 100 Hz, 10-second contract; this is not a clinically validated ECG interpretation."},
         "EDF": {"library": "numpy", "available": True, "extensions": [".edf", ".bdf"], "upload_accepted": True,

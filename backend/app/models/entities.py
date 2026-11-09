@@ -73,6 +73,14 @@ class User(Base):
         nullable=False,
     )
     is_active = Column(Boolean, default=True, nullable=False)
+    # A "Try the demo" account: kept like any other, but signed in only through a temporary token.
+    is_guest = Column(Boolean, default=False, nullable=False)
+    # An entry-page account: no password; the person's browser keeps its access token.
+    is_visitor = Column(Boolean, default=False, nullable=False)
+    # As stated on the entry page (self-reported, unverified; the role grants nothing).
+    age = Column(Integer, nullable=True)
+    gender = Column(String(32), nullable=True)
+    stated_role = Column(String(64), nullable=True)
     created_at = Column(DateTime, default=utc_now, nullable=False)
 
     cases = relationship("Case", back_populates="creator")
@@ -255,6 +263,7 @@ class ClinicalReportStatement(Base):
     atlas_structure_id = Column(String(160), nullable=True) # Lexical match to the atlas index
     cues = Column(JSON, nullable=True) # Cue type, text and offsets
     extractor_version = Column(String(32), nullable=True)
+    source_page = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=utc_now, nullable=False)
 
     finding = relationship("Finding", back_populates="report_statements")
@@ -327,6 +336,7 @@ class MultimodalFusionRecord(Base):
     gated_weights = Column(JSON, nullable=True) # Normalized attention weights alpha_k
     fused_status = Column(SQLEnum(EvidenceStatus), nullable=False)
     fused_prediction = Column(JSON, nullable=True)
+    evidence_synthesis = Column(JSON, nullable=True)
     paired_data_validated = Column(Boolean, default=False, nullable=False)
     abstention_reason = Column(String(256), nullable=True)
     created_at = Column(DateTime, default=utc_now, nullable=False)
@@ -400,6 +410,7 @@ class ForecastRecord(Base):
     baseline_linear = Column(Float, nullable=True)
     mae_estimate = Column(Float, nullable=True)
     rmse_estimate = Column(Float, nullable=True)
+    baseline_analysis = Column(JSON, nullable=True)
     eligibility_status = Column(SQLEnum(EvidenceStatus), nullable=False)
     ineligibility_reason = Column(String(256), nullable=True)
     notice = Column(String(256), default="EXPERIMENTAL ESTIMATE ONLY. NOT A MEDICAL PREDICTION.", nullable=False)
@@ -638,6 +649,39 @@ class QueuedJob(Base):
     started_at = Column(DateTime, nullable=True)
     finished_at = Column(DateTime, nullable=True)
     updated_at = Column(DateTime, default=utc_now, onupdate=utc_now, nullable=False)
+
+
+class ReferenceAnnotation(Base):
+    """A reference mask attached to one image upload, kept apart from model output.
+
+    Its origin is declared by the uploader (e.g. the dataset publisher's mask for a public test
+    image) and shown with it; it never changes a model run or a review. Comparisons against it
+    are per-image agreement, not a performance estimate."""
+
+    __tablename__ = "reference_annotations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    case_id = Column(Integer, ForeignKey("cases.id", ondelete="CASCADE"), nullable=False, index=True)
+    file_id = Column(Integer, ForeignKey("uploaded_files.id", ondelete="CASCADE"), nullable=False, index=True)
+    kind = Column(String(32), nullable=False, default="SEGMENTATION_MASK")
+    source = Column(String(48), nullable=False) # DATASET_PUBLISHER_ANNOTATION or INDEPENDENT_EXPERT_ANNOTATION
+    source_detail = Column(String(256), nullable=False) # dataset, version and split, or the annotating reviewer
+    class_name = Column(String(64), nullable=False)
+    mask_filename = Column(String(256), nullable=False)
+    mask_sha256 = Column(String(64), nullable=False)
+    binarize_threshold = Column(Integer, nullable=False)
+    image_size = Column(JSON, nullable=False) # [width, height] of the upright image
+    rle = Column(JSON, nullable=False) # COCO RLE, column-major, in source image pixels
+    area_px = Column(Integer, nullable=False)
+    created_by_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
+    # REVIEWER_CORRECTION_OF_MODEL_OUTPUT only: the research run whose mask the reviewer edited (a historical
+    # reference, like source_reference_id; the run itself is never changed).
+    derived_from_run_id = Column(Integer, nullable=True)
+    # kind BOUNDING_BOXES only: [[x1, y1, x2, y2], ...] in source image pixels (rle then holds their filled union for display).
+    boxes = Column(JSON, nullable=True)
+    # kind VOLUME_SLICE_CORRECTION only: the axial index plane k of the run's volume that the reviewer edited.
+    slice_index = Column(Integer, nullable=True)
 
 
 # Ensure indexes for performance

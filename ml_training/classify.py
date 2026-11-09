@@ -222,6 +222,9 @@ def classification_limitations(readiness: dict, imbalance: dict, group_unit: str
         separation = ("Subject ids come from the publisher's file names. Identical images occur under different subject ids, so subjects sharing an image "
                       "were joined into clusters, training subjects linked to the test set were removed, and the bootstrap resamples clusters; whether "
                       "an id denotes one patient cannot be verified.")
+    elif group_unit == "patient":
+        separation = ("Pseudonymous patient ids come from the publisher's folders. The publisher's validation split, used as the test set, shares no "
+                      "patient with its training split; training patients were divided into train and validation, and the bootstrap resamples patients.")
     else:
         separation = ("The registry found no identifiers in sampled metadata, but the source provides no patient IDs; patient-level separation cannot "
                       "be verified. Splits keep confirmed near-duplicate groups together.")
@@ -276,6 +279,46 @@ def macro_f1(y: np.ndarray, pred: np.ndarray, classes: int) -> float:
 def balanced_accuracy(y: np.ndarray, pred: np.ndarray, classes: int) -> float:
     recalls = [np.mean(pred[y == k] == k) for k in range(classes) if np.any(y == k)]
     return float(np.mean(recalls))
+
+
+def cohen_kappa(y: np.ndarray, pred: np.ndarray) -> float | None:
+    observed = float(np.mean(y == pred))
+    expected = float(sum(np.mean(y == k) * np.mean(pred == k) for k in np.union1d(y, pred)))
+    return None if expected == 1 else (observed - expected) / (1 - expected)
+
+
+def study_level_metrics(rows: list[dict], probabilities: np.ndarray, y: np.ndarray, classes: list[str]) -> dict:
+    """The publisher labels studies, not images (MURA): a study's probability is the mean calibrated
+    probability of the positive class over its views, thresholded at 0.5. Intervals resample patients."""
+    positive = classes.index("abnormal") if "abnormal" in classes else 1
+    members: dict[str, list[int]] = {}
+    for index, row in enumerate(rows):
+        members.setdefault(row["study_id"], []).append(index)
+    studies = sorted(members)
+    truth = np.array([int(y[members[s][0]] == positive) for s in studies])
+    if any(len({int(y[i]) for i in members[s]}) > 1 for s in studies):
+        raise ValueError("views of one study carry different labels")
+    score = np.array([float(np.mean(probabilities[members[s], positive])) for s in studies])
+    guess = (score >= 0.5).astype(int)
+    patients = np.array([rows[members[s][0]]["group_id"] for s in studies])
+    parts = np.array([rows[members[s][0]].get("body_part", "") for s in studies])
+
+    def summary(idx: np.ndarray) -> dict:
+        t, g = truth[idx], guess[idx]
+        return {"studies": int(len(idx)), "abnormal": int(t.sum()), "auroc": _auroc(t, score[idx]), "accuracy": float(np.mean(t == g)),
+                "sensitivity": float(np.mean(g[t == 1] == 1)) if np.any(t == 1) else None,
+                "specificity": float(np.mean(g[t == 0] == 0)) if np.any(t == 0) else None, "cohen_kappa": cohen_kappa(t, g)}
+
+    every = np.arange(len(studies))
+    return {
+        "aggregation": "mean calibrated P(abnormal) over the study's views; threshold 0.5", "unit": "study", "group_unit": "patient",
+        **summary(every),
+        "confidence_intervals_95": {
+            "auroc": bootstrap_ci(lambda idx: _auroc(truth[idx], score[idx]), len(studies), patients, unit="patient"),
+            "cohen_kappa": bootstrap_ci(lambda idx: cohen_kappa(truth[idx], guess[idx]), len(studies), patients, unit="patient"),
+        },
+        "per_body_part": {part: summary(np.flatnonzero(parts == part)) for part in sorted(set(parts)) if part},
+    }
 
 
 def softmax(logits: np.ndarray, temperature: float = 1.0) -> np.ndarray:
@@ -447,11 +490,13 @@ def main() -> int:
         "ece_uncalibrated": expected_calibration_error(raw, y), "ece_temperature_scaled": expected_calibration_error(calibrated, y),
         "brier_multiclass": float(np.mean(np.sum((calibrated - np.eye(k)[y]) ** 2, axis=1))),
     }
+    unit = prep.get("group_unit")  # None keeps bootstrap_ci's default label (near-duplicate group)
     intervals = {
-        "accuracy": bootstrap_ci(lambda idx: float(np.mean(pred[idx] == y[idx])), len(y), groups),
-        "macro_f1": bootstrap_ci(lambda idx: macro_f1(y[idx], pred[idx], k), len(y), groups),
-        "balanced_accuracy": bootstrap_ci(lambda idx: balanced_accuracy(y[idx], pred[idx], k), len(y), groups),
+        "accuracy": bootstrap_ci(lambda idx: float(np.mean(pred[idx] == y[idx])), len(y), groups, unit=unit),
+        "macro_f1": bootstrap_ci(lambda idx: macro_f1(y[idx], pred[idx], k), len(y), groups, unit=unit),
+        "balanced_accuracy": bootstrap_ci(lambda idx: balanced_accuracy(y[idx], pred[idx], k), len(y), groups, unit=unit),
     }
+    study_level = study_level_metrics(splits["test"], calibrated, y, classes) if all(row.get("study_id") for row in splits["test"]) else None
     checkpoint_path, checkpoint_sha = run.save_checkpoint({
         "kind": "image_classifier", "arch": selected, "state_dict": candidates[selected]["state"], "classes": classes,
         "image_size": args.image_size, "normalization": {"mean": MEAN, "std": STD}, "temperature": temperature,
@@ -476,6 +521,7 @@ def main() -> int:
         "selection": {"criterion": "validation macro-F1", "candidates": {a: {"val_macro_f1": c["val_macro_f1"], "best_epoch": c["best_epoch"]} for a, c in candidates.items()}, "selected": selected},
         "calibration": {"method": "temperature_scaling", "fitted_on": "validation split", "temperature": temperature},
         "metrics": metrics, "confidence_intervals_95": intervals, "per_class": per_class, "confusion_matrix": confusion.tolist(),
+        **({"study_level": study_level} if study_level else {}),
         "highest_confidence_errors": failures, "checkpoint": {"path": checkpoint_ref(checkpoint_path), "sha256": checkpoint_sha},
         "held_out_predictions": checkpoint_ref(predictions), "training_seconds": run.elapsed_seconds, "config": {k2: v for k2, v in vars(args).items()},
         "reporting_context": {

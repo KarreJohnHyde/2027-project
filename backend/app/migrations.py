@@ -136,6 +136,21 @@ MIGRATIONS: tuple[tuple[str, tuple[tuple[str, str, str], ...]], ...] = (
         ),
     ),
     ("2026_10_29_002_shared_user_emails", ()),
+    ("2026_10_31_001_guest_accounts", (("users", "is_guest", "BOOLEAN NOT NULL DEFAULT FALSE"),)),
+    ("2026_11_04_001_entry_page_profiles", (
+        ("users", "is_visitor", "BOOLEAN NOT NULL DEFAULT FALSE"),
+        ("users", "age", "INTEGER"),
+        ("users", "gender", "VARCHAR(32)"),
+        ("users", "stated_role", "VARCHAR(64)"),
+    )),
+    ("2026_11_05_001_reviewer_mask_corrections", (("reference_annotations", "derived_from_run_id", "INTEGER"),)),
+    ("2026_11_06_001_evidence_synthesis", (
+        ("multimodal_fusion_records", "evidence_synthesis", "JSON"),
+        ("clinical_report_statements", "source_page", "INTEGER"),
+    )),
+    ("2026_11_06_002_research_baseline_history", (("forecast_records", "baseline_analysis", "JSON"),)),
+    ("2026_11_06_003_reference_boxes", (("reference_annotations", "boxes", "JSON"),)),
+    ("2026_11_06_004_volume_slice_corrections", (("reference_annotations", "slice_index", "INTEGER"),)),
 )
 
 

@@ -7,8 +7,9 @@ the rule extractor (negation, certainty, temporality, experiencer) and is stored
 separate statement with its own extractor_version; it never replaces a rule statement
 and never changes the report label.
 
-Enabled with MEDTWIN_SCISPACY=wsl (default off). Published NER performance of the
-models is the publisher's; MedTwin has no annotated clinical corpus to evaluate them.
+MEDTWIN_SCISPACY: "auto" (default) runs it wherever the WSL environment exists, "wsl" forces
+it on, "off" turns it off. Published NER performance of the models is the publisher's;
+MedTwin has no annotated clinical corpus to evaluate them.
 """
 
 from __future__ import annotations
@@ -21,6 +22,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Callable, Optional
 
+from app.services import wsl_runtime
 from app.services.nlp_processor import _assess, _section_at, _sections, split_sentences
 
 logger = logging.getLogger(__name__)
@@ -36,7 +38,15 @@ class ScispacyUnavailable(RuntimeError):
 
 
 def mode() -> str:
-    return os.getenv("MEDTWIN_SCISPACY", "off").strip().lower()
+    return os.getenv("MEDTWIN_SCISPACY", "auto").strip().lower()
+
+
+def python() -> str:
+    return os.getenv("MEDTWIN_NLP_PYTHON", "~/.medtwin/venv-nlp/bin/python")
+
+
+def enabled() -> bool:
+    return wsl_runtime.enabled(mode(), python())
 
 
 def models() -> tuple[str, ...]:
@@ -44,36 +54,26 @@ def models() -> tuple[str, ...]:
     return tuple(name.strip() for name in configured.split(",") if name.strip()) or DEFAULT_MODELS
 
 
-def wsl_path(path: Path) -> str:
-    drive, rest = path.drive.rstrip(":").lower(), path.as_posix().split(":", 1)[-1]
-    return f"/mnt/{drive}{rest}"
-
-
-def _wsl_command() -> list[str]:
-    distro = os.getenv("MEDTWIN_WSL_DISTRO", "Ubuntu")
-    python = os.getenv("MEDTWIN_NLP_PYTHON", "~/.medtwin/venv-nlp/bin/python")
-    # bash -lc expands "~"; the worker path is quoted for safety.
-    return ["wsl.exe", "-d", distro, "--", "bash", "-lc", f"{python} '{wsl_path(WORKER)}'"]
-
-
 def run_worker(text: str, names: tuple[str, ...]) -> dict[str, Any]:
     try:
-        completed = subprocess.run(_wsl_command(), input=json.dumps({"text": text, "models": list(names)}), capture_output=True,
+        completed = subprocess.run(wsl_runtime.command(python(), WORKER), input=json.dumps({"text": text, "models": list(names)}), capture_output=True,
                                    text=True, encoding="utf-8", timeout=TIMEOUT_SECONDS, check=False)
     except (OSError, subprocess.TimeoutExpired) as exc:
         raise ScispacyUnavailable(f"scispaCy worker could not run: {type(exc).__name__}") from exc
     if completed.returncode != 0:
-        # stderr can quote the input text; log only its last line.
-        tail = (completed.stderr.strip().splitlines() or ["no output"])[-1][:200]
-        raise ScispacyUnavailable(f"scispaCy worker exited with {completed.returncode}: {tail}")
-    return json.loads(completed.stdout)
+        raise ScispacyUnavailable(f"scispaCy worker {wsl_runtime.failure_summary(completed.returncode, completed.stderr)}")
+    try:
+        payload = wsl_runtime.parse_payload(completed.stdout, ("models", "entities"))
+    except ValueError as exc:  # json.JSONDecodeError is a ValueError
+        raise ScispacyUnavailable("scispaCy worker returned malformed output") from exc
+    return payload
 
 
 @lru_cache(maxsize=1)
 def probe() -> dict[str, Any]:
     """Runs the worker once on a fixed sentence; reports availability and model versions."""
-    if mode() != "wsl":
-        return {"available": False, "reason": "DISABLED (set MEDTWIN_SCISPACY=wsl)"}
+    if not enabled():
+        return {"available": False, "reason": "DISABLED (MEDTWIN_SCISPACY is off, or its WSL environment is missing)"}
     try:
         payload = run_worker("No evidence of pneumonia.", models())
     except ScispacyUnavailable as exc:
@@ -88,12 +88,24 @@ def extractor_version(model: dict[str, Any]) -> str:
 def model_statements(text: str, runner: Optional[Callable[[str, tuple[str, ...]], dict[str, Any]]] = None,
                      names: Optional[tuple[str, ...]] = None) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Statements for model entities, with rule-based context; returns (statements, model metadata)."""
+    from app.services.model_usage_policy import registered_model_usage_gate
+    usage = registered_model_usage_gate("scispacy_adapter")
+    if not usage["allowed"]:
+        raise ScispacyUnavailable(", ".join(usage["blockers"]))
     payload = (runner or run_worker)(text, names or models())
     versions = {model["name"]: extractor_version(model) for model in payload["models"]}
+    entities = [{**entity, "category": LABEL_CATEGORIES.get(entity["label"], "MODEL_ENTITY"), "cue": f"{entity['model']}:{entity['label']}",
+                 "extractor_version": versions.get(entity["model"])} for entity in payload["entities"]]
+    return entity_statements(text, entities), payload["models"]
+
+
+def entity_statements(text: str, entities: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """One statement per model entity ({start, end, text, category, cue, extractor_version}), given the
+    rule extractor's context for its sentence. Entities whose offsets do not quote the text are dropped."""
     sections = _sections(text)
     sentences = split_sentences(text)
     statements = []
-    for entity in sorted(payload["entities"], key=lambda item: (item["start"], item["end"])):
+    for entity in sorted(entities, key=lambda item: (item["start"], item["end"])):
         bounds = next(((start, end) for start, end in sentences if start <= entity["start"] and entity["end"] <= end), None)
         if bounds is None or text[entity["start"]:entity["end"]] != entity["text"]:
             continue  # entity offsets must point at the same characters in the stored text
@@ -107,12 +119,12 @@ def model_statements(text: str, runner: Optional[Callable[[str, tuple[str, ...]]
                 cue["start"] += sentence_start
                 cue["end"] += sentence_start
         statements.append({
-            "entity": entity["text"].lower()[:128], "entity_text": entity["text"][:128], "category": LABEL_CATEGORIES.get(entity["label"], "MODEL_ENTITY"),
+            "entity": entity["text"].lower()[:128], "entity_text": entity["text"][:128], "category": entity["category"],
             "negation": context["negation"], "certainty": context["certainty"], "temporality": context["temporality"],
             "experiencer": context["experiencer"], "comparison": context["comparison"],
-            "cues": [{"type": "MODEL_INFERENCE", "text": f"{entity['model']}:{entity['label']}", "start": None, "end": None}, *context["cues"]],
+            "cues": [{"type": "MODEL_INFERENCE", "text": entity["cue"][:128], "start": None, "end": None}, *context["cues"]],
             "section": section, "anatomical_site": None, "laterality": None, "anatomy_system": None, "atlas_structure_id": None,
             "source_span": sentence[:256], "source_span_start": sentence_start, "source_span_end": sentence_end,
-            "entity_start": entity["start"], "entity_end": entity["end"], "extractor_version": versions.get(entity["model"]),
+            "entity_start": entity["start"], "entity_end": entity["end"], "extractor_version": entity["extractor_version"],
         })
-    return statements, payload["models"]
+    return statements

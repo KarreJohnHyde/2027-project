@@ -36,6 +36,9 @@ const DATASET_NAMES: Record<string, string> = {
   "c-nmc-2019": "Leukaemia single-cell microscopy set (blast vs normal)",
   "bone-fracture-roboflow-v4": "Fracture radiograph detection set, 7 classes",
   "mura-v1.1": "Upper-extremity musculoskeletal radiographs (study level)",
+  "isles-2022": "Ischaemic stroke MRI with lesion masks (DWI, ADC, FLAIR; multi-centre)",
+  "msd-task01-brain-tumour": "Glioma MRI with sub-region masks (FLAIR, T1, T1c, T2)",
+  "nih-chestxray14": "Frontal chest radiographs with radiologist boxes (evaluation only)",
   "echonet-dynamic": "Apical four-chamber echocardiography videos",
   "kits19-labels": "Kidney tumour CT segmentations (masks only)",
   "lidc-idri-xml": "Lung nodule CT annotations (annotations only)",
@@ -127,6 +130,9 @@ const TASK_NAMES: Record<string, string> = {
   "cnmc-all-vs-normal": "Leukaemic blast vs normal cell classification",
   "bone-fracture-detection": "Fracture detection on radiographs",
   "mura-study-abnormality": "Musculoskeletal radiograph abnormality (study level)",
+  "isles22-stroke-lesion-segmentation": "Ischaemic stroke lesion segmentation (DWI + ADC)",
+  "msd-brain-tumour-segmentation": "Glioma sub-region segmentation (oedema, core, enhancing tumour)",
+  "nih-cxr-attention-localisation": "Chest-radiograph attention vs radiologist boxes",
   "echonet-ef-regression": "Echocardiographic ejection fraction regression",
   "kits19-kidney-tumour-segmentation": "Kidney tumour CT segmentation",
 };
@@ -153,6 +159,7 @@ export function licenceLabel(license: LicenseLike): string {
   const open = /CC0 1\.0|CC BY(?:-NC)?(?:-SA)? \d\.\d/.exec(name);
   if (open) return open[0];
   if (/research and educational/i.test(name)) return "Publisher terms: research and educational use, citation required";
+  if (/non-commercial research use/i.test(name)) return "Publisher terms: non-commercial research use";
   if (license?.authorization_status === "VERIFIED") return "Publisher research release; citation required; owner-authorized local use";
   if (/research use agreement|PERMISSION_UNVERIFIED/i.test(`${name} ${license?.status ?? ""}`)) return "Individual research agreement required (not verified)";
   if (license?.status === "VERIFIED") return "Verified publisher terms";
@@ -171,6 +178,10 @@ const PUBLIC_TEXT: Array<[RegExp, string]> = [
   [/\bMURA\b/g, "Musculoskeletal radiograph"],
   [/\bACDC\b/g, "cardiac MRI"],
   [/\bKiTS\b/g, "kidney tumour CT"],
+  [/\bISLES(?: 2022|'22)?\b/g, "the multi-centre stroke MRI set"],
+  [/Medical Segmentation Decathlon(?: Task01)?(?: BrainTumour)?/g, "the glioma MRI set"],
+  [/\bBraTS(?: 2016\/2017)?\b/g, "glioma MRI"],
+  [/NIH ChestX-ray14/g, "the national chest-radiograph set"],
   [/\bMedCAT\b/g, "The concept-linking tool"],
   [/\bRadGraph\b/g, "radiology-relation"],
   [/\bMONAI\b/g, "the imaging deep-learning library"],

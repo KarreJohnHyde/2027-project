@@ -1,0 +1,199 @@
+{
+  "model_id": "echonet_ef_r2plus1d",
+  "run_id": "echonet_ef_r2plus1d-20261106T110751Z",
+  "task_id": "echonet-ef-regression",
+  "task_type": "video_regression",
+  "dataset": "EchoNet-Dynamic echocardiography videos (Stanford AIMI)",
+  "dataset_id": "echonet-dynamic",
+  "dataset_version": "726716534d4811656b6798c796cb821636481d63ce3de94e583070a6ede5b009",
+  "dataset_license": {
+    "status": "PERMISSION_UNVERIFIED",
+    "authorization_status": "VERIFIED",
+    "authorization_reason": "Repository owner confirmed on 2026-11-06 that they hold the Stanford AIMI Research Use Agreement for EchoNet-Dynamic.",
+    "authorized_by": "repository owner (recorded interactive decision)",
+    "authorized_on": "2026-11-06",
+    "authorization_scope": "personal, non-commercial research training and evaluation; no redistribution of videos",
+    "name": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
+    "source": "https://echonet.github.io/dynamic/",
+    "verified_on": "2026-10-25",
+    "citation": "Ouyang D, He B, Ghorbani A, et al. Video-based AI for beat-to-beat assessment of cardiac function. Nature 580:252-256 (2020)."
+  },
+  "split_method": "publisher splits kept (FileList.csv Split; one video per patient)",
+  "split_counts": {
+    "val": 1288,
+    "train": 7465,
+    "test": 1277
+  },
+  "selection": {
+    "criterion": "validation MAE, one centre clip per video",
+    "best_epoch": 1,
+    "val_mae_centre_clip": 12.099994659423828,
+    "epochs_run": 1
+  },
+  "evaluation_protocol": "serving path: input gate, then the mean of 32-frame clips (every 2nd frame) at a stride of 16 frames",
+  "validation": {
+    "videos": 16,
+    "accepted_by_gate": 15,
+    "refused_by_gate": {
+      "MODEL_INPUT_INCOMPATIBLE": 1
+    },
+    "metrics": {
+      "mae": 12.634876627238098,
+      "rmse": 15.333572480278933,
+      "bias": -0.04363704990476265,
+      "r2": 1.6534551569691303e-05,
+      "n": 15
+    },
+    "metrics_95ci": {
+      "mae": {
+        "status": "COMPUTED",
+        "low": 8.409762022347618,
+        "high": 17.07320129275714,
+        "resamples": 1000,
+        "unit": "patient (one video)"
+      },
+      "rmse": {
+        "status": "COMPUTED",
+        "low": 10.707499322009534,
+        "high": 19.450347662798606,
+        "resamples": 1000,
+        "unit": "patient (one video)"
+      },
+      "r2": {
+        "status": "COMPUTED",
+        "low": -0.5356673440204508,
+        "high": -3.94609992114826e-05,
+        "resamples": 1000,
+        "unit": "patient (one video)"
+      }
+    },
+    "reduced_ef_discrimination": {
+      "definition": "reference EF below 50%",
+      "positives": 4,
+      "auroc_of_negative_estimate": 0.5454545454545454,
+      "auroc_95ci": {
+        "status": "COMPUTED",
+        "low": 0.5,
+        "high": 0.6376623376623373,
+        "resamples": 993,
+        "unit": "patient (one video)"
+      }
+    }
+  },
+  "test": {
+    "videos": 16,
+    "accepted_by_gate": 16,
+    "refused_by_gate": {},
+    "metrics": {
+      "mae": 6.451007764754275,
+      "rmse": 7.842569828113272,
+      "bias": -2.0052549560042743,
+      "r2": -0.0697118199120137,
+      "n": 16
+    },
+    "metrics_95ci": {
+      "mae": {
+        "status": "COMPUTED",
+        "low": 4.216880155450455,
+        "high": 8.770356527708335,
+        "resamples": 1000,
+        "unit": "patient (one video)"
+      },
+      "rmse": {
+        "status": "COMPUTED",
+        "low": 5.3629244437732755,
+        "high": 9.871855131029012,
+        "resamples": 1000,
+        "unit": "patient (one video)"
+      },
+      "r2": {
+        "status": "COMPUTED",
+        "low": -0.9494266581384708,
+        "high": 6.0129385498303004e-05,
+        "resamples": 1000,
+        "unit": "patient (one video)"
+      }
+    },
+    "reduced_ef_discrimination": {
+      "definition": "reference EF below 50%",
+      "positives": 2,
+      "auroc_of_negative_estimate": 0.6785714285714286,
+      "auroc_95ci": {
+        "status": "NOT_COMPUTED_TOO_MANY_DEGENERATE_RESAMPLES"
+      }
+    }
+  },
+  "input_envelope": {
+    "size": [
+      112,
+      112
+    ],
+    "fps_range": [
+      38.0,
+      64.0
+    ],
+    "min_frames": 63,
+    "max_coloured_pixel_fraction": 0.05,
+    "development_split": "train"
+  },
+  "checkpoint": {
+    "path": "artifacts/training/echonet_ef_r2plus1d-20261106T110751Z/model.pt",
+    "sha256": "3e1c66b3146fb65d7bf7d59459a9f3271c5c7821bd12e719bc10c86170180f83"
+  },
+  "held_out_predictions": "artifacts/training/echonet_ef_r2plus1d-20261106T110751Z/predictions_test.json",
+  "training_seconds": 44.3,
+  "config": {
+    "epochs": 1,
+    "batch_size": 4,
+    "lr": 0.0003,
+    "weight_decay": 0.0001,
+    "workers": 0,
+    "seed": 20261106,
+    "limit": 16
+  },
+  "limitations": [
+    "Internal test on the publisher's EchoNet-Dynamic split (one centre); no external or clinical validation.",
+    "EchoNet-format input only: 112 x 112 apical-4-chamber videos with the sector cropped and masked; other formats are refused, never resized.",
+    "One estimate per video from averaged clips; no beat-by-beat segmentation and no end-systolic/end-diastolic frame selection.",
+    "Trained from random initialisation (no pretrained video weights); evaluated under float16 autocast on CUDA.",
+    "Research-only output; not for diagnosis or treatment decisions."
+  ],
+  "citation": "Ouyang D, He B, Ghorbani A, et al. Video-based AI for beat-to-beat assessment of cardiac function. Nature 580:252-256 (2020).",
+  "test_serving_gate": {
+    "videos_scored": 16,
+    "accepted_by_both_gates": 16,
+    "refused_by_applicability_reference": 0,
+    "metrics": {
+      "mae": 6.4509331787500015,
+      "rmse": 7.842503403911002,
+      "bias": -2.0053678700000024,
+      "r2": -0.06969369971545913,
+      "n": 16
+    },
+    "metrics_95ci": {
+      "mae": {
+        "status": "COMPUTED",
+        "low": 4.216714271703126,
+        "high": 8.7701438975,
+        "resamples": 1000,
+        "unit": "patient (one video)"
+      },
+      "rmse": {
+        "status": "COMPUTED",
+        "low": 5.362999485143115,
+        "high": 9.8717899222763,
+        "resamples": 1000,
+        "unit": "patient (one video)"
+      },
+      "r2": {
+        "status": "COMPUTED",
+        "low": -0.949478164144595,
+        "high": 9.34332040599589e-05,
+        "resamples": 1000,
+        "unit": "patient (one video)"
+      }
+    },
+    "reduced_ef_auroc": 0.6785714285714286,
+    "note": "The format gate and the applicability reference together, as served; the reference was fitted after training on training and validation videos only."
+  }
+}

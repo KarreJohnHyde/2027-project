@@ -114,7 +114,7 @@ function Studio({ manifest, atlas }: { manifest: AnatomyManifest; atlas: AtlasIn
   const [hybridOn, setHybridOn] = useState<Record<string, boolean>>(() => Object.fromEntries((hybridSystem.hybrid?.layers ?? []).map((layer) => [layer.id, layer.default_on])));
   const viewportApi = useRef<ViewportApi | null>(null);
   const viewportBox = useRef<HTMLDivElement>(null);
-  const pendingFocus = useRef<string | null>(null);
+  const pendingFocus = useRef<string | null>(search.get("structure"));
 
   const system = manifest.systems.find((item) => item.id === systemId) ?? manifest.systems[0];
   const variant = manifest.variants[variantId] ?? manifest.variants[system.default_variant];
@@ -157,35 +157,47 @@ function Studio({ manifest, atlas }: { manifest: AnatomyManifest; atlas: AtlasIn
 
   const framing = useMemo(() => (system.hybrid ? { mode: "box" as const, min: system.hybrid.body_bounds.min, max: system.hybrid.body_bounds.max } : { mode: "fit" as const }), [system]);
 
+  // A structure is matched by its atlas id or, for models whose parts carry their own ids (the lobe-labelled
+  // brain), by the curated structure label that equals the atlas name.
   const verifiedKeys = useMemo(() => {
     if (!toolbar.showEvidence || !evidence.data) return new Set<string>();
-    const ids = new Set((isHybrid ? Object.values(evidence.data.systems) : [evidence.data.systems[system.id]]).flatMap((item) => item?.highlight.verified_structures ?? []));
-    return new Set(targets.filter((target) => ids.has(target.structureId)).map((target) => target.key));
+    const shown = isHybrid ? Object.values(evidence.data.systems) : [evidence.data.systems[system.id]];
+    const ids = new Set(shown.flatMap((item) => item?.highlight.verified_structures ?? []));
+    const names = new Set(shown.flatMap((item) => item?.highlight.verified_structure_names ?? []).map((name) => name.toLowerCase()));
+    return new Set(targets.filter((target) => ids.has(target.structureId) || names.has(target.label.toLowerCase())).map((target) => target.key));
   }, [toolbar.showEvidence, evidence.data, isHybrid, system.id, targets]);
 
   const documentedKeys = useMemo(() => {
     if (!toolbar.showEvidence || !evidence.data) return new Set<string>();
-    const ids = new Set((isHybrid ? Object.values(evidence.data.systems) : [evidence.data.systems[system.id]]).flatMap((item) => item?.highlight.documented_structures ?? []));
-    return new Set(targets.filter((target) => ids.has(target.structureId) && !verifiedKeys.has(target.key)).map((target) => target.key));
+    const shown = isHybrid ? Object.values(evidence.data.systems) : [evidence.data.systems[system.id]];
+    const ids = new Set(shown.flatMap((item) => item?.highlight.documented_structures ?? []));
+    const names = new Set(shown.flatMap((item) => item?.highlight.documented_structure_names ?? []).map((name) => name.toLowerCase()));
+    return new Set(targets.filter((target) => (ids.has(target.structureId) || names.has(target.label.toLowerCase())) && !verifiedKeys.has(target.key)).map((target) => target.key));
   }, [toolbar.showEvidence, evidence.data, isHybrid, system.id, targets, verifiedKeys]);
 
   const schematicKeys = useMemo(() => {
-    if (!toolbar.showEvidence || !evidence.data || !isHybrid) return new Set<string>();
+    if (!toolbar.showEvidence || !evidence.data) return new Set<string>();
+    if (!isHybrid) {
+      // An organ-level association tints the whole organ evenly: no structure is singled out.
+      if (!evidence.data.systems[system.id]?.highlight.organ_schematic) return new Set<string>();
+      return new Set(targets.filter((target) => !verifiedKeys.has(target.key) && !documentedKeys.has(target.key)).map((target) => target.key));
+    }
     const layersWithEvidence = Object.entries(HYBRID_LAYER_SYSTEM).filter(([, organ]) => (evidence.data?.systems[organ]?.state_counts.SCHEMATIC_ORGAN_ONLY ?? 0) > 0).map(([layer]) => `hybrid:${layer}`);
     return new Set(targets.filter((target) => layersWithEvidence.includes(target.layer)).map((target) => target.key));
-  }, [toolbar.showEvidence, evidence.data, isHybrid, targets]);
+  }, [toolbar.showEvidence, evidence.data, isHybrid, system.id, targets, verifiedKeys, documentedKeys]);
 
   const onTargets = useCallback((next: TargetSummary[], interior: string | null) => {
     setTargets(next);
     setInteriorKey(interior);
     if (pendingFocus.current) {
-      const match = next.find((target) => target.structureId === pendingFocus.current);
+      const name = lookup.byId.get(pendingFocus.current)?.name.toLowerCase();
+      const match = next.find((target) => target.structureId === pendingFocus.current || (name && target.label.toLowerCase() === name));
       if (match) {
         setSelected(match);
         pendingFocus.current = null;
       }
     }
-  }, []);
+  }, [lookup]);
 
   function resetView(nextViewTypes: string[]) {
     setSelected(null);
@@ -211,9 +223,18 @@ function Studio({ manifest, atlas }: { manifest: AnatomyManifest; atlas: AtlasIn
   }
 
   function focusAtlas(atlasId: string) {
-    const target = targets.find((item) => item.structureId === atlasId);
+    const name = lookup.byId.get(atlasId)?.name.toLowerCase();
+    const target = targets.find((item) => item.structureId === atlasId || (name && item.label.toLowerCase() === name));
     if (target) {
       setSelected(target);
+      return;
+    }
+    // Some atlas regions are groups with no mesh. Reuse an existing model whose
+    // curated part carries that region's name rather than inventing a boundary.
+    const labelledVariant = system.variants.find((id) => manifest.variants[id].structures?.some((item) => item.label.toLowerCase() === name));
+    if (labelledVariant && labelledVariant !== variant.id) {
+      pendingFocus.current = atlasId;
+      chooseVariant(labelledVariant);
       return;
     }
     const atlasVariant = `atlas-${system.id}`;

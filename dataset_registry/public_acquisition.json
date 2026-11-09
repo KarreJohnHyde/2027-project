@@ -1,0 +1,1992 @@
+{
+  "schema_version": 1,
+  "planned_at": "2026-11-06T18:10:07+00:00",
+  "destination": "C:\\MedTwin_Datasets",
+  "reserve_bytes": 64424509440,
+  "authorization": "Owner requested useful public dataset acquisition on 2026-11-06; local research only; retain publisher terms.",
+  "datasets": [
+    {
+      "id": "kits19",
+      "source": "https://github.com/neheller/kits19",
+      "github_revision": "456b293435b25303bbc7995f094f83a0afdff0eb",
+      "imaging_revision": "65f1f295873a326230153c7e1de0c7dba10f0b29",
+      "license": "CC BY-NC-SA 4.0 (data); MIT (code)",
+      "purpose": "Complete the 210 existing kidney/tumour masks with matched CT volumes for the implemented volumetric trainer.",
+      "training_status": "Preparation and explicit task registration required after acquisition; no model is trained by this downloader."
+    },
+    {
+      "id": "medmnist-benchmarks",
+      "source": "https://zenodo.org/records/10519652",
+      "license": "CC BY 4.0 except DermaMNIST: CC BY-NC 4.0",
+      "subsets": [
+        "octmnist",
+        "retinamnist",
+        "dermamnist",
+        "breastmnist",
+        "pathmnist",
+        "bloodmnist",
+        "tissuemnist"
+      ],
+      "purpose": "Small benchmark candidates for missing ophthalmology, dermatology, breast ultrasound and microscopy coverage.",
+      "training_status": "BENCHMARK_ONLY; 28-pixel images; not full-resolution clinical datasets, segmentation labels or independent evidence for existing models. Patient independence must be checked before reuse."
+    },
+    {
+      "id": "kaggle-pneumonia",
+      "source": "https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia",
+      "version": 2,
+      "license": "CC BY 4.0 linked in publisher description",
+      "status": "REUSE_EXISTING",
+      "existing_path": "chest_xray",
+      "purpose": "Existing paediatric pneumonia research data; avoid another 1.2 GB download.",
+      "training_status": "Patient grouping and split audit required before training; not adult chest CT data."
+    }
+  ],
+  "artifacts": [
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00000/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00000.nii.gz",
+      "bytes": 225959569,
+      "hash_algorithm": "sha256",
+      "hash": "cdae5f3e0fbc7c98ab0430b3de42677abda2c1cf93ae0f86bd29fb8606688cb7",
+      "mask_path": "data/case_00000/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00001/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00001.nii.gz",
+      "bytes": 276387358,
+      "hash_algorithm": "sha256",
+      "hash": "3b861149f13a1e8a0b7cae23f624e6c335f538ee9fb6ecc0625b2f062879bed6",
+      "mask_path": "data/case_00001/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00002/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00002.nii.gz",
+      "bytes": 101967812,
+      "hash_algorithm": "sha256",
+      "hash": "58fcd6c4e59c747c2927b4ff12305f553abd33454cff6533082706b946173201",
+      "mask_path": "data/case_00002/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00003/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00003.nii.gz",
+      "bytes": 118681596,
+      "hash_algorithm": "sha256",
+      "hash": "63d267967cd02889415de2978903df36703cd7b5181e1226dc91d4832f7d5586",
+      "mask_path": "data/case_00003/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00004/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00004.nii.gz",
+      "bytes": 25269467,
+      "hash_algorithm": "sha256",
+      "hash": "a9af51c0435086ac7007570c8bc66ceb2a54ecfb7ec530639150635d326f8f1f",
+      "mask_path": "data/case_00004/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00005/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00005.nii.gz",
+      "bytes": 313477305,
+      "hash_algorithm": "sha256",
+      "hash": "986d4186183ceefba226cf667f6c07b010c60f6b4ea00905a60b805d05300279",
+      "mask_path": "data/case_00005/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00006/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00006.nii.gz",
+      "bytes": 78010682,
+      "hash_algorithm": "sha256",
+      "hash": "884cc817625dd041615a83ac378240675d599a42a1e0dd86e6fe88bd17f1c174",
+      "mask_path": "data/case_00006/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00007/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00007.nii.gz",
+      "bytes": 25826334,
+      "hash_algorithm": "sha256",
+      "hash": "1261e949b46d05b0da75ac7fa73f0c6a51aa13a607d95d89fefc232b6b3ca20b",
+      "mask_path": "data/case_00007/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00008/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00008.nii.gz",
+      "bytes": 107068349,
+      "hash_algorithm": "sha256",
+      "hash": "ae2719417e36da5689aade422a0b94bd896c4b33d7897ff3ab7e30129ae119c6",
+      "mask_path": "data/case_00008/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00009/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00009.nii.gz",
+      "bytes": 34134599,
+      "hash_algorithm": "sha256",
+      "hash": "492de10723f687b21b589ba1660615cac5eb4a8a785580a807be4eddca7c1756",
+      "mask_path": "data/case_00009/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00010/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00010.nii.gz",
+      "bytes": 23541391,
+      "hash_algorithm": "sha256",
+      "hash": "8e30ba81aa0422e2091b749b7c30989aeb102e01afcec826045162b437ed0ba4",
+      "mask_path": "data/case_00010/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00011/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00011.nii.gz",
+      "bytes": 41268802,
+      "hash_algorithm": "sha256",
+      "hash": "f2d346935837ad763840155ee07fde34a6698e03d207db360321a491969d4997",
+      "mask_path": "data/case_00011/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00012/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00012.nii.gz",
+      "bytes": 43185427,
+      "hash_algorithm": "sha256",
+      "hash": "039c97ac928af4dbb4f959cbaf2c7403e1c9590321ffdb3f2d86a355261cd846",
+      "mask_path": "data/case_00012/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00013/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00013.nii.gz",
+      "bytes": 44485657,
+      "hash_algorithm": "sha256",
+      "hash": "77e7eef8f9935192f526246f7ba5de0f3ef569ab1edc3ff18e930db8968ed7f5",
+      "mask_path": "data/case_00013/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00014/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00014.nii.gz",
+      "bytes": 192486296,
+      "hash_algorithm": "sha256",
+      "hash": "80ae025ada8b7f50fa9cbb223c81bb8770d00dc02db5d49b7f075b760380b664",
+      "mask_path": "data/case_00014/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00015/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00015.nii.gz",
+      "bytes": 23795573,
+      "hash_algorithm": "sha256",
+      "hash": "b6b216621db1c03a441b81f32540467767270f89e8b500e2012ccaa75bb12869",
+      "mask_path": "data/case_00015/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00016/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00016.nii.gz",
+      "bytes": 86929344,
+      "hash_algorithm": "sha256",
+      "hash": "9f741f28473b79ed7e53c5dcc5bc7d8872a6d0449dbb829a903eb05ae4f8e820",
+      "mask_path": "data/case_00016/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00017/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00017.nii.gz",
+      "bytes": 49940149,
+      "hash_algorithm": "sha256",
+      "hash": "fb7c9074168a4a7a258f8a300b4704af42e23a63e55027834fe1e44e55b473f4",
+      "mask_path": "data/case_00017/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00018/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00018.nii.gz",
+      "bytes": 49984866,
+      "hash_algorithm": "sha256",
+      "hash": "4a55b9904bb5e3bb4738721324f49b0bb4bf4e813fee7a635cd124db5f9c40d1",
+      "mask_path": "data/case_00018/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00019/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00019.nii.gz",
+      "bytes": 51644458,
+      "hash_algorithm": "sha256",
+      "hash": "0b2cd96ac11bebc5f07e071398e273d418e13476d43e1229927c4c33fa5e03be",
+      "mask_path": "data/case_00019/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00020/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00020.nii.gz",
+      "bytes": 43148211,
+      "hash_algorithm": "sha256",
+      "hash": "0a9f9f55949dd5fcd59ca49c27662d9956d0bb87cbdab50c7f5ed347bd9e732c",
+      "mask_path": "data/case_00020/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00021/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00021.nii.gz",
+      "bytes": 17267757,
+      "hash_algorithm": "sha256",
+      "hash": "97562e5d35abe55192fbbaacd04f05171343ab440c5ff592c0fad729d001a9f7",
+      "mask_path": "data/case_00021/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00022/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00022.nii.gz",
+      "bytes": 235518269,
+      "hash_algorithm": "sha256",
+      "hash": "365cb0082c4073eb7e60f7c759e8f6d7feef6a168f4f55edc2324b243518a452",
+      "mask_path": "data/case_00022/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00023/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00023.nii.gz",
+      "bytes": 45338328,
+      "hash_algorithm": "sha256",
+      "hash": "b5a948824220f88ae3515234110034af1f2ca07a4b00bcaa597bd06d33b5b388",
+      "mask_path": "data/case_00023/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00024/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00024.nii.gz",
+      "bytes": 43319114,
+      "hash_algorithm": "sha256",
+      "hash": "b90540df3dd4ab0ec4cad772504d1be9471229c01a14f6cd7f0e9fb3a4523e71",
+      "mask_path": "data/case_00024/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00025/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00025.nii.gz",
+      "bytes": 42608517,
+      "hash_algorithm": "sha256",
+      "hash": "0b93a34f9ab521321eb7990920311912305131803d3058814f1d4dc16045a04c",
+      "mask_path": "data/case_00025/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00026/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00026.nii.gz",
+      "bytes": 128953647,
+      "hash_algorithm": "sha256",
+      "hash": "effb38cede495d9c38e46e496117c4ebb50f912223d077f45cacb9eb0aa1a9da",
+      "mask_path": "data/case_00026/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00027/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00027.nii.gz",
+      "bytes": 300960665,
+      "hash_algorithm": "sha256",
+      "hash": "7432ae26ab57ab2bebdce01bc420f79edac2ad6728351128bd59736816ee58e8",
+      "mask_path": "data/case_00027/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00028/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00028.nii.gz",
+      "bytes": 45001658,
+      "hash_algorithm": "sha256",
+      "hash": "b41fdc5b7a7bb0a53a3ac25bbb875a8fe437a96622f6839201f8909af66612ce",
+      "mask_path": "data/case_00028/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00029/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00029.nii.gz",
+      "bytes": 62472569,
+      "hash_algorithm": "sha256",
+      "hash": "657fdb4c2ef5a66e4580e64bdacbaf9a0e9034cb3fd390b28337081cd3142e45",
+      "mask_path": "data/case_00029/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00030/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00030.nii.gz",
+      "bytes": 18676453,
+      "hash_algorithm": "sha256",
+      "hash": "db5d5dd393c0fcbcdfd0d41e242c1c46138d6308765992d5b79e9a41f01b4ee2",
+      "mask_path": "data/case_00030/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00031/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00031.nii.gz",
+      "bytes": 50504430,
+      "hash_algorithm": "sha256",
+      "hash": "8e4baf209f156e6319cdbd61efdcb8bb518a9e863d86cb67ef43fe53cd3cc156",
+      "mask_path": "data/case_00031/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00032/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00032.nii.gz",
+      "bytes": 75286311,
+      "hash_algorithm": "sha256",
+      "hash": "00f43320501a2bc31b13176add47ae81793f9097df47c750c4ac4af9910f730d",
+      "mask_path": "data/case_00032/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00033/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00033.nii.gz",
+      "bytes": 191873285,
+      "hash_algorithm": "sha256",
+      "hash": "94524a641d762fd1692811504f6276a970f1738de4641683453b0b5fd346a3f2",
+      "mask_path": "data/case_00033/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00034/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00034.nii.gz",
+      "bytes": 52752885,
+      "hash_algorithm": "sha256",
+      "hash": "55213482fc646bf30a736fc1e8620a0925b30030cbfbbd6488d47bd059f313ac",
+      "mask_path": "data/case_00034/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00035/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00035.nii.gz",
+      "bytes": 39633847,
+      "hash_algorithm": "sha256",
+      "hash": "0fab3e5adaf5f525573875ed540d24f351e3cb8c23004739c1a653bfa5b66a0c",
+      "mask_path": "data/case_00035/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00036/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00036.nii.gz",
+      "bytes": 78614692,
+      "hash_algorithm": "sha256",
+      "hash": "e3a61271d58bbb2ebe5c9018ea7246bad81350bcc4bab0c7ca758f8ffe6822af",
+      "mask_path": "data/case_00036/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00037/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00037.nii.gz",
+      "bytes": 40424057,
+      "hash_algorithm": "sha256",
+      "hash": "31b95c03f5df0527f0943db956904a70e6c9cd779df3c6f9755858abeab4f64d",
+      "mask_path": "data/case_00037/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00038/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00038.nii.gz",
+      "bytes": 15415661,
+      "hash_algorithm": "sha256",
+      "hash": "0050172529386ea12ff21b2871e2afa0bc917f8ec2b8fc0fc5e9c0d2e298d6a3",
+      "mask_path": "data/case_00038/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00039/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00039.nii.gz",
+      "bytes": 44953099,
+      "hash_algorithm": "sha256",
+      "hash": "ba31bba727acdff50aa43244d17872c75cdf69ad6dc493e4a52c36c44e953e3c",
+      "mask_path": "data/case_00039/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00040/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00040.nii.gz",
+      "bytes": 81954860,
+      "hash_algorithm": "sha256",
+      "hash": "d0098068040f8fac079925d489428ef3b486d63975f51778c1dd981d5e7ff17f",
+      "mask_path": "data/case_00040/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00041/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00041.nii.gz",
+      "bytes": 25224078,
+      "hash_algorithm": "sha256",
+      "hash": "bebf5e542eaa5731c71717b7654065fa4313c551c1cdf57f7cea426ceff028c2",
+      "mask_path": "data/case_00041/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00042/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00042.nii.gz",
+      "bytes": 136618407,
+      "hash_algorithm": "sha256",
+      "hash": "07c3503b756e9290261afd92f4b51b141c3559ff6ea42a670169ff726a713f0d",
+      "mask_path": "data/case_00042/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00043/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00043.nii.gz",
+      "bytes": 70644303,
+      "hash_algorithm": "sha256",
+      "hash": "e3780331e973be89132aedc51c51995e8ca729391d52e194f25f7cec08a659a5",
+      "mask_path": "data/case_00043/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00044/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00044.nii.gz",
+      "bytes": 38419186,
+      "hash_algorithm": "sha256",
+      "hash": "4d7f8fd27cb08c8b935663757f864b3bb4113eb4af5b8ecdc9dda41ab48cdf3d",
+      "mask_path": "data/case_00044/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00045/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00045.nii.gz",
+      "bytes": 25584430,
+      "hash_algorithm": "sha256",
+      "hash": "ad4ddba4d11c3272dac7a35e2d4414a872b215fad2c85be7af64d7bd0caa80c8",
+      "mask_path": "data/case_00045/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00046/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00046.nii.gz",
+      "bytes": 59261129,
+      "hash_algorithm": "sha256",
+      "hash": "4f83900ab55be64e53d2b88fab5657e5d92fc10ecf30a48770615e8d2b4e0a62",
+      "mask_path": "data/case_00046/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00047/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00047.nii.gz",
+      "bytes": 63514124,
+      "hash_algorithm": "sha256",
+      "hash": "83322cd75cb52290e64edd99dc7e23c616b8e31c62fe238f5f16f45bea6d477a",
+      "mask_path": "data/case_00047/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00048/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00048.nii.gz",
+      "bytes": 30867959,
+      "hash_algorithm": "sha256",
+      "hash": "a4762f5c8cbd30ab74cf4b16b4806a73b0f1234efb247d068a9b1c388d5ba8c4",
+      "mask_path": "data/case_00048/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00049/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00049.nii.gz",
+      "bytes": 289194549,
+      "hash_algorithm": "sha256",
+      "hash": "d0d449e4ca322aab438a34cebe0eb47b0ea68557593ef58f1912dfeac3c5fd32",
+      "mask_path": "data/case_00049/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00050/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00050.nii.gz",
+      "bytes": 40193355,
+      "hash_algorithm": "sha256",
+      "hash": "ee2983b3af2e20f2e130279b9415183c99d0d4b813aead6569a905b0197ca40b",
+      "mask_path": "data/case_00050/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00051/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00051.nii.gz",
+      "bytes": 25645257,
+      "hash_algorithm": "sha256",
+      "hash": "e52fc89a7156d19cfefcb7f8794c01e1673a5c77218361a3723d0886f53cb3fb",
+      "mask_path": "data/case_00051/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00052/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00052.nii.gz",
+      "bytes": 256991563,
+      "hash_algorithm": "sha256",
+      "hash": "e4f32880944933ce2f733cc75bc1a5284b0a846ed77161e995fd3d277aaec88a",
+      "mask_path": "data/case_00052/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00053/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00053.nii.gz",
+      "bytes": 251298306,
+      "hash_algorithm": "sha256",
+      "hash": "ed3821653b378580bee47a0b975ba8a3d659b95408a6010c8159fa9ecd6ab23c",
+      "mask_path": "data/case_00053/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00054/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00054.nii.gz",
+      "bytes": 41865608,
+      "hash_algorithm": "sha256",
+      "hash": "2e1670b9a7d9378c1e7d68242a08383d00c3c0755b74d5b7a46552656f4864c0",
+      "mask_path": "data/case_00054/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00055/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00055.nii.gz",
+      "bytes": 43342417,
+      "hash_algorithm": "sha256",
+      "hash": "bdee52e4c1b3b789142b167b77257e394d8db579e26724488dd4dc1a2dbf0959",
+      "mask_path": "data/case_00055/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00056/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00056.nii.gz",
+      "bytes": 45668159,
+      "hash_algorithm": "sha256",
+      "hash": "bceeed3355ab099678d5ef009cb8a0258eac51fb6fc2530017fe702434c46140",
+      "mask_path": "data/case_00056/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00057/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00057.nii.gz",
+      "bytes": 37609735,
+      "hash_algorithm": "sha256",
+      "hash": "e7f73fded2c62e41d3b835bd8d65c075dd0b930347e16c5a55b854c6493ebdb6",
+      "mask_path": "data/case_00057/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00058/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00058.nii.gz",
+      "bytes": 43100380,
+      "hash_algorithm": "sha256",
+      "hash": "6909f6f33d6ad42d48a04b2a392af6ff05431b5021a4aac0d9a00c1dde80530b",
+      "mask_path": "data/case_00058/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00059/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00059.nii.gz",
+      "bytes": 324407591,
+      "hash_algorithm": "sha256",
+      "hash": "67a94a63adcee23ee66bba448d3229c47a1d33029524dde26dfa7d8fa1c2afae",
+      "mask_path": "data/case_00059/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00060/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00060.nii.gz",
+      "bytes": 62615177,
+      "hash_algorithm": "sha256",
+      "hash": "f4a8660114ba14a05f354d37511b50a0e6abfc26d6e0409b7b1bf6c2a8147fdd",
+      "mask_path": "data/case_00060/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00061/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00061.nii.gz",
+      "bytes": 11577207,
+      "hash_algorithm": "sha256",
+      "hash": "95eb42261e22f552e2b6bda39c2d72e3fbc376983d6bf9485122e968609f2cbf",
+      "mask_path": "data/case_00061/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00062/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00062.nii.gz",
+      "bytes": 32540525,
+      "hash_algorithm": "sha256",
+      "hash": "abaac9f1ca45105517719b9bbedf402214ebf12050305c70904a982ae59b084a",
+      "mask_path": "data/case_00062/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00063/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00063.nii.gz",
+      "bytes": 231715658,
+      "hash_algorithm": "sha256",
+      "hash": "0e27c6255a9305feb5bc4e95f48eb36c10c4d35a89acc0f3838d0629f314304c",
+      "mask_path": "data/case_00063/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00064/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00064.nii.gz",
+      "bytes": 21721710,
+      "hash_algorithm": "sha256",
+      "hash": "d8de0bdfa099c9cd4fda5a69ed188f57cf01849e676d31473f5f0df4a83c832d",
+      "mask_path": "data/case_00064/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00065/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00065.nii.gz",
+      "bytes": 48274302,
+      "hash_algorithm": "sha256",
+      "hash": "6ff1b71bd873306c88e90fa463cbd740bbeb79cb5c3bc8b5089e3fff81622e6e",
+      "mask_path": "data/case_00065/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00066/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00066.nii.gz",
+      "bytes": 186603335,
+      "hash_algorithm": "sha256",
+      "hash": "d8fbf08d1628afa013c3b0050b6f7b60ff5e184c295bea2ee5b0d173459ed82f",
+      "mask_path": "data/case_00066/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00067/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00067.nii.gz",
+      "bytes": 134477869,
+      "hash_algorithm": "sha256",
+      "hash": "a819c539f52b093658cf59afcb08f7f66b41adff9fec05125c47c2f5186b1f95",
+      "mask_path": "data/case_00067/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00068/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00068.nii.gz",
+      "bytes": 300829627,
+      "hash_algorithm": "sha256",
+      "hash": "274e408499a644791a18e8287b10b8124932d28ad5ae6f80f3fd9a6cbf94d48c",
+      "mask_path": "data/case_00068/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00069/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00069.nii.gz",
+      "bytes": 46183471,
+      "hash_algorithm": "sha256",
+      "hash": "f56e721684cdfb9d43e7860dd002e70858a33b0549bafe8c21be987c193c3592",
+      "mask_path": "data/case_00069/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00070/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00070.nii.gz",
+      "bytes": 29478344,
+      "hash_algorithm": "sha256",
+      "hash": "18025b039e3a098437eac420ef50d2fa3cb1ac879a78ae339037d90ef5330126",
+      "mask_path": "data/case_00070/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00071/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00071.nii.gz",
+      "bytes": 268825824,
+      "hash_algorithm": "sha256",
+      "hash": "f7caca0580f003bc43e6d2d795d37e252665a31c949c2486fb55d835b675b25a",
+      "mask_path": "data/case_00071/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00072/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00072.nii.gz",
+      "bytes": 79384535,
+      "hash_algorithm": "sha256",
+      "hash": "2be7605792b5cc9c3303d1ccd4547da8b5839f75a3296ffc8826668de180cc56",
+      "mask_path": "data/case_00072/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00073/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00073.nii.gz",
+      "bytes": 66227643,
+      "hash_algorithm": "sha256",
+      "hash": "54da755f9b760abea084d3cbe31a6279c3fc254a68f99733b2df19709c7b22f5",
+      "mask_path": "data/case_00073/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00074/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00074.nii.gz",
+      "bytes": 39078517,
+      "hash_algorithm": "sha256",
+      "hash": "1eb8693c31ac80dd360a3f91b610a60136ad276a5b334545c3f8e64765de5f17",
+      "mask_path": "data/case_00074/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00075/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00075.nii.gz",
+      "bytes": 44705075,
+      "hash_algorithm": "sha256",
+      "hash": "44f3ac4045ce34305eadfc48af7f11782c7699ed986d71089ec82f744cdbb64e",
+      "mask_path": "data/case_00075/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00076/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00076.nii.gz",
+      "bytes": 32585283,
+      "hash_algorithm": "sha256",
+      "hash": "24e7268fcd904b5d92aeddc37d6e2714ffb080de7c8e8497482c64116ce2f3e6",
+      "mask_path": "data/case_00076/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00077/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00077.nii.gz",
+      "bytes": 42628319,
+      "hash_algorithm": "sha256",
+      "hash": "64d7f1fb5be850c6b30051e5244a7cfdfcdea1e185f8f8bea7e6056f8f1bd0c9",
+      "mask_path": "data/case_00077/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00078/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00078.nii.gz",
+      "bytes": 132219049,
+      "hash_algorithm": "sha256",
+      "hash": "08563035343423b6011eddfe64e16447b2e9b8a62fbfffc0be97103a10664e44",
+      "mask_path": "data/case_00078/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00079/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00079.nii.gz",
+      "bytes": 60760713,
+      "hash_algorithm": "sha256",
+      "hash": "2062d34914ce3c0d00d7a92320a2cbc8e8f82d88217feeff4df2d6c7ac6d6915",
+      "mask_path": "data/case_00079/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00080/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00080.nii.gz",
+      "bytes": 43158941,
+      "hash_algorithm": "sha256",
+      "hash": "53d2195627a643feeebe65087baba6169af0f1707a26de5f7ee13943d3a4a0fd",
+      "mask_path": "data/case_00080/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00081/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00081.nii.gz",
+      "bytes": 60350821,
+      "hash_algorithm": "sha256",
+      "hash": "78bc51ca3da42af7ceecc094b0709daf20925d8558a4175feffa31fdfcbcefc1",
+      "mask_path": "data/case_00081/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00082/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00082.nii.gz",
+      "bytes": 57346577,
+      "hash_algorithm": "sha256",
+      "hash": "321ff379b9ee8166faebe129184ca75f8715bed42ff10edd91001a8a3d3fd8b7",
+      "mask_path": "data/case_00082/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00083/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00083.nii.gz",
+      "bytes": 38295161,
+      "hash_algorithm": "sha256",
+      "hash": "7748e2dc080c6f9df479e7db2b03d17c7b32e62ee081741fd5d0d0786cc1fa23",
+      "mask_path": "data/case_00083/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00084/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00084.nii.gz",
+      "bytes": 112681578,
+      "hash_algorithm": "sha256",
+      "hash": "d2c54a087dc9b2e1229a326ed12055dfbee596cf2bc7ad8a247b9fde540738d7",
+      "mask_path": "data/case_00084/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00085/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00085.nii.gz",
+      "bytes": 36294311,
+      "hash_algorithm": "sha256",
+      "hash": "b875d694ee4e8c3e8125ee8be2f8d317af0dd4124929da8546297b3ab324772b",
+      "mask_path": "data/case_00085/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00086/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00086.nii.gz",
+      "bytes": 81962715,
+      "hash_algorithm": "sha256",
+      "hash": "f05018951244e877cc6cb3aa842ed2287a32bab86b4cd5e8564e0ce6210930d1",
+      "mask_path": "data/case_00086/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00087/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00087.nii.gz",
+      "bytes": 25303768,
+      "hash_algorithm": "sha256",
+      "hash": "f4658463b4480b411d7b5e283294a828145acf95cef70f9e35f88161167a5298",
+      "mask_path": "data/case_00087/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00088/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00088.nii.gz",
+      "bytes": 47969595,
+      "hash_algorithm": "sha256",
+      "hash": "393684ed2220f0e030c09f3ed36e832740e5e9a8c98bffad7480e2d60e79d152",
+      "mask_path": "data/case_00088/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00089/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00089.nii.gz",
+      "bytes": 24690956,
+      "hash_algorithm": "sha256",
+      "hash": "3fed1d4f01ff7e04d618fd48000937ea455aa32bc8b1d693697b2e258c95dd40",
+      "mask_path": "data/case_00089/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00090/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00090.nii.gz",
+      "bytes": 35861921,
+      "hash_algorithm": "sha256",
+      "hash": "5bfa1c15f922bdbeaffa7cd12c3f9f3cb7b6100db29ec7811ead40e977bb490a",
+      "mask_path": "data/case_00090/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00091/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00091.nii.gz",
+      "bytes": 320735560,
+      "hash_algorithm": "sha256",
+      "hash": "56f4a7e6531497523448ab4b2c23f61cdb907880161ca349e1cef88e3a3f31ac",
+      "mask_path": "data/case_00091/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00092/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00092.nii.gz",
+      "bytes": 51076798,
+      "hash_algorithm": "sha256",
+      "hash": "0e5beede1e2deec31a4bf8f6c0cd51c47e053c3a4644341a4178678be59131f4",
+      "mask_path": "data/case_00092/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00093/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00093.nii.gz",
+      "bytes": 324309850,
+      "hash_algorithm": "sha256",
+      "hash": "023bae3d476a6993ed654e9a7af46c9b659a6aa6903d2cb3829af5533e5ba42c",
+      "mask_path": "data/case_00093/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00094/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00094.nii.gz",
+      "bytes": 17428859,
+      "hash_algorithm": "sha256",
+      "hash": "48802f2c1d197f63c9be459d2402c9823ca9387ad4699e482ca3a2da4d8b2c6b",
+      "mask_path": "data/case_00094/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00095/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00095.nii.gz",
+      "bytes": 127649269,
+      "hash_algorithm": "sha256",
+      "hash": "7908ff06fd6c82652ad1591b650c71529f616bf4f904fee75e6604dcf5e3a1e2",
+      "mask_path": "data/case_00095/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00096/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00096.nii.gz",
+      "bytes": 303181978,
+      "hash_algorithm": "sha256",
+      "hash": "d0570233199a3c59ff8e049f98732d3990564bf45ff67e28702709feddfd1085",
+      "mask_path": "data/case_00096/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00097/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00097.nii.gz",
+      "bytes": 35994201,
+      "hash_algorithm": "sha256",
+      "hash": "78c2d1a5c4cf9d7f492b01db67dde00a1c106dd0dcde7d3a3fb66b790c58019f",
+      "mask_path": "data/case_00097/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00098/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00098.nii.gz",
+      "bytes": 113065659,
+      "hash_algorithm": "sha256",
+      "hash": "7b90ea447c544442524c07d999eebd142c95645f5e033e14f6dd138fdf59d3be",
+      "mask_path": "data/case_00098/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00099/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00099.nii.gz",
+      "bytes": 44531186,
+      "hash_algorithm": "sha256",
+      "hash": "48d45ad59be0e4ca0a51531a74ffdee5ce530119ce0acaa406d08d8a66062063",
+      "mask_path": "data/case_00099/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00100/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00100.nii.gz",
+      "bytes": 217447355,
+      "hash_algorithm": "sha256",
+      "hash": "2391adf361de6377cc4271e4180d2be74b052303833bd60ad26356be9cefcbbd",
+      "mask_path": "data/case_00100/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00101/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00101.nii.gz",
+      "bytes": 222646868,
+      "hash_algorithm": "sha256",
+      "hash": "fb57e0feba61718803ed3756f5b880ea7be85e43d374e67eeafb22ec1bdf0ea2",
+      "mask_path": "data/case_00101/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00102/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00102.nii.gz",
+      "bytes": 139727628,
+      "hash_algorithm": "sha256",
+      "hash": "ce1f4182738e0cc5b36ad02efd719b805699b8f5e647e7ca12aac2fe9147c4da",
+      "mask_path": "data/case_00102/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00103/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00103.nii.gz",
+      "bytes": 286971910,
+      "hash_algorithm": "sha256",
+      "hash": "0b8a27bd9af3a52f55c5a17fee98043bbbcc997c1a66a356984d3d0d4ee66375",
+      "mask_path": "data/case_00103/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00104/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00104.nii.gz",
+      "bytes": 58853229,
+      "hash_algorithm": "sha256",
+      "hash": "16b1c9224a730305486c5a741f8ca04cd82852e3ba14850cdc53fe07ec96ec5c",
+      "mask_path": "data/case_00104/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00105/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00105.nii.gz",
+      "bytes": 60940672,
+      "hash_algorithm": "sha256",
+      "hash": "e4d2fe3b5af221ccb405e8e892cd8c03077f926c156ed23b054c9b7b9badd886",
+      "mask_path": "data/case_00105/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00106/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00106.nii.gz",
+      "bytes": 47144713,
+      "hash_algorithm": "sha256",
+      "hash": "384c34749a9c849a2e0d4bf70335ba15696f79e53b136cba21f18d44d65e34ca",
+      "mask_path": "data/case_00106/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00107/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00107.nii.gz",
+      "bytes": 34804025,
+      "hash_algorithm": "sha256",
+      "hash": "1c1e8da81cb453a4a4da056f056302a97b51bd7f34cfd254d15d80d49540848d",
+      "mask_path": "data/case_00107/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00108/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00108.nii.gz",
+      "bytes": 23687235,
+      "hash_algorithm": "sha256",
+      "hash": "543e722f44db15e7452bfcc39d97acf5803952344c7a3a7ae31d4c4577bd3aa0",
+      "mask_path": "data/case_00108/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00109/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00109.nii.gz",
+      "bytes": 32402891,
+      "hash_algorithm": "sha256",
+      "hash": "7539f075fbcc4dacec246cef7e0e4e879a06a93d2dd98bfebaaa6c8930895a77",
+      "mask_path": "data/case_00109/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00110/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00110.nii.gz",
+      "bytes": 16481496,
+      "hash_algorithm": "sha256",
+      "hash": "e85aff843a39845a1a0bbe488ced890bb50ff3d098721d9bbf39d4d188acc627",
+      "mask_path": "data/case_00110/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00111/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00111.nii.gz",
+      "bytes": 78705328,
+      "hash_algorithm": "sha256",
+      "hash": "4acbc48b42d3a56e0eab6dd7b6537b819f58ffebbad6043b76245a75d4176cda",
+      "mask_path": "data/case_00111/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00112/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00112.nii.gz",
+      "bytes": 55840497,
+      "hash_algorithm": "sha256",
+      "hash": "935e66df54397a86338502072f2212fa25d51f648669e16ab7733abbd19d8241",
+      "mask_path": "data/case_00112/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00113/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00113.nii.gz",
+      "bytes": 22107071,
+      "hash_algorithm": "sha256",
+      "hash": "ea0aa6393a3bb4734c152730b605b595775646807edd953d36714b9377300e61",
+      "mask_path": "data/case_00113/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00114/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00114.nii.gz",
+      "bytes": 147217241,
+      "hash_algorithm": "sha256",
+      "hash": "09a8723f8afa6a7b811e32bccd8643b2c4fe9efd9f164085cde62757ab7bd0d8",
+      "mask_path": "data/case_00114/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00115/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00115.nii.gz",
+      "bytes": 147301746,
+      "hash_algorithm": "sha256",
+      "hash": "bbf592e97e02fc0c611db54c53080d4ec35981f4185fab0e89994e4ea2a438e8",
+      "mask_path": "data/case_00115/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00116/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00116.nii.gz",
+      "bytes": 196707070,
+      "hash_algorithm": "sha256",
+      "hash": "525f60083da40205dda79a4cb1298b9b97a70f6bae26f20cd421cd67caf81546",
+      "mask_path": "data/case_00116/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00117/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00117.nii.gz",
+      "bytes": 30684538,
+      "hash_algorithm": "sha256",
+      "hash": "37e270565cae64838698ed6dab7f0a23867901e69d8673dfa0c083efb36cb463",
+      "mask_path": "data/case_00117/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00118/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00118.nii.gz",
+      "bytes": 303939757,
+      "hash_algorithm": "sha256",
+      "hash": "46deca3f230a031ff2fb5d03b0922a382e67e5dde0c7d387c442cb89084d2283",
+      "mask_path": "data/case_00118/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00119/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00119.nii.gz",
+      "bytes": 44352103,
+      "hash_algorithm": "sha256",
+      "hash": "14539f65234f068b1e349e753b422f564198021879612264556eafc1e1fdcc67",
+      "mask_path": "data/case_00119/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00120/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00120.nii.gz",
+      "bytes": 135413522,
+      "hash_algorithm": "sha256",
+      "hash": "3332d84141993f42dc03d7977a7bc81e199f94be54bb567ce09554ab2f7b5732",
+      "mask_path": "data/case_00120/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00121/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00121.nii.gz",
+      "bytes": 35289520,
+      "hash_algorithm": "sha256",
+      "hash": "3fe7568dbf5446747878ab9ce27760cad28b4cc043295457a5869469e34cf914",
+      "mask_path": "data/case_00121/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00122/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00122.nii.gz",
+      "bytes": 25550117,
+      "hash_algorithm": "sha256",
+      "hash": "ca3f77c9ac09245d7290364a08c9efea4d0e7870a93bb73ae8755c5bb1b34ff7",
+      "mask_path": "data/case_00122/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00123/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00123.nii.gz",
+      "bytes": 150859371,
+      "hash_algorithm": "sha256",
+      "hash": "be132ec55663137296e74c7e8f42df74a6676c347c05c2a0afb2b6c512dd31c2",
+      "mask_path": "data/case_00123/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00124/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00124.nii.gz",
+      "bytes": 113055034,
+      "hash_algorithm": "sha256",
+      "hash": "57eb0b37673a18c9d81257afb7c6e8a079574bf2ab8250eadeced0d915060a00",
+      "mask_path": "data/case_00124/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00125/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00125.nii.gz",
+      "bytes": 64037453,
+      "hash_algorithm": "sha256",
+      "hash": "7025178cb9775c773dceeca725b5cf1354c9547786483bec867044d40ae7d069",
+      "mask_path": "data/case_00125/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00126/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00126.nii.gz",
+      "bytes": 46555768,
+      "hash_algorithm": "sha256",
+      "hash": "af6b9438df4a10b5561bdf9072b806189784e2ece7b38e2f1440ad2fdd51b9ac",
+      "mask_path": "data/case_00126/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00127/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00127.nii.gz",
+      "bytes": 41530807,
+      "hash_algorithm": "sha256",
+      "hash": "bf94415e76b8bf0a28b5569afa08e402718ca902ad485d0ce4267b47919502f4",
+      "mask_path": "data/case_00127/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00128/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00128.nii.gz",
+      "bytes": 87078506,
+      "hash_algorithm": "sha256",
+      "hash": "44aadb43ffdfca340cec735f990c875e407dbcee7a73d2bd184f401b7f6eb05e",
+      "mask_path": "data/case_00128/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00129/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00129.nii.gz",
+      "bytes": 24054442,
+      "hash_algorithm": "sha256",
+      "hash": "0d7b29ba62bab0a031a98fec6651230e7dfc8d3fc599e3d2201dfe6ce114f245",
+      "mask_path": "data/case_00129/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00130/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00130.nii.gz",
+      "bytes": 26677591,
+      "hash_algorithm": "sha256",
+      "hash": "5d8c6a9f58ea6644879b2ad760560e743a5f86a4cb2b3682f5e1e0cbd4f5dc69",
+      "mask_path": "data/case_00130/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00131/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00131.nii.gz",
+      "bytes": 66542549,
+      "hash_algorithm": "sha256",
+      "hash": "cb146cf250f9607c325ba34dd21d7f126121045dfcab4d409e6c934de997d82e",
+      "mask_path": "data/case_00131/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00132/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00132.nii.gz",
+      "bytes": 240243768,
+      "hash_algorithm": "sha256",
+      "hash": "8ed0c03970a1e6681a63f3de19d09e45ca84d90290877baa7ed6c82a9efcd4fe",
+      "mask_path": "data/case_00132/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00133/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00133.nii.gz",
+      "bytes": 73000317,
+      "hash_algorithm": "sha256",
+      "hash": "5d91b6b7ececbb86722b23911236cd6f53d983b5dafa8be556e3254c692c88f0",
+      "mask_path": "data/case_00133/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00134/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00134.nii.gz",
+      "bytes": 24422346,
+      "hash_algorithm": "sha256",
+      "hash": "8b4cf8b847bce58032c426ad57f0fa2a942eba2883c2082ea0396b88fc2df9f0",
+      "mask_path": "data/case_00134/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00135/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00135.nii.gz",
+      "bytes": 269658966,
+      "hash_algorithm": "sha256",
+      "hash": "92e38761c584811e0904318abaaffc45fb7812aeb5a84df8a24c35796a1a401f",
+      "mask_path": "data/case_00135/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00136/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00136.nii.gz",
+      "bytes": 51986338,
+      "hash_algorithm": "sha256",
+      "hash": "3e294c34dd7099d849f8a7d5259864d4f8a40a467f3dcedfc458ad93a6c4a6c0",
+      "mask_path": "data/case_00136/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00137/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00137.nii.gz",
+      "bytes": 47700994,
+      "hash_algorithm": "sha256",
+      "hash": "d6a732fdec037453469c5ba6f6ec0bcee49130530e9c10dbfef2ac21d36ddf03",
+      "mask_path": "data/case_00137/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00138/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00138.nii.gz",
+      "bytes": 40601700,
+      "hash_algorithm": "sha256",
+      "hash": "7b7c931a5f23f2db73739064109ebba8c206c7e13681138e8adb74ec7c243b6a",
+      "mask_path": "data/case_00138/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00139/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00139.nii.gz",
+      "bytes": 48587729,
+      "hash_algorithm": "sha256",
+      "hash": "5041d20b2db1f2e09b1711707be1df1e95ba3c9ff65d5fed6de537dc1e023e21",
+      "mask_path": "data/case_00139/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00140/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00140.nii.gz",
+      "bytes": 129580387,
+      "hash_algorithm": "sha256",
+      "hash": "34d5740ad5dfa4f638a531e12b880b99add5270ecbd1a7ac42c98a465b8a4142",
+      "mask_path": "data/case_00140/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00141/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00141.nii.gz",
+      "bytes": 271847392,
+      "hash_algorithm": "sha256",
+      "hash": "02595d667b7ac5c714200dca7ef4bb6f83d95e9c3882d5e1f7605191986097c3",
+      "mask_path": "data/case_00141/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00142/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00142.nii.gz",
+      "bytes": 119786560,
+      "hash_algorithm": "sha256",
+      "hash": "d11ef32d69bbb5d455f825a9ae7d36d9d5aee00e4aa0ace4b0aa2c6d0b96c419",
+      "mask_path": "data/case_00142/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00143/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00143.nii.gz",
+      "bytes": 39109278,
+      "hash_algorithm": "sha256",
+      "hash": "b9780eb096da190e3327b60d85eee9d6f11ecba54613d4c62254fa03ecdcbc6e",
+      "mask_path": "data/case_00143/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00144/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00144.nii.gz",
+      "bytes": 86697738,
+      "hash_algorithm": "sha256",
+      "hash": "2d4b5d233f28e4a9bcc01e9928fb51926604177a41985bfcec8f9d3d2d2fd779",
+      "mask_path": "data/case_00144/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00145/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00145.nii.gz",
+      "bytes": 32713163,
+      "hash_algorithm": "sha256",
+      "hash": "9657b6eb9974a9be4f45bac54e877c360ca5016cfe3ae09a4fa4ff8e645d319b",
+      "mask_path": "data/case_00145/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00146/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00146.nii.gz",
+      "bytes": 281605168,
+      "hash_algorithm": "sha256",
+      "hash": "1d94dc738a69e50c72cfab4203452eaf4771b30ac17ed818e9c0e3d140b155a2",
+      "mask_path": "data/case_00146/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00147/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00147.nii.gz",
+      "bytes": 28532981,
+      "hash_algorithm": "sha256",
+      "hash": "0f37a518fa0141a332f6230aebe7deacb55adfcb32d6a40c3b6171b0a007bc05",
+      "mask_path": "data/case_00147/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00148/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00148.nii.gz",
+      "bytes": 15411691,
+      "hash_algorithm": "sha256",
+      "hash": "b4c93d60edc9e0ead4bab9390370aa379e3bac6c4f25e9a746c50de30596efac",
+      "mask_path": "data/case_00148/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00149/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00149.nii.gz",
+      "bytes": 47822495,
+      "hash_algorithm": "sha256",
+      "hash": "c4fd6735554a08d6c10242c98116d054d16b8e8483cad1985ee661af2b4ad204",
+      "mask_path": "data/case_00149/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00150/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00150.nii.gz",
+      "bytes": 43249791,
+      "hash_algorithm": "sha256",
+      "hash": "35b19b44daad521f9de69b0eb9e6f5fdaaad33af9139415249247dc23d4e3d16",
+      "mask_path": "data/case_00150/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00151/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00151.nii.gz",
+      "bytes": 495993341,
+      "hash_algorithm": "sha256",
+      "hash": "26f294ac7284e56a477e4a05579729cfd2364d39731c7cdf5a9e85a53960b7af",
+      "mask_path": "data/case_00151/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00152/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00152.nii.gz",
+      "bytes": 19368559,
+      "hash_algorithm": "sha256",
+      "hash": "b407f2d86257173d4ade726b97dc53853a80d88b4226cfde330b56d1fd6da71b",
+      "mask_path": "data/case_00152/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00153/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00153.nii.gz",
+      "bytes": 35727661,
+      "hash_algorithm": "sha256",
+      "hash": "b26b7c7e247f7a36939919c6608c7a6a3e240bf62cb9d614a7f57a213b9e2abb",
+      "mask_path": "data/case_00153/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00154/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00154.nii.gz",
+      "bytes": 185019263,
+      "hash_algorithm": "sha256",
+      "hash": "cc58b880f22132050d2ad632e2032460b63ca37acca746384e5ccc2b9de39b38",
+      "mask_path": "data/case_00154/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00155/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00155.nii.gz",
+      "bytes": 235923313,
+      "hash_algorithm": "sha256",
+      "hash": "8f5e3dd8e441e1f81a16ff3ff6144973e5e9056b1ec3c79ed31de2d71120a296",
+      "mask_path": "data/case_00155/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00156/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00156.nii.gz",
+      "bytes": 363352307,
+      "hash_algorithm": "sha256",
+      "hash": "a5424e47cd0a55d041abd22636ebcf01c718e9df918db967f78fb91a98a7c90a",
+      "mask_path": "data/case_00156/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00157/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00157.nii.gz",
+      "bytes": 231036073,
+      "hash_algorithm": "sha256",
+      "hash": "777b7014743ac0e78b88f33e7c0af01a89403abf7980c1f4aaae8417e011e995",
+      "mask_path": "data/case_00157/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00158/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00158.nii.gz",
+      "bytes": 345812852,
+      "hash_algorithm": "sha256",
+      "hash": "e2abf83f652dd3667b108c84521d30bcf0c55befaa9ecd734128902eb51bde59",
+      "mask_path": "data/case_00158/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00159/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00159.nii.gz",
+      "bytes": 321877085,
+      "hash_algorithm": "sha256",
+      "hash": "8ee241aaa90c58b817bae1511437b73dcde02f5639e57acb0867eebb75dba233",
+      "mask_path": "data/case_00159/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00160/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00160.nii.gz",
+      "bytes": 196732920,
+      "hash_algorithm": "sha256",
+      "hash": "94b8a15327097349f4f5afce36c7d0f5228dd7e7045b07c6325930a79d5ecd9a",
+      "mask_path": "data/case_00160/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00161/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00161.nii.gz",
+      "bytes": 25615080,
+      "hash_algorithm": "sha256",
+      "hash": "763b5306cfd062bc22a169f37c0917cf639b8534e59b748def6094e4e7ef6281",
+      "mask_path": "data/case_00161/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00162/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00162.nii.gz",
+      "bytes": 45384396,
+      "hash_algorithm": "sha256",
+      "hash": "1ff33933b02751241021af304a6e9c0f2e937aa9ed09f26bc62cb0c96a316444",
+      "mask_path": "data/case_00162/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00163/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00163.nii.gz",
+      "bytes": 40205054,
+      "hash_algorithm": "sha256",
+      "hash": "9adaeba960c7ecdcae5a2fb0ce0249c71ee54ff2d9760f8470f693a0d0489957",
+      "mask_path": "data/case_00163/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00164/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00164.nii.gz",
+      "bytes": 44482192,
+      "hash_algorithm": "sha256",
+      "hash": "fdca69677341cf4750386d3c2effb407594504760ea26e5e1230f02988c40bf9",
+      "mask_path": "data/case_00164/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00165/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00165.nii.gz",
+      "bytes": 283401628,
+      "hash_algorithm": "sha256",
+      "hash": "d4f322c24dde02a115754678bc3b8761512fc83ced045b4b26c0efdafdf49889",
+      "mask_path": "data/case_00165/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00166/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00166.nii.gz",
+      "bytes": 41559822,
+      "hash_algorithm": "sha256",
+      "hash": "83ed3f82c0aa87821882ad9290d5507389caaac175c6443f8d4f213689458fbb",
+      "mask_path": "data/case_00166/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00167/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00167.nii.gz",
+      "bytes": 41129566,
+      "hash_algorithm": "sha256",
+      "hash": "41bf260c248a2e0f49f755e6f25c8850b6d8b8ddaef7ea34df1157dc33399ba6",
+      "mask_path": "data/case_00167/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00168/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00168.nii.gz",
+      "bytes": 32048051,
+      "hash_algorithm": "sha256",
+      "hash": "0eedcb23583f504986afdbfbafa88d6a025591af407b3a331e81ff5b2cd14fec",
+      "mask_path": "data/case_00168/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00169/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00169.nii.gz",
+      "bytes": 42056633,
+      "hash_algorithm": "sha256",
+      "hash": "9bad338921a2361779642c080c0faf06dff4a0c4003ab77eab1c1c2364145d94",
+      "mask_path": "data/case_00169/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00170/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00170.nii.gz",
+      "bytes": 130206791,
+      "hash_algorithm": "sha256",
+      "hash": "d2bb42b0dcb29cf3b343944b0c47a0af83b7cee5a2e8882b901f5e52ef51679b",
+      "mask_path": "data/case_00170/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00171/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00171.nii.gz",
+      "bytes": 63813232,
+      "hash_algorithm": "sha256",
+      "hash": "de426f4f308eb551d44caeb50bcbbd671b18324dc6b2c81c5200dcff4b4e3c11",
+      "mask_path": "data/case_00171/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00172/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00172.nii.gz",
+      "bytes": 37626783,
+      "hash_algorithm": "sha256",
+      "hash": "1440a94e1d52368c97b87c04ff8dbc8787ad57fa313fc12bce625e6834703b34",
+      "mask_path": "data/case_00172/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00173/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00173.nii.gz",
+      "bytes": 45244475,
+      "hash_algorithm": "sha256",
+      "hash": "9134f2224becf6351934aad08aa1d9102882da585c4807606ad235e5251d53a0",
+      "mask_path": "data/case_00173/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00174/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00174.nii.gz",
+      "bytes": 31894170,
+      "hash_algorithm": "sha256",
+      "hash": "04a27e7e46effcd43c912d8cef93eab4c91b1cfc76a3f3c5be2122c50f4a0b89",
+      "mask_path": "data/case_00174/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00175/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00175.nii.gz",
+      "bytes": 54239063,
+      "hash_algorithm": "sha256",
+      "hash": "8542e7533ed4a498b737e04926e7af31d11425bd7ee3a15932ab9ecdbc06ebfd",
+      "mask_path": "data/case_00175/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00176/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00176.nii.gz",
+      "bytes": 41461140,
+      "hash_algorithm": "sha256",
+      "hash": "8bb524fccfb6cd242cc4330a0a71d854f9ed3c26f8acd857c3ae148f559b160d",
+      "mask_path": "data/case_00176/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00177/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00177.nii.gz",
+      "bytes": 42626421,
+      "hash_algorithm": "sha256",
+      "hash": "50e24db7ce59be43326851c1e9b5a9627a6c0f311742c3795b9fe41378b35fb2",
+      "mask_path": "data/case_00177/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00178/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00178.nii.gz",
+      "bytes": 35857922,
+      "hash_algorithm": "sha256",
+      "hash": "bad36ed206f18e17bd51e44d5a2cf6cb68e236e6e6f72b98f2c26ebcce449bd0",
+      "mask_path": "data/case_00178/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00179/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00179.nii.gz",
+      "bytes": 49463821,
+      "hash_algorithm": "sha256",
+      "hash": "990eaba41833f11e9d627a47f5a02efa77ada784f9f565217f1be3a82a2c7d9c",
+      "mask_path": "data/case_00179/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00180/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00180.nii.gz",
+      "bytes": 66993063,
+      "hash_algorithm": "sha256",
+      "hash": "6f1734503a768aeeb1911bacf82e62fc5c4822081c8a964363f163a57d5369d7",
+      "mask_path": "data/case_00180/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00181/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00181.nii.gz",
+      "bytes": 49292022,
+      "hash_algorithm": "sha256",
+      "hash": "c3af31c5f53db0dc483af00e3c41ad76b43a23d1c8c7122790e9be594520c973",
+      "mask_path": "data/case_00181/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00182/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00182.nii.gz",
+      "bytes": 38436116,
+      "hash_algorithm": "sha256",
+      "hash": "212ac0948ec7cc787e5748a74e2390a3e14cef1351f56c163c17880116ae6c61",
+      "mask_path": "data/case_00182/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00183/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00183.nii.gz",
+      "bytes": 99950548,
+      "hash_algorithm": "sha256",
+      "hash": "d5bc20c81c4eedfc6898e02d3078471b37fceb215b1121211d8541676bfe8498",
+      "mask_path": "data/case_00183/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00184/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00184.nii.gz",
+      "bytes": 70271243,
+      "hash_algorithm": "sha256",
+      "hash": "d65b497d685e52ba8b87dcfc10a0fa4b31ad17023510f3e0f7a2bfb61f0e3873",
+      "mask_path": "data/case_00184/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00185/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00185.nii.gz",
+      "bytes": 99730672,
+      "hash_algorithm": "sha256",
+      "hash": "8d69db0601b8030a38f399c3458e05543395f2ef68cd4029696f02821ec503f1",
+      "mask_path": "data/case_00185/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00186/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00186.nii.gz",
+      "bytes": 68574602,
+      "hash_algorithm": "sha256",
+      "hash": "8ea25ef6082aca0b95ed4b06b968ec155a736bbe5711d93bfe772d38a0676768",
+      "mask_path": "data/case_00186/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00187/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00187.nii.gz",
+      "bytes": 41465147,
+      "hash_algorithm": "sha256",
+      "hash": "56e4971bfbc4afa83efefdab2a4e316bd3af5e6cd0f5a9049982c83cc4833f1e",
+      "mask_path": "data/case_00187/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00188/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00188.nii.gz",
+      "bytes": 173648780,
+      "hash_algorithm": "sha256",
+      "hash": "bc7663ac0340226690949107d1cb2b735cbbf7d9a2275d3456f408cbbccb81ef",
+      "mask_path": "data/case_00188/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00189/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00189.nii.gz",
+      "bytes": 69794230,
+      "hash_algorithm": "sha256",
+      "hash": "27e70b8e75d4151a880cfdb1d18e9edd79a1e328501af744b8733e1cee6a37c6",
+      "mask_path": "data/case_00189/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00190/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00190.nii.gz",
+      "bytes": 80969548,
+      "hash_algorithm": "sha256",
+      "hash": "5ebf726ac1dd126fa5b382041a2cca35fd1a65522394ae24770a1cd30fe14caf",
+      "mask_path": "data/case_00190/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00191/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00191.nii.gz",
+      "bytes": 146751277,
+      "hash_algorithm": "sha256",
+      "hash": "0978a60e2575988d4fc900b094d46e0d7a56ab9e199961aa5b407ed67aaa08c6",
+      "mask_path": "data/case_00191/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00192/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00192.nii.gz",
+      "bytes": 56112884,
+      "hash_algorithm": "sha256",
+      "hash": "e8ecd933dd2e7cbf924af5441aeb6e6e8876c35b4dce28957a6b53e85cad7d3b",
+      "mask_path": "data/case_00192/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00193/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00193.nii.gz",
+      "bytes": 94515487,
+      "hash_algorithm": "sha256",
+      "hash": "89bb0eb8074c3b343e2c7b5319b9f89db590a0dc1544c02c1e2ca81074c3dfbc",
+      "mask_path": "data/case_00193/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00194/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00194.nii.gz",
+      "bytes": 56502711,
+      "hash_algorithm": "sha256",
+      "hash": "7ff7425f0749f7aafc5587cc4518539dbf58ea8c15bf5a2328e2b00b0d9c550a",
+      "mask_path": "data/case_00194/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00195/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00195.nii.gz",
+      "bytes": 47638710,
+      "hash_algorithm": "sha256",
+      "hash": "c86e5275d7fb29dfe82371b8a0283d71572fdda2db8c032ac6642ebc6c81fe69",
+      "mask_path": "data/case_00195/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00196/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00196.nii.gz",
+      "bytes": 80043050,
+      "hash_algorithm": "sha256",
+      "hash": "04ac9fcdd99588e040a25542709a87cf959268e1c8fda0266344bc2160b8fd12",
+      "mask_path": "data/case_00196/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00197/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00197.nii.gz",
+      "bytes": 71480975,
+      "hash_algorithm": "sha256",
+      "hash": "e98863429d6a4b036dcf4c3483fb5b4a2e009ddc6390d0da647424772b77b9b8",
+      "mask_path": "data/case_00197/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00198/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00198.nii.gz",
+      "bytes": 130795162,
+      "hash_algorithm": "sha256",
+      "hash": "ea3140416a4eef35fa25a3051eacec1acde2b97180d3d247113cbcb6db81edf9",
+      "mask_path": "data/case_00198/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00199/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00199.nii.gz",
+      "bytes": 48897494,
+      "hash_algorithm": "sha256",
+      "hash": "8005f1e4040b41d78e9c926769217bd94b75c7c40db8d65db96e87c9605f2593",
+      "mask_path": "data/case_00199/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00200/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00200.nii.gz",
+      "bytes": 51449540,
+      "hash_algorithm": "sha256",
+      "hash": "a442caf95f7ccd561c502176c6ec759b116a32a604c49fa06633d506d2bfc5ea",
+      "mask_path": "data/case_00200/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00201/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00201.nii.gz",
+      "bytes": 47090706,
+      "hash_algorithm": "sha256",
+      "hash": "62e9e470bdead6a6bbbacbebfb7669055e2ebb3e8a1177882fd028e0c7ec1623",
+      "mask_path": "data/case_00201/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00202/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00202.nii.gz",
+      "bytes": 145466695,
+      "hash_algorithm": "sha256",
+      "hash": "f56e642d587bb2ac75172d9aae45c2b43e1f496424802e7ca261e672596315d1",
+      "mask_path": "data/case_00202/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00203/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00203.nii.gz",
+      "bytes": 295206306,
+      "hash_algorithm": "sha256",
+      "hash": "db1ace382d198df990ea7bc6131aa03cf4a446eb5692e1edeea9a59f77a27c80",
+      "mask_path": "data/case_00203/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00204/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00204.nii.gz",
+      "bytes": 31576322,
+      "hash_algorithm": "sha256",
+      "hash": "2623b07d547eacea478765df84cb6710e0460248a32750a81cf6d212b762e93d",
+      "mask_path": "data/case_00204/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00205/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00205.nii.gz",
+      "bytes": 44138736,
+      "hash_algorithm": "sha256",
+      "hash": "169aa122b7169223c28794f88d5c3f5cb45b644676ef1b614d9101f8381cbe2c",
+      "mask_path": "data/case_00205/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00206/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00206.nii.gz",
+      "bytes": 22988003,
+      "hash_algorithm": "sha256",
+      "hash": "573e65adbcd6a8b709e83bff588fbad8cc4641a6fbab422bad1d927e4772ed53",
+      "mask_path": "data/case_00206/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00207/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00207.nii.gz",
+      "bytes": 68719670,
+      "hash_algorithm": "sha256",
+      "hash": "c665dcf69398aee4644526535425c29fc1f0ed2ba0cfb4e9e1d0c6ce0b8f3a9d",
+      "mask_path": "data/case_00207/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00208/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00208.nii.gz",
+      "bytes": 39898045,
+      "hash_algorithm": "sha256",
+      "hash": "99cccfcb17a7379ab67ba264c44d83015fab1254b27a090f991177a3e629d270",
+      "mask_path": "data/case_00208/segmentation.nii"
+    },
+    {
+      "dataset": "kits19",
+      "relative_path": "KiTS19/case_00209/imaging.nii.gz",
+      "url": "https://huggingface.co/datasets/neheller/KiTS-Challenge-Imaging/resolve/65f1f295873a326230153c7e1de0c7dba10f0b29/images/case_00209.nii.gz",
+      "bytes": 50270697,
+      "hash_algorithm": "sha256",
+      "hash": "b050ce75765edefab6097dcfc87568800f49d03e09c306e3f4375c66eae45e41",
+      "mask_path": "data/case_00209/segmentation.nii"
+    },
+    {
+      "dataset": "medmnist-benchmarks",
+      "relative_path": "MedMNIST/octmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/octmnist.npz?download=1",
+      "bytes": 54938180,
+      "hash_algorithm": "md5",
+      "hash": "c68d92d5b585d8d81f7112f81e2d0842"
+    },
+    {
+      "dataset": "medmnist-benchmarks",
+      "relative_path": "MedMNIST/retinamnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/retinamnist.npz?download=1",
+      "bytes": 3291041,
+      "hash_algorithm": "md5",
+      "hash": "bd4c0672f1bba3e3a89f0e4e876791e4"
+    },
+    {
+      "dataset": "medmnist-benchmarks",
+      "relative_path": "MedMNIST/dermamnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/dermamnist.npz?download=1",
+      "bytes": 19725078,
+      "hash_algorithm": "md5",
+      "hash": "0744692d530f8e62ec473284d019b0c7"
+    },
+    {
+      "dataset": "medmnist-benchmarks",
+      "relative_path": "MedMNIST/breastmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/breastmnist.npz?download=1",
+      "bytes": 559580,
+      "hash_algorithm": "md5",
+      "hash": "750601b1f35ba3300ea97c75c52ff8f6"
+    },
+    {
+      "dataset": "medmnist-benchmarks",
+      "relative_path": "MedMNIST/pathmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/pathmnist.npz?download=1",
+      "bytes": 205615438,
+      "hash_algorithm": "md5",
+      "hash": "a8b06965200029087d5bd730944a56c1"
+    },
+    {
+      "dataset": "medmnist-benchmarks",
+      "relative_path": "MedMNIST/bloodmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/bloodmnist.npz?download=1",
+      "bytes": 35461855,
+      "hash_algorithm": "md5",
+      "hash": "7053d0359d879ad8a5505303e11de1dc"
+    },
+    {
+      "dataset": "medmnist-benchmarks",
+      "relative_path": "MedMNIST/tissuemnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/tissuemnist.npz?download=1",
+      "bytes": 124962739,
+      "hash_algorithm": "md5",
+      "hash": "ebe78ee8b05294063de985d821c1c34b"
+    }
+  ]
+}

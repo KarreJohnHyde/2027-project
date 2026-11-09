@@ -187,7 +187,15 @@ def run_claimed(db: Session, job: QueuedJob, worker_id: str, lease_seconds: int 
         db.rollback()
         _finish(db, job, worker_id, status="FAILED", last_error=f"{type(exc).__name__}: {exc}"[:2000])
     else:
-        _finish(db, job, worker_id, status="SUCCEEDED", progress=100, result_ref=result_ref, message="Completed.")
+        message = "Completed."
+        if job.kind == "MULTIMODEL_INFERENCE":
+            message = {
+                "ABSTAIN": "Execution finished; all selected models abstained. No predictions were produced.",
+                "ERROR": "Execution finished with model errors. No predictions were produced.",
+                "PARTIAL": "Execution finished; only some models produced outputs. Review each model result.",
+                "COMPLETED": "Execution finished; all selected models produced outputs awaiting review.",
+            }.get(result_ref.get("analysis_status"), message)
+        _finish(db, job, worker_id, status="SUCCEEDED", progress=100, result_ref=result_ref, message=message)
     return job
 
 

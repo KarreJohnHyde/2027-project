@@ -45,5 +45,71 @@
       "SPATIAL_UNIT_NOT_DECLARED_TREATED_AS_MM": 98,
       "MATRIX_OUTSIDE_DEVELOPMENT_RANGE": 6
     }
+  },
+  "axis_convention": {
+    "rv_label": 1,
+    "lv_label": 3,
+    "rv_direction_deg": 171.2,
+    "rv_direction_limit_deg": 71.0,
+    "rule": "The model is run under all 16 axis conventions and each prediction is mapped back to the series grid. Eligible conventions put the predicted right ventricle anterior-right of the left ventricle in the series' DICOM patient coordinates (normal anatomy) and have a left-ventricle area that shrinks along the slice axis in their own frame (base to apex, as in the development frames). Among them, the one whose right-ventricle direction from the left ventricle, in its own frame, is closest to the development frames' direction is used.",
+    "training_ground_truth": {
+      "frames": 168,
+      "direction_resultant_length": 0.884,
+      "abs_offset_quantiles_deg": {
+        "0.5": 19.3,
+        "0.95": 58.8,
+        "0.99": 70.2
+      },
+      "lv_area_shrinks_along_k_fraction": 0.988
+    },
+    "held_out": {
+      "frames": 98,
+      "with_simulated_scanner_geometry": {
+        "accepted": 91,
+        "refused": {
+          "SLICE_ORDER_NOT_BASE_TO_APEX_IN_ANY_CONVENTION": 2,
+          "RIGHT_VENTRICLE_NOT_RIGHT_ANTERIOR_IN_ANY_CONVENTION": 3,
+          "ENVELOPE:IN_PLANE_SPACING_OUTSIDE_DEVELOPMENT_RANGE": 2,
+          "VENTRICLE_LAYOUT_OUTSIDE_DEVELOPMENT_RANGE": 2
+        },
+        "mean_macro_dice_chosen_convention": 0.7503,
+        "mean_macro_dice_publisher_convention_on_accepted": 0.7527,
+        "chosen_is_untransposed_fraction": 0.725
+      },
+      "content_only_without_geometry": {
+        "accepted": 96,
+        "refused": {
+          "SLICE_ORDER_NOT_BASE_TO_APEX_IN_ANY_CONVENTION": 2,
+          "ENVELOPE:IN_PLANE_SPACING_OUTSIDE_DEVELOPMENT_RANGE": 2
+        },
+        "mean_macro_dice_chosen_convention": 0.7432,
+        "mean_macro_dice_publisher_convention_on_accepted": 0.751,
+        "chosen_is_untransposed_fraction": 0.646
+      },
+      "mean_macro_dice_publisher_convention": 0.748,
+      "mean_macro_dice_worst_fixed_convention": 0.7043,
+      "mean_macro_dice_by_fixed_convention": [
+        0.748,
+        0.7494,
+        0.7549,
+        0.7554,
+        0.7549,
+        0.7423,
+        0.7554,
+        0.7422,
+        0.7225,
+        0.7043,
+        0.7227,
+        0.7075,
+        0.716,
+        0.7079,
+        0.7233,
+        0.7129
+      ],
+      "metric": "mean over frames of the macro Dice of RV, myocardium and LV cavity against the publisher's ground truth",
+      "geometry_note": "ACDC records no patient orientation. Each held-out frame was given a random double-oblique geometry in which its ground-truth RV lies anterior-right of the LV within 60 degrees, standing in for a scanner series' DICOM geometry."
+    },
+    "limit_basis": "99% quantile of the absolute direction offset over the training frames",
+    "script": "scripts/calibrate_cardiac_orientation_consistency.py"
   }
 }

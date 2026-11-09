@@ -8,9 +8,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.entities import CorrectionDecision, Finding, HumanReview, User, UserRole, EvidenceStatus
+from app.models.entities import CorrectionDecision, Finding, HumanReview, User, EvidenceStatus
 from app.schemas.entities import CorrectionDecisionCreate, CorrectionDecisionResponse, HumanReviewCreate, HumanReviewResponse
-from app.services.auth import get_current_user, verify_case_access, require_role
+from app.services.auth import get_current_user, verify_case_access
 from app.services.audit_service import log_audit_event
 
 router = APIRouter(prefix="/reviews", tags=["Human Review"])
@@ -21,7 +21,7 @@ def submit_human_review(
     finding_id: int,
     review_in: HumanReviewCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(UserRole.CLINICIAN, UserRole.ADMIN))
+    current_user: User = Depends(get_current_user)
 ):
     """
     Submits a clinician review for a finding.
@@ -95,7 +95,7 @@ def decide_correction(
     review_id: int,
     decision_in: CorrectionDecisionCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(UserRole.CLINICIAN, UserRole.ADMIN)),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Approves or rejects a proposed correction. The decision must come from a verified

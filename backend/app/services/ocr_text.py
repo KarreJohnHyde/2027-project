@@ -55,7 +55,15 @@ mchc rdw hba1c fnac cect hpe ihc cmv spondylotic spondylosis osteophytes desicca
 hyperintense hypointense ischaemic ischemic diastolic systolic regurgitation vegetation malformation
 invagination echocardiography laryngoscopy endoscopy colonoscopy anastomotic ileostomy cryptitis
 haemogram hemogram neutrophils lymphocytes eosinophils basophils monocytes platelet corpuscular
+hemorrhagic haemorrhagic contusion contusions perilesional edema oedema vasogenic suprasellar sylvian ganglia
+hemispheres cerebellar cranium midline
 """.split()
+# A long glued run (a whole sentence read without spaces) may contain one short OCR slip ("parietalobe" for
+# "parietal lobe"). Such runs may then be split with one unknown piece of at most four letters; shorter runs
+# keep the strict rule, so ordinary unknown words (drug names, abbreviations) are never broken up.
+RELAXED_MIN_RUN = 20
+RELAXED_UNKNOWN_LETTERS = 4
+UNKNOWN_PIECE_COST = 40.0
 
 
 @lru_cache(maxsize=1)
@@ -94,23 +102,35 @@ def _segment(token: str) -> Optional[list[str]]:
         value = wordcost.get(word, math.inf)
         return value if value <= common_cost else math.inf
 
-    best = [0.0] + [math.inf] * len(lower)
-    back = [0] * (len(lower) + 1)
-    for end in range(1, len(lower) + 1):
-        for start in range(max(0, end - 24), end):
-            candidate = best[start] + cost(lower[start:end])
-            if candidate < best[end]:
-                best[end], back[end] = candidate, start
-    if math.isinf(best[-1]):
-        return None
-    pieces: list[str] = []
-    end = len(lower)
-    while end > 0:
-        start = back[end]
-        pieces.append(token[start:end])
-        end = start
-    pieces.reverse()
-    return pieces if len(pieces) > 1 else None
+    def relaxed(word: str) -> float:
+        value = cost(word)
+        return value if not math.isinf(value) else (UNKNOWN_PIECE_COST if len(word) <= RELAXED_UNKNOWN_LETTERS else math.inf)
+
+    def split(piece_cost) -> Optional[list[str]]:
+        best = [0.0] + [math.inf] * len(lower)
+        back = [0] * (len(lower) + 1)
+        for end in range(1, len(lower) + 1):
+            for start in range(max(0, end - 24), end):
+                candidate = best[start] + piece_cost(lower[start:end])
+                if candidate < best[end]:
+                    best[end], back[end] = candidate, start
+        if math.isinf(best[-1]):
+            return None
+        pieces: list[str] = []
+        end = len(lower)
+        while end > 0:
+            start = back[end]
+            pieces.append(token[start:end])
+            end = start
+        pieces.reverse()
+        return pieces
+
+    pieces = split(cost)
+    if pieces is None and len(lower) >= RELAXED_MIN_RUN:
+        pieces = split(relaxed)
+        if pieces is not None and sum(math.isinf(cost(piece.lower())) for piece in pieces) > 1:
+            pieces = None
+    return pieces if pieces is not None and len(pieces) > 1 else None
 
 
 # Clinical shorthand glued to its neighbours ("tor/oright" = "to r/o right").

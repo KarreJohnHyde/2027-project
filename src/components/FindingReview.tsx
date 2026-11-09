@@ -30,9 +30,9 @@ function CorrectionDecisionControls({ review, onDecided }: { review: HumanReview
       </p>
     );
   }
-  const verified = user?.verification_status === "VERIFIED" && (user.role === "clinician" || user.role === "admin");
-  if (!verified || user?.id === review.reviewer_id) {
-    return <p className="mt-2 text-xs text-ink-3">Awaiting a decision by a second verified reviewer.</p>;
+  // Any account may decide, but never on its own proposal.
+  if (!user || user.id === review.reviewer_id) {
+    return <p className="mt-2 text-xs text-ink-3">Awaiting a decision by a second reviewer.</p>;
   }
 
   async function decide(decision: "APPROVED" | "REJECTED") {
@@ -69,7 +69,7 @@ export function FindingCard({ finding, uploads, jobs, measurements }: { finding:
   const job = jobs.find((item) => item.id === finding.inference_run_id);
   const upload = uploads.find((item) => item.id === job?.upload_id);
   const calibrated = finding.calibration_status.toUpperCase().startsWith("CALIBRATED") && finding.calibrated_confidence !== null;
-  const canReview = user?.verification_status === "VERIFIED" && (user.role === "clinician" || user.role === "admin");
+  const canReview = Boolean(user);
   const [decision, setDecision] = useState<HumanReviewDecision>("CONFIRMED");
   const [comments, setComments] = useState("");
   const [correctionKind, setCorrectionKind] = useState<"ENTITY" | "MEASUREMENT">(finding.report_statements.length ? "ENTITY" : "MEASUREMENT");

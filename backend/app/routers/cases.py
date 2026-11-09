@@ -6,8 +6,10 @@ Strict case-level authorization is enforced on every operation.
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select, true
 from sqlalchemy.orm import Session
 
+from app import config
 from app.database import get_db
 from app.models.entities import (
     Case, CaseMembership, Examination, User, UserRole, ModalityType,
@@ -20,6 +22,7 @@ from app.services.auth import get_current_user, verify_case_access
 from app.services.audit_service import log_audit_event
 from app.services.effective_evidence import MEASUREMENT_FIELDS, STATEMENT_FIELDS, correction_index, effective_record
 from app.services.measurement_identity import duplicate_map, occurrences
+from app.services.report_runs import current_statements, superseded_report_run_ids
 from app.services import upload_store
 
 router = APIRouter(prefix="/cases", tags=["Case Management"])
@@ -31,10 +34,12 @@ def list_cases(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Returns cases authorized for the requesting user.
-    Admins can view all cases; clinicians and researchers view their authorized cases.
+    Returns cases authorized for the requesting user: every case in the shared space
+    (config.SHARED_WORKSPACE); otherwise all for admins, and own or shared cases for others.
     """
-    if current_user.role == UserRole.ADMIN:
+    if current_user.is_guest:
+        cases = db.query(Case).filter(Case.created_by_id == current_user.id).all()
+    elif config.SHARED_WORKSPACE or current_user.role == UserRole.ADMIN:
         cases = db.query(Case).all()
     else:
         # Patient and caregiver links open the portal only, not the clinical case list.
@@ -287,10 +292,12 @@ def get_case_stats(
 @router.get("/{case_id}/effective-evidence")
 def get_case_effective_evidence(
     case_id: int,
+    include_superseded: bool = False,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Reviewed view: every extracted statement and measurement with its original values,
+    """Reviewed view: every extracted statement (of each report's current analysis, unless
+    ``include_superseded``) and measurement with its original values,
     the values after an approved, independently decided correction, and the correction state.
     Source rows are never modified; unapproved proposals do not change effective values."""
     case = verify_case_access(case_id, current_user, db, access="read")
@@ -303,7 +310,8 @@ def get_case_effective_evidence(
     )
     statements = (
         db.query(ClinicalReportStatement)
-        .filter(ClinicalReportStatement.case_id == case.id)
+        .filter(ClinicalReportStatement.case_id == case.id,
+                true() if include_superseded else current_statements(db, [case.id]))
         .order_by(ClinicalReportStatement.id.asc())
         .all()
     )
@@ -324,19 +332,23 @@ def get_case_effective_evidence(
 @router.get("/{case_id}/statements")
 def get_case_statements(
     case_id: int,
+    include_superseded: bool = False,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    """Statements of each report's current analysis; ``include_superseded`` adds earlier analyses (history)."""
     case = verify_case_access(case_id, current_user, db, access="read")
+    superseded = superseded_report_run_ids(db, [case.id])
     stmts = db.query(ClinicalReportStatement).filter(
-        ClinicalReportStatement.case_id == case.id
-    ).all()
-    
-    return [serialize_statement(s) for s in stmts]
+        ClinicalReportStatement.case_id == case.id,
+        true() if include_superseded else current_statements(db, [case.id]),
+    ).order_by(ClinicalReportStatement.id.asc()).all()
+    return [{**serialize_statement(s), "analysis_superseded": bool(s.finding and s.finding.inference_run_id in superseded)} for s in stmts]
 
 
 def serialize_statement(s: ClinicalReportStatement) -> Dict[str, Any]:
     return {
+        "source_page": s.source_page,
         "id": str(s.id),
         "case_id": str(s.case_id),
         "finding_id": str(s.finding_id),
@@ -464,14 +476,19 @@ def get_case_measurements(
 @router.get("/{case_id}/attributes")
 def get_case_documented_attributes(
     case_id: int,
+    include_superseded: bool = False,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Dates, age and sex exactly as documented in uploaded sources."""
+    """Dates, age and sex exactly as documented in uploaded sources (each report's current analysis
+    unless ``include_superseded``)."""
     verify_case_access(case_id, current_user, db, access="read")
+    superseded = superseded_report_run_ids(db, [case_id])
     rows = (
         db.query(DocumentedAttribute)
-        .filter(DocumentedAttribute.case_id == case_id)
+        .filter(DocumentedAttribute.case_id == case_id,
+                true() if include_superseded or not superseded else
+                DocumentedAttribute.finding_id.notin_(select(Finding.id).where(Finding.inference_run_id.in_(superseded))))
         .order_by(DocumentedAttribute.id.asc())
         .all()
     )

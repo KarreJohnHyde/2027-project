@@ -77,6 +77,20 @@ ANALYTES: tuple[Analyte, ...] = (
     Analyte("body_height", "Body height", r"(?:body\s*)?height|\bht\b", r"cm|m(?![a-z])|in(?:ches)?", None, "SYSTEMIC_MEASURE", {"*": "8302-2"}),
     Analyte("bmi", "Body mass index", r"\bbmi\b|body\s*mass\s*index", r"kg\s*/\s*m(?:2|²|\^2)", None, "SYSTEMIC_MEASURE", {"*": "39156-5"}),
     Analyte("ejection_fraction", "Left ventricular ejection fraction", r"left\s*ventricular\s*ejection\s*fraction|\blvef\b|ejection\s*fraction|\bef\b", r"%|percent", "heart", "DOCUMENTED_ORGAN_MEASURE", {"*": "10230-1"}),
+    # Printed 12-lead ECG values (the machine's own measurements, as printed; never measured from a picture of the tracing).
+    Analyte("ventricular_rate", "Ventricular rate (ECG)", r"vent(?:ricular)?\.?\s*rate|\bv\.?\s*rate", r"bpm|beats\s*(?:/|per)\s*min(?:ute)?|/\s*min", "heart", "PHYSIOLOGICAL_SIGNAL"),
+    Analyte("pr_interval", "PR interval (ECG)", r"p\s*-?\s*r\s*int(?:erval|\.)?|\bpr\b(?=\s*[:=]?\s*\d)", r"ms(?:ec)?|milliseconds?", "heart", "PHYSIOLOGICAL_SIGNAL", {"*": "8625-6"}),
+    Analyte("qrs_duration", "QRS duration (ECG)", r"qrs\s*(?:duration|dur\.?|interval|width)|\bqrs\b(?!\s*axis)(?=\s*[:=]?\s*\d)", r"ms(?:ec)?|milliseconds?", "heart", "PHYSIOLOGICAL_SIGNAL", {"*": "8633-0"}),
+    Analyte("qtc_interval", "QTc interval (ECG)", r"\bqtc[bf]?\b|qt\s*c(?:orrected)?\s*(?:interval)?", r"ms(?:ec)?|milliseconds?", "heart", "PHYSIOLOGICAL_SIGNAL", {"*": "8636-3"}),
+    Analyte("qt_interval", "QT interval (ECG)", r"\bqt\b(?!\s*[/c])(?:\s*interval)?", r"ms(?:ec)?|milliseconds?", "heart", "PHYSIOLOGICAL_SIGNAL", {"*": "8634-8"}),
+    # Echocardiography M-mode / 2-D linear dimensions, as printed.
+    Analyte("ivs_diastole", "Interventricular septum, diastole (IVSd)", r"\bivs\s*\(?\s*d\b\)?|\bivsd\b|interventricular\s*septum(?:\s*thickness)?(?:\s*\(?\s*(?:in\s*)?diastole\s*\)?)?", r"cm|mm", "heart", "DOCUMENTED_ORGAN_MEASURE"),
+    Analyte("lvid_diastole", "LV internal diameter, diastole (LVIDd)", r"\blvid\s*\(?\s*d\b\)?|\blvidd\b|\blvedd?\b|lv\s*internal\s*(?:diameter|dimension)\s*(?:in\s*)?(?:end[-\s]*)?diastole", r"cm|mm", "heart", "DOCUMENTED_ORGAN_MEASURE"),
+    Analyte("lvid_systole", "LV internal diameter, systole (LVIDs)", r"\blvid\s*\(?\s*s\b\)?|\blvids\b|\blvesd?\b|lv\s*internal\s*(?:diameter|dimension)\s*(?:in\s*)?(?:end[-\s]*)?systole", r"cm|mm", "heart", "DOCUMENTED_ORGAN_MEASURE"),
+    Analyte("lvpw_diastole", "LV posterior wall, diastole (LVPWd)", r"\blvpw\s*\(?\s*d\b\)?|\blvpwd\b|(?:lv|left\s*ventricular)\s*posterior\s*wall(?:\s*thickness)?(?:\s*\(?\s*(?:in\s*)?diastole\s*\)?)?", r"cm|mm", "heart", "DOCUMENTED_ORGAN_MEASURE"),
+    Analyte("fractional_shortening", "LV fractional shortening", r"fractional\s*shortening|\bfs\b", r"%|percent", "heart", "DOCUMENTED_ORGAN_MEASURE"),
+    Analyte("left_atrium_diameter", "Left atrial diameter", r"left\s*atri(?:um|al)\s*(?:diameter|dimension|size)?|\bla\b(?:\s*(?:diameter|dimension|size))?", r"cm|mm", "heart", "DOCUMENTED_ORGAN_MEASURE"),
+    Analyte("aortic_root_diameter", "Aortic root diameter", r"aortic\s*root(?:\s*(?:diameter|dimension))?|\bao\b(?:\s*root)?", r"cm|mm", "heart", "DOCUMENTED_ORGAN_MEASURE"),
     Analyte("nt_probnp", "NT-proBNP", r"nt[-\s]*pro[-\s]*bnp|n[-\s]*terminal\s*pro[-\s]*b[-\s]*type\s*natriuretic\s*peptide", r"pg\s*/\s*ml|ng\s*/\s*l", "heart", loinc={"*": "33762-6"}),
     Analyte("bnp", "B-type natriuretic peptide", r"\bbnp\b|b[-\s]*type\s*natriuretic\s*peptide|brain\s*natriuretic\s*peptide", r"pg\s*/\s*ml|ng\s*/\s*l", "heart", loinc={"*": "30934-4"}),
     Analyte("troponin_i", "Troponin I", r"(?:hs[-\s]*)?troponin\s*i\b|\b(?:hs[-\s]*)?c?tni\b", r"ng\s*/\s*l|ng\s*/\s*ml|pg\s*/\s*ml|µg\s*/\s*l|ug\s*/\s*l", "heart", note="Conventional and high-sensitivity assays are not interchangeable."),
@@ -92,7 +106,7 @@ ANALYTES: tuple[Analyte, ...] = (
     Analyte("red_blood_cell_count", "Red blood cell count", r"red\s*blood\s*cell(?:s|\s*count)?|(?:\btotal\s*|\b)rbc\b(?:\s*count)?|erythrocytes(?!\s*sedimentation)", r"(?:x\s*)?10\s*(?:\^|\*|e)?\s*12\s*/\s*l|(?:x\s*)?10\s*(?:\^|\*|e)?\s*6\s*/\s*(?:µl|ul|μl)|m\s*/\s*(?:µl|ul)|millions?\s*(?:cells\s*)?/\s*(?:µl|ul|μl|pl|mm3|cumm|cu\.?\s*mm)", None, "SYSTEMIC_MEASURE", {"*": "789-8"}),
     Analyte("mcv", "Mean corpuscular volume", r"\bmcv\b|mean\s*corpuscular\s*volume(?:\s*\(\s*mcv\s*\))?", r"fl", None, "SYSTEMIC_MEASURE", {"*": "787-2"}),
     Analyte("mpv", "Mean platelet volume", r"mean\s*platelet\s*volume(?:\s*\(\s*mpv\s*\))?|\bmpv\b", r"fl", None, "SYSTEMIC_MEASURE", {"*": "32623-1"}),
-    Analyte("rdw_sd", "Red cell distribution width (SD)", r"\brdw\s*[-\s]*sd\b", r"fl", None, "SYSTEMIC_MEASURE", {"*": "21000-5"}),
+    Analyte("rdw_sd", "Red cell distribution width (SD)", r"\brdw\s*[-\s(]*\s*sd\b\s*\)?", r"fl", None, "SYSTEMIC_MEASURE", {"*": "21000-5"}),
     *(
         Analyte(f"absolute_{cell}_count", f"Absolute {cell} count", rf"absolute\s*{cell}\s*count|\ba{cell[0]}c\b", _COUNT_UNITS, None, "SYSTEMIC_MEASURE")
         for cell in ("neutrophil", "lymphocyte", "monocyte", "eosinophil", "basophil")
@@ -147,7 +161,8 @@ ANALYTES: tuple[Analyte, ...] = (
     Analyte("cea", "Carcinoembryonic antigen", r"\bcea\b|carcinoembryonic\s*antigen", r"ng\s*/\s*ml|µg\s*/\s*l|ug\s*/\s*l|μg\s*/\s*l", None, "SYSTEMIC_MEASURE", {"*": "2039-6"},
             note="Tumour marker; a value is not evidence for or against malignancy on its own."),
     Analyte("c_reactive_protein", "C-reactive protein", r"(?:hs[-\s]*)?c[-\s]*reactive\s*protein(?:\s*\(\s*(?:hs[-\s]*)?crp\s*\))?|\b(?:hs[-\s]*)?crp\b", r"mg\s*/\s*l|mg\s*/\s*dl", None, "SYSTEMIC_MEASURE"),
-    Analyte("esr", "Erythrocyte sedimentation rate", r"\besr\b|erythrocytes?\s*sedimentation\s*rate(?:\s*\(\s*esr\s*\))?|sed\s*rate", r"mm\s*/\s*h(?:r|our)?|mm\s*/\s*1st\s*h(?:ou)?r|mm\s*(?:in|at)\s*1\s*h(?:ou)?r", None, "SYSTEMIC_MEASURE"),
+    # Westergren reports print the result row as "ONE HOUR READING" under an ESR heading; the mm/hr unit keeps it specific.
+    Analyte("esr", "Erythrocyte sedimentation rate", r"\besr\b|erythrocytes?\s*sedimentation\s*rate(?:\s*\(\s*esr\s*\))?|sed\s*rate|(?:first|1st|one)\s*h(?:ou)?r\.?\s*reading", r"mm\s*/\s*h(?:r|our)?|mm\s*/\s*1st\s*h(?:ou)?r|mm\s*(?:in|at)\s*1\s*h(?:ou)?r", None, "SYSTEMIC_MEASURE"),
     Analyte("sodium", "Sodium", r"(?:serum\s*)?sodium|\bna\+?(?=\s*[:=]?\s*\d)", r"mmol\s*/\s*l|meq\s*/\s*l", None, "SYSTEMIC_MEASURE", {"*": "2951-2"}),
     Analyte("potassium", "Potassium", r"(?:serum\s*)?potassium|\bk\+?(?=\s*[:=]?\s*\d)", r"mmol\s*/\s*l|meq\s*/\s*l", None, "SYSTEMIC_MEASURE", {"*": "2823-3"}),
     Analyte("chloride", "Chloride", r"(?:serum\s*)?chloride|\bcl-?(?=\s*[:=]?\s*\d)", r"mmol\s*/\s*l|meq\s*/\s*l", None, "SYSTEMIC_MEASURE", {"*": "2075-0"}),
@@ -180,6 +195,8 @@ UNIT_CONVERSIONS: dict[str, dict[tuple[str, str], float]] = {
     "lesion_size": {("cm", "mm"): 10.0, ("mm", "cm"): 0.1},
     "kidney_length": {("cm", "mm"): 10.0, ("mm", "cm"): 0.1},
     "liver_span": {("cm", "mm"): 10.0, ("mm", "cm"): 0.1},
+    **{name: {("cm", "mm"): 10.0, ("mm", "cm"): 0.1}
+       for name in ("ivs_diastole", "lvid_diastole", "lvid_systole", "lvpw_diastole", "left_atrium_diameter", "aortic_root_diameter")},
 }
 CONVERSION_SOURCE = "Standard SI conversion factors (e.g. AMA Manual of Style SI conversion table)."
 
@@ -237,6 +254,10 @@ _UNIT_ALIASES = {
     "l/l": "L/L",
     "mg/g": "mg/g",
     "mg/mmol": "mg/mmol",
+    "ms": "ms",
+    "msec": "ms",
+    "millisecond": "ms",
+    "milliseconds": "ms",
     "mm/h": "mm/h",
     "mm/hr": "mm/h",
     "mm/hour": "mm/h",
@@ -310,9 +331,32 @@ class EntityTerm:
 
 
 # Category values: FINDING, CONDITION, PROCEDURE, MEDICATION, NORMAL_STATEMENT,
-# METABOLIC_CONDITION, SYSTEMIC_CONDITION. A None system means the organ is
+# METABOLIC_CONDITION, SYSTEMIC_CONDITION, SYMPTOM, LAB_QUALITATIVE (qualitative laboratory
+# results such as urinalysis rows, from nlp_processor.extract_qualitative_results). A None system means the organ is
 # taken from an anatomical site in the same sentence, if one is documented.
 ENTITY_TERMS: tuple[EntityTerm, ...] = (
+    # Symptoms as the patient reports them (category SYMPTOM); a symptom is never a diagnosis.
+    EntityTerm(r"memory\s+(?:impairment|loss|disturbance|problems?)|forgetfulness|impaired\s+memory", "Memory impairment", "SYMPTOM", "brain"),
+    EntityTerm(r"neck\s+pain|cervical\s+pain|cervicalgia", "Neck pain", "SYMPTOM", None),
+    EntityTerm(r"(?:low(?:er)?\s+)?back\s+pain|backache|lumbago", "Back pain", "SYMPTOM", None),
+    EntityTerm(r"numbness|tingling(?:\s+sensation)?|pins\s+and\s+needles|pa?raesthesias?|paresthesias?", "Numbness or tingling", "SYMPTOM", None),
+    EntityTerm(r"headaches?|cephalgia", "Headache", "SYMPTOM", None),
+    EntityTerm(r"dizziness|giddiness|vertigo|light[-\s]?headedness", "Dizziness", "SYMPTOM", None),
+    EntityTerm(r"chest\s+(?:pain|discomfort|tightness)", "Chest pain", "SYMPTOM", None),
+    EntityTerm(r"palpitations?", "Palpitations", "SYMPTOM", "heart"),
+    EntityTerm(r"breathlessness|shortness\s+of\s+breath|dyspno?ea|\bsob\b", "Breathlessness", "SYMPTOM", "lungs"),
+    EntityTerm(r"cough(?:ing)?", "Cough", "SYMPTOM", "lungs"),
+    EntityTerm(r"fever|pyrexia|febrile", "Fever", "SYMPTOM", None),
+    EntityTerm(r"nausea", "Nausea", "SYMPTOM", None),
+    EntityTerm(r"vomiting|emesis", "Vomiting", "SYMPTOM", None),
+    EntityTerm(r"fatigue|tiredness|lethargy|malaise", "Fatigue", "SYMPTOM", None),
+    EntityTerm(r"(?:generali[sz]ed\s+|limb\s+)?weakness", "Weakness", "SYMPTOM", None),
+    EntityTerm(r"abdominal\s+(?:pain|discomfort)|stomach\s*ache|epigastric\s+pain", "Abdominal pain", "SYMPTOM", None),
+    EntityTerm(r"blurr?(?:ed|ing)\s+(?:of\s+)?vision|visual\s+disturbance", "Blurred vision", "SYMPTOM", None),
+    EntityTerm(r"syncope|fainting|blackouts?|loss\s+of\s+consciousness", "Syncope", "SYMPTOM", None),
+    EntityTerm(r"joint\s+pain|arthralgia", "Joint pain", "SYMPTOM", None),
+    EntityTerm(r"loss\s+of\s+appetite|poor\s+appetite", "Loss of appetite", "SYMPTOM", None),
+    EntityTerm(r"weight\s+loss", "Weight loss", "SYMPTOM", None),
     EntityTerm(r"normal\s+sinus\s+rhythm|sinus\s+rhythm", "Sinus rhythm", "NORMAL_STATEMENT", "heart"),
     EntityTerm(r"atrial\s+fibrillation|\ba-?fib\b", "Atrial fibrillation", "CONDITION", "heart"),
     EntityTerm(r"atrial\s+flutter", "Atrial flutter", "CONDITION", "heart"),
@@ -356,8 +400,12 @@ ENTITY_TERMS: tuple[EntityTerm, ...] = (
     EntityTerm(r"(?:acute\s+)?(?:isch(?:a)?emic\s+)?stroke|cerebrovascular\s+accident|\bcva\b", "Stroke", "CONDITION", "brain"),
     EntityTerm(r"(?:cerebral|lacunar)\s+infarcts?|(?:cerebral|lacunar)\s+infarction", "Cerebral infarct", "FINDING", "brain"),
     EntityTerm(r"(?:intracranial|intracerebral|intraparenchymal|subdural|subarachnoid|epidural|extradural)\s+h(?:a)?emorrhage|(?:subdural|epidural)\s+h(?:a)?ematoma", "Intracranial hemorrhage", "FINDING", "brain"),
+    # "contuson", "perilesonal ... dema": OCR drops single letters in bold print; the optional letters stay bounded.
+    EntityTerm(r"h(?:a)?emorrhagic\s+contusi?ons?|(?:cerebral|brain|parenchymal|cortical)\s+contusi?ons?", "Cerebral contusion", "FINDING", "brain"),
+    EntityTerm(r"peri[-\s]?lesi?onal\s+(?:o?e)?dema|vasogenic\s+o?edema|cerebral\s+o?edema", "Cerebral oedema", "FINDING", "brain"),
     EntityTerm(r"hydrocephalus", "Hydrocephalus", "FINDING", "brain"),
     EntityTerm(r"midline\s+shift", "Midline shift", "FINDING", "brain"),
+    EntityTerm(r"scalp\s+(?:soft[ -]?tissue\s+)?swelling", "Scalp soft-tissue swelling", "FINDING", "skeletal"),
     EntityTerm(r"(?:white\s+matter|small\s+vessel)\s+(?:isch(?:a)?emic\s+)?(?:disease|changes?|hyperintensit(?:y|ies))", "White matter change", "FINDING", "brain"),
     EntityTerm(r"(?:punctate\s+)?(?:t2\s+|flair\s+)?hyperintense\s+(?:foci|focus|lesions?)", "T2 hyperintense foci", "FINDING", "brain"),
     EntityTerm(r"myelomalacia|(?:spinal\s+)?cord\s+atrophy", "Spinal cord change", "FINDING", "nervous"),
@@ -456,6 +504,7 @@ class SiteTerm:
 # Each site resolves either to an atlas structure/group name (verified to exist
 # in the bundled index) or to an organ-level system only.
 SITE_TERMS: tuple[SiteTerm, ...] = (
+    SiteTerm(r"(?:left|right)\s+parietal\s+(?:region\s+)?scalp", None, "skeletal"),
     SiteTerm(r"right\s+upper\s+lobe|\brul\b", "Superior lobe of right lung", "lungs", "right"),
     SiteTerm(r"right\s+middle\s+lobe|\brml\b", "Middle lobe of right lung", "lungs", "right"),
     SiteTerm(r"right\s+lower\s+lobe|\brll\b", "Inferior lobe of right lung", "lungs", "right"),
@@ -520,10 +569,11 @@ SITE_TERMS: tuple[SiteTerm, ...] = (
     SiteTerm(r"ureters?|ureteric|ureteral", "Ureter", "kidneys"),
     SiteTerm(r"(?:urinary\s+)?bladder", "Urinary bladder", "kidneys"),
     SiteTerm(r"kidneys?|renal", None, "kidneys"),
-    SiteTerm(r"frontal\s+lobe", "Frontal lobe", "brain"),
-    SiteTerm(r"parietal\s+lobe", "Parietal lobe", "brain"),
-    SiteTerm(r"temporal\s+lobe", "Temporal lobe", "brain"),
-    SiteTerm(r"occipital\s+lobe", "Occipital lobe", "brain"),
+    # OCR of bold print merges the two words, sometimes sharing the "l" ("PARIETALLOBE", "parietalobe").
+    SiteTerm(r"frontal\s*l?obe", "Frontal lobe", "brain"),
+    SiteTerm(r"parietal\s*l?obe", "Parietal lobe", "brain"),
+    SiteTerm(r"temporal\s*l?obe", "Temporal lobe", "brain"),
+    SiteTerm(r"occipital\s*l?obe", "Occipital lobe", "brain"),
     SiteTerm(r"insula(?:r)?", "Insula", "brain"),
     SiteTerm(r"cerebell(?:um|ar)", "Cerebellum", "brain"),
     SiteTerm(r"brain\s*stem", "Brainstem", "brain"),
@@ -559,6 +609,16 @@ def atlas_structures() -> dict[str, list[dict]]:
     for structure in payload.get("structures", []):
         index.setdefault(structure["name"].lower(), []).append(structure)
     return index
+
+
+@lru_cache(maxsize=1)
+def _atlas_names_by_id() -> dict[str, str]:
+    return {record["id"]: record["name"] for records in atlas_structures().values() for record in records}
+
+
+def atlas_structure_name(structure_id: Optional[str]) -> Optional[str]:
+    """The atlas English name of a structure id ("nervous.parietal_lobe" -> "Parietal lobe")."""
+    return _atlas_names_by_id().get(structure_id) if structure_id else None
 
 
 def resolve_atlas_structure(name: Optional[str], side: Optional[str]) -> Optional[dict]:
@@ -606,6 +666,13 @@ def find_sites(text: str) -> list[dict]:
     results = []
     for start, end, term, surface in sorted(chosen, key=lambda item: item[0]):
         side = term.side
+        # Bounded anatomical modifiers belong to the same site: "right high parietal lobe".
+        # Do not borrow laterality across arbitrary intervening text or another finding.
+        if side is None and term.system == "brain":
+            prefix = re.search(r"\b(left|right)\s+(?:(?:high|superior|inferior|posterior|anterior)\s+){0,2}$", text[max(0, start - 48):start], re.IGNORECASE)
+            if prefix:
+                start = max(0, start - 48) + prefix.start()
+                surface = text[start:end]
         if side is None:
             if re.search(r"\bleft\b", surface, re.IGNORECASE):
                 side = "left"

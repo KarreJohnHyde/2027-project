@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-25",
+  "generated_at": "2026-11-06",
   "tool": "scripts/dataset_task_audit.py",
   "split_seed": 20261024,
   "dhash_threshold": 4,
@@ -1706,20 +1706,44 @@
       },
       "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
       "exact_duplicate_overlap": {},
-      "notes": [],
+      "notes": [
+        "Only the BoneFractureYolo8/ copy is used; the second folder is a byte-identical copy of it."
+      ],
       "tasks": [
         {
           "task_id": "bone-fracture-detection",
           "type": "DETECTION",
-          "target": "fracture boxes",
+          "target": "fracture boxes: the six region-specific fracture classes merged into one 'fracture' class; the non-fracture 'humerus' class (index 4) excluded (owner decision, 2026-11-06)",
           "flags": [
-            "NEEDS_REVIEW",
+            "TASK_SUPPORTED_BY_LABELS",
             "LEAKAGE_RISK"
           ],
-          "training_eligible": false,
-          "needs_review": "class set mixes fracture labels with a non-fracture 'humerus' class; task definition needs clinical review",
-          "validation_ready": false,
-          "readiness": "BLOCKED"
+          "training_eligible": true,
+          "class_name": "fracture",
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 4148,
+            "per_split": {
+              "test": 169,
+              "train": 3631,
+              "val": 348
+            },
+            "split_method": "publisher splits kept",
+            "near_duplicate_candidate_pairs_across_splits": 0,
+            "near_duplicate_groups_crossing_splits": 0,
+            "images_in_crossing_groups": 0,
+            "test_images_with_cross_split_duplicate": 0,
+            "crossing_group_rule": "all members of any transitive near-duplicate component spanning publisher splits",
+            "largest_near_duplicate_group": 3,
+            "dhash_candidate_pools_with_more_than_one_image": 371,
+            "largest_dhash_candidate_pool": 93,
+            "pixel_confirmed_pairs": 259,
+            "group_rule": "pairs within a dHash (<= 4 bits) candidate pool with 64x64 normalised correlation >= 0.95",
+            "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+            "sample_manifest": "D:\\project\\_derived\\datasets\\bone-fracture-detection\\samples.csv",
+            "dataset_version": "7ea36477f94704c930bb256fd327adf3ee2bb01af916a176bd7e37a6bcc6f028"
+          }
         }
       ]
     },
@@ -1739,10 +1763,15 @@
       "location": "D:/project",
       "license": {
         "status": "PERMISSION_UNVERIFIED",
+        "authorization_status": "VERIFIED",
+        "authorization_reason": "Repository owner confirmed on 2026-10-31 that they accepted the Stanford AIMI Research Use Agreement when downloading MURA.",
+        "authorized_by": "repository owner (recorded interactive decision)",
+        "authorized_on": "2026-10-31",
+        "authorization_scope": "personal, non-commercial research training and evaluation; no redistribution of images",
         "name": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
-        "source": "https://echonet.github.io/dynamic/ (agreement terms); https://aimi.stanford.edu/datasets/mura-msk-xrays",
+        "source": "https://aimi.stanford.edu/datasets/mura-msk-xrays",
         "verified_on": "2026-10-25",
-        "note": "Usable only after the user confirms their own Stanford AIMI registration and acceptance of the agreement for this dataset."
+        "citation": "Rajpurkar P, Irvin J, Bagul A, et al. MURA: Large Dataset for Abnormality Detection in Musculoskeletal Radiographs. arXiv:1712.06957 (2017)."
       },
       "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
       "exact_duplicate_overlap": {},
@@ -1750,15 +1779,67 @@
       "tasks": [
         {
           "task_id": "mura-study-abnormality",
-          "type": "CLASSIFICATION",
+          "type": "STUDY_IMAGE_CLASSIFICATION",
           "target": "study-level normal vs abnormal",
           "flags": [
             "TASK_SUPPORTED_BY_LABELS",
-            "LICENSE_BLOCKED"
+            "LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES"
           ],
-          "training_eligible": false,
-          "validation_ready": false,
-          "readiness": "BLOCKED"
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 40005,
+            "labels": [
+              "abnormal",
+              "normal"
+            ],
+            "per_split": {
+              "train": 30370,
+              "val": 6438,
+              "test": 3197
+            },
+            "per_split_per_label": {
+              "train": {
+                "abnormal": 12319,
+                "normal": 18051
+              },
+              "val": {
+                "abnormal": 2554,
+                "normal": 3884
+              },
+              "test": {
+                "abnormal": 1530,
+                "normal": 1667
+              }
+            },
+            "studies_per_split": {
+              "train": 11102,
+              "val": 2355,
+              "test": 1199
+            },
+            "patients_per_split": {
+              "train": 9210,
+              "val": 1974,
+              "test": 783
+            },
+            "patients_in_both_publisher_splits": 0,
+            "near_duplicate_candidate_pairs_across_splits": 147,
+            "near_duplicate_groups_crossing_splits": 34,
+            "images_in_crossing_groups": 136,
+            "test_images_with_cross_split_duplicate": 18,
+            "crossing_group_rule": "all members of any transitive near-duplicate component spanning publisher splits",
+            "largest_near_duplicate_group": 23,
+            "dhash_candidate_pools_with_more_than_one_image": 730,
+            "largest_dhash_candidate_pool": 5029,
+            "pixel_confirmed_pairs": 354,
+            "group_rule": "pairs within a dHash (<= 4 bits) candidate pool with 64x64 normalised correlation >= 0.95",
+            "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+            "group_unit": "patient",
+            "split_method": "publisher validation split frozen as test; publisher training patients divided into train/validation, seed 20261024; labels per study from the publisher's CSV; group unit: patient",
+            "sample_manifest": "D:\\project\\_derived\\datasets\\mura-study-abnormality\\samples.csv",
+            "dataset_version": "873c4587ca667acf4f1e22723195a4c3d77dca45450ad93057334efbfa07323d"
+          }
         }
       ]
     },
@@ -1778,10 +1859,15 @@
       "location": "D:/project",
       "license": {
         "status": "PERMISSION_UNVERIFIED",
+        "authorization_status": "VERIFIED",
+        "authorization_reason": "Repository owner confirmed on 2026-11-06 that they hold the Stanford AIMI Research Use Agreement for EchoNet-Dynamic.",
+        "authorized_by": "repository owner (recorded interactive decision)",
+        "authorized_on": "2026-11-06",
+        "authorization_scope": "personal, non-commercial research training and evaluation; no redistribution of videos",
         "name": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
-        "source": "https://echonet.github.io/dynamic/ (agreement terms); https://aimi.stanford.edu/datasets/mura-msk-xrays",
+        "source": "https://echonet.github.io/dynamic/",
         "verified_on": "2026-10-25",
-        "note": "Usable only after the user confirms their own Stanford AIMI registration and acceptance of the agreement for this dataset."
+        "citation": "Ouyang D, He B, Ghorbani A, et al. Video-based AI for beat-to-beat assessment of cardiac function. Nature 580:252-256 (2020)."
       },
       "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
       "exact_duplicate_overlap": {},
@@ -1789,38 +1875,53 @@
       "tasks": [
         {
           "task_id": "echonet-ef-regression",
-          "type": "REGRESSION",
-          "target": "left-ventricular ejection fraction",
+          "type": "ECHO_EF_REGRESSION",
+          "target": "left-ventricular ejection fraction (%) from an apical-4-chamber video",
           "flags": [
-            "TASK_SUPPORTED_BY_LABELS",
-            "LICENSE_BLOCKED"
+            "TASK_SUPPORTED_BY_LABELS"
           ],
-          "training_eligible": false,
-          "validation_ready": false,
-          "readiness": "BLOCKED"
+          "training_eligible": true,
+          "trainer": "ml_training/echo_ef.py",
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "preparation": {
+            "samples": 10030,
+            "per_split": {
+              "val": 1288,
+              "train": 7465,
+              "test": 1277
+            },
+            "split_method": "publisher splits kept (FileList.csv Split; one video per patient)",
+            "videos_listed_but_missing": 0,
+            "sample_manifest": "D:\\project\\_derived\\datasets\\echonet-ef-regression\\samples.csv",
+            "dataset_version": "726716534d4811656b6798c796cb821636481d63ce3de94e583070a6ede5b009"
+          }
         }
       ]
     },
     {
       "id": "kits19-labels",
       "archive": "archive_24",
-      "title": "KiTS19 kidney tumour segmentations and clinical data (no CT imaging)",
+      "title": "KiTS19 matched kidney and renal-tumour CT/mask cohort (210 cases)",
       "modality": "CT",
       "system": "kidneys",
-      "identity": "210 case folders with segmentation.nii and kits.json clinical records; imaging.nii files are absent",
-      "labels": "MASKS_WITHOUT_IMAGES",
+      "identity": "210 checksum-verified acquired CT volumes paired with losslessly compressed original kidney/tumour masks",
+      "labels": "PAIRED_CT_AND_MASKS",
       "official_splits": false,
       "patient_ids": "PSEUDONYMOUS_CASE_IDS",
       "source_archive": "archive (24).zip",
       "source_sha256": "afc03e03cc38b677c4fa2d83afe44b8c89b7dbf306268b7cb034c0b75b12b26a",
       "files": 223,
-      "location": "D:/project",
+      "location": "C:\\MedTwin_Datasets\\KiTS19",
       "license": {
         "status": "VERIFIED",
         "name": "CC BY-NC-SA 4.0",
-        "source": "LICENSE in the archive (KiTS19 challenge data repository)",
+        "source": "https://github.com/neheller/kits19/blob/master/data/LICENSE",
         "verified_on": "2026-10-25",
-        "citation": "Heller N, et al. The KiTS19 Challenge Data: 300 Kidney Tumor Cases with Clinical Context, CT Semantic Segmentations, and Surgical Outcomes. arXiv:1904.00445."
+        "citation": "Heller N, et al. The KiTS19 Challenge Data: 300 Kidney Tumor Cases with Clinical Context, CT Semantic Segmentations, and Surgical Outcomes. arXiv:1904.00445.",
+        "authorization_status": "VERIFIED",
+        "authorization_scope": "Local non-commercial research training and evaluation; no commercial release permission inferred.",
+        "authorization_reason": "Published KiTS19 CC BY-NC-SA 4.0 terms and owner instruction to prepare and train on 2026-11-09."
       },
       "privacy": "NO_IDENTIFIERS_FOUND_IN_SAMPLED_METADATA",
       "exact_duplicate_overlap": {},
@@ -1829,17 +1930,29 @@
         {
           "task_id": "kits19-kidney-tumour-segmentation",
           "type": "SEGMENTATION_VOLUMES",
-          "target": "kidney and tumour",
+          "target": "Kidney and renal-tumour masks on acquired contrast CT",
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
           "flags": [
-            "MISSING_IMAGES",
-            "CT_IMAGING_NOT_PRESENT"
+            "TASK_SUPPORTED_BY_LABELS"
           ],
-          "training_eligible": false,
-          "pending": "CT_IMAGING_NOT_PRESENT",
-          "validation_ready": false,
-          "readiness": "BLOCKED"
+          "preparation": {
+            "manifest": "D:\\project\\_derived\\datasets\\kits19-segmentation\\manifest.json",
+            "cases": 210,
+            "split_policy": {
+              "unit": "patient_id",
+              "method": "sha256(seed:patient_id) stable ordering",
+              "seed": 20261109,
+              "val_fraction": 0.15,
+              "test_fraction": 0.15,
+              "publisher_test_preserved": false
+            },
+            "clinical_validation": false
+          }
         }
-      ]
+      ],
+      "cases_count": 210
     },
     {
       "id": "lidc-idri-xml",
@@ -2544,6 +2657,342 @@
       "exact_duplicate_overlap": {},
       "notes": [],
       "tasks": []
+    },
+    {
+      "id": "isles-2022",
+      "archive": "ISLES-2022.zip",
+      "title": "ISLES 2022 ischaemic stroke lesion segmentation (multi-centre MRI)",
+      "modality": "MRI",
+      "system": "brain",
+      "identity": "250 training subjects, one session each: DWI (b=1000), ADC and FLAIR with expert ischaemic lesion masks on the DWI grid",
+      "labels": "NIFTI_VOLUMES_WITH_MASKS",
+      "official_splits": false,
+      "patient_ids": "PSEUDONYMOUS_SUBJECT_FOLDERS",
+      "source_archive": "MedTwin_Datasets/Stroke_ISLES2022/ISLES-2022.zip",
+      "source_sha256": "f374895e383f725ddd280db41ef36ed975277c33de0e587a631ca7ea7ad45d6b",
+      "files": 3190,
+      "location": "D:/project/MedTwin_Datasets",
+      "license": {
+        "status": "PUBLISHED_LICENCE_IN_ARCHIVE",
+        "authorization_status": "VERIFIED",
+        "authorization_reason": "The archive's dataset_description.json declares \"License\": \"CC BY 4.0\" and its LICENSE file states the Creative Commons Attribution 4.0 International licence with a data usage policy (cite the dataset; de-identified data; comply with law and research codes of conduct). CC BY 4.0 permits training and evaluation with attribution.",
+        "authorized_by": "published licence (CC BY 4.0); models requested by the repository owner on 2026-11-04 and 2026-11-05",
+        "authorized_on": "2026-11-05",
+        "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
+        "name": "CC BY 4.0 with the ISLES'22 data usage policy",
+        "source": "ISLES-2022/dataset_description.json and ISLES-2022/LICENSE inside the archive",
+        "verified_on": "2026-11-05",
+        "citation": "Hernandez Petzsche MR, de la Rosa E, Hanning U, et al. ISLES 2022: A multi-center magnetic resonance imaging stroke lesion segmentation dataset. Scientific Data 9:762 (2022); arXiv:2206.06694."
+      },
+      "privacy": "PUBLISHER_DE_IDENTIFIED; participants.tsv holds sex, age and weight only and is not used",
+      "exact_duplicate_overlap": {},
+      "notes": [
+        "FLAIR lies on its own grid and is not co-registered to DWI; only DWI and ADC are used."
+      ],
+      "tasks": [
+        {
+          "task_id": "isles22-stroke-lesion-segmentation",
+          "type": "SEGMENTATION_VOLUMES",
+          "target": "ischaemic stroke lesion on DWI/ADC",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": true,
+          "trainer": "python -m ml_training.volumetric_multichannel train",
+          "manifest_builder": "python scripts/prepare_brain_mri_datasets.py isles; python -m ml_training.volumetric_manifest pairs",
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING"
+        }
+      ]
+    },
+    {
+      "id": "msd-task01-brain-tumour",
+      "archive": "Task01_BrainTumour.tar",
+      "title": "Medical Segmentation Decathlon Task01 BrainTumour (BraTS 2016/2017 gliomas)",
+      "modality": "MRI",
+      "system": "brain",
+      "identity": "484 labelled training cases (266 unlabelled test cases unused): FLAIR, T1w, T1gd and T2w, skull-stripped and co-registered on the SRI24 1 mm grid, with oedema, non-enhancing/necrotic tumour core and enhancing tumour labels",
+      "labels": "NIFTI_VOLUMES_WITH_MASKS",
+      "official_splits": false,
+      "patient_ids": "CASE_NUMBERS_ONLY",
+      "source_archive": "MedTwin_Datasets/Brain_Tumour_MSD/Task01_BrainTumour.tar",
+      "source_sha256": "d423911308d2ae5396d9c6bf4fad2b68cfde2dd09044269da9c0d639c22753c4",
+      "files": 750,
+      "location": "D:/project/MedTwin_Datasets",
+      "license": {
+        "status": "PUBLISHED_LICENCE_IN_ARCHIVE",
+        "authorization_status": "VERIFIED",
+        "authorization_reason": "The archive's dataset.json declares \"licence\": \"CC-BY-SA 4.0\" (Medical Segmentation Decathlon release 2.0, 04/05/2018). CC BY-SA 4.0 permits training and evaluation with attribution; adapted datasets must be shared alike. Trained weights are not distributed.",
+        "authorized_by": "published licence (CC BY-SA 4.0); models requested by the repository owner on 2026-11-04 and 2026-11-05",
+        "authorized_on": "2026-11-05",
+        "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
+        "name": "CC BY-SA 4.0 (Medical Segmentation Decathlon)",
+        "source": "Task01_BrainTumour/dataset.json inside the archive",
+        "verified_on": "2026-11-05",
+        "citation": "Antonelli M, Reinke A, Bakas S, et al. The Medical Segmentation Decathlon. Nature Communications 13:4128 (2022); Menze BH et al. IEEE TMI 34(10):1993-2024 (2015); Bakas S et al. Scientific Data 4:170117 (2017)."
+      },
+      "privacy": "PUBLISHER_DE_IDENTIFIED (skull-stripped, case numbers only)",
+      "exact_duplicate_overlap": {},
+      "notes": [
+        "BraTS 2016 and 2017 releases are combined; a subject present in both releases cannot be ruled out from case numbers, so near-duplicate leakage across splits is possible and is stated as a limitation."
+      ],
+      "tasks": [
+        {
+          "task_id": "msd-brain-tumour-segmentation",
+          "type": "SEGMENTATION_VOLUMES",
+          "target": "peritumoural oedema, necrotic/non-enhancing tumour core, enhancing tumour",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": true,
+          "trainer": "python -m ml_training.volumetric_multichannel train",
+          "manifest_builder": "python scripts/prepare_brain_mri_datasets.py msd; python -m ml_training.volumetric_manifest pairs",
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING"
+        }
+      ]
+    },
+    {
+      "id": "nih-chestxray14",
+      "archive": "images_001..images_012, Data_Entry_2017.csv, BBox_List_2017.csv, test_list.txt, train_val_list.txt",
+      "title": "NIH ChestX-ray14 (NIH Clinical Center) with the BBox_List_2017 radiologist boxes",
+      "modality": "XRAY",
+      "system": "lungs",
+      "identity": "112,120 frontal chest radiographs of 30,805 patients with text-mined image labels; 984 radiologist boxes on 880 images of the official test list for 8 findings",
+      "labels": "IMAGE_LEVEL_TEXT_MINED_PLUS_BOXES",
+      "official_splits": true,
+      "patient_ids": "PSEUDONYMOUS_NUMBERS",
+      "files": 112120,
+      "location": "D:/project",
+      "license": {
+        "status": "PUBLISHED_TERMS_FROM_SECONDARY_SOURCE",
+        "authorization_status": "VERIFIED",
+        "authorization_reason": "The dataset's published terms (as reproduced on Google Cloud's public-dataset page for the NIH chest X-ray set and on the dataset's distributed README) state no restrictions on the use of the images, with attribution: link to the NIH download site, cite Wang et al. CVPR 2017, and acknowledge the NIH Clinical Center as the data provider.",
+        "authorized_by": "published terms; evaluation requested by the repository owner on 2026-11-05",
+        "authorized_on": "2026-11-05",
+        "authorization_scope": "local evaluation only (attention localisation of the third-party chest-radiograph model); no training; images are not committed or redistributed",
+        "name": "No restrictions on use; attribution required (NIH Clinical Center)",
+        "source": "https://docs.cloud.google.com/healthcare-api/docs/resources/public-datasets/nih-chest and the NIH download site https://nihcc.app.box.com/v/ChestXray-NIHCC",
+        "verified_on": "2026-11-05",
+        "citation": "Wang X, Peng Y, Lu L, Lu Z, Bagheri M, Summers RM. ChestX-ray8: Hospital-scale chest X-ray database and benchmarks. CVPR 2017."
+      },
+      "privacy": "PUBLISHER_DE_IDENTIFIED",
+      "exact_duplicate_overlap": {},
+      "notes": [
+        "The third-party TorchXRayVision classifier was trained by its publisher on this collection with image-level labels; it is never trained here."
+      ],
+      "tasks": [
+        {
+          "task_id": "nih-cxr-attention-localisation",
+          "type": "LOCALISATION_EVALUATION",
+          "target": "radiologist boxes for 8 findings",
+          "flags": [
+            "EVALUATION_ONLY"
+          ],
+          "training_eligible": false,
+          "evaluator": "python scripts/evaluate_cxr_attention_localisation.py",
+          "validation_ready": true,
+          "readiness": "EVALUATED"
+        }
+      ]
+    },
+    {
+      "id": "nlm-tb-cxr",
+      "archive": "data.lhncbc.nlm.nih.gov mirror",
+      "title": "NLM tuberculosis chest radiographs (Shenzhen and Montgomery County sets)",
+      "modality": "XRAY",
+      "system": "lungs",
+      "identity": "{'shenzhen': 662, 'montgomery': 138} frontal chest radiographs; labels from the publisher's file names",
+      "labels": "FILE_NAME_SUFFIX",
+      "official_splits": false,
+      "patient_ids": "ONE_CASE_PER_FILE",
+      "source_archive": "https://data.lhncbc.nlm.nih.gov/public/Tuberculosis-Chest-X-ray-Datasets/ (per-file MD5 = listing ETag)",
+      "files": 800,
+      "location": "D:/project/MedTwin_Datasets/Tuberculosis/NLM_data_server",
+      "license": {
+        "status": "PUBLISHER_TERMS_IN_README",
+        "authorization_status": "VERIFIED",
+        "authorization_reason": "NLM-ChinaCXRSet-ReadMe.docx and NLM-MontgomeryCXRSet-ReadMe.pdf: the sets are de-identified and publicly released by the NLM for research; users must not share them outside their research group and must cite the publications. The repository owner approved the download on 2026-11-06.",
+        "authorized_by": "publisher read-me terms; download approved by the repository owner on 2026-11-06",
+        "authorized_on": "2026-11-06",
+        "authorization_scope": "local research training and evaluation; images are not committed, shared or redistributed",
+        "name": "NLM public research release (no redistribution outside the research group; citation required)",
+        "source": "read-me files in the NLM folders",
+        "verified_on": "2026-11-06",
+        "citation": "Jaeger S, Karargyris A, Candemir S, et al. Automatic tuberculosis screening using chest radiographs. IEEE Trans Med Imaging 33(2):233-45 (2014); Candemir S, Jaeger S, Palaniappan K, et al. Lung segmentation in chest radiographs using anatomical atlases with nonrigid registration. IEEE Trans Med Imaging 33(2):577-90 (2014). Source: National Library of Medicine, NIH, Bethesda, MD, USA; Shenzhen No.3 People's Hospital, Guangdong Medical College, Shenzhen, China; Department of Health and Human Services, Montgomery County, MD, USA."
+      },
+      "privacy": "PUBLISHER_DE_IDENTIFIED",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "nlm-tb-cxr-classification",
+          "type": "CLASSIFICATION",
+          "target": "tuberculosis manifestation vs normal on a frontal chest radiograph",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "minimum_samples_per_class": 50,
+          "preparation": {
+            "samples": 800,
+            "labels": [
+              "normal",
+              "tuberculosis"
+            ],
+            "per_split": {
+              "train": 559,
+              "val": 118,
+              "test": 123
+            },
+            "per_split_per_label": {
+              "train": {
+                "normal": 284,
+                "tuberculosis": 275
+              },
+              "val": {
+                "normal": 60,
+                "tuberculosis": 58
+              },
+              "test": {
+                "normal": 62,
+                "tuberculosis": 61
+              }
+            },
+            "per_site": {
+              "shenzhen": 662,
+              "montgomery": 138
+            },
+            "near_duplicate_groups_with_more_than_one_image": 0,
+            "near_duplicate_groups_with_conflicting_labels": 0,
+            "split_method": "near-copy groups (dHash distance <= 4 and mean thumbnail difference <= 3.0 grey levels) split 70/15/15, stratified by site and label, seed 20261024",
+            "largest_group": 1,
+            "group_unit": "near-duplicate group (each file is one case)",
+            "minimum_samples_per_class": 50,
+            "classes_below_minimum": [],
+            "sample_manifest": "D:\\project\\_derived\\datasets\\nlm-tb-cxr-classification\\samples.csv",
+            "dataset_version": "51fa94525171eb2d5b80b6756c1b7808c8936c5671fb64184a825e201ef2e7e4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "lidc-idri-subset",
+      "archive": "TCIA NBIA API series zips",
+      "title": "LIDC-IDRI thoracic CT with reader nodule outlines (299-patient subset)",
+      "modality": "CT",
+      "system": "lungs",
+      "identity": "299 patients (first by patient ID among series annotated by LIDC-XML-only.zip), one CT series each; 50 % reader-consensus nodule masks",
+      "labels": "READER_XML_CONSENSUS_MASKS",
+      "official_splits": false,
+      "patient_ids": "TCIA_PATIENT_IDS",
+      "source_archive": "C:/MedTwin_Datasets/LIDC/series (selected_series.json lists every series UID)",
+      "files": 299,
+      "location": "D:/project/MedTwin_Datasets/LIDC_prepared",
+      "license": {
+        "status": "VERIFIED",
+        "authorization_status": "VERIFIED",
+        "authorization_reason": "TCIA collection page lists the LIDC-IDRI licence as CC BY 3.0 (checked 2026-11-06); the 300-patient download was approved by the repository owner on 2026-11-06.",
+        "authorized_by": "published licence (CC BY 3.0); download approved by the repository owner on 2026-11-06",
+        "authorized_on": "2026-11-06",
+        "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
+        "name": "CC BY 3.0 (TCIA Data Usage Policy; citation required)",
+        "source": "https://www.cancerimagingarchive.net/collection/lidc-idri/",
+        "verified_on": "2026-11-06",
+        "citation": "Armato SG III, McLennan G, Bidaut L, et al. Med Phys 38(2):915-931 (2011); Armato SG III et al. Data From LIDC-IDRI. TCIA (2015), doi:10.7937/K9/TCIA.2015.LO9QL9SX; Clark K et al. The Cancer Imaging Archive (TCIA). J Digit Imaging 26(6):1045-1057 (2013)."
+      },
+      "privacy": "PUBLISHER_DE_IDENTIFIED (TCIA)",
+      "exact_duplicate_overlap": {},
+      "notes": [
+        "300 selected archives acquired; LIDC-IDRI-0017 excluded because 10 reader outlines refer to missing SOP instances.",
+        "All 299 retained series have four readers. Masks require at least two reader votes per voxel; this does not label all lung disease."
+      ],
+      "tasks": [
+        {
+          "task_id": "lidc-nodule-segmentation",
+          "type": "SEGMENTATION_VOLUMES",
+          "target": "lung nodules of 3 mm or more (reader consensus)",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": true,
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "trainer": "python -m ml_training.volumetric_multichannel train --intensity ct",
+          "manifest_builder": "python -I scripts/prepare_lidc_dataset.py; python -m ml_training.volumetric_manifest pairs",
+          "preparation": {
+            "manifest": "D:\\project\\_derived\\datasets\\lidc-nodule-segmentation\\manifest.json",
+            "manifest_sha256": "19b80b412b2043d80ca486db5bf80bc1babb562e5c9079395648cd9ab14f3d8f",
+            "dataset_version": "03d3eb76af2f2d4f1f83966d285b90c1fc33a510352974d94871e8bdfed9ec12",
+            "cases": 299,
+            "patients_per_split": {
+              "train": 209,
+              "val": 45,
+              "test": 45
+            },
+            "refused": {
+              "LIDC-IDRI-0017": "10 reader outline(s) name slices that are not in the series"
+            },
+            "clinical_validation": false
+          }
+        }
+      ],
+      "cases_count": 299
+    },
+    {
+      "id": "msd-task03-liver",
+      "archive": "Task03_Liver.tar",
+      "title": "MSD Task03 Liver matched CT/mask cohort",
+      "modality": "CT",
+      "system": "liver",
+      "identity": "131 labelled training CT volumes (imagesTr/labelsTr); unlabelled test volumes unused; labels {'0': 'background', '1': 'liver', '2': 'cancer'}",
+      "labels": "NIFTI_VOLUMES_WITH_MASKS",
+      "official_splits": false,
+      "patient_ids": "CASE_NUMBERS_ONLY",
+      "source_archive": "C:/MedTwin_Datasets/Liver_MSD/download/Task03_Liver.tar",
+      "source_sha256": "4007d9db1acda850d57a6ceb2b3998b7a0d43f8ad5a3f740dc38bc0cb8b7a2c5",
+      "files": 266,
+      "location": "D:/project/MedTwin_Datasets/Liver_MSD",
+      "license": {
+        "status": "PUBLISHED_LICENCE_IN_ARCHIVE",
+        "authorization_status": "VERIFIED",
+        "authorization_reason": "The archive's dataset.json declares \"licence\": \"CC-BY-SA 4.0\" (1.0 04/05/2018). CC BY-SA 4.0 permits training and evaluation with attribution; adapted datasets must be shared alike. Trained weights are not distributed.",
+        "authorized_by": "published licence (CC BY-SA 4.0); download approved by the repository owner on 2026-11-06",
+        "authorized_on": "2026-11-06",
+        "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
+        "name": "CC BY-SA 4.0 (Medical Segmentation Decathlon)",
+        "source": "Task03_Liver/dataset.json inside the archive",
+        "verified_on": "2026-11-06",
+        "citation": "Antonelli M, Reinke A, Bakas S, et al. The Medical Segmentation Decathlon. Nature Communications 13:4128 (2022); Simpson AL, Antonelli M, Bakas S, et al. arXiv:1902.09063 (2019)."
+      },
+      "privacy": "PUBLISHER_DE_IDENTIFIED (case numbers only)",
+      "exact_duplicate_overlap": {},
+      "notes": [],
+      "tasks": [
+        {
+          "task_id": "msd-liver-tumour-segmentation",
+          "type": "SEGMENTATION_VOLUMES",
+          "target": "Liver and tumour segmentation",
+          "flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "training_eligible": false,
+          "trainer": "python -m ml_training.volumetric_multichannel train --intensity ct",
+          "manifest_builder": "python scripts/prepare_msd_ct_datasets.py; python -m ml_training.volumetric_manifest pairs",
+          "validation_ready": true,
+          "readiness": "RIGHTS_REVIEW_REQUIRED_FOR_DECLARED_PURPOSE",
+          "training_blocker": "Commercial-development dataset rights require a separate, evidence-bound review; research authorization is insufficient",
+          "commercial_development_eligible": false,
+          "preparation": {
+            "manifest": "D:\\project\\_derived\\datasets\\msd-liver\\manifest.json",
+            "dataset_version": "fb8b209d8d0268e02aabe6bacce7a0429e8f9313d172674b8449290a1e838db5",
+            "cases": 131,
+            "clinical_validation": false
+          }
+        }
+      ]
     }
   ]
 }

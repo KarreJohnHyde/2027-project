@@ -73,6 +73,12 @@ test('the upload allowlist starts closed and admits build inputs and evidence, n
   for (const forbidden of ['!artifacts/**', '!backend/uploads/**', '!public/**', '!benchmarks/**', '!data/**', '!docs/**']) {
     assert.ok(!exclusions.includes(forbidden), forbidden);
   }
+  // The CLI tests folder paths without a trailing slash, so "!backend/" never re-opens backend/ and its
+  // files are silently left out of the upload (seen 2026-10-30: 9 files uploaded). Folders are re-opened by name.
+  for (const folder of ['!backend', '!backend/app', '!src', '!public/models', '!docs/validation/models']) {
+    assert.ok(exclusions.includes(folder), folder);
+  }
+  assert.deepEqual(exclusions.filter(line => line.startsWith('!') && line.endsWith('/')), []);
 });
 
 test('credentials, local clinical state, weights and unreleased models stay excluded', () => {

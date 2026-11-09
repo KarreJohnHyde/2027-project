@@ -1,0 +1,1235 @@
+{
+  "model_id": "brain_mri_stroke_lesion_segresnet",
+  "run_id": "brain_mri_stroke_lesion_segresnet-20261105T092121Z",
+  "task_type": "volumetric_semantic_segmentation",
+  "dataset_id": "isles-2022",
+  "dataset_version": "577bbf290a101762a6fa117b31706d6acef0ba8b4f24630e50e9088b91432609",
+  "split_counts": {
+    "train": 174,
+    "val": 38,
+    "test": 38
+  },
+  "split_method": "patients split by sha256(seed:patient_id) ordering (ml_training.volumetric_manifest)",
+  "test_n": 38,
+  "test_patients": 38,
+  "metrics": {
+    "mean_case_macro_dice": 0.7521296853129834,
+    "mean_case_macro_dice_95ci": {
+      "status": "COMPUTED",
+      "low": 0.6662046089778604,
+      "high": 0.8222465451974748,
+      "resamples": 2000,
+      "unit": "patient"
+    },
+    "per_structure": {
+      "ischaemic_stroke_lesion": {
+        "mean_dice": 0.7521296853129834,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.6662046089778604,
+          "high": 0.8222465451974748,
+          "resamples": 2000,
+          "unit": "patient"
+        },
+        "mean_iou": 0.6483469460818612,
+        "scored_cases": 38,
+        "reference_positive_cases": 38,
+        "both_empty_cases_excluded": 0
+      }
+    },
+    "lesion_detection": {
+      "definition": "26-connected components; a reference lesion is detected when any predicted voxel overlaps it; a predicted component overlapping no reference voxel is a false positive",
+      "reference_lesions": 295,
+      "detected_lesions": 161,
+      "predicted_components": 197,
+      "false_positive_components": 29,
+      "lesion_sensitivity": 0.5457627118644067,
+      "component_precision": 0.8527918781725888,
+      "lesion_f1": 0.6655757471363362,
+      "false_positive_components_per_case": 0.7631578947368421
+    },
+    "dice_by_reference_volume": {
+      "structure": "ischaemic_stroke_lesion",
+      "bands": {
+        "smallest_third": {
+          "reference_ml_range": [
+            null,
+            4.87
+          ],
+          "cases": 13,
+          "mean_dice": 0.64099625865182
+        },
+        "middle_third": {
+          "reference_ml_range": [
+            4.87,
+            18.09
+          ],
+          "cases": 12,
+          "mean_dice": 0.7957899710430114
+        },
+        "largest_third": {
+          "reference_ml_range": [
+            18.09,
+            null
+          ],
+          "cases": 13,
+          "mean_dice": 0.8229613097618133
+        }
+      }
+    }
+  },
+  "clinical_indices": {
+    "ischaemic_stroke_lesion_volume_ml": {
+      "n_patients": 38,
+      "bias": -3.866,
+      "limits_of_agreement": [
+        -38.694,
+        30.962
+      ],
+      "mean_absolute_error": 4.819,
+      "reference_mean": 22.675
+    }
+  },
+  "selection": {
+    "criterion": "validation mean of case-level macro foreground Dice (serving inference path)",
+    "best_epoch": 90,
+    "best_score": 0.7549293984819743
+  },
+  "epochs_run": 150,
+  "config": {
+    "manifest_path": "_derived\\datasets\\isles22-dwi-adc\\manifest.json",
+    "output_dir": "artifacts\\training\\brain_mri_stroke_lesion_segresnet-20261105T092121Z",
+    "model_id": "brain_mri_stroke_lesion_segresnet",
+    "channel_names": [
+      "DWI",
+      "ADC"
+    ],
+    "registry_path": "D:\\project\\dataset_registry\\tasks.json",
+    "device": "cuda",
+    "epochs": 150,
+    "iterations_per_epoch": 200,
+    "batch_size": 2,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "patch_size": [
+      96,
+      96,
+      64
+    ],
+    "init_filters": 16,
+    "blocks_down": [
+      1,
+      2,
+      2,
+      4
+    ],
+    "blocks_up": [
+      1,
+      1,
+      1
+    ],
+    "dropout": 0.2,
+    "foreground_probability": 0.67,
+    "target_spacing": [
+      2.0,
+      2.0,
+      2.0
+    ],
+    "foreground_crop": true,
+    "overlap": 0.5,
+    "sliding_window_mode": "gaussian",
+    "sw_batch_size": 2,
+    "validate_every": 5,
+    "seed": 20261105,
+    "amp": true,
+    "workers": 2,
+    "cache_dir": "_derived\\cache\\isles22",
+    "regions": {},
+    "lesion_detection": true,
+    "volume_semantics": "Predicted lesion voxel count x header voxel volume on the upload's DWI/ADC grid. Research output from a model trained on ISLES 2022; not an infarct-core measurement for treatment decisions.",
+    "allow_synthetic_test_fixture": false,
+    "device_effective": "cuda",
+    "amp_effective": true,
+    "preprocessing": {
+      "version": "nifti-foreground-crop-channel-zscore-resample-v2",
+      "foreground_crop": true,
+      "normalisation": "per-channel z-score over that channel's non-zero voxels",
+      "target_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "resampling": "trilinear (align_corners=False) for images and class probabilities; nearest-exact for training masks",
+      "sliding_window_overlap": 0.5,
+      "sliding_window_mode": "gaussian",
+      "sw_batch_size": 2
+    },
+    "architecture": {
+      "name": "monai.networks.nets.SegResNet",
+      "spatial_dims": 3,
+      "in_channels": 2,
+      "out_channels": 2,
+      "init_filters": 16,
+      "blocks_down": [
+        1,
+        2,
+        2,
+        4
+      ],
+      "blocks_up": [
+        1,
+        1,
+        1
+      ],
+      "dropout_prob": 0.2
+    }
+  },
+  "determinism": "seeded sampling and initialisation; cuDNN autotuning on CUDA (benchmark on, deterministic off), so a rerun can differ slightly",
+  "checkpoint": {
+    "path": "D:\\project\\artifacts\\training\\brain_mri_stroke_lesion_segresnet-20261105T092121Z\\best.pt",
+    "sha256": "058be494f9b04b603fa47bfc7425707bb6802408eac37d5ce8daa910a86d14ca"
+  },
+  "held_out_predictions": "D:\\project\\artifacts\\training\\brain_mri_stroke_lesion_segresnet-20261105T092121Z\\held_out_predictions",
+  "evaluation_path": "app.services.volume_inference.predict_multichannel (the serving function), float16 autocast on CUDA",
+  "cases": [
+    {
+      "case_id": "sub-strokecase0004",
+      "patient_id": "sub-strokecase0004",
+      "classes": {
+        "1": {
+          "reference_voxels": 281,
+          "predicted_voxels": 280,
+          "dice": 0.8556149732620321,
+          "iou": 0.7476635514018691,
+          "predicted_ml": 2.24,
+          "reference_ml": 2.248
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8556149732620321,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 8,
+        "detected": 5,
+        "predicted": 5,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0005",
+      "patient_id": "sub-strokecase0005",
+      "classes": {
+        "1": {
+          "reference_voxels": 728,
+          "predicted_voxels": 637,
+          "dice": 0.7677655677655678,
+          "iou": 0.6230677764565993,
+          "predicted_ml": 5.096,
+          "reference_ml": 5.824
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.7677655677655678,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 8,
+        "detected": 7,
+        "predicted": 9,
+        "false_positive_components": 1
+      }
+    },
+    {
+      "case_id": "sub-strokecase0011",
+      "patient_id": "sub-strokecase0011",
+      "classes": {
+        "1": {
+          "reference_voxels": 1399,
+          "predicted_voxels": 938,
+          "dice": 0.7137355584082157,
+          "iou": 0.5548902195608783,
+          "predicted_ml": 7.504,
+          "reference_ml": 11.192
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.7137355584082157,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 10,
+        "detected": 5,
+        "predicted": 8,
+        "false_positive_components": 2
+      }
+    },
+    {
+      "case_id": "sub-strokecase0025",
+      "patient_id": "sub-strokecase0025",
+      "classes": {
+        "1": {
+          "reference_voxels": 969,
+          "predicted_voxels": 1026,
+          "dice": 0.9102756892230577,
+          "iou": 0.8353265869365225,
+          "predicted_ml": 8.208,
+          "reference_ml": 7.752
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.9102756892230577,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 4,
+        "detected": 4,
+        "predicted": 4,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0028",
+      "patient_id": "sub-strokecase0028",
+      "classes": {
+        "1": {
+          "reference_voxels": 909,
+          "predicted_voxels": 1003,
+          "dice": 0.8640167364016736,
+          "iou": 0.7605893186003683,
+          "predicted_ml": 8.024,
+          "reference_ml": 7.272
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8640167364016736,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 6,
+        "detected": 4,
+        "predicted": 8,
+        "false_positive_components": 4
+      }
+    },
+    {
+      "case_id": "sub-strokecase0031",
+      "patient_id": "sub-strokecase0031",
+      "classes": {
+        "1": {
+          "reference_voxels": 11634,
+          "predicted_voxels": 10246,
+          "dice": 0.8943327239488117,
+          "iou": 0.8088624338624338,
+          "predicted_ml": 81.968,
+          "reference_ml": 93.072
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8943327239488117,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 20,
+        "detected": 12,
+        "predicted": 14,
+        "false_positive_components": 2
+      }
+    },
+    {
+      "case_id": "sub-strokecase0034",
+      "patient_id": "sub-strokecase0034",
+      "classes": {
+        "1": {
+          "reference_voxels": 155,
+          "predicted_voxels": 171,
+          "dice": 0.7668711656441718,
+          "iou": 0.6218905472636815,
+          "predicted_ml": 1.368,
+          "reference_ml": 1.24
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.7668711656441718,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 3,
+        "detected": 3,
+        "predicted": 3,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0036",
+      "patient_id": "sub-strokecase0036",
+      "classes": {
+        "1": {
+          "reference_voxels": 2321,
+          "predicted_voxels": 2331,
+          "dice": 0.8727429062768701,
+          "iou": 0.7742181540808543,
+          "predicted_ml": 18.648,
+          "reference_ml": 18.568
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8727429062768701,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 9,
+        "detected": 8,
+        "predicted": 9,
+        "false_positive_components": 2
+      }
+    },
+    {
+      "case_id": "sub-strokecase0060",
+      "patient_id": "sub-strokecase0060",
+      "classes": {
+        "1": {
+          "reference_voxels": 1998,
+          "predicted_voxels": 2018,
+          "dice": 0.9233067729083665,
+          "iou": 0.8575393154486587,
+          "predicted_ml": 40.36,
+          "reference_ml": 39.96
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.9233067729083665,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        5.0
+      ],
+      "lesions": {
+        "reference": 2,
+        "detected": 2,
+        "predicted": 2,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0065",
+      "patient_id": "sub-strokecase0065",
+      "classes": {
+        "1": {
+          "reference_voxels": 3385,
+          "predicted_voxels": 2663,
+          "dice": 0.8654100529100529,
+          "iou": 0.7627513844360245,
+          "predicted_ml": 21.304,
+          "reference_ml": 27.08
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8654100529100529,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 4,
+        "detected": 1,
+        "predicted": 2,
+        "false_positive_components": 1
+      }
+    },
+    {
+      "case_id": "sub-strokecase0076",
+      "patient_id": "sub-strokecase0076",
+      "classes": {
+        "1": {
+          "reference_voxels": 757,
+          "predicted_voxels": 171,
+          "dice": 0.3254310344827586,
+          "iou": 0.19433719433719435,
+          "predicted_ml": 1.368,
+          "reference_ml": 6.056
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.3254310344827586,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 28,
+        "detected": 9,
+        "predicted": 11,
+        "false_positive_components": 2
+      }
+    },
+    {
+      "case_id": "sub-strokecase0077",
+      "patient_id": "sub-strokecase0077",
+      "classes": {
+        "1": {
+          "reference_voxels": 5054,
+          "predicted_voxels": 4136,
+          "dice": 0.8605005440696409,
+          "iou": 0.7551566080977846,
+          "predicted_ml": 33.088,
+          "reference_ml": 40.432
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8605005440696409,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 6,
+        "detected": 3,
+        "predicted": 4,
+        "false_positive_components": 1
+      }
+    },
+    {
+      "case_id": "sub-strokecase0079",
+      "patient_id": "sub-strokecase0079",
+      "classes": {
+        "1": {
+          "reference_voxels": 37,
+          "predicted_voxels": 53,
+          "dice": 0.6666666666666666,
+          "iou": 0.5,
+          "predicted_ml": 0.424,
+          "reference_ml": 0.296
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.6666666666666666,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 4,
+        "detected": 3,
+        "predicted": 3,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0082",
+      "patient_id": "sub-strokecase0082",
+      "classes": {
+        "1": {
+          "reference_voxels": 121,
+          "predicted_voxels": 100,
+          "dice": 0.8597285067873304,
+          "iou": 0.753968253968254,
+          "predicted_ml": 0.8,
+          "reference_ml": 0.968
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8597285067873304,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 1,
+        "detected": 1,
+        "predicted": 1,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0083",
+      "patient_id": "sub-strokecase0083",
+      "classes": {
+        "1": {
+          "reference_voxels": 13897,
+          "predicted_voxels": 293,
+          "dice": 0.040310077519379844,
+          "iou": 0.020569620253164556,
+          "predicted_ml": 2.344,
+          "reference_ml": 111.176
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.040310077519379844,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 2,
+        "detected": 2,
+        "predicted": 4,
+        "false_positive_components": 1
+      }
+    },
+    {
+      "case_id": "sub-strokecase0086",
+      "patient_id": "sub-strokecase0086",
+      "classes": {
+        "1": {
+          "reference_voxels": 5845,
+          "predicted_voxels": 5780,
+          "dice": 0.9587956989247312,
+          "iou": 0.9208526107072043,
+          "predicted_ml": 46.24,
+          "reference_ml": 46.76
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.9587956989247312,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 2,
+        "detected": 1,
+        "predicted": 1,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0107",
+      "patient_id": "sub-strokecase0107",
+      "classes": {
+        "1": {
+          "reference_voxels": 5026,
+          "predicted_voxels": 4399,
+          "dice": 0.8377718832891247,
+          "iou": 0.7208325725762279,
+          "predicted_ml": 35.192,
+          "reference_ml": 40.208
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8377718832891247,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 25,
+        "detected": 12,
+        "predicted": 15,
+        "false_positive_components": 2
+      }
+    },
+    {
+      "case_id": "sub-strokecase0113",
+      "patient_id": "sub-strokecase0113",
+      "classes": {
+        "1": {
+          "reference_voxels": 7850,
+          "predicted_voxels": 7835,
+          "dice": 0.9261077462543832,
+          "iou": 0.8623842317739254,
+          "predicted_ml": 62.68,
+          "reference_ml": 62.8
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.9261077462543832,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 16,
+        "detected": 10,
+        "predicted": 8,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0128",
+      "patient_id": "sub-strokecase0128",
+      "classes": {
+        "1": {
+          "reference_voxels": 128,
+          "predicted_voxels": 78,
+          "dice": 0.7281553398058253,
+          "iou": 0.5725190839694656,
+          "predicted_ml": 0.624,
+          "reference_ml": 1.024
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.7281553398058253,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 3,
+        "detected": 2,
+        "predicted": 3,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0129",
+      "patient_id": "sub-strokecase0129",
+      "classes": {
+        "1": {
+          "reference_voxels": 135,
+          "predicted_voxels": 92,
+          "dice": 0.7224669603524229,
+          "iou": 0.5655172413793104,
+          "predicted_ml": 0.736,
+          "reference_ml": 1.08
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.7224669603524229,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 4,
+        "detected": 2,
+        "predicted": 2,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0130",
+      "patient_id": "sub-strokecase0130",
+      "classes": {
+        "1": {
+          "reference_voxels": 549,
+          "predicted_voxels": 376,
+          "dice": 0.5578378378378378,
+          "iou": 0.3868065967016492,
+          "predicted_ml": 3.008,
+          "reference_ml": 4.392
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.5578378378378378,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 11,
+        "detected": 8,
+        "predicted": 7,
+        "false_positive_components": 1
+      }
+    },
+    {
+      "case_id": "sub-strokecase0144",
+      "patient_id": "sub-strokecase0144",
+      "classes": {
+        "1": {
+          "reference_voxels": 10,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 0.08
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.0,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 1,
+        "detected": 0,
+        "predicted": 0,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0152",
+      "patient_id": "sub-strokecase0152",
+      "classes": {
+        "1": {
+          "reference_voxels": 169,
+          "predicted_voxels": 184,
+          "dice": 0.6685552407932012,
+          "iou": 0.502127659574468,
+          "predicted_ml": 1.472,
+          "reference_ml": 1.352
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.6685552407932012,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 22,
+        "detected": 13,
+        "predicted": 14,
+        "false_positive_components": 1
+      }
+    },
+    {
+      "case_id": "sub-strokecase0155",
+      "patient_id": "sub-strokecase0155",
+      "classes": {
+        "1": {
+          "reference_voxels": 1654,
+          "predicted_voxels": 1478,
+          "dice": 0.9112388250319284,
+          "iou": 0.836950146627566,
+          "predicted_ml": 22.9061,
+          "reference_ml": 25.6338
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.9112388250319284,
+      "voxel_spacing_mm": [
+        1.796875,
+        1.796875,
+        4.8
+      ],
+      "lesions": {
+        "reference": 6,
+        "detected": 4,
+        "predicted": 5,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0157",
+      "patient_id": "sub-strokecase0157",
+      "classes": {
+        "1": {
+          "reference_voxels": 442,
+          "predicted_voxels": 428,
+          "dice": 0.871264367816092,
+          "iou": 0.7718940936863544,
+          "predicted_ml": 3.424,
+          "reference_ml": 3.536
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.871264367816092,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 6,
+        "detected": 5,
+        "predicted": 5,
+        "false_positive_components": 1
+      }
+    },
+    {
+      "case_id": "sub-strokecase0185",
+      "patient_id": "sub-strokecase0185",
+      "classes": {
+        "1": {
+          "reference_voxels": 229,
+          "predicted_voxels": 361,
+          "dice": 0.7288135593220338,
+          "iou": 0.5733333333333334,
+          "predicted_ml": 2.2751,
+          "reference_ml": 1.4432
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.7288135593220338,
+      "voxel_spacing_mm": [
+        1.145833,
+        1.145833,
+        4.8
+      ],
+      "lesions": {
+        "reference": 3,
+        "detected": 3,
+        "predicted": 3,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0187",
+      "patient_id": "sub-strokecase0187",
+      "classes": {
+        "1": {
+          "reference_voxels": 399,
+          "predicted_voxels": 452,
+          "dice": 0.8507638072855465,
+          "iou": 0.7402862985685071,
+          "predicted_ml": 7.0051,
+          "reference_ml": 6.1837
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8507638072855465,
+      "voxel_spacing_mm": [
+        1.796875,
+        1.796875,
+        4.8
+      ],
+      "lesions": {
+        "reference": 4,
+        "detected": 1,
+        "predicted": 1,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0189",
+      "patient_id": "sub-strokecase0189",
+      "classes": {
+        "1": {
+          "reference_voxels": 675,
+          "predicted_voxels": 555,
+          "dice": 0.9008130081300812,
+          "iou": 0.8195266272189349,
+          "predicted_ml": 8.6014,
+          "reference_ml": 10.4612
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.9008130081300812,
+      "voxel_spacing_mm": [
+        1.796875,
+        1.796875,
+        4.8
+      ],
+      "lesions": {
+        "reference": 1,
+        "detected": 1,
+        "predicted": 1,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0198",
+      "patient_id": "sub-strokecase0198",
+      "classes": {
+        "1": {
+          "reference_voxels": 394,
+          "predicted_voxels": 386,
+          "dice": 0.8076923076923077,
+          "iou": 0.6774193548387096,
+          "predicted_ml": 5.9822,
+          "reference_ml": 6.1062
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8076923076923077,
+      "voxel_spacing_mm": [
+        1.796875,
+        1.796875,
+        4.8
+      ],
+      "lesions": {
+        "reference": 3,
+        "detected": 2,
+        "predicted": 6,
+        "false_positive_components": 2
+      }
+    },
+    {
+      "case_id": "sub-strokecase0204",
+      "patient_id": "sub-strokecase0204",
+      "classes": {
+        "1": {
+          "reference_voxels": 1743,
+          "predicted_voxels": 2133,
+          "dice": 0.8379772961816305,
+          "iou": 0.7211367673179396,
+          "predicted_ml": 17.064,
+          "reference_ml": 13.944
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8379772961816305,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 2,
+        "detected": 2,
+        "predicted": 5,
+        "false_positive_components": 3
+      }
+    },
+    {
+      "case_id": "sub-strokecase0205",
+      "patient_id": "sub-strokecase0205",
+      "classes": {
+        "1": {
+          "reference_voxels": 4608,
+          "predicted_voxels": 3826,
+          "dice": 0.8612757884752194,
+          "iou": 0.7563515201999167,
+          "predicted_ml": 30.608,
+          "reference_ml": 36.864
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8612757884752194,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 6,
+        "detected": 3,
+        "predicted": 5,
+        "false_positive_components": 1
+      }
+    },
+    {
+      "case_id": "sub-strokecase0207",
+      "patient_id": "sub-strokecase0207",
+      "classes": {
+        "1": {
+          "reference_voxels": 2720,
+          "predicted_voxels": 2312,
+          "dice": 0.8863275039745628,
+          "iou": 0.7958600999286224,
+          "predicted_ml": 14.5704,
+          "reference_ml": 17.1417
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8863275039745628,
+      "voxel_spacing_mm": [
+        1.145833,
+        1.145833,
+        4.8
+      ],
+      "lesions": {
+        "reference": 6,
+        "detected": 4,
+        "predicted": 5,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0213",
+      "patient_id": "sub-strokecase0213",
+      "classes": {
+        "1": {
+          "reference_voxels": 804,
+          "predicted_voxels": 704,
+          "dice": 0.8328912466843501,
+          "iou": 0.7136363636363636,
+          "predicted_ml": 5.632,
+          "reference_ml": 6.432
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8328912466843501,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 7,
+        "detected": 6,
+        "predicted": 6,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0222",
+      "patient_id": "sub-strokecase0222",
+      "classes": {
+        "1": {
+          "reference_voxels": 26019,
+          "predicted_voxels": 27191,
+          "dice": 0.9230971621875588,
+          "iou": 0.857177759938571,
+          "predicted_ml": 171.36,
+          "reference_ml": 163.9739
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.9230971621875588,
+      "voxel_spacing_mm": [
+        1.145833,
+        1.145833,
+        4.8
+      ],
+      "lesions": {
+        "reference": 4,
+        "detected": 1,
+        "predicted": 2,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0232",
+      "patient_id": "sub-strokecase0232",
+      "classes": {
+        "1": {
+          "reference_voxels": 182,
+          "predicted_voxels": 162,
+          "dice": 0.9069767441860465,
+          "iou": 0.8297872340425532,
+          "predicted_ml": 2.5107,
+          "reference_ml": 2.8206
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.9069767441860465,
+      "voxel_spacing_mm": [
+        1.796875,
+        1.796875,
+        4.8
+      ],
+      "lesions": {
+        "reference": 2,
+        "detected": 2,
+        "predicted": 2,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0233",
+      "patient_id": "sub-strokecase0233",
+      "classes": {
+        "1": {
+          "reference_voxels": 8,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 0.064
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.0,
+      "voxel_spacing_mm": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "lesions": {
+        "reference": 1,
+        "detected": 0,
+        "predicted": 0,
+        "false_positive_components": 0
+      }
+    },
+    {
+      "case_id": "sub-strokecase0236",
+      "patient_id": "sub-strokecase0236",
+      "classes": {
+        "1": {
+          "reference_voxels": 4444,
+          "predicted_voxels": 4672,
+          "dice": 0.8236068451075033,
+          "iou": 0.7001118985453189,
+          "predicted_ml": 29.4433,
+          "reference_ml": 28.0065
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8236068451075033,
+      "voxel_spacing_mm": [
+        1.145833,
+        1.145833,
+        4.8
+      ],
+      "lesions": {
+        "reference": 43,
+        "detected": 9,
+        "predicted": 13,
+        "false_positive_components": 2
+      }
+    },
+    {
+      "case_id": "sub-strokecase0243",
+      "patient_id": "sub-strokecase0243",
+      "classes": {
+        "1": {
+          "reference_voxels": 1301,
+          "predicted_voxels": 1688,
+          "dice": 0.8517898962863834,
+          "iou": 0.7418414918414918,
+          "predicted_ml": 10.6379,
+          "reference_ml": 8.199
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.8517898962863834,
+      "voxel_spacing_mm": [
+        1.145833,
+        1.145833,
+        4.8
+      ],
+      "lesions": {
+        "reference": 2,
+        "detected": 1,
+        "predicted": 1,
+        "false_positive_components": 0
+      }
+    }
+  ],
+  "task_id": "isles22-stroke-lesion-segmentation",
+  "dataset_license": "CC BY 4.0 (ISLES 2022, multi-centre stroke MRI)",
+  "limitations": [
+    "Internal held-out test on ISLES 2022 patients from the same centres as training; no external or clinical validation.",
+    "Input: DWI and ADC on one grid, stacked in one 4-D NIfTI with DWI first, skull-stripped like the development data; FLAIR is not used. One development case was not skull-stripped, so the non-zero-share check cannot refuse a head with skull for this model.",
+    "A predicted lesion is a research segmentation of diffusion restriction, not an infarct-core estimate for treatment selection.",
+    "Small lesions are segmented less reliably (Dice by reference lesion volume is reported); false-positive components per case are reported.",
+    "Trained on ischaemic stroke only: haemorrhage, tumour, infection and other causes of diffusion restriction are out of scope.",
+    "Research-only output; not clinically validated and not for diagnosis or treatment decisions.",
+    "Evaluation and serving use float16 autocast on CUDA with cuDNN autotuning; a rerun of training can differ slightly."
+  ],
+  "citation": "Hernandez Petzsche MR, de la Rosa E, Hanning U, et al. ISLES 2022. Scientific Data 9:762 (2022).",
+  "input_envelope": "docs/validation/models/brain_mri_stroke_lesion_segresnet_input_envelope.json"
+}

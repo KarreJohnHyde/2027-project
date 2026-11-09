@@ -11,14 +11,15 @@
   screenshots.
 
   -Mode dev starts the backend on 8000 against backend/medtwin.db and Vite on 8443
-  (inline job execution), refusing to start anything whose port is already in use.
+  (inline job execution), reusing verified MedTwin services already listening.
+  Reused services are not stopped by -Stop.
 
   State (PIDs, URLs, credentials path) is written to <StateDir>/stack.json; run with
   -Stop to terminate the processes recorded there.
 
 .EXAMPLE
-  powershell -ExecutionPolicy Bypass -File scripts/dev.ps1
-  powershell -ExecutionPolicy Bypass -File scripts/dev.ps1 -Stop
+  npm run dev:full
+  npm run dev:stop
 #>
 param(
     [ValidateSet("qa", "dev")][string]$Mode = "qa",
@@ -32,6 +33,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
+$StateDir = [System.IO.Path]::GetFullPath($StateDir)
 $Python = Join-Path $Root ".venv\Scripts\python.exe"
 $StateFile = Join-Path $StateDir "stack.json"
 
@@ -58,7 +60,22 @@ function Stop-Stack {
 }
 
 function Test-PortFree([int]$Port) {
-    -not (Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue)
+    # The CIM listener inventory can be unavailable or incomplete on a managed
+    # workstation. Probe the same loopback address the services actually use.
+    $client = New-Object System.Net.Sockets.TcpClient
+    try {
+        $connection = $client.ConnectAsync("127.0.0.1", $Port)
+        # Windows can take about two seconds to report a refused loopback
+        # connection. A shorter deadline incorrectly labels a free port busy.
+        if (-not $connection.Wait(5000)) { throw "Timed out probing loopback port $Port; could not determine whether it is available." }
+        return -not $client.Connected
+    } catch {
+        $cause = $_.Exception.GetBaseException()
+        if ($cause -is [System.Net.Sockets.SocketException] -and $cause.SocketErrorCode -eq [System.Net.Sockets.SocketError]::ConnectionRefused) {
+            return $true
+        }
+        throw
+    } finally { $client.Dispose() }
 }
 
 function Wait-Http([string]$Url, [int]$TimeoutSeconds = 90) {
@@ -143,8 +160,29 @@ if ($Mode -eq "qa") {
     $NoWorker = $true
 }
 
+$reuseBackend = $false
+$reuseWeb = $false
+if ($BackendPort -eq $WebPort) { throw "Backend and frontend need different ports." }
 foreach ($port in $BackendPort, $WebPort) {
-    if (-not (Test-PortFree $port)) { throw "Port $port is already in use; stop that process or choose another port." }
+    if (Test-PortFree $port) { continue }
+    if ($Mode -ne "dev") { throw "Port $port is already in use; choose another port for the isolated QA stack." }
+    if ($port -eq $BackendPort) {
+        try {
+            $identity = Invoke-RestMethod -Uri "http://127.0.0.1:$port/" -TimeoutSec 5
+            $health = Invoke-RestMethod -Uri "http://127.0.0.1:$port/health" -TimeoutSec 5
+            if ($identity.framework -notlike "MedTwin*" -or $identity.api_prefix -ne "/api/v1" -or $health.status -ne "HEALTHY") {
+                throw "Not a healthy MedTwin backend."
+            }
+        } catch { throw "Port $port is occupied and could not be verified as the MedTwin backend. Choose another backend port." }
+        $reuseBackend = $true
+        Write-Host "Reusing MedTwin backend on $port."
+    } else {
+        # The existing wrapper checks both the project identity and optimized React.
+        # Since this port is occupied, it verifies/reuses it without launching Vite.
+        & node (Join-Path $Root "scripts/start-vite.mjs") --host 127.0.0.1 --port $port
+        if ($LASTEXITCODE -ne 0) { throw "Could not reuse the frontend on $port." }
+        $reuseWeb = $true
+    }
 }
 
 $logs = Join-Path $StateDir "logs"
@@ -153,13 +191,18 @@ $saved = @{}
 foreach ($key in $environment.Keys) { $saved[$key] = [Environment]::GetEnvironmentVariable($key); [Environment]::SetEnvironmentVariable($key, $environment[$key]) }
 $pids = @{}
 try {
-    $pids.backend = Start-Logged $Root "`"$Python`" -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port $BackendPort" (Join-Path $logs "backend.log")
+    if (-not $reuseBackend) {
+        $pids.backend = Start-Logged $Root "`"$Python`" -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port $BackendPort" (Join-Path $logs "backend.log")
+    }
     if (-not (Wait-Http "http://127.0.0.1:$BackendPort/health")) { throw "Backend did not become healthy; see $logs\backend.log." }
 
     if (-not $NoWorker) {
         $pids.worker = Start-Logged (Join-Path $Root "backend") "`"$Python`" -m app.worker --poll-seconds 1" (Join-Path $logs "worker.log")
     }
 
+    foreach ($key in "PORT", "FIGMA_DEV_SERVER_HOST", "MEDTWIN_BACKEND_URL") {
+        $saved[$key] = [Environment]::GetEnvironmentVariable($key)
+    }
     [Environment]::SetEnvironmentVariable("PORT", "$WebPort")
     [Environment]::SetEnvironmentVariable("FIGMA_DEV_SERVER_HOST", "127.0.0.1")
     [Environment]::SetEnvironmentVariable("MEDTWIN_BACKEND_URL", "http://127.0.0.1:$BackendPort")
@@ -182,7 +225,7 @@ try {
         if ($buildExit -ne 0) { throw "Frontend QA build failed; see $logs\build.log." }
         $webCommand = "npx vite preview --port $WebPort --strictPort"
     }
-    $pids.web = Start-Logged $Root $webCommand (Join-Path $logs "web.log")
+    if (-not $reuseWeb) { $pids.web = Start-Logged $Root $webCommand (Join-Path $logs "web.log") }
     # A cold Tailwind/Vite dependency optimization can exceed 90 seconds on this
     # Windows workspace even though the process is healthy; allow the UI its own
     # startup budget while retaining the same active HTTP readiness check.
@@ -193,13 +236,13 @@ try {
     throw
 } finally {
     foreach ($key in $saved.Keys) { [Environment]::SetEnvironmentVariable($key, $saved[$key]) }
-    foreach ($key in "PORT", "FIGMA_DEV_SERVER_HOST", "MEDTWIN_BACKEND_URL") { [Environment]::SetEnvironmentVariable($key, $null) }
 }
 
 $state = [ordered]@{
     mode = $Mode; started_at = (Get-Date).ToString("o"); pids = $pids
     backend_url = "http://127.0.0.1:$BackendPort"; web_url = "http://127.0.0.1:$WebPort"
     credentials_file = $credentialFile; logs = $logs; job_execution = $environment.MEDTWIN_JOB_EXECUTION
+    reused_backend = $reuseBackend; reused_web = $reuseWeb
 }
 $state | ConvertTo-Json | Set-Content -Encoding utf8 $StateFile
 Write-Host "MedTwin $Mode stack is up: web $($state.web_url), API $($state.backend_url) (jobs: $($state.job_execution))."

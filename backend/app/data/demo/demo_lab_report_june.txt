@@ -1,0 +1,19 @@
+SYNTHETIC DEMONSTRATION REPORT - FICTIONAL PATIENT - NOT MEDICAL DATA
+MedTwin demonstration laboratory (fictional)
+Sex: Female    Age: 54 Years
+Sample Collection Date: 18/06/2026 08:45
+
+HAEMATOLOGY
+Specimen: whole blood (EDTA)
+Haemoglobin 11.9 g/dL 12.0-15.5 L
+Total Leucocyte Count 6.8 10^3/uL 4.0-11.0
+Platelet Count 225 10^3/uL 150-410
+
+BIOCHEMISTRY
+Specimen: serum
+Fasting Glucose 112 mg/dL 70-100 H
+Serum Creatinine 1.2 mg/dL 0.6-1.1 H
+Urea 38 mg/dL 15-40
+Sodium 139 mmol/L 135-145
+Potassium 4.4 mmol/L 3.5-5.1
+HbA1c 6.8 % 4.0-5.6 H

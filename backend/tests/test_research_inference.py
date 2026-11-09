@@ -229,6 +229,8 @@ def test_research_finding_maps_only_to_confirmed_schematic_organ(client, test_us
         "verified_structures": [],
         "spatially_registered": [],
         "documented_structures": [],
+        "verified_structure_names": [],
+        "documented_structure_names": [],
     }
 
     review = client.post(f"/api/v1/reviews/{finding.id}", json={"review_status": "CONFIRMED"}, headers=headers)
@@ -245,6 +247,8 @@ def test_research_finding_maps_only_to_confirmed_schematic_organ(client, test_us
         "verified_structures": [],
         "spatially_registered": [],
         "documented_structures": [],
+        "verified_structure_names": [],
+        "documented_structure_names": [],
     }
 
 
@@ -359,6 +363,203 @@ def test_segmentation_mask_maps_back_to_source_geometry():
     assert segment["area_px"] == int(decoded.sum())
 
 
+@pytest.mark.private_workspace
+def test_runs_are_listed_per_upload_with_their_latest_review(client, test_users, research_registry):
+    """A stored run comes back after a reload; a review is shown with it and never changes the output."""
+    headers = get_auth_headers(test_users["clinician_a"])
+    upload_id = _upload(client, headers, pseudonym="CASE-RESEARCH-LIST")
+    run = client.post(f"/api/v1/uploads/{upload_id}/research-inference", json={"model_id": MODEL_ID, "declared_input_type": "ENDOSCOPY"}, headers=headers)
+    assert run.status_code == 201, run.text
+    [listed] = client.get(f"/api/v1/uploads/{upload_id}/research-inference", headers=headers).json()["runs"]
+    assert listed["id"] == run.json()["id"] and listed["research_output"] == run.json()["research_output"]
+    assert listed["finding_id"] and listed["latest_review"] is None
+    review = client.post(f"/api/v1/reviews/{listed['finding_id']}", json={"review_status": "REJECTED", "reviewer_comments": "fixture"}, headers=headers)
+    assert review.status_code == 201, review.text
+    [reviewed] = client.get(f"/api/v1/uploads/{upload_id}/research-inference", headers=headers).json()["runs"]
+    assert reviewed["latest_review"]["review_status"] == "REJECTED" and reviewed["latest_review"]["original_output_preserved"] is True
+    assert reviewed["research_output"] == run.json()["research_output"]
+    assert client.get(f"/api/v1/uploads/{upload_id}/research-inference", headers=get_auth_headers(test_users["clinician_b"])).status_code == 403
+
+
+def _stored_segmentation_run(db_session, upload_id: int, mask: np.ndarray) -> int:
+    """A stored segmentation run with a known mask (fixture; the model path itself is tested above)."""
+    from app.models.entities import EvidenceStatus, UploadedFile
+    from app.services.reference_annotations import encode
+
+    upload = db_session.get(UploadedFile, upload_id)
+    run = InferenceRun(case_id=upload.case_id, file_id=upload.id, modality=upload.modality, model_name=MODEL_ID, model_version="fixture",
+                       preprocessing_version="fixture", status=EvidenceStatus.COMPLETED)
+    db_session.add(run)
+    db_session.flush()
+    output = {"type": "segmentation", "coordinate_space": "source image pixels", "image_size": [mask.shape[1], mask.shape[0]],
+              "segments": [{"class_index": 1, "segment": "polyp", "area_px": int(mask.sum()), "rle": encode(mask)}],
+              "vessel_area_px": int(mask.sum()), "foreground_label": "polyp"}
+    db_session.add(Finding(inference_run_id=run.id, case_id=upload.case_id, modality=upload.modality, category="fixture", label="fixture",
+                           mapping_status="NOT_MAPPABLE", evidence_provenance={"source": "MODEL_INFERENCE", "output": output}, is_demo=False))
+    db_session.commit()
+    return run.id
+
+
+def _mask_png(mask: np.ndarray) -> bytes:
+    buffer = io.BytesIO()
+    Image.fromarray((mask * 255).astype(np.uint8)).save(buffer, format="PNG")
+    return buffer.getvalue()
+
+
+@pytest.mark.private_workspace
+def test_reference_mask_is_compared_per_image_without_touching_the_run(client, test_users, db_session):
+    headers = get_auth_headers(test_users["clinician_a"])
+    upload_id = _upload(client, headers, pseudonym="CASE-RESEARCH-REFERENCE")  # a 96x80 frame
+    predicted = np.zeros((80, 96), dtype=bool)
+    predicted[10:50, 10:50] = True  # 1600 px
+    reference = np.zeros((80, 96), dtype=bool)
+    reference[30:70, 10:50] = True  # 1600 px, 800 px shared
+    run_id = _stored_segmentation_run(db_session, upload_id, predicted)
+    form = {"source": "DATASET_PUBLISHER_ANNOTATION", "source_detail": "fixture dataset, test split", "class_name": "polyp"}
+
+    wrong_size = client.post(f"/api/v1/uploads/{upload_id}/reference-annotations", files={"mask": ("m.png", _mask_png(reference[:40]), "image/png")}, data=form, headers=headers)
+    assert wrong_size.status_code == 400 and wrong_size.json()["detail"].startswith("MASK_SIZE_MISMATCH")
+    unknown_source = client.post(f"/api/v1/uploads/{upload_id}/reference-annotations", files={"mask": ("m.png", _mask_png(reference), "image/png")},
+                                 data={**form, "source": "MODEL_OUTPUT"}, headers=headers)
+    assert unknown_source.status_code == 400 and unknown_source.json()["detail"].startswith("SOURCE_UNSUPPORTED")
+    created = client.post(f"/api/v1/uploads/{upload_id}/reference-annotations", files={"mask": ("m.png", _mask_png(reference), "image/png")}, data=form, headers=headers)
+    assert created.status_code == 201, created.text
+    annotation = created.json()
+    assert annotation["layer"] == "GROUND_TRUTH" and annotation["area_px"] == 1600 and annotation["image_size"] == [96, 80]
+
+    comparison = client.get(f"/api/v1/research-inference/{run_id}/reference-comparison/{annotation['id']}", headers=headers)
+    assert comparison.status_code == 200, comparison.text
+    result = comparison.json()
+    assert result["comparison"] == "PER_IMAGE_AGREEMENT" and result["compared"] == "segment 'polyp'"
+    assert result["dice"] == 0.5 and result["iou"] == round(800 / 2400, 4)
+    assert result["pixel_precision"] == 0.5 and result["pixel_recall"] == 0.5
+    from app.services.reference_annotations import decode
+    assert decode(result["regions"]["model_only"]).sum() == 800 and decode(result["regions"]["reference_only"]).sum() == 800
+    stored = client.get(f"/api/v1/research-inference/{run_id}", headers=headers).json()["research_output"]
+    assert stored["segments"][0]["area_px"] == 1600, "the run's own mask is unchanged"
+    assert [item["id"] for item in client.get(f"/api/v1/uploads/{upload_id}/reference-annotations", headers=headers).json()["annotations"]] == [annotation["id"]]
+    assert client.get(f"/api/v1/research-inference/{run_id}/reference-comparison/{annotation['id']}", headers=get_auth_headers(test_users["clinician_b"])).status_code == 403
+
+
+def test_a_reviewer_correction_is_stored_beside_the_run_and_says_what_changed(client, test_users, db_session):
+    headers = get_auth_headers(test_users["clinician_a"])
+    upload_id = _upload(client, headers, pseudonym="CASE-RESEARCH-CORRECTION")  # a 96x80 frame
+    predicted = np.zeros((80, 96), dtype=bool)
+    predicted[10:50, 10:50] = True  # 1600 px
+    corrected = predicted.copy()
+    corrected[10:20, 10:50] = False  # the reviewer erases 400 px
+    corrected[50:60, 10:50] = True  # and paints 400 px
+    run_id = _stored_segmentation_run(db_session, upload_id, predicted)
+    url = f"/api/v1/research-inference/{run_id}/mask-corrections"
+
+    disguised = client.post(f"/api/v1/uploads/{upload_id}/reference-annotations", files={"mask": ("m.png", _mask_png(corrected), "image/png")},
+                            data={"source": "REVIEWER_CORRECTION_OF_MODEL_OUTPUT", "source_detail": "edited", "class_name": "polyp"}, headers=headers)
+    assert disguised.status_code == 400 and disguised.json()["detail"].startswith("SOURCE_UNSUPPORTED"), "corrections come only from a run"
+    wrong_size = client.post(url, files={"mask": ("c.png", _mask_png(corrected[:40]), "image/png")}, data={"class_name": "polyp"}, headers=headers)
+    assert wrong_size.status_code == 400 and wrong_size.json()["detail"].startswith("MASK_SIZE_MISMATCH")
+
+    saved = client.post(url, files={"mask": ("c.png", _mask_png(corrected), "image/png")}, data={"class_name": "polyp", "note": "edge redrawn"}, headers=headers)
+    assert saved.status_code == 201, saved.text
+    body = saved.json()
+    assert body["layer"] == "REVIEWER_CORRECTION" and body["derived_from_run_id"] == run_id and body["area_px"] == 1600
+    assert body["source_detail"].startswith(f"Reviewer correction of run {run_id}") and "edge redrawn" in body["source_detail"]
+    change = body["comparison_with_run"]
+    assert change["dice"] == 0.75 and "not independent ground truth" in change["semantics"]
+    from app.services.reference_annotations import decode
+    assert decode(change["regions"]["model_only"]).sum() == 400 and decode(change["regions"]["reference_only"]).sum() == 400
+    stored = client.get(f"/api/v1/research-inference/{run_id}", headers=headers).json()["research_output"]
+    assert stored["segments"][0]["area_px"] == 1600, "the run's own mask is unchanged"
+
+    assert change["correction_of_this_run"] is True
+
+    db_session.expire_all()
+    from app.models.entities import AuditEvent
+    assert db_session.query(AuditEvent).filter(AuditEvent.action == "MODEL_MASK_CORRECTED").count() == 1
+
+    other_run = _stored_segmentation_run(db_session, upload_id, predicted)
+    across = client.get(f"/api/v1/research-inference/{other_run}/reference-comparison/{body['id']}", headers=headers).json()
+    assert across["correction_of_this_run"] is False and "not edits of this run" in across["semantics"]
+
+    missed = np.zeros((80, 96), dtype=bool)
+    missed[60:70, 60:70] = True
+    painted = client.post(url, files={"mask": ("c.png", _mask_png(missed), "image/png")}, data={"class_name": "adenoma"}, headers=headers)
+    assert painted.status_code == 201, painted.text
+    assert painted.json()["comparison_with_run"]["predicted_area_px"] == 0, "a class the run never predicted has an empty model mask"
+
+
+def test_a_label_mask_holding_only_0_and_1_is_not_read_as_empty(client, test_users):
+    headers = get_auth_headers(test_users["clinician_a"])
+    upload_id = _upload(client, headers, pseudonym="CASE-RESEARCH-LABEL-MASK")
+    labels = np.zeros((80, 96), dtype=np.uint8)
+    labels[10:30, 10:30] = 1
+    buffer = io.BytesIO()
+    Image.fromarray(labels).save(buffer, format="PNG")
+    created = client.post(f"/api/v1/uploads/{upload_id}/reference-annotations", files={"mask": ("labels.png", buffer.getvalue(), "image/png")},
+                          data={"source": "DATASET_PUBLISHER_ANNOTATION", "source_detail": "fixture label map", "class_name": "polyp"}, headers=headers)
+    assert created.status_code == 201, created.text
+    assert created.json()["area_px"] == 400 and created.json()["empty"] is False and created.json()["binarize_threshold"] == 0
+
+
+@pytest.mark.private_workspace
+def test_any_account_can_attach_reference_masks_to_its_own_images(client, test_users, db_session):
+    from app.models.entities import User, UserRole, VerificationStatus
+    from app.services.auth import get_password_hash
+
+    public = User(username="public_ref", email="public_ref@test.medtwin", hashed_password=get_password_hash("PublicPass1!"), role=UserRole.PUBLIC,
+                  verification_status=VerificationStatus.UNVERIFIED, is_active=True)
+    db_session.add(public)
+    db_session.commit()
+    headers = get_auth_headers(public)
+    upload_id = _upload(client, headers, pseudonym="CASE-PUBLIC-REFERENCE")
+    response = client.post(f"/api/v1/uploads/{upload_id}/reference-annotations", files={"mask": ("m.png", _mask_png(np.ones((80, 96), bool)), "image/png")},
+                           data={"source": "DATASET_PUBLISHER_ANNOTATION", "source_detail": "fixture dataset", "class_name": "polyp"}, headers=headers)
+    assert response.status_code == 201, response.text
+    elsewhere = client.post(f"/api/v1/uploads/{upload_id}/reference-annotations", files={"mask": ("m.png", _mask_png(np.ones((80, 96), bool)), "image/png")},
+                            data={"source": "DATASET_PUBLISHER_ANNOTATION", "source_detail": "fixture dataset", "class_name": "polyp"},
+                            headers=get_auth_headers(test_users["clinician_b"]))
+    assert elsewhere.status_code == 403, "another account's image stays closed"
+
+
+def _exif_rotated_phantom(path, orientation: int):
+    """Synthetic geometry phantom (TEST data only): a 120x80 stored frame, black except a bright
+    block in its top-left corner, saved as JPEG with the given EXIF orientation tag."""
+    stored = np.zeros((80, 120, 3), dtype=np.uint8)
+    stored[:20, :30] = 255
+    exif = Image.Exif()
+    exif[0x0112] = orientation
+    Image.fromarray(stored).save(path, format="JPEG", quality=95, exif=exif.tobytes())
+
+
+def test_exif_orientation_is_applied_before_inference_so_overlays_match_the_displayed_image(monkeypatch, tmp_path):
+    """Browsers display a JPEG upright using its EXIF tag; masks must use that same pixel grid."""
+    from pycocotools import mask as coco_mask
+    from app.services import imaging_readers
+
+    path = tmp_path / "phantom.jpg"
+    _exif_rotated_phantom(path, 6)  # 6: displayed after a 90° clockwise turn
+    metadata = imaging_readers.read_metadata(path)
+    assert metadata["dimensions"] == [80, 120] and metadata["exif_orientation"] == 6
+    upright, orientation = imaging_readers.open_raster(path)
+    assert orientation == 6 and upright.size == (80, 120)
+    bright = np.asarray(upright.convert("L")) > 128
+    rows, columns = np.flatnonzero(bright.any(axis=1)), np.flatnonzero(bright.any(axis=0))
+    assert rows.max() < 35 and columns.min() > 55, "the stored top-left block is displayed top-right"
+
+    class BrightnessSegmenter:  # class 1 wherever the model input is bright
+        def __call__(self, batch):
+            score = batch.mean(dim=1)
+            return torch.stack([torch.zeros_like(score), score * 10], dim=1)
+
+    payload = {"kind": "semantic_segmenter", "input_size": 64, "classes": ["bright"], "color": "rgb"}
+    monkeypatch.setattr(model_inference, "load_model", lambda model: (BrightnessSegmenter(), payload, torch.device("cpu")))
+    output = model_inference.run_model({"model_id": "phantom"}, path)
+    assert output["image_size"] == [80, 120] and output["exif_orientation_applied"] == 6
+    segment = output["segments"][0]
+    mask = coco_mask.decode({"size": segment["rle"]["size"], "counts": segment["rle"]["counts"].encode("ascii")}) > 0
+    overlap = (mask & bright).sum() / max(1, (mask | bright).sum())
+    assert overlap > 0.7, f"mask and displayed bright block disagree (IoU {overlap:.2f})"
+
+
 def test_document_photograph_gate_refuses_printed_pages_before_any_model(monkeypatch, tmp_path):
     """The content gate is independent of the declared modality and fails closed on printed pages."""
     image_path = tmp_path / "upload.png"
@@ -396,6 +597,66 @@ def test_in_distribution_run_records_the_applicability_check(client, test_users,
     assert run.status_code == 201, run.text
     check = run.json()["research_output"]["input_content_check"]["distribution"]
     assert check["status"] == "PASSED" and check["applicability_score"] <= check["applicability_limit"]
+
+
+def _rgb_dicom_bytes(image: Image.Image, modality="ES", frames=1) -> bytes:
+    import pydicom
+    from pydicom.dataset import FileMetaDataset
+    from pydicom.uid import ExplicitVRLittleEndian, generate_uid
+
+    pixels = np.asarray(image.convert("RGB"), dtype=np.uint8)
+    meta = FileMetaDataset()
+    meta.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.77.1.1"  # VL Endoscopic Image Storage
+    meta.MediaStorageSOPInstanceUID = generate_uid()
+    meta.TransferSyntaxUID = ExplicitVRLittleEndian
+    ds = pydicom.Dataset()
+    ds.file_meta = meta
+    ds.SOPClassUID, ds.SOPInstanceUID = meta.MediaStorageSOPClassUID, meta.MediaStorageSOPInstanceUID
+    ds.Modality = modality
+    ds.Rows, ds.Columns = pixels.shape[:2]
+    ds.SamplesPerPixel, ds.PhotometricInterpretation, ds.PlanarConfiguration = 3, "RGB", 0
+    ds.BitsAllocated, ds.BitsStored, ds.HighBit, ds.PixelRepresentation = 8, 8, 7, 0
+    if frames > 1:
+        ds.NumberOfFrames = frames
+    ds.PixelData = np.concatenate([pixels.ravel()] * frames).tobytes()
+    buffer = io.BytesIO()
+    ds.save_as(buffer, enforce_file_format=True)
+    return buffer.getvalue()
+
+
+def test_a_dicom_frame_runs_like_the_same_pixels_as_png(client, test_users, research_registry):
+    headers = get_auth_headers(test_users["clinician_a"])
+    png_id = _upload(client, headers, body=_frame_bytes(7), pseudonym="CASE-RESEARCH-PNG")
+    dicom_id = _upload(client, headers, name="frame.dcm", body=_rgb_dicom_bytes(_frame(7)), mime="application/dicom",
+                       pseudonym="CASE-RESEARCH-DCM")
+    request = {"model_id": MODEL_ID, "declared_input_type": "ENDOSCOPY"}
+    from_png = client.post(f"/api/v1/uploads/{png_id}/research-inference", json=request, headers=headers)
+    from_dicom = client.post(f"/api/v1/uploads/{dicom_id}/research-inference", json=request, headers=headers)
+    assert from_png.status_code == 201 and from_dicom.status_code == 201, from_dicom.text
+    png_output, dicom_output = from_png.json()["research_output"], from_dicom.json()["research_output"]
+    assert dicom_output["classes"] == png_output["classes"]
+    assert dicom_output["input_content_check"]["distribution"] == png_output["input_content_check"]["distribution"]
+    assert dicom_output["dicom_frame"]["frame_index"] == 0 and dicom_output["dicom_frame"]["photometric_interpretation"] == "RGB"
+    assert dicom_output["input_content_check"]["dicom_frame"]["modality_tag"] == "ES"
+    assert "DICOM frame 0 converted" in from_dicom.json()["research_provenance"]["applicability"]
+
+
+def test_dicom_frame_choice_and_modality_tag_are_checked_before_queueing(client, test_users, db_session, research_registry):
+    headers = get_auth_headers(test_users["clinician_a"])
+    request = {"model_id": MODEL_ID, "declared_input_type": "ENDOSCOPY"}
+    cine = _upload(client, headers, name="cine.dcm", body=_rgb_dicom_bytes(_frame(7), frames=3), mime="application/dicom",
+                   pseudonym="CASE-RESEARCH-CINE")
+    refused = client.post(f"/api/v1/uploads/{cine}/research-inference", json=request, headers=headers)
+    assert refused.status_code == 400 and refused.json()["detail"].startswith("FRAME_INDEX_REQUIRED")
+    # A missing frame choice is a request error: no abstention is recorded against the image.
+    assert db_session.query(InferenceRun).filter(InferenceRun.file_id == cine).count() == 0
+    chosen = client.post(f"/api/v1/uploads/{cine}/research-inference", json={**request, "frame_index": 2}, headers=headers)
+    assert chosen.status_code == 201, chosen.text
+    assert chosen.json()["research_output"]["dicom_frame"]["frame_index"] == 2
+    angiogram = _upload(client, headers, name="xa.dcm", body=_rgb_dicom_bytes(_frame(7), modality="XA"), mime="application/dicom",
+                        pseudonym="CASE-RESEARCH-XA")
+    mismatch = client.post(f"/api/v1/uploads/{angiogram}/research-inference", json=request, headers=headers)
+    assert mismatch.status_code == 400 and "DICOM_MODALITY_MISMATCH" in mismatch.json()["detail"]
 
 
 def test_applicability_reference_math_and_binding(tmp_path):

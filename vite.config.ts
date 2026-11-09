@@ -2,6 +2,8 @@ import { defineConfig, type HtmlTagDescriptor, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
+import { createReadStream } from 'node:fs'
+import { stat } from 'node:fs/promises'
 
 import siteConfiguration from './.figma/make/site.json' with { type: 'json' }
 
@@ -25,10 +27,21 @@ export default defineConfig(({ mode }) => {
       copyPublicDir: !checkBuild,
       sourcemap: emitSourcemaps ? 'inline' : false,
       minify: !emitSourcemaps,
+      rolldownOptions: {
+        output: {
+          codeSplitting: {
+            groups: [
+              { name: 'three-core', test: /node_modules[\\/]three[\\/]build[\\/]three\.core\.js$/, priority: 20 },
+              { name: 'three-renderer', test: /node_modules[\\/]three[\\/]build[\\/]three\.module\.js$/, priority: 15 },
+            ],
+          },
+        },
+      },
     },
     plugins: [
       react(),
       tailwindcss(),
+      ...(checkBuild ? [checkPreviewPublicAssets()] : []),
       figmaSiteConfiguration(siteConfiguration),
       figmaErrorOverlayReplay(),
       figmaReactRefreshBoundaryFallback(),
@@ -83,6 +96,32 @@ export default defineConfig(({ mode }) => {
     },
   }
 })
+
+// Check builds avoid copying the large anatomy library. Serve the existing
+// public directory in local previews so browser tests exercise the real assets.
+function checkPreviewPublicAssets(): Plugin {
+  const root = path.resolve(import.meta.dirname, 'public')
+  const mime: Record<string, string> = { '.json': 'application/json', '.glb': 'model/gltf-binary', '.gltf': 'model/gltf+json', '.bin': 'application/octet-stream', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.woff2': 'font/woff2', '.woff': 'font/woff', '.wasm': 'application/wasm' }
+  return {
+    name: 'medtwin-check-preview-public-assets',
+    configurePreviewServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (!['GET', 'HEAD'].includes(req.method ?? '')) return next()
+        try {
+          const pathname = decodeURIComponent(new URL(req.url ?? '/', 'http://localhost').pathname)
+          const file = path.resolve(root, `.${pathname}`)
+          if (!file.startsWith(root + path.sep)) return next()
+          const info = await stat(file)
+          if (!info.isFile()) return next()
+          res.setHeader('Content-Type', mime[path.extname(file).toLowerCase()] ?? 'application/octet-stream')
+          res.setHeader('Content-Length', info.size)
+          if (req.method === 'HEAD') return res.end()
+          createReadStream(file).on('error', () => res.destroy()).pipe(res)
+        } catch { next() }
+      })
+    },
+  }
+}
 
 /**
  * The repository intentionally contains large datasets, Python environments,

@@ -32,11 +32,27 @@ scope. **No modality has a clinically validated model.**
 | FHIR R4 | JSON resources, including coded/datetime/range Observations | no model | none |
 | HL7 v2 | `.hl7` observation-result messages (`backend/app/services/hl7_import.py`): OBR, OBX (NM, single-number SN, text and coded values; OBX-7 ranges, OBX-8 flags, OBX-11 X/D/W results withheld) and NTE. Patient, visit, order-staff and sender fields are never read. | no model | none |
 
-## Research-model input rules
+## Research-model input rules (updated 2026-11-06)
 
-- The seven connected 2-D models accept an associated **PNG, JPEG, or BMP** raster
-  upload. DICOM and volumetric containers are refused because these checkpoints were
-  trained on 2-D raster inputs.
+- The 2-D models accept a **PNG, JPEG or BMP** upload or **one DICOM frame**
+  (`backend/app/services/dicom_raster.py`). A DICOM frame is converted the way a viewer exports it:
+  - the Modality LUT is applied first;
+  - then the model's declared DICOM window if its registry entry has one (the head CT model: 80 HU wide, level 40,
+    truncated, measured from its training PNGs), otherwise the frame's own VOI;
+  - MONOCHROME1 is inverted;
+  - 8-bit stored values without a VOI are used as stored;
+  - colour is decoded to RGB.
+
+  The Modality tag must fit the declared input type, and a multi-frame file needs a frame choice. The converted frame,
+  not the stored values, passes the document and applicability gates. The conversion is recorded with the run.
+- The volume models accept **NIfTI, NRRD or single-file MetaImage** volumes, or an **assembled DICOM series**.
+  - NRRD/MetaImage headers that point at a separate data file are refused at upload and before every read.
+  - A series for a model whose development frames record an orientation (the CT models) is permuted and flipped into
+    that orientation. Nothing is resampled, and the mask comes back on the series grid.
+  - The cardiac model, whose frames record none, chooses the convention by anatomy
+    (`docs/validation/CARDIAC_SCANNER_SERIES.md`).
+- The neighbouring-slice head CT model runs only on an assembled axial head CT series. Each slice is windowed like
+  the training images and checked against the model's applicability reference.
 - The user declares/confirms the trained input type. Independently of that declaration,
   each model refuses images unlike its training images (feature-space applicability gate,
   `docs/validation/IMAGE_APPLICABILITY_GATE.md`). There is no image-quality detector.
@@ -48,18 +64,16 @@ scope. **No modality has a clinically validated model.**
   unless a clinician establishes only a schematic organ association.
 - PTB-XL and the two survival models are evaluation-only and are never run on uploads.
 
-The separate `ml_training.volumetric` path accepts paired 3-D NIfTI volumes for research
-training/evaluation and is not connected to upload inference. Synthetic train/evaluate/
-checkpoint/resume executed successfully. After the owner's recorded authorization it
-trained the cardiac cine-MRI segmenter (macro Dice 0.750 on 50 test patients; cardiac
-indices in its report); it runs research-only on single NIfTI frames inside its development spacing envelope. See `docs/imaging/VOLUMETRIC_SEGMENTATION_PIPELINE.md` and `docs/validation/UPLOAD_INFERENCE_PARITY.md`.
+The cardiac cine-MRI segmenter (macro Dice 0.750 on 50 test patients) and the brain MRI and CT segmenters run
+research-only inside their development envelopes. See `docs/imaging/VOLUMETRIC_SEGMENTATION_PIPELINE.md` and
+`docs/validation/UPLOAD_INFERENCE_PARITY.md`.
 
-## DICOM-series boundary
+## DICOM series
 
-The current reader validates and displays one DICOM object at a time. It does not offer
-atomic series upload or group/order instances by `SeriesInstanceUID`, `InstanceNumber`,
-and geometry. It therefore cannot claim series completeness or a series-level volume.
-The API exposes `DICOM_SERIES` as unavailable until those behaviours and tests exist.
+Separately uploaded slices of one case are grouped by `SeriesInstanceUID` and ordered along the slice normal. Each
+series is checked for orientation, matrix, gaps and duplicates. A cine series with several images per position is
+assembled for one chosen phase (the p-th image by trigger time). There is no atomic series upload, so completeness
+means "no gap between the slices supplied", not "every acquired slice".
 
 ## Registry boundary correction
 

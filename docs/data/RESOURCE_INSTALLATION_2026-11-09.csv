@@ -1,0 +1,30 @@
+manifest,resource,source,declared_licence,expected_artifacts,present_matching_sizes,expected_bytes,scope
+public_acquisition,kits19,https://github.com/neheller/kits19,CC BY-NC-SA 4.0 (data); MIT (code),210,210,20017490682,Research resources; size inventory only; checksum verification is recorded separately
+public_acquisition,medmnist-benchmarks,https://zenodo.org/records/10519652,CC BY 4.0 except DermaMNIST: CC BY-NC 4.0,7,7,444553911,Research resources; size inventory only; checksum verification is recorded separately
+multimodal_resources,vqa-rad,https://osf.io/89kps/,CC0 1.0 Universal (OSF project licence),317,317,18731608,Research resources; size inventory only; checksum verification is recorded separately
+multimodal_resources,pad-ufes-20,https://data.mendeley.com/datasets/zr7vgbcyr2/1,CC BY 4.0,1,1,3599534454,Research resources; size inventory only; checksum verification is recorded separately
+multimodal_resources,cbis-ddsm,https://www.kaggle.com/datasets/awsaf49/cbis-ddsm-breast-cancer-image-dataset,CC BY-SA 3.0 (Kaggle distribution); retain original TCIA attribution and terms,1,1,5318997088,Research resources; size inventory only; checksum verification is recorded separately
+multimodal_resources,biomedclip,https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224,MIT,9,9,784622870,Research resources; size inventory only; checksum verification is recorded separately
+deepfluoro_resources,deepfluoro,https://github.com/rg2/DeepFluoroLabeling-IPCAI2020,"CC BY-NC 4.0, data; original GPL code is not installed",1124,1124,3190645471,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,pathmnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,205615438,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,chestmnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,82802576,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,dermamnist,https://zenodo.org/records/10519652,CC BY-NC 4.0,1,1,19725078,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,octmnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,54938180,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,pneumoniamnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,4170669,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,retinamnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,3291041,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,breastmnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,559580,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,bloodmnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,35461855,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,tissuemnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,124962739,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,organamnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,38247708,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,organcmnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,15526411,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,organsmnist,https://zenodo.org/records/10519652,CC BY 4.0,1,1,16528359,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,organmnist3d,https://zenodo.org/records/10519652,CC BY 4.0,1,1,32657349,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,nodulemnist3d,https://zenodo.org/records/10519652,CC BY 4.0,1,1,29299364,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,adrenalmnist3d,https://zenodo.org/records/10519652,CC BY 4.0,1,1,276833,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,fracturemnist3d,https://zenodo.org/records/10519652,CC BY 4.0,1,1,3278419,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,vesselmnist3d,https://zenodo.org/records/10519652,CC BY 4.0,1,1,398349,Research resources; size inventory only; checksum verification is recorded separately
+medmnist_collection,synapsemnist3d,https://zenodo.org/records/10519652,CC BY 4.0,1,1,38034583,Research resources; size inventory only; checksum verification is recorded separately
+prepared_ct_pairs,kits19-paired-ct-masks,https://github.com/neheller/kits19,CC BY-NC-SA 4.0,420,420,20035683223,Derived matched CT/mask stage; 210 patients; fully inspected manifest _derived/datasets/kits19-segmentation/manifest.json; not additional unique raw cases or clinical validation
+prepared_ct_pairs,lidc-consensus-ct-masks,https://www.cancerimagingarchive.net/collection/lidc-idri/,CC BY 3.0,598,598,14430362803,Derived matched CT/mask stage; 299 patients; fully inspected manifest _derived/datasets/lidc-nodule-segmentation/manifest.json; not additional unique raw cases or clinical validation
+selected_ct_cohorts,msd-task03-liver,https://msd-for-monai.s3-us-west-2.amazonaws.com/Task03_Liver.tar,CC BY-SA 4.0; commercial review pending,1,1,28925891584,Publisher MD5/SHA verified; all 131 CT/mask cases passed full manifest checks (91/20/20); commercial training blocked; no liver model trained.
+rcc_aid_acquisition,rcc-aid,https://zenodo.org/records/19630298,Annotations CC BY 4.0; original TCIA images/metadata CC BY 3.0; review pending,4,4,6646090989,All four files publisher-checksummed and ZIP CRC verified; 142 CT/mask cases from 101 patient groups passed technical manifest checks; curation and commercial rights review pending; no training.

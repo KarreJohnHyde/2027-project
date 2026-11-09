@@ -273,6 +273,7 @@ def test_endpoint_requires_auth_and_research_attestations(client, test_users):
     assert response.status_code == 400
 
 
+@pytest.mark.private_workspace
 def test_endpoint_persists_aggregate_run_and_applies_reportability_gate(client, test_users):
     headers = get_auth_headers(test_users["clinician_a"])
     gold = _artifact("gold", [_span("doc-001", 1, 4, "CONDITION")])

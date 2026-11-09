@@ -8,6 +8,8 @@ from tests.conftest import get_auth_headers
 
 REGISTRY_PATH = Path(__file__).resolve().parents[2] / "dataset_registry" / "datasets.json"
 TASK_AUDIT_PATH = Path(__file__).resolve().parents[2] / "dataset_registry" / "tasks.json"
+# Registered by their own scripts once an approved download completes (2026-11-06).
+SCRIPT_REGISTERED = {"msd-task07-pancreas", "msd-task03-liver", "nlm-tb-cxr", "lidc-idri-subset"}
 
 
 def _source_registry():
@@ -60,20 +62,51 @@ def test_dataset_task_audit_preserves_generated_task_evidence(client, test_users
 
     assert response.status_code == 200
     assert response.json() == _source_task_audit()
-    task_units = [task for dataset in response.json()["datasets"] for task in dataset["tasks"]]
-    assert len(response.json()["datasets"]) == 61
-    # The audit source defines 32 task units; cardiac MRI became READY_FOR_TRAINING on
-    # 2026-10-25 after the repository owner's recorded authorization.
-    assert len(task_units) == 32
-    assert sum(task["training_eligible"] for task in task_units) == 11
+    datasets = response.json()["datasets"]
+    # Datasets downloaded with the owner's approval on 2026-11-06 are added by their own registration scripts
+    # (scripts/register_msd_ct_dataset.py, register_nlm_tb_dataset.py, prepare_lidc_dataset.py --register) as each
+    # download finishes. Research source authorization must not overwrite a
+    # recorded hold for the newly declared commercial training purpose.
+    script_registered = [item for item in datasets if item["id"] in SCRIPT_REGISTERED]
+    for item in script_registered:
+        assert item["license"]["authorization_status"] == "VERIFIED" and item["license"].get("citation")
+        assert len(item["tasks"]) == 1
+        task = item["tasks"][0]
+        if task["readiness"] == "RIGHTS_REVIEW_REQUIRED_FOR_DECLARED_PURPOSE":
+            assert task["training_eligible"] is False and task["commercial_development_eligible"] is False
+            assert "rights" in task["training_blocker"].lower()
+        else:
+            assert (task["training_eligible"], task["readiness"]) == (True, "READY_FOR_TRAINING")
+    extra = len(script_registered)
+    extra_trainable = sum(item["tasks"][0]["training_eligible"] for item in script_registered)
+    # KiTS19's existing record becomes trainable only after CT/mask matching and
+    # voxel/geometry inspection; it is not an additional dataset or task unit.
+    kits = next(item for item in datasets if item["id"] == "kits19-labels")
+    kits_ready = int(bool(kits["tasks"][0]["training_eligible"]))
+    if kits_ready:
+        assert kits["labels"] == "PAIRED_CT_AND_MASKS"
+        assert kits["tasks"][0]["preparation"]["cases"] == 210
+        assert kits["license"]["authorization_status"] == "VERIFIED"
+    task_units = [task for dataset in datasets for task in dataset["tasks"]]
+    assert len(datasets) == 64 + extra
+    # The audit source defines 35 task units; cardiac MRI became READY_FOR_TRAINING on
+    # 2026-10-25 and MURA on 2026-10-31, each after the repository owner's recorded authorization.
+    # ISLES 2022 (CC BY 4.0) and MSD BrainTumour (CC BY-SA 4.0) were added on 2026-11-05 under their
+    # published licences, and NIH ChestX-ray14 for evaluation only (no training). On 2026-11-06 the owner
+    # defined the fracture target (one class, the 'humerus' anatomy class excluded) and confirmed the
+    # EchoNet-Dynamic agreement, so both tasks became READY_FOR_TRAINING.
+    assert len(task_units) == 35 + extra
+    assert sum(task["training_eligible"] for task in task_units) == 16 + extra_trainable + kits_ready
     assert {task["readiness"] for task in task_units} == {
         "READY_FOR_TRAINING",
         "EXPLORATORY_TRAINING_ONLY",
         "BLOCKED",
-    }
-    assert sum(task["readiness"] == "READY_FOR_TRAINING" for task in task_units) == 10
+        "EVALUATED",
+    } | ({"RIGHTS_REVIEW_REQUIRED_FOR_DECLARED_PURPOSE"} if extra_trainable < extra else set())
+    assert sum(task["readiness"] == "EVALUATED" and not task["training_eligible"] for task in task_units) == 1
+    assert sum(task["readiness"] == "READY_FOR_TRAINING" for task in task_units) == 15 + extra_trainable + kits_ready
     assert sum(task["readiness"] == "EXPLORATORY_TRAINING_ONLY" for task in task_units) == 1
-    assert sum(task["readiness"] == "BLOCKED" for task in task_units) == 21
+    assert sum(task["readiness"] == "BLOCKED" for task in task_units) == 18 - kits_ready
     assert sum(task["readiness"] == "NOT_STARTED" for task in task_units) == 0
     assert all("flags" in task for task in task_units)
 

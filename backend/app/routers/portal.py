@@ -23,7 +23,7 @@ from sqlalchemy.orm import Session
 
 from app.config import RATE_LIMIT_UPLOAD_PER_MINUTE, UPLOAD_DIR
 from app.database import get_db
-from app.models.entities import Case, CaseMembership, Finding, HumanReview, MedicalMeasurement, UploadedFile, User, UserRole
+from app.models.entities import Case, CaseMembership, Finding, HumanReview, MedicalMeasurement, UploadedFile, User
 from app.schemas.entities import FileUploadResponse
 from app.security import rate_limit
 from app.services import upload_store
@@ -116,9 +116,6 @@ def list_portal_cases(db: Session = Depends(get_db), current_user: User = Depend
 
 @router.post("/cases", status_code=status.HTTP_201_CREATED)
 def create_personal_record(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    if current_user.role != UserRole.PUBLIC:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Personal records are available to public accounts.")
-
     existing = (db.query(CaseMembership, Case).join(Case, Case.id == CaseMembership.case_id)
                 .filter(CaseMembership.user_id == current_user.id, CaseMembership.role == "PATIENT").first())
     if existing is not None:

@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import gzip
 import io
+import re
 import struct
 from pathlib import Path
 from typing import Any, Optional
@@ -64,7 +65,47 @@ def container_for(path: Path) -> str:
         return "METAIMAGE"
     if suffix in (".png", ".jpg", ".jpeg", ".bmp"):
         return "RASTER"
+    if suffix in (".svs", ".tif", ".tiff", ".ndpi"):
+        return "WSI"
     raise ImagingReadError(f"Unsupported image container '{suffix}'.")
+
+
+MAX_ITK_HEADER_BYTES = 65536
+_NRRD_HEADER_END = re.compile(rb"\r?\n\r?\n")
+
+
+def check_attached_data(path: Path, container: Optional[str] = None) -> None:
+    """Refuse an NRRD or MetaImage file whose header points at a separate data file.
+
+    ITK follows a 'data file' (NRRD) or 'ElementDataFile' (MetaImage) reference to any path on this
+    machine, so an upload naming another local file would have that file's bytes read as voxels and
+    shown. Only single-file uploads with the data attached after the header are read. ``container``
+    is given when the path's suffix is not the upload's (an incoming temporary file)."""
+    container = container or container_for(path)
+    if container not in ("NRRD", "METAIMAGE"):
+        return
+    with open(path, "rb") as handle:
+        head = handle.read(MAX_ITK_HEADER_BYTES)
+    if container == "NRRD":
+        end = _NRRD_HEADER_END.search(head)
+        if end is None:
+            raise ImagingReadError(f"NRRD_HEADER_UNTERMINATED: no blank line ends the header within {MAX_ITK_HEADER_BYTES} bytes.")
+        for line in head[:end.start()].splitlines()[1:]:
+            if line.startswith(b"#"):
+                continue
+            key = line.split(b":", 1)[0].strip().lower()
+            if key in (b"data file", b"datafile"):
+                raise ImagingReadError("NRRD_DETACHED_DATA_REFUSED: the header points at a separate data file; upload a single .nrrd "
+                                       "with the data attached.")
+        return
+    for line in head.splitlines():
+        key, separator, value = line.partition(b"=")
+        if separator and key.strip().lower() == b"elementdatafile":
+            if value.strip().upper() != b"LOCAL":
+                raise ImagingReadError("METAIMAGE_DETACHED_DATA_REFUSED: ElementDataFile must be LOCAL (data attached after the header); "
+                                       "detached .mhd/.raw pairs and references to other files are not read.")
+            return
+    raise ImagingReadError(f"METAIMAGE_HEADER_INCOMPLETE: no ElementDataFile field within {MAX_ITK_HEADER_BYTES} bytes.")
 
 
 def _dicom(path: Path, stop_before_pixels: bool = True):
@@ -115,18 +156,64 @@ def _guard_size(expected_bytes: int) -> None:
         raise ImagingReadError(f"Volume would need {expected_bytes / 1e9:.2f} GB in memory; the safety bound is {MAX_VOXEL_BYTES / 1e9:.1f} GB.")
 
 
+EXIF_ORIENTATION_TAG = 0x0112
+# Orientation tags 5-8 include a quarter turn: the displayed image swaps width and height.
+QUARTER_TURN_ORIENTATIONS = {5, 6, 7, 8}
+
+
+def exif_orientation(image: Image.Image) -> int:
+    """The EXIF orientation tag (1-8; 1 = stored upright, also when absent or invalid)."""
+    try:
+        value = int(image.getexif().get(EXIF_ORIENTATION_TAG, 1) or 1)
+    except (TypeError, ValueError):
+        return 1
+    return value if 1 <= value <= 8 else 1
+
+
+def open_raster(path: Path) -> tuple[Image.Image, int]:
+    """Decode a PNG/JPEG/BMP upright, with its EXIF orientation applied.
+
+    Browsers apply the orientation tag when they display the original bytes, so model input,
+    returned pixel coordinates and the viewer must use the same upright grid; a phone photograph
+    stored sideways would otherwise get its overlay rotated and stretched. Returns the loaded
+    image and the tag that was applied."""
+    from PIL import ImageOps
+
+    with Image.open(path) as image:
+        image.load()
+        orientation = exif_orientation(image)
+        upright = ImageOps.exif_transpose(image) if orientation != 1 else image.copy()
+    return upright, orientation
+
+
 def read_metadata(path: Path) -> dict[str, Any]:
     container = container_for(path)
+    if container == "WSI":
+        from app.services import wsi_reader
+
+        try:
+            slide = wsi_reader.describe(path)
+        except wsi_reader.WsiError as exc:
+            raise ImagingReadError(str(exc)) from exc
+        mpp = slide["microns_per_pixel"]
+        return {"container": "WSI", "dimensions": slide["dimensions"], "slices": 1, "wsi": slide,
+                "spacing_mm": [mpp / 1000, mpp / 1000] if mpp else None,
+                "spatial_metadata": "MICRONS_PER_PIXEL_FROM_SCANNER" if mpp else "NOT_AVAILABLE",
+                "modality_tag": "SM", "body_part": None, "deidentification_warnings": []}
     if container == "RASTER":
         try:
             with Image.open(path) as image:
                 width, height = image.size
                 mode = image.mode
+                orientation = exif_orientation(image)
         except Exception as exc:
             raise ImagingReadError(f"Image could not be decoded: {exc}") from exc
+        if orientation in QUARTER_TURN_ORIENTATIONS:
+            width, height = height, width
         return {
             "container": {".png": "PNG", ".bmp": "BMP"}.get(path.suffix.lower(), "JPEG"),
             "dimensions": [width, height],
+            "exif_orientation": orientation,
             "pixel_mode": mode,
             "spacing_mm": None,
             "spatial_metadata": "NOT_AVAILABLE_RASTER_IMAGE",
@@ -186,6 +273,7 @@ def read_metadata(path: Path) -> dict[str, Any]:
         }
     import SimpleITK as sitk
 
+    check_attached_data(path)
     try:
         reader = sitk.ImageFileReader()
         reader.SetFileName(str(path))
@@ -259,35 +347,59 @@ def render_slice(path: Path, index: Optional[int] = None, axis: str = "axial", c
     info: dict[str, Any] = {"container": container}
     if container == "RASTER":
         raise ImagingReadError("Raster images are displayed from their original bytes.")
-    if container == "DICOM":
-        dataset = _dicom(path, stop_before_pixels=False)
+    if container == "WSI":
+        from app.services import wsi_reader
+
         try:
-            pixels = dataset.pixel_array.astype(np.float32)
+            image, thumb = wsi_reader.thumbnail(path)
+        except wsi_reader.WsiError as exc:
+            raise ImagingReadError(str(exc)) from exc
+        info.update({"slice_index": 0, "slice_count": 1, "wsi_thumbnail": thumb,
+                     "display": "Thumbnail of the slide (a reduced pyramid level); full-resolution regions are read on request."})
+        return wsi_reader.png(image), info
+    if container == "DICOM":
+        from app.services import dicom_raster
+
+        dataset = _dicom(path, stop_before_pixels=False)
+        # Frames are counted from the header, so colour multi-frame data (frames, rows, columns, 3) is indexed correctly.
+        frames = max(1, int(dataset.get("NumberOfFrames") or 1))
+        frame_index = min(max(int(index or 0), 0), frames - 1)
+        try:
+            from pydicom.pixels import pixel_array
+
+            frame = pixel_array(dataset, index=frame_index if frames > 1 else None)
         except Exception as exc:
             raise ImagingReadError(f"DICOM pixel data cannot be decoded (transfer syntax may need an extra codec): {exc}") from exc
-        frames = pixels.shape[0] if pixels.ndim == 3 and int(dataset.get("NumberOfFrames") or 1) > 1 else 1
-        frame_index = min(max(int(index or 0), 0), frames - 1)
-        frame = pixels[frame_index] if frames > 1 else pixels
-        if frame.ndim == 3:
-            frame = frame.mean(axis=2)
-        slope = float(dataset.get("RescaleSlope") or 1.0)
-        intercept = float(dataset.get("RescaleIntercept") or 0.0)
-        frame = frame * slope + intercept
-        if center is None and "WindowCenter" in dataset and "WindowWidth" in dataset:
-            wc, ww = dataset.WindowCenter, dataset.WindowWidth
-            center = float(wc[0] if hasattr(wc, "__len__") and not isinstance(wc, str) else wc)
-            width = float(ww[0] if hasattr(ww, "__len__") and not isinstance(ww, str) else ww)
-        image8, low, high, source = _window(frame, center, width)
-        if str(dataset.get("PhotometricInterpretation") or "") == "MONOCHROME1":
-            image8 = 255 - image8
+        interpretation = str(dataset.get("PhotometricInterpretation") or "").upper()
         spacing = dataset.get("PixelSpacing")
-        info.update({
-            "slice_index": frame_index,
-            "slice_count": frames,
-            "rescale": {"slope": slope, "intercept": intercept, "units": "HU" if str(dataset.get("Modality")) == "CT" and "RescaleIntercept" in dataset else "STORED_VALUE_RESCALED"},
-            "pixel_spacing_mm": [float(spacing[1]), float(spacing[0])] if spacing else None,
-            "display_to_source": "Display pixel (column, row) equals source pixel (column, row); no resampling.",
-        })
+        info.update({"slice_index": frame_index, "slice_count": frames,
+                     "pixel_spacing_mm": [float(spacing[1]), float(spacing[0])] if spacing else None,
+                     "display_to_source": "Display pixel (column, row) equals source pixel (column, row); no resampling."})
+        if frame.ndim == 3 or interpretation == "PALETTE COLOR":
+            # Colour frames are shown as decoded (YBR converted to RGB), without a window.
+            if interpretation == "PALETTE COLOR":
+                from pydicom.pixels import apply_color_lut
+
+                frame = apply_color_lut(frame, dataset)
+                frame = (frame.astype(np.float64) / (65535.0 if frame.dtype.itemsize > 1 else 255.0) * 255.0).round()
+            rgb = np.clip(frame, 0, 255).astype(np.uint8)
+            buffer = io.BytesIO()
+            Image.fromarray(np.ascontiguousarray(rgb), mode="RGB").save(buffer, format="PNG")
+            info.update({"window": {"low": 0.0, "high": 255.0, "source": "COLOUR_AS_DECODED"}, "display_dimensions": [int(rgb.shape[1]), int(rgb.shape[0])]})
+            return buffer.getvalue(), info
+        values, functional = dicom_raster.modality_values(dataset, frame, frame_index)
+        if center is None:
+            if "center" in functional:
+                center, width = functional["center"], functional["width"]
+            elif "WindowCenter" in dataset and "WindowWidth" in dataset:
+                center, width = dicom_raster._first(dataset.WindowCenter), dicom_raster._first(dataset.WindowWidth)
+        image8, low, high, source = _window(values.astype(np.float32), center, width)
+        if interpretation == "MONOCHROME1":
+            image8 = 255 - image8
+        rescaled_ct = str(dataset.get("Modality")) == "CT" and (functional["rescale_source"] != "TOP_LEVEL_RESCALE" or "RescaleIntercept" in dataset)
+        info["rescale"] = {"source": functional["rescale_source"], "slope": functional.get("slope", float(dataset.get("RescaleSlope") or 1.0)),
+                           "intercept": functional.get("intercept", float(dataset.get("RescaleIntercept") or 0.0)),
+                           "units": "HU" if rescaled_ct else "STORED_VALUE_RESCALED"}
     else:
         volume, spacing = _volume(path)
         axes = {"axial": 0, "coronal": 1, "sagittal": 2}

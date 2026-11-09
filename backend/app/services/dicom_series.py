@@ -31,7 +31,10 @@ UNIFORMITY_TOLERANCE = 0.05  # relative spread of slice steps allowed without a 
 REJECTING_ISSUES = frozenset({
     "NO_DICOM_GEOMETRY", "MULTIPLE_SERIES", "SERIES_NOT_FOUND", "SINGLE_SLICE", "INCONSISTENT_ORIENTATION",
     "INCONSISTENT_MATRIX", "DUPLICATE_SLICE_POSITION", "MISSING_SLICES", "NONUNIFORM_SLICE_SPACING", "VOLUME_TOO_LARGE",
+    "CARDIAC_PHASE_REQUIRED", "CARDIAC_PHASE_OUT_OF_RANGE",
 })
+PHASE_SEMANTICS = ("A cine series repeats each slice position once per cardiac phase. Phase p is the p-th image by Trigger Time at "
+                   "every position (0 = the earliest after the R wave, usually end-diastole); end-systole has to be chosen by eye.")
 
 
 def uid_reference(uid: str) -> str:
@@ -50,6 +53,15 @@ class SliceHeader:
     rows: int
     columns: int
     identifying_tags: tuple[str, ...]
+    trigger_time: Optional[float] = None
+    modality: str = ""
+
+
+def _optional_float(value: Any) -> Optional[float]:
+    try:
+        return float(value) if value not in (None, "") else None
+    except (TypeError, ValueError):
+        return None
 
 
 def read_header(path: Path, index: int) -> SliceHeader:
@@ -69,12 +81,49 @@ def read_header(path: Path, index: int) -> SliceHeader:
         rows=int(getattr(dataset, "Rows", 0)),
         columns=int(getattr(dataset, "Columns", 0)),
         identifying_tags=tuple(keyword for keyword in IDENTIFYING_DICOM_KEYWORDS if str(getattr(dataset, keyword, "") or "").strip()),
+        trigger_time=_optional_float(getattr(dataset, "TriggerTime", None)),
+        modality=str(getattr(dataset, "Modality", "") or "").strip().upper(),
     )
 
 
-def assemble_series(paths: Sequence[Path], series_reference: Optional[str] = None, load_pixels: bool = False) -> dict[str, Any]:
+def _select_phase(slices: list[SliceHeader], normal: np.ndarray, phase: Optional[int], report: dict[str, Any]) -> Optional[list[SliceHeader]]:
+    """One image per position. Several images at one position are cardiac phases when every position holds the
+    same number and each image has a Trigger Time; then ``phase`` picks one per position. None means refused."""
+    ordered = sorted(slices, key=lambda item: float(np.dot(item.position, normal)))
+    groups: list[list[SliceHeader]] = []
+    for item in ordered:
+        if groups and float(np.dot(item.position, normal)) - float(np.dot(groups[-1][0].position, normal)) < POSITION_TOLERANCE_MM:
+            groups[-1].append(item)
+        else:
+            groups.append([item])
+    if all(len(group) == 1 for group in groups):
+        return slices
+    counts = {len(group) for group in groups}
+    if len(counts) != 1 or any(item.trigger_time is None for item in slices):
+        report["issues"].append("DUPLICATE_SLICE_POSITION")
+        return None
+    phases = counts.pop()
+    by_time = [sorted(group, key=lambda item: item.trigger_time) for group in groups]
+    if any(len({item.trigger_time for item in group}) != phases for group in by_time):
+        report["issues"].append("DUPLICATE_SLICE_POSITION")  # repeated images at one trigger time are not phases
+        return None
+    report.update(cardiac_phases=phases, phase_semantics=PHASE_SEMANTICS,
+                  phase_trigger_times_ms=[round(float(np.median([group[p].trigger_time for group in by_time])), 1) for p in range(phases)])
+    if phase is None:
+        report["issues"].append("CARDIAC_PHASE_REQUIRED")
+        return None
+    if not 0 <= phase < phases:
+        report["issues"].append("CARDIAC_PHASE_OUT_OF_RANGE")
+        return None
+    report["phase"] = phase
+    return [group[phase] for group in by_time]
+
+
+def assemble_series(paths: Sequence[Path], series_reference: Optional[str] = None, load_pixels: bool = False,
+                    phase: Optional[int] = None) -> dict[str, Any]:
     """Assemble one series from DICOM files. Returns a report; with load_pixels the report also
-    holds the rescaled float32 volume (slices, rows, columns) under "volume"."""
+    holds the rescaled float32 volume (slices, rows, columns) under "volume". A cine series (several
+    phases per position) is assembled for one ``phase``."""
     headers = [read_header(path, index) for index, path in enumerate(paths)]
     by_series: dict[str, list[SliceHeader]] = {}
     for header in headers:
@@ -112,6 +161,10 @@ def assemble_series(paths: Sequence[Path], series_reference: Optional[str] = Non
 
     row_dir, col_dir = orientation[:3], orientation[3:]
     normal = np.cross(row_dir, col_dir)
+    selected = _select_phase(slices, normal, phase, report)
+    if selected is None:
+        return report
+    slices = selected
     ordered = sorted(slices, key=lambda item: float(np.dot(item.position, normal)))
     along = np.asarray([float(np.dot(item.position, normal)) for item in ordered])
     steps = np.diff(along)
@@ -156,6 +209,8 @@ def assemble_series(paths: Sequence[Path], series_reference: Optional[str] = Non
         coordinate_system="DICOM_LPS",
         ordered_input_indices=[item.index for item in ordered],
         identifying_tags_present=identifying,
+        modality_tags=sorted({item.modality for item in ordered if item.modality}),
+        slice_normal_lps=[round(float(value), 6) for value in normal],
     )
     if load_pixels:
         import pydicom

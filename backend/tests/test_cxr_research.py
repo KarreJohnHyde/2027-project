@@ -57,6 +57,22 @@ def _upload(client, headers, case_id, name, image):
                        data={"deidentified": "true"}, headers=headers).json()
 
 
+def test_attention_marks_are_in_source_pixels_and_follow_the_fixed_rule():
+    pytest.importorskip("scipy")
+    full = np.zeros((512, 512), dtype=np.float32)
+    full[100:140, 200:260] = 0.9
+    full[120, 230] = 2.0  # the peak; the 0.9 block is below half of it
+    full[400:420, 400:420] = 0.9
+    marks = cxr_research.attention_marks(full, (100, 0, 1024))  # a 1224 x 1024 image read as its centre 1024 square
+    scale = 1024 / 512
+    assert marks["peak_xy"] == [round(100 + 230.5 * scale, 1), round(120.5 * scale, 1)]
+    assert marks["region_box_xyxy"] == [100 + 230 * scale, 120 * scale, 100 + 231 * scale, 121 * scale], "only the peak reaches half of 2.0"
+    full[120, 230] = 0.9  # now the whole block is at the maximum; the separate area is not connected to it
+    marks = cxr_research.attention_marks(full, (100, 0, 1024))
+    assert marks["region_box_xyxy"] == [100 + 200 * scale, 100 * scale, 100 + 260 * scale, 140 * scale]
+    assert cxr_research.attention_marks(np.zeros((512, 512), np.float32), (0, 0, 512))["peak_xy"] is None
+
+
 def test_the_endpoint_needs_an_attested_image_upload(client, test_users):
     headers = get_auth_headers(test_users["clinician_a"])
     case_id = client.post("/api/v1/cases", json={"pseudonymous_id": "CASE-CXR-INPUT"}, headers=headers).json()["id"]

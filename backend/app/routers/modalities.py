@@ -20,7 +20,7 @@ from app.services import upload_store
 from app.services.auth import get_current_user, verify_case_access
 from app.services.dicom_series import PLANES, assemble_series, cached_assembly, render_series_slice
 from app.services import edf_reader
-from app.services.imaging_readers import ImagingReadError, read_metadata, render_slice
+from app.services.imaging_readers import ImagingReadError, container_for, read_metadata, render_slice
 from app.services.modality_registry import modality_registry
 from app.services import derived_text, ocr
 from app.services.nlp_processor import (
@@ -43,6 +43,8 @@ def _upload(file_id: int, db: Session, user: User) -> UploadedFile:
     if record is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found.")
     verify_case_access(record.case_id, user, db, access="read")
+    if record.withdrawn_at is not None or not record.is_associated or record.superseded_by_file_id is not None:
+        raise HTTPException(status_code=409, detail="Evidence is withdrawn, superseded or not associated with the case.")
     return record
 
 
@@ -99,20 +101,84 @@ def get_imaging_metadata(file_id: int, db: Session = Depends(get_db), current_us
     try:
         with upload_store.materialize(Path(record.file_path)) as plain:
             metadata = read_metadata(plain)
+            if metadata.get("container") in {"PNG", "JPEG", "BMP"}:
+                from app.services.film_processing import assess_raster
+                metadata["input_assessment"] = assess_raster(plain)
     except ImagingReadError as exc:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(exc))
+    assessment = metadata.get("input_assessment") or {}
+    film = assessment.get("source_type") in {"FILM_MONTAGE_CANDIDATE", "FILM_SLICE_CANDIDATE"}
     return {
         "upload_id": record.id,
         "filename": record.filename,
         "sha256": record.file_hash,
         **metadata,
-        "inference": {"status": "MODEL_NOT_VALIDATED", "detections": [], "segmentations": [], "reason": "No validated imaging model is configured; no overlay is produced."},
+        "inference": {"status": "ABSTAIN" if film else "NOT_RUN", "detections": [], "segmentations": [],
+                      "reason": "Photographed film requires source review. Candidate panels can be inspected; native-image models cannot analyse this upload and no AI overlay is available." if film else
+                      "This metadata preview contains no model output. Select an applicable research model to analyse this upload; results appear with the stored run."},
     }
+
+
+@router.get("/uploads/{file_id}/imaging/film-panels/{panel_id}")
+def get_film_panel(file_id: int, panel_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    from app.services.film_processing import assess_raster, render_panel
+
+    record = _upload(file_id, db, current_user)
+    if record.modality != ModalityType.IMAGE:
+        raise HTTPException(status_code=400, detail="Not an image upload.")
+    try:
+        with upload_store.materialize(Path(record.file_path)) as plain:
+            assessment = assess_raster(plain)
+            data = render_panel(plain, assessment, panel_id)
+    except (ImagingReadError, ValueError) as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+    return Response(content=data, media_type="image/png", headers={"Cache-Control": "no-store",
+                    "X-Source-SHA256": record.file_hash, "X-Preview-Version": assessment["version"]})
+
+
+def _pdf_film_image(record: UploadedFile, page: int):
+    import pypdfium2
+    if not record.filename.lower().endswith(".pdf") or not 1 <= page <= 500:
+        raise HTTPException(status_code=400, detail="A valid PDF page is required.")
+    with upload_store.materialize(Path(record.file_path)) as plain:
+        data = plain.read_bytes()
+        with ocr.PDFIUM_LOCK:
+            document = pypdfium2.PdfDocument(data)
+            count = len(document)
+            document.close()
+        if page > count:
+            raise HTTPException(status_code=404, detail="Page not found.")
+        return ocr.render_pdf_page(data, page - 1, dpi=144)
+
+
+@router.get("/uploads/{file_id}/pages/{page}/film-assessment")
+def get_pdf_film_assessment(file_id: int, page: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    from app.services.film_processing import assess_raster
+    record = _upload(file_id, db, current_user)
+    assessment = assess_raster(_pdf_film_image(record, page))
+    return {**assessment, "upload_id": record.id, "source_page": page, "sha256": record.file_hash,
+            "coordinate_space": "PDF_PAGE_RENDERED_AT_144_DPI"}
+
+
+@router.get("/uploads/{file_id}/pages/{page}/film-panels/{panel_id}")
+def get_pdf_film_panel(file_id: int, page: int, panel_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    from app.services.film_processing import assess_raster, render_panel
+    record = _upload(file_id, db, current_user)
+    image = _pdf_film_image(record, page)
+    assessment = assess_raster(image)
+    try:
+        data = render_panel(image, assessment, panel_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
+    return Response(content=data, media_type="image/png", headers={"Cache-Control": "no-store", "X-Source-SHA256": record.file_hash,
+                                                                 "X-Source-Page": str(page)})
 
 
 class DicomSeriesRequest(BaseModel):
     upload_ids: list[int] = Field(..., min_length=2, max_length=2000)
     series_reference: Optional[str] = Field(default=None, pattern="^[0-9a-f]{16}$")
+    # Cine series (several cardiac phases per slice position): the phase ordinal to assemble.
+    phase: Optional[int] = Field(default=None, ge=0, le=1000)
 
     model_config = ConfigDict(extra="forbid")
 
@@ -131,16 +197,16 @@ def series_records(case_id: int, upload_ids: list[int], db: Session) -> list[Upl
     return [found[upload_id] for upload_id in ids]
 
 
-def load_series(records: list[UploadedFile], series_reference: Optional[str], load_pixels: bool = False) -> dict:
-    """Assemble the series from decrypted copies; with pixels the result is cached per upload set."""
+def load_series(records: list[UploadedFile], series_reference: Optional[str], load_pixels: bool = False, phase: Optional[int] = None) -> dict:
+    """Assemble the series from decrypted copies; with pixels the result is cached per upload set and phase."""
     def assemble() -> dict:
         with ExitStack() as stack:
             paths = [stack.enter_context(upload_store.materialize(Path(record.file_path))) for record in records]
-            return assemble_series(paths, series_reference, load_pixels=load_pixels)
+            return assemble_series(paths, series_reference, load_pixels=load_pixels, phase=phase)
 
     try:
         if load_pixels:
-            key = (tuple((record.id, record.file_hash) for record in records), series_reference)
+            key = (tuple((record.id, record.file_hash) for record in records), series_reference, phase)
             report = dict(cached_assembly(key, assemble))
         else:
             report = assemble()
@@ -161,7 +227,7 @@ def assemble_case_dicom_series(case_id: int, request: DicomSeriesRequest, db: Se
     case are accepted. An assembled series can be displayed (dicom-series/render) and passed to a
     volumetric research model (dicom-series/research-inference)."""
     verify_case_access(case_id, current_user, db, access="read")
-    report = load_series(series_records(case_id, request.upload_ids, db), request.series_reference)
+    report = load_series(series_records(case_id, request.upload_ids, db), request.series_reference, phase=request.phase)
     report.pop("ordered_input_indices", None)
     report["inference"] = {"status": "NOT_RUN", "reason": "Assembly validates geometry only; run a volumetric research model explicitly."}
     return report
@@ -178,13 +244,47 @@ class DicomSeriesRenderRequest(DicomSeriesRequest):
 def render_case_dicom_series(case_id: int, request: DicomSeriesRenderRequest, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """One plane of an assembled series as PNG (voxel-index planes, no resampling); the mapping is in X-MedTwin-Render."""
     verify_case_access(case_id, current_user, db, access="read")
-    report = load_series(series_records(case_id, request.upload_ids, db), request.series_reference, load_pixels=True)
+    report = load_series(series_records(case_id, request.upload_ids, db), request.series_reference, load_pixels=True, phase=request.phase)
     if report["status"] != "ASSEMBLED":
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail={"code": "SERIES_NOT_ASSEMBLED", "issues": report["issues"]})
     png, info = render_series_slice(report, request.axis, request.index, request.center, request.width)
     info.update(series_reference=report["series_reference"], shape_slices_rows_columns=report["shape_slices_rows_columns"],
                 ordered_upload_ids=report["ordered_upload_ids"], warnings=report["warnings"])
     return Response(content=png, media_type="image/png", headers={"X-MedTwin-Render": json.dumps(info), "Cache-Control": "no-store"})
+
+
+@router.get("/uploads/{file_id}/wsi/region")
+def get_wsi_region(file_id: int, level: int = Query(0, ge=0), x: int = Query(..., ge=0), y: int = Query(..., ge=0),
+                   width: int = Query(512, gt=0, le=2048), height: int = Query(512, gt=0, le=2048),
+                   db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """A region of a whole-slide image at one pyramid level as PNG (only the tiles it touches are decoded)."""
+    from app.services import wsi_reader
+
+    record = _upload(file_id, db, current_user)
+    try:
+        with upload_store.materialize(Path(record.file_path)) as plain:
+            if container_for(plain) != "WSI":
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="NOT_A_WHOLE_SLIDE_IMAGE")
+            data = wsi_reader.png(wsi_reader.read_region(plain, level, x, y, width, height))
+    except wsi_reader.WsiError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(exc))
+    return Response(content=data, media_type="image/png", headers={"Cache-Control": "private, max-age=300", "X-Source-SHA256": record.file_hash,
+                                                                  "X-Region": json.dumps({"level": level, "x": x, "y": y})})
+
+
+@router.get("/uploads/{file_id}/wsi/tissue")
+def get_wsi_tissue(file_id: int, tile: int = Query(256, ge=64, le=2048), db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """Level-0 tiles that contain tissue by a fixed colour rule (viewing and sampling aid, not a model)."""
+    from app.services import wsi_reader
+
+    record = _upload(file_id, db, current_user)
+    try:
+        with upload_store.materialize(Path(record.file_path)) as plain:
+            if container_for(plain) != "WSI":
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="NOT_A_WHOLE_SLIDE_IMAGE")
+            return {"upload_id": record.id, **wsi_reader.tissue_grid(plain, tile)}
+    except wsi_reader.WsiError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(exc))
 
 
 @router.get("/uploads/{file_id}/imaging/render")

@@ -8,9 +8,11 @@ services:
       args:
         MEDTWIN_CODE_COMMIT: "${MEDTWIN_CODE_COMMIT:-}"
     ports:
-      - "${MEDTWIN_BACKEND_PORT:-8000}:8000"
+      - "${MEDTWIN_BACKEND_BIND:-127.0.0.1}:${MEDTWIN_BACKEND_PORT:-8000}:8000"
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "${MEDTWIN_TRUSTED_PROXY_IPS:-127.0.0.1}"]
     environment:
       ENVIRONMENT: "${ENVIRONMENT:-development}"
+      MEDTWIN_USAGE_PROFILE: "${MEDTWIN_USAGE_PROFILE:-commercial}"
       DATABASE_URL: "${DATABASE_URL:-sqlite:////data/medtwin.db}"
       SECRET_KEY: "${SECRET_KEY:?Set SECRET_KEY in .env before running Docker Compose}"
       ACCESS_TOKEN_EXPIRE_MINUTES: "${ACCESS_TOKEN_EXPIRE_MINUTES:-480}"
@@ -62,6 +64,7 @@ services:
     command: ["python", "-m", "app.worker", "--poll-seconds", "2"]
     environment:
       ENVIRONMENT: "${ENVIRONMENT:-development}"
+      MEDTWIN_USAGE_PROFILE: "${MEDTWIN_USAGE_PROFILE:-commercial}"
       DATABASE_URL: "${DATABASE_URL:-sqlite:////data/medtwin.db}"
       SECRET_KEY: "${SECRET_KEY:?Set SECRET_KEY in .env before running Docker Compose}"
       UPLOAD_DIR: /data/uploads

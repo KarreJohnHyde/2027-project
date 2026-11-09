@@ -54,59 +54,6 @@
       ]
     },
     {
-      "model_id": "mura_study_baseline",
-      "display_name": "Musculoskeletal radiograph study-level abnormality baseline",
-      "domain": "medical_imaging",
-      "task": "study_level_binary_classification",
-      "anatomy": "musculoskeletal",
-      "framework": "pytorch_monai",
-      "adapter": "planned.monai.mura",
-      "source_repository": "MONAI-dev",
-      "dependency_environment": ".venv",
-      "weights_path": null,
-      "device": "auto",
-      "supported_inputs": [
-        "image/png",
-        "image/jpeg",
-        "application/dicom"
-      ],
-      "supported_classes": [
-        "normal",
-        "abnormal"
-      ],
-      "status": "WEIGHTS_MISSING",
-      "validated": false,
-      "processor_only": false,
-      "limitations": [
-        "MURA v1.1 data are present locally, but individual Stanford permission is unverified and no patient-aware training split manifest is registered.",
-        "No checkpoint, calibration, held-out predictions, or evaluation report exists.",
-        "MURA labels do not support detection or segmentation claims."
-      ],
-      "artifact_bundle": {
-        "dataset_version": null,
-        "dataset_license": null,
-        "split_manifest_path": null,
-        "task_definition": "Patient-aware study-level normal versus abnormal classification.",
-        "label_definition": {
-          "normal": 0,
-          "abnormal": 1
-        },
-        "preprocessing_version": null,
-        "checkpoint_path": null,
-        "checkpoint_sha256": null,
-        "calibration": null,
-        "decision_thresholds": null,
-        "abstention_thresholds": null,
-        "held_out_predictions_path": null,
-        "evaluation_report_path": null,
-        "model_card_path": null
-      },
-      "supported_modalities": [
-        "XRAY"
-      ],
-      "source_display_name": "MURA study-level abnormality baseline"
-    },
-    {
       "model_id": "monai_runtime",
       "display_name": "Medical-imaging deep-learning runtime adapter",
       "domain": "medical_imaging_framework",
@@ -152,29 +99,30 @@
       "domain": "clinical_nlp",
       "task": "concept_annotation",
       "anatomy": "multi_system",
-      "framework": "medcat",
-      "adapter": "planned.medcat",
-      "source_repository": "MedCAT-main",
-      "dependency_environment": "isolated-required",
+      "framework": "medcat 2.3.0",
+      "adapter": "app.services.clinical_nlp_adapter",
+      "source_repository": "cogstack-nlp-main/medcat",
+      "dependency_environment": "wsl:~/.medtwin/venv-clinical (scripts/setup_clinical_nlp_wsl.sh; spaCy 3.8.18, MedCAT 2.3.0)",
       "weights_path": null,
       "device": "cpu",
       "supported_inputs": [
         "text/plain"
       ],
       "supported_classes": [],
-      "status": "DEPENDENCY_MISSING",
+      "status": "WEIGHTS_MISSING",
       "validated": false,
       "processor_only": false,
       "limitations": [
-        "MedCAT is not installed.",
-        "Available MedCAT variants have incompatible NumPy requirements.",
-        "No concept database or vocabulary bundle is configured."
+        "MedCAT 2.3.0 is installed in WSL and linked into report analysis; it runs on every report when its environment exists.",
+        "The only model pack present is MedCAT's example pack: 2 concepts ('Kidney Failure', 'Failure of Kidneys'), never trained. It demonstrates the integration and is not a clinical vocabulary.",
+        "Concept linking needs a UMLS or SNOMED CT model pack (licensed vocabularies); point MEDTWIN_MEDCAT_MODEL_PACK at one. Packs are pickled: load trusted ones only.",
+        "Linked mentions are separate statements (MODEL_CONCEPT) with rule context; they never replace rule statements. No annotated clinical corpus evaluation."
       ],
       "artifact_bundle": {
         "dataset_version": null,
         "dataset_license": null,
         "split_manifest_path": null,
-        "task_definition": null,
+        "task_definition": "Link clinical concept mentions in de-identified report text to a model pack's concept database.",
         "label_definition": null,
         "preprocessing_version": null,
         "checkpoint_path": null,
@@ -216,7 +164,7 @@
       "validated": false,
       "processor_only": false,
       "limitations": [
-        "Runs in WSL because Windows Smart App Control blocks spaCy's native extensions on this host; enabled with MEDTWIN_SCISPACY=wsl (off by default, about 17 s per report).",
+        "Runs in WSL because Windows Smart App Control blocks spaCy's native extensions on this host; on by default wherever its WSL environment is installed (MEDTWIN_SCISPACY=auto; off in tests and on Vercel), about 13-17 s per report.",
         "Secondary statements only: each entity gets the rule extractor's negation/certainty/temporality context and its own extractor_version; the report label and rule statements are unchanged.",
         "Pretrained publisher pipeline (BC5CDR diseases/chemicals); MedTwin has no annotated clinical corpus, so no task-specific evaluation exists."
       ],
@@ -242,34 +190,95 @@
       "source_display_name": "scispaCy biomedical entity adapter"
     },
     {
-      "model_id": "radgraph_adapter",
-      "display_name": "Radiology report entity-relation adapter",
-      "domain": "radiology_nlp",
-      "task": "entity_relation_extraction",
+      "model_id": "medspacy_context_adapter",
+      "display_name": "medSpaCy ConText and section check (second opinion on assertion context)",
+      "domain": "clinical_nlp",
+      "task": "context_assertion_comparison",
       "anatomy": "multi_system",
-      "framework": "pytorch_transformers",
-      "adapter": "planned.radgraph",
-      "source_repository": "radgraph-master",
-      "dependency_environment": "isolated-required",
+      "framework": "medspacy 1.3.1 (PyRuSH sentences, ConText, sectionizer)",
+      "adapter": "app.services.clinical_nlp_adapter",
+      "source_repository": "medspacy-master",
+      "dependency_environment": "wsl:~/.medtwin/venv-clinical (scripts/setup_clinical_nlp_wsl.sh; spaCy 3.8.18, medSpaCy 1.3.1)",
       "weights_path": null,
-      "device": "auto",
+      "device": "cpu",
       "supported_inputs": [
-        "text/plain"
+        "text/plain",
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       ],
-      "supported_classes": [],
-      "status": "DEPENDENCY_MISSING",
+      "supported_classes": [
+        "is_negated",
+        "is_uncertain",
+        "is_hypothetical",
+        "is_historical",
+        "is_family"
+      ],
+      "status": "READY_UNVALIDATED",
       "validated": false,
-      "processor_only": false,
+      "processor_only": true,
       "limitations": [
-        "Required Python dependencies are missing.",
-        "No RadGraph checkpoint is available locally.",
-        "No licensed evaluation corpus has been selected."
+        "Rule-based (ConText algorithm with medSpaCy's default rules), not a trained model.",
+        "Re-assesses the span of every rule statement; agreement and each disagreement are recorded in the report's provenance. It never changes rule statements or the report label.",
+        "No annotated clinical corpus evaluation; agreement between two rule systems is not accuracy."
       ],
       "artifact_bundle": {
         "dataset_version": null,
         "dataset_license": null,
         "split_manifest_path": null,
-        "task_definition": null,
+        "task_definition": "Assess negation, uncertainty, hypothetical, historical and family context of rule-extracted spans.",
+        "label_definition": null,
+        "preprocessing_version": "medspacy-1.3.1-default-context-rules",
+        "checkpoint_path": null,
+        "checkpoint_sha256": null,
+        "calibration": null,
+        "decision_thresholds": null,
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": null,
+        "model_card_path": null
+      },
+      "supported_modalities": [
+        "DOCUMENT"
+      ]
+    },
+    {
+      "model_id": "radgraph_adapter",
+      "display_name": "Radiology report observations and anatomy (RadGraph-XL, third-party)",
+      "domain": "radiology_nlp",
+      "task": "entity_relation_extraction",
+      "anatomy": "multi_system",
+      "framework": "radgraph 0.1.18 (AllenNLP-based DyGIE++; transformers 4.57.6)",
+      "adapter": "app.services.radgraph_adapter",
+      "source_repository": "radgraph-master (0.1.18); weights radgraph-xl.tar.gz from huggingface.co/StanfordAIMI/RRG_scorers (MIT)",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/third_party/radgraph/radgraph-xl",
+      "device": "auto",
+      "supported_inputs": [
+        "text/plain"
+      ],
+      "supported_classes": [
+        "Observation::definitely present",
+        "Observation::definitely absent",
+        "Observation::uncertain",
+        "Anatomy::definitely present",
+        "located_at",
+        "modify",
+        "suggestive_of"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "Third-party model (Stanford AIMI) trained on radiology reports (chest X-ray, and CT/MRI for the XL model); MedTwin did not train it and has no annotated corpus to evaluate it.",
+        "Runs only on sentences of pages typed as imaging reports; each observation is a separate statement (MODEL_RADGRAPH_OBSERVATION) and never replaces a rule statement.",
+        "Its own presence label gives negation and certainty, and located_at gives the anatomical site; temporality and experiencer come from the rule extractor.",
+        "Relations can be odd (for example 'normal' located at 'size'); every output needs review."
+      ],
+      "artifact_bundle": {
+        "dataset_version": null,
+        "dataset_license": null,
+        "split_manifest_path": null,
+        "task_definition": "Observation presence/absence/uncertainty and observation-anatomy relations in radiology report sentences",
         "label_definition": null,
         "preprocessing_version": null,
         "checkpoint_path": null,
@@ -309,8 +318,8 @@
       "validated": false,
       "processor_only": false,
       "limitations": [
-        "Local dataset presence does not establish task compatibility.",
-        "No checkpoint, split manifest, or held-out evaluation is registered."
+        "Generic placeholder. Intracranial haemorrhage on head CT slices is covered by brain_ct_rsna_ich_classifier (RSNA ICH, owner-confirmed licence, 2026-11-04); whole-brain masks on CT by ct_totalsegmentator_v2.",
+        "Ischaemic stroke lesions on diffusion MRI are covered by brain_mri_stroke_lesion_segresnet (ISLES 2022) and glioma sub-regions on multi-sequence MRI by brain_mri_glioma_segresnet (Medical Segmentation Decathlon); brain infection has no licensed labelled data."
       ],
       "artifact_bundle": {
         "dataset_version": null,
@@ -356,8 +365,8 @@
       "validated": false,
       "processor_only": false,
       "limitations": [
-        "No verified label contract or trained checkpoint is registered.",
-        "Dataset folder names are not treated as ground truth."
+        "Generic placeholder. Lungs are covered by task models: CT lung lobes by ct_totalsegmentator_v2 (with a local LUNA16 check), chest radiograph findings by cxr_torchxrayvision_densenet121.",
+        "No MedTwin-trained lung model is registered; LUNA16 nodule detection would need its own training and evaluation."
       ],
       "artifact_bundle": {
         "dataset_version": null,
@@ -401,8 +410,7 @@
       "validated": false,
       "processor_only": false,
       "limitations": [
-        "Legacy generic placeholder only; the separate Kvasir v2, GastroVision and Kvasir-SEG entries have task-specific trained research checkpoints and internal evaluations.",
-        "No checkpoint or evaluation is registered for this generic adapter; the separate GI models remain externally and clinically unvalidated."
+        "Generic placeholder, superseded: GI endoscopy runs on the three trained task models gi_kvasir_v2_classifier, gi_gastrovision_27class_classifier and gi_kvasir_seg_polyp_segmenter."
       ],
       "artifact_bundle": {
         "dataset_version": null,
@@ -1928,10 +1936,10 @@
       "validated": false,
       "processor_only": false,
       "limitations": [
-        "Third-party pretrained weights (Cohen et al., MIDL 2022) trained on public digital chest radiographs; MedTwin has no labelled chest radiographs and has not evaluated them.",
+        "Third-party pretrained weights (Cohen et al., MIDL 2022) trained on public digital chest radiographs; MedTwin has not evaluated their scores. Their Grad-CAM attention was measured against NIH ChestX-ray14 radiologist boxes (local_evaluation).",
         "Publisher-scaled outputs (0.5 = operating point) are not probabilities and are not calibrated for any local population.",
         "A photograph of a printed film is outside the training data; scores near the operating point are reported as weak.",
-        "Grad-CAM attention by lung zone shows where a score depends on, not a lesion outline; nothing is registered to 3-D anatomy.",
+        "Grad-CAM attention is shown by lung zone and as a peak with a region (connected area at half the maximum); it shows where a score depends on, not a lesion outline or a detection; nothing is registered to 3-D anatomy.",
         "Runs from Medical Imaging only after the user states the upload is a frontal chest radiograph and both lungs are found on their expected sides."
       ],
       "artifact_bundle": {
@@ -1952,7 +1960,973 @@
       },
       "supported_modalities": [
         "XRAY"
-      ]
+      ],
+      "inference_route": "POST /uploads/{id}/chest-radiograph-analysis (own endpoint; not the generic research route)",
+      "local_evaluation": {
+        "scope": "Grad-CAM attention localisation only (scores not evaluated)",
+        "dataset": "NIH ChestX-ray14 BBox_List_2017 (official test list)",
+        "headline": "attention peak inside the radiologist's box 26.4% of 984 boxes (a random point 7.5%)",
+        "report_path": "docs/validation/models/cxr_torchxrayvision_attention_localisation.json"
+      }
+    },
+    {
+      "model_id": "ct_totalsegmentator_v2",
+      "display_name": "CT organ segmentation, up to 117 structures (TotalSegmentator v2, third-party)",
+      "domain": "medical_imaging",
+      "task": "volumetric_semantic_segmentation",
+      "anatomy": "multi_system",
+      "framework": "nnU-Net v2 (nnunetv2 2.8.1)",
+      "adapter": "app.services.ct_organ_research",
+      "source_repository": "TotalSegmentator-master (2.18.0) with nnUNet-master (2.8.1); weights v2.0.0 from the publisher's GitHub releases",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/third_party/totalsegmentator/weights",
+      "device": "auto",
+      "supported_inputs": [
+        "application/gzip",
+        "application/octet-stream"
+      ],
+      "supported_classes": [
+        "spleen",
+        "kidney_right",
+        "kidney_left",
+        "gallbladder",
+        "liver",
+        "stomach",
+        "pancreas",
+        "adrenal_gland_right",
+        "adrenal_gland_left",
+        "lung_upper_lobe_left",
+        "lung_lower_lobe_left",
+        "lung_upper_lobe_right",
+        "lung_middle_lobe_right",
+        "lung_lower_lobe_right",
+        "esophagus",
+        "trachea",
+        "thyroid_gland",
+        "small_bowel",
+        "duodenum",
+        "colon",
+        "urinary_bladder",
+        "prostate",
+        "kidney_cyst_left",
+        "kidney_cyst_right",
+        "sacrum",
+        "vertebrae_S1",
+        "vertebrae_L5",
+        "vertebrae_L4",
+        "vertebrae_L3",
+        "vertebrae_L2",
+        "vertebrae_L1",
+        "vertebrae_T12",
+        "vertebrae_T11",
+        "vertebrae_T10",
+        "vertebrae_T9",
+        "vertebrae_T8",
+        "vertebrae_T7",
+        "vertebrae_T6",
+        "vertebrae_T5",
+        "vertebrae_T4",
+        "vertebrae_T3",
+        "vertebrae_T2",
+        "vertebrae_T1",
+        "vertebrae_C7",
+        "vertebrae_C6",
+        "vertebrae_C5",
+        "vertebrae_C4",
+        "vertebrae_C3",
+        "vertebrae_C2",
+        "vertebrae_C1",
+        "heart",
+        "aorta",
+        "pulmonary_vein",
+        "brachiocephalic_trunk",
+        "subclavian_artery_right",
+        "subclavian_artery_left",
+        "common_carotid_artery_right",
+        "common_carotid_artery_left",
+        "brachiocephalic_vein_left",
+        "brachiocephalic_vein_right",
+        "atrial_appendage_left",
+        "superior_vena_cava",
+        "inferior_vena_cava",
+        "portal_vein_and_splenic_vein",
+        "iliac_artery_left",
+        "iliac_artery_right",
+        "iliac_vena_left",
+        "iliac_vena_right",
+        "humerus_left",
+        "humerus_right",
+        "scapula_left",
+        "scapula_right",
+        "clavicula_left",
+        "clavicula_right",
+        "femur_left",
+        "femur_right",
+        "hip_left",
+        "hip_right",
+        "spinal_cord",
+        "gluteus_maximus_left",
+        "gluteus_maximus_right",
+        "gluteus_medius_left",
+        "gluteus_medius_right",
+        "gluteus_minimus_left",
+        "gluteus_minimus_right",
+        "autochthon_left",
+        "autochthon_right",
+        "iliopsoas_left",
+        "iliopsoas_right",
+        "brain",
+        "skull",
+        "rib_left_1",
+        "rib_left_2",
+        "rib_left_3",
+        "rib_left_4",
+        "rib_left_5",
+        "rib_left_6",
+        "rib_left_7",
+        "rib_left_8",
+        "rib_left_9",
+        "rib_left_10",
+        "rib_left_11",
+        "rib_left_12",
+        "rib_right_1",
+        "rib_right_2",
+        "rib_right_3",
+        "rib_right_4",
+        "rib_right_5",
+        "rib_right_6",
+        "rib_right_7",
+        "rib_right_8",
+        "rib_right_9",
+        "rib_right_10",
+        "rib_right_11",
+        "rib_right_12",
+        "sternum",
+        "costal_cartilages"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "limitations": [
+        "Third-party published weights (Wasserthal et al., Radiology: AI 2023) trained on 1,559 CT examinations from University Hospital Basel; MedTwin did not train them.",
+        "Runs from Medical Imaging on a CT NIfTI after the user states it is CT; volumes whose voxel values are not Hounsfield units (for example MRI) are refused before the network runs.",
+        "Local external check on LUNA16 lungs: mean Dice 0.9741 (95% CI 0.9724-0.9754) on 60 scans (fast (3 mm TotalSegmentator 'total' model, five lung lobes merged)); agreement with LUNA16's published masks, lungs only.",
+        "Masks are in the scan's own voxel grid and are not registered to the anatomy atlas; volumes are research measurements of the model's masks.",
+        "TotalSegmentator's usage statistics are switched off in its own configuration before every run."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "Publisher training data: TotalSegmentator v2 dataset (1,559 CT examinations)",
+        "dataset_license": "Apache-2.0 (TotalSegmentator code and 'total' task weights)",
+        "split_manifest_path": null,
+        "task_definition": "Voxel labels for up to 117 anatomical structures on CT",
+        "label_definition": "TotalSegmentator class_map['total']",
+        "preprocessing_version": "totalsegmentator-2.18.0: canonical orientation, resample to 1.5 mm (full) or 3 mm (fast), nnU-Net, resampled back",
+        "checkpoint_path": "artifacts/third_party/totalsegmentator/weights/Dataset291_TotalSegmentator_part1_organs_1559subj/nnUNetTrainerNoMirroring__nnUNetPlans__3d_fullres/fold_0/checkpoint_final.pth",
+        "checkpoint_sha256": "98c429f89fd9b3b08890fbb2b4c08c365ad4655fdcadb45efaa29380129fd890",
+        "calibration": null,
+        "decision_thresholds": "nnU-Net argmax labels",
+        "abstention_thresholds": null,
+        "held_out_predictions_path": null,
+        "evaluation_report_path": "docs/validation/models/ct_totalsegmentator_v2.luna16_lungs.json",
+        "model_card_path": null,
+        "component_checkpoints_sha256": {
+          "Dataset291_TotalSegmentator_part1_organs_1559subj": "98c429f89fd9b3b08890fbb2b4c08c365ad4655fdcadb45efaa29380129fd890",
+          "Dataset292_TotalSegmentator_part2_vertebrae_1532subj": "7022f71829ef00aa14d790a7667bc18eb1691f2fe5b0a38c475862abc84c2457",
+          "Dataset293_TotalSegmentator_part3_cardiac_1559subj": "189010ac67fec3f1704df7547306d0067eabaaf620e0a46a1bdd183afa0800e4",
+          "Dataset294_TotalSegmentator_part4_muscles_1559subj": "655eb40de03aa3de7348b69d7569a1cc3a2dc7969a11c0d60a7331e07df11c28",
+          "Dataset295_TotalSegmentator_part5_ribs_1559subj": "a674364c60b304fbd56feccdd95f8d0fe0c45a5bfa1ef25815516e4dde04d3fc",
+          "Dataset297_TotalSegmentator_total_3mm_1559subj": "1e38e40356adc2706a662e365405a97f862d62a7da65f6bf81d025aee1b979ac",
+          "Dataset298_TotalSegmentator_total_6mm_1559subj": "3489323a4b759506ab46b489eb78b72142f2143aea6e6d828604d754bd7a9270"
+        }
+      },
+      "supported_modalities": [
+        "CT"
+      ],
+      "inference_route": "POST /uploads/{id}/ct-organ-segmentation (own endpoint; queued GPU job)",
+      "local_evaluation": {
+        "scope": "Lungs only (five lobes merged)",
+        "dataset": "LUNA16 published lung masks, 60 randomly sampled scans",
+        "headline": "lung Dice 0.974 (95% CI 0.972-0.975) against LUNA16's published masks",
+        "report_path": "docs/validation/models/ct_totalsegmentator_v2.luna16_lungs.json"
+      }
+    },
+    {
+      "model_id": "mura_study_baseline",
+      "display_name": "Upper-limb radiograph abnormality classifier, MURA (research)",
+      "domain": "medical_imaging",
+      "task": "image_classification",
+      "anatomy": "skeletal",
+      "framework": "torchvision efficientnet_b0",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/mura_study_baseline-20261031T115458Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/jpeg",
+        "image/png"
+      ],
+      "supported_modalities": [
+        "XRAY"
+      ],
+      "supported_classes": [
+        "abnormal",
+        "normal"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "validation_readiness": {
+        "validation_ready": true,
+        "readiness": "READY_FOR_TRAINING",
+        "run_scope": "STANDARD_INTERNAL_EVALUATION",
+        "minimum_samples_per_class": null,
+        "classes_below_minimum": [],
+        "source_flags": [
+          "TASK_SUPPORTED_BY_LABELS",
+          "LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES"
+        ],
+        "effective_flags": [
+          "TASK_SUPPORTED_BY_LABELS",
+          "LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES"
+        ]
+      },
+      "class_distribution": {
+        "per_split": {
+          "train": {
+            "abnormal": 12319,
+            "normal": 18051
+          },
+          "val": {
+            "abnormal": 2554,
+            "normal": 3884
+          },
+          "test": {
+            "abnormal": 1530,
+            "normal": 1667
+          }
+        },
+        "total": {
+          "abnormal": 16403,
+          "normal": 23602
+        }
+      },
+      "class_imbalance": {
+        "strategy": "inverse_frequency",
+        "enabled": true,
+        "formula": "w_c = N_train / (K * n_train,c)",
+        "computed_from": "training split only",
+        "training_counts": {
+          "abnormal": 12319,
+          "normal": 18051
+        },
+        "weights_by_class": {
+          "abnormal": 1.2326487539573017,
+          "normal": 0.8412276328181264
+        },
+        "normalization": "equal aggregate training-loss contribution per observed class"
+      },
+      "limitations": [
+        "Training used inverse-frequency weighted cross-entropy computed from the training split only. Weighting changes optimisation but does not create rare-class evidence or correct evaluation uncertainty.",
+        "Pseudonymous patient ids come from the publisher's folders. The publisher's validation split, used as the test set, shares no patient with its training split; training patients were divided into train and validation, and the bootstrap resamples patients.",
+        "Internal held-out test from the same source distribution; no external validation.",
+        "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+        "Research-only output; not validated for clinical use.",
+        "MURA labels whole studies; an upload is scored as one image. The held-out study-level result (mean over a study's views) is AUROC 0.898 (95% CI 0.880-0.917), Cohen's kappa 0.677 (0.632-0.718) on 1,199 studies; single views are less reliable.",
+        "Applicability gate: refuses GI endoscopy, CT slices and microscopy images, but lets 95% of coronary angiograms through (both are greyscale X-ray projections); the declared input type must be right.",
+        "Upper limb only (shoulder, humerus, elbow, forearm, wrist, hand, finger); no lower-limb, spine or chest radiographs."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "873c4587ca667acf4f1e22723195a4c3d77dca45450ad93057334efbfa07323d",
+        "dataset_license": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
+        "split_manifest_path": "_derived/datasets/mura-study-abnormality/samples.csv",
+        "task_definition": "study-level normal vs abnormal",
+        "label_definition": {
+          "source": "publisher class folders",
+          "classes": [
+            "abnormal",
+            "normal"
+          ]
+        },
+        "preprocessing_version": "rgb-resize114-centercrop-imagenetnorm-v1",
+        "checkpoint_path": "artifacts/training/mura_study_baseline-20261031T115458Z/model.pt",
+        "checkpoint_sha256": "e5604f7efe4c480bc58e0a29d159255fb4ba8a08644cfa10de76f665595215be",
+        "calibration": {
+          "method": "temperature_scaling",
+          "parameters": {
+            "temperature": 1.2500369548797607
+          }
+        },
+        "decision_thresholds": {
+          "rule": "argmax over temperature-scaled softmax"
+        },
+        "abstention_thresholds": null,
+        "validation_readiness": {
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "run_scope": "STANDARD_INTERNAL_EVALUATION",
+          "minimum_samples_per_class": null,
+          "classes_below_minimum": [],
+          "source_flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES"
+          ],
+          "effective_flags": [
+            "TASK_SUPPORTED_BY_LABELS",
+            "LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES"
+          ]
+        },
+        "class_distribution": {
+          "per_split": {
+            "train": {
+              "abnormal": 12319,
+              "normal": 18051
+            },
+            "val": {
+              "abnormal": 2554,
+              "normal": 3884
+            },
+            "test": {
+              "abnormal": 1530,
+              "normal": 1667
+            }
+          },
+          "total": {
+            "abnormal": 16403,
+            "normal": 23602
+          }
+        },
+        "class_imbalance": {
+          "strategy": "inverse_frequency",
+          "enabled": true,
+          "formula": "w_c = N_train / (K * n_train,c)",
+          "computed_from": "training split only",
+          "training_counts": {
+            "abnormal": 12319,
+            "normal": 18051
+          },
+          "weights_by_class": {
+            "abnormal": 1.2326487539573017,
+            "normal": 0.8412276328181264
+          },
+          "normalization": "equal aggregate training-loss contribution per observed class"
+        },
+        "held_out_predictions_path": "artifacts/training/mura_study_baseline-20261031T115458Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/mura_study_baseline.json",
+        "model_card_path": "docs/models/mura_study_baseline.md",
+        "ood_reference_path": "artifacts/training/mura_study_baseline-20261031T115458Z/ood_reference.npz",
+        "ood_reference_sha256": "b5bd422e85e4de3755726e788e64a845b62fed6bbcc1eb36057331d144b0196e"
+      }
+    },
+    {
+      "model_id": "brain_ct_rsna_ich_classifier",
+      "display_name": "Intracranial haemorrhage on head CT slices, 5 subtypes (RSNA ICH, research)",
+      "domain": "medical_imaging",
+      "task": "multilabel_image_classification",
+      "anatomy": "brain",
+      "framework": "torchvision efficientnet_b0",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/brain_ct_rsna_ich_classifier-20261104T133551Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "supported_modalities": [
+        "HEAD_CT"
+      ],
+      "supported_classes": [
+        "epidural",
+        "subdural",
+        "intraparenchymal",
+        "intraventricular",
+        "subarachnoid",
+        "any intracranial haemorrhage"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "inference_input": "image_2d",
+      "limitations": [
+        "Haemorrhage subtypes only (RSNA labels); no ischaemic stroke, tumour, infection or other pathology.",
+        "Slice-level model on single-window PNGs; it does not see neighbouring slices or other CT windows.",
+        "Internal held-out test on unseen patients of the same RSNA collection; no external validation.",
+        "Operating thresholds come from the validation patients (maximum F1); probabilities are not calibrated for any clinical population.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "a1f6865986d5ada5b57ac86913d4411f5c60b9dea9d607d291d73df44dc39c68",
+        "dataset_license": "RSNA Intracranial Hemorrhage Detection dataset terms (non-commercial research use)",
+        "split_manifest_path": "_derived/datasets/rsna-ich/samples.csv",
+        "task_definition": "Per-slice presence of epidural, subdural, intraparenchymal, intraventricular and subarachnoid haemorrhage, and any",
+        "label_definition": {
+          "source": "RSNA stage_2_train labels",
+          "classes": [
+            "epidural",
+            "subdural",
+            "intraparenchymal",
+            "intraventricular",
+            "subarachnoid",
+            "any intracranial haemorrhage"
+          ]
+        },
+        "preprocessing_version": "png-gray3-resize256-imagenetnorm-v1",
+        "checkpoint_path": "artifacts/training/brain_ct_rsna_ich_classifier-20261104T133551Z/model.pt",
+        "checkpoint_sha256": "39b8068ea6c9337224db124897d9f1adf14ca6c0ad88bbc9268a59ec7a664a08",
+        "calibration": null,
+        "decision_thresholds": {
+          "epidural": 0.138345,
+          "subdural": 0.331661,
+          "intraparenchymal": 0.41401,
+          "intraventricular": 0.349089,
+          "subarachnoid": 0.429011,
+          "any intracranial haemorrhage": 0.442426
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/brain_ct_rsna_ich_classifier-20261104T133551Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/brain_ct_rsna_ich_classifier.json",
+        "model_card_path": "docs/models/brain_ct_rsna_ich_classifier.md",
+        "ood_sample_manifest_path": "_derived/datasets/rsna-ich/ood_sample.csv",
+        "ood_reference_path": "artifacts/training/brain_ct_rsna_ich_classifier-20261104T133551Z/ood_reference.npz",
+        "ood_reference_sha256": "043a378e947987070658922eeda9c7bd4bca4e1058ada66a09e54b2bbab09e8c"
+      },
+      "dicom_window": {
+        "center": 40,
+        "width": 80,
+        "function": "LINEAR_EXACT",
+        "rounding": "floor",
+        "source": "Width 80 HU measured from the training PNGs' grey-level quantisation (79 reachable levels, truncation); level 40 HU estimated from the parenchyma and CSF peaks (docs/validation/RSNA_PNG_WINDOW_ESTIMATE.md)"
+      }
+    },
+    {
+      "model_id": "ptbxl_ecg_demographic_fusion",
+      "display_name": "12-lead ECG + age and sex fusion classifier (research)",
+      "domain": "cardiology",
+      "task": "multilabel_ecg_classification",
+      "anatomy": "heart",
+      "framework": "pytorch",
+      "adapter": "ml_training.ecg_fusion",
+      "source_repository": "medtwin (ml_training/ecg_fusion.py)",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/ptbxl_ecg_demographic_fusion-20261105T093352Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "application/wfdb (format 16 header + signal file; 100 Hz, 12-lead, 10 s)",
+        "text/csv (time column in seconds, 12 lead columns, amplitude unit declared by the user; 100 Hz, 10 s)"
+      ],
+      "supported_modalities": [
+        "ECG"
+      ],
+      "inference_input": "ecg_12lead",
+      "demographic_inputs": [
+        "age_years",
+        "sex"
+      ],
+      "supported_classes": [
+        "NORM",
+        "MI",
+        "STTC",
+        "CD",
+        "HYP"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Single-source internal evaluation (PTB-XL, recordings 1989-1996); no external or clinical validation.",
+        "On the same held-out records, adding age and sex did not measurably change macro AUROC over the ECG-only network (paired difference in the report).",
+        "Age and sex come from the request or the case's reviewed demographics, never from extracted text; without both the run is refused.",
+        "Superclass labels aggregate cardiologist SCP statements; they are not adjudicated clinical diagnoses.",
+        "Only 100 Hz, 10-second, 12-lead resting ECGs in the PTB-XL lead order are in scope.",
+        "Platt calibration was fitted on the validation fold of the same source; probabilities are not calibrated for any clinical population.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "a1f01931077bf242b541169497def6401e190b30a1408c371fef8eb15a44e104",
+        "dataset_license": "CC BY 4.0 (Creative Commons Attribution 4.0 International)",
+        "split_manifest_path": "docs/validation/models/ptbxl_ecg_demographic_fusion.json",
+        "task_definition": "Multi-label PTB-XL diagnostic superclasses from SCP statements with diagnostic == 1, from the ECG plus age and sex",
+        "label_definition": {
+          "source": "scp_statements.csv diagnostic_class",
+          "classes": [
+            "NORM",
+            "MI",
+            "STTC",
+            "CD",
+            "HYP"
+          ]
+        },
+        "preprocessing_version": "wfdb16-100hz-10s-leadstd-v1",
+        "checkpoint_path": "artifacts/training/ptbxl_ecg_demographic_fusion-20261105T093352Z/model.pt",
+        "checkpoint_sha256": "21a7e9f044f898f99ee21fd93075ec1f4d1de5dc3bd24b2e10b645026b883200",
+        "calibration": {
+          "method": "per-class Platt scaling",
+          "fitted_on": "validation fold"
+        },
+        "decision_thresholds": {
+          "rule": "per-class maximum F1 on the validation fold",
+          "values": {
+            "NORM": 0.39320001006126404,
+            "MI": 0.3894999921321869,
+            "STTC": 0.3955000042915344,
+            "CD": 0.36039999127388,
+            "HYP": 0.22040000557899475
+          }
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/ptbxl_ecg_demographic_fusion-20261105T093352Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/ptbxl_ecg_demographic_fusion.json",
+        "model_card_path": "docs/models/ptbxl_ecg_demographic_fusion.md"
+      },
+      "source_display_name": "PTB-XL 12-lead ECG + age/sex fusion classifier (research)"
+    },
+    {
+      "model_id": "brain_mri_stroke_lesion_segresnet",
+      "display_name": "Brain MRI ischaemic stroke lesion segmenter, DWI + ADC, 3-D (research)",
+      "domain": "medical_imaging",
+      "task": "volumetric_semantic_segmentation",
+      "anatomy": "brain",
+      "framework": "MONAI SegResNet (PyTorch), 3-D",
+      "adapter": "ml_training.volumetric_multichannel",
+      "source_repository": "medtwin/ml_training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/brain_mri_stroke_lesion_segresnet-20261105T092121Z/best.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "application/x-nifti",
+        "application/gzip"
+      ],
+      "supported_modalities": [
+        "BRAIN_MRI_DIFFUSION"
+      ],
+      "supported_classes": [
+        "background",
+        "ischaemic_stroke_lesion"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "limitations": [
+        "Internal held-out test on ISLES 2022 patients from the same centres as training; no external or clinical validation.",
+        "Input: DWI and ADC on one grid, stacked in one 4-D NIfTI with DWI first, skull-stripped like the development data; FLAIR is not used. One development case was not skull-stripped, so the non-zero-share check cannot refuse a head with skull for this model.",
+        "A predicted lesion is a research segmentation of diffusion restriction, not an infarct-core estimate for treatment selection.",
+        "Small lesions are segmented less reliably (Dice by reference lesion volume is reported); false-positive components per case are reported.",
+        "Trained on ischaemic stroke only: haemorrhage, tumour, infection and other causes of diffusion restriction are out of scope.",
+        "Research-only output; not clinically validated and not for diagnosis or treatment decisions.",
+        "Evaluation and serving use float16 autocast on CUDA with cuDNN autotuning; a rerun of training can differ slightly."
+      ],
+      "pipeline": {
+        "dataset_preparation": "python scripts/prepare_brain_mri_datasets.py",
+        "manifest_builder": "python -m ml_training.volumetric_manifest pairs",
+        "trainer": "python -m ml_training.volumetric_multichannel train",
+        "synthetic_smoke": "python -m ml_training.volumetric_multichannel smoke",
+        "publisher": "python scripts/publish_brain_mri_models.py",
+        "run_id": "brain_mri_stroke_lesion_segresnet-20261105T092121Z",
+        "real_data_training_executed": true,
+        "manifest_dataset_version": "577bbf290a101762a6fa117b31706d6acef0ba8b4f24630e50e9088b91432609"
+      },
+      "artifact_bundle": {
+        "dataset_version": "577bbf290a101762a6fa117b31706d6acef0ba8b4f24630e50e9088b91432609",
+        "dataset_license": "CC BY 4.0 (ISLES 2022, multi-centre stroke MRI)",
+        "split_manifest_path": "_derived/datasets/isles22-dwi-adc/manifest.json",
+        "task_definition": "Patient-split segmentation of ischaemic stroke lesions on skull-stripped DWI (b=1000) and ADC.",
+        "label_definition": {
+          "source": "ISLES 2022 binary lesion masks on the DWI grid (publisher's annotation)",
+          "classes": {
+            "0": "background",
+            "1": "ischaemic_stroke_lesion"
+          }
+        },
+        "preprocessing_version": "nifti-foreground-crop-channel-zscore-resample-v2",
+        "checkpoint_path": "artifacts/training/brain_mri_stroke_lesion_segresnet-20261105T092121Z/best.pt",
+        "checkpoint_sha256": "058be494f9b04b603fa47bfc7425707bb6802408eac37d5ce8daa910a86d14ca",
+        "calibration": null,
+        "decision_thresholds": {
+          "rule": "argmax over softmax per voxel"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/brain_mri_stroke_lesion_segresnet-20261105T092121Z/held_out_predictions",
+        "evaluation_report_path": "docs/validation/models/brain_mri_stroke_lesion_segresnet.json",
+        "model_card_path": "docs/models/brain_mri_stroke_lesion_segresnet.md",
+        "input_envelope_path": "docs/validation/models/brain_mri_stroke_lesion_segresnet_input_envelope.json"
+      },
+      "source_display_name": "Brain MRI ischaemic stroke lesion segmenter, DWI + ADC, 3-D (research)",
+      "inference_input": "volume_nifti",
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH"
+      }
+    },
+    {
+      "model_id": "brain_mri_glioma_segresnet",
+      "display_name": "Brain MRI glioma sub-region segmenter, FLAIR/T1/T1c/T2, 3-D (research)",
+      "domain": "medical_imaging",
+      "task": "volumetric_semantic_segmentation",
+      "anatomy": "brain",
+      "framework": "MONAI SegResNet (PyTorch), 3-D",
+      "adapter": "ml_training.volumetric_multichannel",
+      "source_repository": "medtwin/ml_training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/brain_mri_glioma_segresnet-20261105T182742Z/best.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "application/x-nifti",
+        "application/gzip"
+      ],
+      "supported_modalities": [
+        "BRAIN_MRI_MULTISEQUENCE"
+      ],
+      "supported_classes": [
+        "background",
+        "peritumoural_oedema",
+        "necrotic_or_non_enhancing_tumour_core",
+        "enhancing_tumour"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "limitations": [
+        "Internal held-out test on Medical Segmentation Decathlon cases; no external or clinical validation.",
+        "Gliomas only (BraTS): metastases, meningiomas, abscesses, stroke and other lesions are out of scope.",
+        "Input must be skull-stripped FLAIR, T1, post-contrast T1 and T2, co-registered on a 1 mm grid like the SRI24 atlas, stacked in that order in one 4-D NIfTI.",
+        "BraTS 2016 and 2017 cases are combined; a subject present in both releases cannot be excluded from the case numbers, so split leakage is possible.",
+        "Label 2 combines necrosis and non-enhancing tumour (MSD convention); volumes are research estimates, not RANO measurements.",
+        "Research-only output; not clinically validated and not for diagnosis or treatment decisions.",
+        "Evaluation and serving use float16 autocast on CUDA with cuDNN autotuning; a rerun of training can differ slightly."
+      ],
+      "pipeline": {
+        "dataset_preparation": "python scripts/prepare_brain_mri_datasets.py",
+        "manifest_builder": "python -m ml_training.volumetric_manifest pairs",
+        "trainer": "python -m ml_training.volumetric_multichannel train",
+        "synthetic_smoke": "python -m ml_training.volumetric_multichannel smoke",
+        "publisher": "python scripts/publish_brain_mri_models.py",
+        "run_id": "brain_mri_glioma_segresnet-20261105T182742Z",
+        "real_data_training_executed": true,
+        "manifest_dataset_version": "d3b2c312fdb061078d241b43627a187111d78864e660cad57ba12b11e8ab548a"
+      },
+      "artifact_bundle": {
+        "dataset_version": "d3b2c312fdb061078d241b43627a187111d78864e660cad57ba12b11e8ab548a",
+        "dataset_license": "CC BY-SA 4.0 (Medical Segmentation Decathlon Task01, BraTS 2016/2017)",
+        "split_manifest_path": "_derived/datasets/msd-brain-tumour/manifest.json",
+        "task_definition": "Patient-split segmentation of glioma sub-regions (oedema, necrotic/non-enhancing core, enhancing tumour) on co-registered FLAIR, T1, T1c and T2.",
+        "label_definition": {
+          "source": "Medical Segmentation Decathlon Task01 labels (BraTS expert annotations)",
+          "classes": {
+            "0": "background",
+            "1": "peritumoural_oedema",
+            "2": "necrotic_or_non_enhancing_tumour_core",
+            "3": "enhancing_tumour"
+          }
+        },
+        "preprocessing_version": "nifti-foreground-crop-channel-zscore-resample-v2",
+        "checkpoint_path": "artifacts/training/brain_mri_glioma_segresnet-20261105T182742Z/best.pt",
+        "checkpoint_sha256": "2f2836466ff27cdb06f0807dcd2dc97cb6b8498bcf25692ff23cf8e0481c7c42",
+        "calibration": null,
+        "decision_thresholds": {
+          "rule": "argmax over softmax per voxel"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/brain_mri_glioma_segresnet-20261105T182742Z/held_out_predictions",
+        "evaluation_report_path": "docs/validation/models/brain_mri_glioma_segresnet.json",
+        "model_card_path": "docs/models/brain_mri_glioma_segresnet.md",
+        "input_envelope_path": "docs/validation/models/brain_mri_glioma_segresnet_input_envelope.json"
+      },
+      "source_display_name": "Brain MRI glioma sub-region segmenter, FLAIR/T1/T1c/T2, 3-D (research)",
+      "inference_input": "volume_nifti",
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH"
+      }
+    },
+    {
+      "model_id": "skin_padufes_image_classifier",
+      "display_name": "Clinical skin-image classifier (research)",
+      "domain": "dermatology",
+      "task": "image_classification",
+      "anatomy": "skin",
+      "framework": "torchvision resnet18 frozen + regularized linear head",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/ml_training/skin_fusion.py",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/skin_padufes_image_classifier-20261109/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "supported_modalities": [
+        "DERMATOLOGY"
+      ],
+      "supported_classes": [
+        "actinic_keratosis",
+        "basal_cell_carcinoma",
+        "melanoma",
+        "nevus",
+        "seborrheic_keratosis",
+        "squamous_cell_carcinoma"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "requires_clinical_features": false,
+      "clinical_metadata_contract": null,
+      "input_quality": {
+        "min_dimension": 64,
+        "min_intensity_std": 2.0,
+        "min_chroma": 5.358334350585937,
+        "colour_gate_version": "pad-training-chroma-quantile-v1"
+      },
+      "limitations": [
+        "Internal patient-separated holdout from PAD-UFES-20, not independent external or clinical validation.",
+        "Six clinical skin-lesion categories; not all skin diseases, dermoscopy, histopathology or whole-slide interpretation.",
+        "Training source has variable diagnostic confirmation; a predicted class is not a confirmed diagnosis.",
+        "Only five melanoma images are present in the frozen test split; rare-class estimates are unstable.",
+        "Frozen ImageNet ResNet18 features; regularization and temperature selected on validation only.",
+        "Source age/gender/region can encode cohort bias; no clinical fairness or safety claim.",
+        "Research-only; no treatment, exclusion of malignancy or clinical activation."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "3e5e8b61d2fc84599fcb28f6c3173ba29c1d28eb7bea47e6aa896296fdd82014",
+        "dataset_license": "CC BY 4.0 (PAD-UFES-20); pretrained encoder terms require separate review",
+        "split_manifest_path": "_derived/datasets/pad-clinical-image/samples.csv",
+        "task_definition": "Six labelled clinical skin-lesion categories",
+        "label_definition": {
+          "classes": [
+            "actinic_keratosis",
+            "basal_cell_carcinoma",
+            "melanoma",
+            "nevus",
+            "seborrheic_keratosis",
+            "squamous_cell_carcinoma"
+          ],
+          "source": "publisher diagnostic column; confirmation varies"
+        },
+        "preprocessing_version": "rgb-resize114-centercrop-imagenetnorm-v1",
+        "checkpoint_path": "artifacts/training/skin_padufes_image_classifier-20261109/model.pt",
+        "checkpoint_sha256": "550aa164889daf8645742cad13c6ae865c179dfc0c6581279beb516a022f7b3c",
+        "calibration": {
+          "method": "temperature_scaling",
+          "fitted_on": "validation",
+          "temperature": 1.1103278398513794
+        },
+        "decision_thresholds": {
+          "rule": "argmax after temperature scaling"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/skin_padufes_image_classifier-20261109/test_predictions.csv",
+        "evaluation_report_path": "docs/validation/models/skin_padufes_image_classifier.json",
+        "model_card_path": "docs/models/skin_padufes_image_classifier.md",
+        "ood_reference_path": "artifacts/training/skin_padufes_image_classifier-20261109/ood_reference.npz",
+        "ood_reference_sha256": "e9f97289b9591ffdd87cadc5676e2539f41f7fa26021b593475388471ce2a52b"
+      }
+    },
+    {
+      "model_id": "skin_padufes_image_tabular_classifier",
+      "display_name": "Clinical skin image + documented attributes (research)",
+      "domain": "dermatology",
+      "task": "image_classification",
+      "anatomy": "skin",
+      "framework": "torchvision resnet18 frozen + regularized linear head",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/ml_training/skin_fusion.py",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/skin_padufes_image_tabular_classifier-20261109/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "supported_modalities": [
+        "DERMATOLOGY"
+      ],
+      "supported_classes": [
+        "actinic_keratosis",
+        "basal_cell_carcinoma",
+        "melanoma",
+        "nevus",
+        "seborrheic_keratosis",
+        "squamous_cell_carcinoma"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "requires_clinical_features": true,
+      "clinical_metadata_contract": {
+        "version": "pad-age-gender-region-train-only-v1",
+        "fitted_on": "train",
+        "age_mean": 60.36224801466096,
+        "age_std": 16.277416830466642,
+        "age_median": 62.0,
+        "age_range": [
+          6.0,
+          94.0
+        ],
+        "categories": {
+          "gender": [
+            "FEMALE",
+            "MALE"
+          ],
+          "region": [
+            "ABDOMEN",
+            "ARM",
+            "BACK",
+            "CHEST",
+            "EAR",
+            "FACE",
+            "FOOT",
+            "FOREARM",
+            "HAND",
+            "LIP",
+            "NECK",
+            "NOSE",
+            "SCALP",
+            "THIGH"
+          ]
+        },
+        "dimension": 22
+      },
+      "input_quality": {
+        "min_dimension": 64,
+        "min_intensity_std": 2.0,
+        "min_chroma": 5.358334350585937,
+        "colour_gate_version": "pad-training-chroma-quantile-v1"
+      },
+      "limitations": [
+        "Internal patient-separated holdout from PAD-UFES-20, not independent external or clinical validation.",
+        "Six clinical skin-lesion categories; not all skin diseases, dermoscopy, histopathology or whole-slide interpretation.",
+        "Training source has variable diagnostic confirmation; a predicted class is not a confirmed diagnosis.",
+        "Only five melanoma images are present in the frozen test split; rare-class estimates are unstable.",
+        "Frozen ImageNet ResNet18 features; regularization and temperature selected on validation only.",
+        "Source age/gender/region can encode cohort bias; no clinical fairness or safety claim.",
+        "Research-only; no treatment, exclusion of malignancy or clinical activation."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "3e5e8b61d2fc84599fcb28f6c3173ba29c1d28eb7bea47e6aa896296fdd82014",
+        "dataset_license": "CC BY 4.0 (PAD-UFES-20); pretrained encoder terms require separate review",
+        "split_manifest_path": "_derived/datasets/pad-clinical-image/samples.csv",
+        "task_definition": "Six labelled clinical skin-lesion categories",
+        "label_definition": {
+          "classes": [
+            "actinic_keratosis",
+            "basal_cell_carcinoma",
+            "melanoma",
+            "nevus",
+            "seborrheic_keratosis",
+            "squamous_cell_carcinoma"
+          ],
+          "source": "publisher diagnostic column; confirmation varies"
+        },
+        "preprocessing_version": "rgb-resize114-centercrop-imagenetnorm-v1+pad-age-gender-region-train-only-v1",
+        "checkpoint_path": "artifacts/training/skin_padufes_image_tabular_classifier-20261109/model.pt",
+        "checkpoint_sha256": "429070bdee8e65daa4bd34b273f9389209b0b524a0fbef3d0b98e2a87bd68396",
+        "calibration": {
+          "method": "temperature_scaling",
+          "fitted_on": "validation",
+          "temperature": 1.6379376649856567
+        },
+        "decision_thresholds": {
+          "rule": "argmax after temperature scaling"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/skin_padufes_image_tabular_classifier-20261109/test_predictions.csv",
+        "evaluation_report_path": "docs/validation/models/skin_padufes_image_tabular_classifier.json",
+        "model_card_path": "docs/models/skin_padufes_image_tabular_classifier.md",
+        "ood_reference_path": "artifacts/training/skin_padufes_image_tabular_classifier-20261109/ood_reference.npz",
+        "ood_reference_sha256": "f1dc9674f6878e21a55ab03ef04ef7ee3920d04e7be3da63778d34146685699d"
+      }
+    },
+    {
+      "model_id": "ct_kidney_tumour_segresnet",
+      "display_name": "CT kidney and renal-tumour segmenter, 3-D (research)",
+      "domain": "medical_imaging",
+      "task": "volumetric_semantic_segmentation",
+      "anatomy": "kidneys",
+      "framework": "MONAI SegResNet (PyTorch), 3-D",
+      "adapter": "ml_training.volumetric_multichannel",
+      "source_repository": "medtwin/ml_training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/ct_kidney_tumour_segresnet-20261109/best.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "application/x-nifti",
+        "application/gzip"
+      ],
+      "supported_modalities": [
+        "CT_ABDOMEN_VOLUME"
+      ],
+      "supported_classes": [
+        "background",
+        "kidney",
+        "renal_tumour"
+      ],
+      "status": "FAILED",
+      "validated": false,
+      "research_inference": true,
+      "research_quality_assessment": {
+        "status": "FAILED_DECLARED_TARGET",
+        "failed_targets": [
+          "renal_tumour"
+        ],
+        "rule": "A declared target with zero mean Dice despite positive held-out references blocks upload use. This is not a clinical acceptance threshold."
+      },
+      "limitations": [
+        "Internal held-out patients only; no independent external or clinical validation.",
+        "Renal-surgery cohort; healthy kidneys and incidental lesions in general populations are not established use cases.",
+        "Tumour masks do not determine histology, malignancy, stage or treatment.",
+        "One contrast abdominal CT volume in Hounsfield units within the recorded development geometry and intensity envelope.",
+        "Initial bounded training experiment; measured results must be assessed before proposing further research use.",
+        "FAILED TARGET: zero held-out Dice for renal_tumour. Upload inference is blocked; a zero mask must not imply absence of disease.",
+        "Research-only output; not clinically validated and not for diagnosis or treatment decisions.",
+        "Evaluation and serving use float16 autocast on CUDA with cuDNN autotuning; a rerun of training can differ slightly."
+      ],
+      "pipeline": {
+        "dataset_preparation": "python scripts/prepare_kits19_dataset.py",
+        "manifest_builder": "python -m ml_training.volumetric_manifest pairs",
+        "trainer": "python -m ml_training.volumetric_multichannel train",
+        "synthetic_smoke": "python -m ml_training.volumetric_multichannel smoke",
+        "publisher": "python scripts/publish_brain_mri_models.py",
+        "run_id": "ct_kidney_tumour_segresnet-20261109",
+        "real_data_training_executed": true,
+        "manifest_dataset_version": "455cfd7c06b0a16e608b510704e19226da325a82729425b8c1a696c05ff575dd"
+      },
+      "artifact_bundle": {
+        "dataset_version": "455cfd7c06b0a16e608b510704e19226da325a82729425b8c1a696c05ff575dd",
+        "dataset_license": "CC BY-NC-SA 4.0 (KiTS19 data); local non-commercial research only",
+        "split_manifest_path": "_derived/datasets/kits19-segmentation/manifest.json",
+        "task_definition": "Patient-separated kidney and renal-tumour segmentation on the 210 labelled KiTS19 contrast CT volumes.",
+        "label_definition": {
+          "source": "KiTS19 original kidney/tumour masks paired with checksum-verified publisher CT volumes",
+          "classes": {
+            "0": "background",
+            "1": "kidney",
+            "2": "renal_tumour"
+          }
+        },
+        "preprocessing_version": "nifti-foreground-crop-channel-zscore-resample-v2",
+        "checkpoint_path": "artifacts/training/ct_kidney_tumour_segresnet-20261109/best.pt",
+        "checkpoint_sha256": "9acfa4f810ff7eb7be0e35c9ff465f1dee9385f7dc4ce9141ee54ae6e58651a2",
+        "calibration": null,
+        "decision_thresholds": {
+          "rule": "argmax over softmax per voxel"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/ct_kidney_tumour_segresnet-20261109/held_out_predictions",
+        "evaluation_report_path": "docs/validation/models/ct_kidney_tumour_segresnet.json",
+        "model_card_path": "docs/models/ct_kidney_tumour_segresnet.md",
+        "input_envelope_path": "docs/validation/models/ct_kidney_tumour_segresnet_input_envelope.json"
+      },
+      "source_display_name": "CT kidney and renal-tumour segmenter, 3-D (research)",
+      "inference_input": "volume_nifti",
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "FAILED_DECLARED_TARGET",
+        "run_scope": "RESEARCH"
+      }
     }
   ]
 }

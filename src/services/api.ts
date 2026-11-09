@@ -100,11 +100,34 @@ export interface User {
   role: UserRole;
   verification_status: VerificationStatus;
   is_active: boolean;
+  /** A "Try the demo" account: temporary sign-in, fictional sample case. */
+  is_guest?: boolean;
+  /** An entry-page account: no password; this browser keeps its key. */
+  is_visitor?: boolean;
+  age?: number | null;
+  gender?: string | null;
+  stated_role?: string | null;
   created_at: string;
+}
+
+export interface VisitorEntry {
+  name: string;
+  age: number;
+  gender: 'female' | 'male' | 'other' | 'prefer_not_to_say';
+  role: 'patient' | 'caregiver' | 'doctor' | 'nurse' | 'lab_expert' | 'radiologist' | 'surgeon' | 'researcher' | 'student' | 'other';
+}
+
+export interface VisitorSession extends AuthenticatedSession {
+  expires_at: string;
 }
 
 export interface AuthenticatedSession extends AuthToken {
   user: User;
+}
+
+export interface GuestSession extends AuthenticatedSession {
+  case_id: number;
+  expires_at: string;
 }
 
 export interface RegisterUserInput {
@@ -264,7 +287,7 @@ export interface QueuedJob {
   progress: number | null;
   message: string | null;
   last_error: string | null;
-  result_ref: { inference_run_id?: number; run_status?: string } | null;
+  result_ref: { inference_run_id?: number; run_status?: string; analysis_status?: string; models_with_outputs?: number; results?: Array<{ model_id: string; run_id: number; status: string; reason: string | null }> } | null;
   cancel_requested: boolean;
   created_at: string | null;
   started_at: string | null;
@@ -278,26 +301,99 @@ export interface DetectionBox {
   above_display_threshold: boolean;
 }
 
+/** One sampled frame of an endoscopy video and what the still-image model gave for it. */
+export interface VideoFrameRecord {
+  frame_index: number;
+  time_s: number;
+  quality: { brightness: number; dark_fraction: number; sharpness_laplacian_variance: number };
+  status: 'SCORED' | 'REFUSED_BY_APPLICABILITY_CHECK';
+  reason?: string;
+  result?:
+    | { kind: 'segmentation'; area_px: number; area_fraction: number; segments: Array<{ class_index: number; segment: string; area_px: number; rle: CocoRle }>; foreground_label?: string; image_size: [number, number] }
+    | { kind: 'classification'; top_class: string; top_probability: number; top_classes: Array<{ class: string; probability: number }> }
+    | { kind: 'detection'; boxes_above_threshold: number; boxes: DetectionBox[]; class?: string; image_size: [number, number] };
+}
+
+export interface VideoTimelineOutput {
+  type: 'video_frame_timeline';
+  video: VideoMetadata;
+  model_id: string;
+  sampling: { interval_s: number; max_frames: number; requested_frames: number; decoded_frames: number; method?: string; variable_frame_rate_suspected?: boolean };
+  frames: VideoFrameRecord[];
+  scored_frames: number;
+  refused_frames: number;
+  coordinate_space: string;
+  semantics: string;
+  summary?: { frames_with_mask?: number; first_time_with_mask_s?: number | null; label?: string | null; top_class_counts?: Record<string, number> };
+  /** Marked regions linked between sampled frames (not evaluated on video). */
+  tracking?: { method: string; status: string; semantics: string; tracks: Array<{ track_id: number; frames_marked: number; first_time_s: number; last_time_s: number }> };
+  /** Runs of the same per-frame top class (classification models). */
+  class_runs?: { status: string; semantics: string; top_class_changes: number; runs: Array<{ top_class: string; first_time_s: number; last_time_s: number; frames: number }> };
+}
+
+export interface VideoMetadata {
+  fps: number;
+  frame_count: number;
+  duration_s: number;
+  width: number;
+  height: number;
+  codec: string;
+}
+
+/** Per-slice labels of a neighbouring-slice model on an ordered DICOM series. */
+export interface SeriesSliceOutput {
+  type: 'series_slice_multilabel';
+  slices: Array<{ slice_index: number; upload_id: number | null; applicability_score: number; status: 'ANALYSED' | 'REFUSED_OUT_OF_DISTRIBUTION';
+    labels?: Array<{ label: string; probability: number; threshold: number; at_or_above_threshold: boolean }>; positive_labels?: string[] }>;
+  slices_analysed: number;
+  slices_refused: number;
+  series_level: { label: string; probability: number; threshold: number; at_or_above_threshold: boolean; slice_index: number; coverage: string;
+    complete_coverage: boolean; rule: string };
+  slices_with_positive_labels: number[];
+  window: { center: number; width: number; source: string };
+  applicability: { limit: number; calibration: string; rule: string };
+  numeric_precision: string;
+  probability_semantics: string;
+}
+
 export type ResearchOutput =
+  | VideoTimelineOutput
+  | SeriesSliceOutput
   | {
       type: 'classification';
+      clinical_metadata?: { fields: string[]; values: { age: number; region: string; gender?: string }; source: string; preprocessing_version: string; imputed_fields: string[] };
       classes: Array<{ class: string; probability: number }>;
       top_class: string;
       top_probability: number;
       probability_semantics: string;
+      dicom_frame?: DicomFrameConversion;
+    }
+  | {
+      type: 'multilabel_classification';
+      labels: Array<{ label: string; probability: number; threshold: number; at_or_above_threshold: boolean }>;
+      positive_labels: string[];
+      numeric_precision: string;
+      probability_semantics: string;
+      threshold_semantics: string;
+      dicom_frame?: DicomFrameConversion;
     }
   | {
       type: 'detection';
       class: string;
       coordinate_space: string;
+      dicom_frame?: DicomFrameConversion;
       image_size: [number, number];
       display_score_threshold: number;
       boxes: DetectionBox[];
       score_semantics: string;
+      /** EXIF orientation tag applied before inference; absent on runs made before orientation handling. */
+      exif_orientation_applied?: number;
     }
   | {
       type: 'segmentation';
       coordinate_space: string;
+      dicom_frame?: DicomFrameConversion;
+      exif_orientation_applied?: number;
       image_size: [number, number];
       segments: Array<{ class_index: number; segment: string; area_px: number; rle: { size: [number, number]; counts: string } }>;
       vessel_area_px: number;
@@ -312,6 +408,8 @@ export type ResearchOutput =
       threshold_semantics: string;
       numeric_precision: string;
       input: { format: string; sampling_rate_hz: number; samples: number; duration_s: number; leads: string[]; peak_abs_amplitude_mv: number; notes: string[]; processing: string };
+      /** Fusion models: the age and sex used and where they came from. */
+      demographic_inputs?: { age_years: number; sex: 'M' | 'F'; sources: string[]; warnings: string[]; encoding: string };
     }
   | {
       type: 'volume_segmentation';
@@ -326,6 +424,20 @@ export type ResearchOutput =
       volume_semantics: string;
       held_out_volume_agreement: Record<string, { n_patients: number | null; bias_ml: number; limits_of_agreement_ml: [number, number] | null }>;
       input_warnings: string[];
+    }
+  | {
+      /** Ejection fraction from an echocardiography video: the mean of clip estimates (research regression). */
+      type: 'regression';
+      target: string;
+      unit: string;
+      ef_percent: number;
+      clip_ef_percent: number[];
+      clip_starts: number[];
+      clip_frames: number;
+      frame_period: number;
+      band: string | null;
+      numeric_precision: string;
+      estimate_semantics: string;
     };
 
 /** Inputs some research models need besides the upload itself. */
@@ -334,11 +446,174 @@ export interface ResearchRunOptions {
   companionUploadId?: ResourceId;
   /** CSV ECG records carry no amplitude unit. */
   amplitudeUnit?: 'mV' | 'uV';
+  /** Demographic-fusion ECG models: when omitted, the case's latest reviewed demographics are used. */
+  ageYears?: number;
+  sex?: 'M' | 'F';
+  /** Multi-frame DICOM uploads to a 2-D model: the frame to analyse (0-based). */
+  frameIndex?: number;
+  clinicalFeatures?: { age: number; region: string; gender?: 'MALE' | 'FEMALE' };
+}
+
+/** How a DICOM frame was converted to the 8-bit raster a 2-D model read (absent for PNG/JPEG/BMP runs). */
+export interface DicomFrameConversion {
+  source_container: 'DICOM';
+  modality_tag: string | null;
+  photometric_interpretation: string;
+  frame_index: number;
+  frame_count: number;
+  bits_stored: number;
+  pixel_grid: string;
+  window?: { source: string; center?: number; width?: number; low?: number; high?: number; function: string; basis?: string; monochrome1_inverted: boolean };
+  colour?: string;
+  warnings: string[];
 }
 
 export interface ResearchRun extends AnalysisJob {
   research_output: ResearchOutput | null;
   research_provenance: Record<string, unknown>;
+  /** The finding a reviewer confirms or rejects; the run's output itself never changes. */
+  finding_id?: number | null;
+  latest_review?: {
+    review_id: number;
+    review_status: HumanReviewDecision;
+    reviewer_id: number | null;
+    reviewer_comments: string | null;
+    reviewed_at: string | null;
+    original_output_preserved: boolean;
+    reviewer_role?: string | null;
+    /** Any account may review; this says whether the reviewer was a verified clinician. */
+    reviewer_verified_professional?: boolean;
+  } | null;
+}
+
+export type CocoRle = { size: [number, number]; counts: string };
+
+export interface VolumeSurfaces {
+  run_id: number;
+  frame: 'VOXEL_GRID_SCALED_MM';
+  voxel_spacing_mm: [number, number, number];
+  extent_mm: [number, number, number];
+  registered_to_atlas: false;
+  anatomy_link_level: string;
+  semantics: string;
+  surfaces: Array<{ class_index: number; structure: string; voxels: number; volume_ml: number; triangles: number; vertices_mm: number[]; faces: number[] }>;
+}
+
+/** A reference mask attached to an image upload (GROUND_TRUTH layer), kept apart from model output. */
+/** Whole-slide image description (pyramidal TIFF) as returned in imaging metadata. */
+export interface WsiDescription {
+  format: string;
+  dimensions: [number, number];
+  levels: Array<{ level: number; width: number; height: number; downsample: number; tiled: boolean; tile: [number, number] | null }>;
+  microns_per_pixel: number | null;
+  objective_magnification: number | null;
+}
+
+export interface WsiTissueGrid {
+  upload_id: number;
+  tile_size_px: number;
+  tissue_tiles: Array<[number, number]>;
+  tissue_tile_count: number;
+  total_tiles: number;
+  tissue_fraction_of_thumbnail: number;
+  rule: string;
+  semantics: string;
+}
+
+/** Reviewer corrections of a volumetric run, per axial plane, with the corrected volume per structure. */
+export interface VolumeCorrectionSummary {
+  semantics: string;
+  structures: Array<{ structure: string; model_voxels: number; corrected_voxels: number; model_volume_ml: number; corrected_volume_ml: number; slices_corrected: number }>;
+  corrected_slices: Array<{ slice_index: number; structure: string; annotation_id: number; voxels_added: number; voxels_removed: number; dice_with_model: number; source_detail: string; created_at: string | null }>;
+}
+
+/** Agreement between two runs on one upload (server: app/services/run_agreement.py). Fields depend on `kind`. */
+export interface RunAgreement {
+  run_ids: [number, number];
+  models: [string, string];
+  comparison: 'MODEL_VS_MODEL_AGREEMENT';
+  semantics: string;
+  kind: 'segmentation' | 'detection' | 'classification' | 'multilabel_classification' | 'volume_segmentation';
+  foreground_dice?: number;
+  foreground_iou?: number;
+  area_px?: [number, number];
+  shared_classes?: Record<string, { dice: number; iou: number } | [number, number]>;
+  matched?: number;
+  only_first?: number;
+  only_second?: number;
+  mean_matched_iou?: number | null;
+  pairs?: Array<{ first_box: number[]; second_box: number[]; iou: number }>;
+  only_first_boxes?: number[][];
+  only_second_boxes?: number[][];
+  top_classes?: [string, string];
+  same_top_class?: boolean;
+  positive_labels?: [string[], string[]];
+  shared_labels?: Record<string, { probabilities: [number, number]; at_or_above_threshold: [boolean, boolean] }>;
+  shared_structures?: Record<string, { volume_ml: [number, number]; difference_ml: number }>;
+  note?: string;
+}
+
+/** Per-image agreement of a detection run's boxes (above its display threshold) with reference boxes, matched at IoU >= 0.5. */
+export interface BoxComparison {
+  run_id: number;
+  comparison: 'PER_IMAGE_BOX_AGREEMENT';
+  semantics: string;
+  reference: { annotation_id: number; source: string; source_detail: string; class_name: string };
+  display_score_threshold: number | null;
+  matched: number;
+  model_only: number;
+  reference_only: number;
+  precision: number | null;
+  recall: number | null;
+  mean_matched_iou: number | null;
+  pairs: Array<{ model_box: number[]; score: number; reference_box: number[]; iou: number }>;
+  model_only_boxes: Array<{ model_box: number[]; score: number; best_iou: number }>;
+  reference_only_boxes: number[][];
+}
+
+export interface ReferenceAnnotation {
+  id: number;
+  file_id: number;
+  kind: 'SEGMENTATION_MASK' | 'BOUNDING_BOXES' | 'VOLUME_SLICE_CORRECTION';
+  /** VOLUME_SLICE_CORRECTION only: the axial index plane edited. */
+  slice_index?: number | null;
+  /** BOUNDING_BOXES only: [x1, y1, x2, y2] in source image pixels. */
+  boxes?: number[][] | null;
+  /** REVIEWER_CORRECTION: the model's mask edited by a reviewer, anchored to that output (not independent ground truth). */
+  layer: 'GROUND_TRUTH' | 'REVIEWER_CORRECTION';
+  source: 'DATASET_PUBLISHER_ANNOTATION' | 'INDEPENDENT_EXPERT_ANNOTATION' | 'REVIEWER_CORRECTION_OF_MODEL_OUTPUT';
+  derived_from_run_id: number | null;
+  source_label: string;
+  source_detail: string;
+  class_name: string;
+  mask_filename: string;
+  mask_sha256: string;
+  binarize_threshold: number;
+  image_size: [number, number];
+  rle: CocoRle;
+  area_px: number;
+  created_by_id: number | null;
+  created_at: string | null;
+}
+
+/** Per-image agreement of one run's mask with one reference annotation (not a performance estimate). */
+export interface ReferenceComparison {
+  run_id: number;
+  comparison: 'PER_IMAGE_AGREEMENT';
+  semantics: string;
+  compared: string;
+  /** True only when a reviewer correction is compared with the run it was made from. */
+  correction_of_this_run?: boolean;
+  reference: { annotation_id: number; source: string; source_detail: string; class_name: string };
+  dice: number;
+  iou: number;
+  pixel_precision: number | null;
+  pixel_recall: number | null;
+  reference_area_px: number;
+  predicted_area_px: number;
+  hd95_px: number | null;
+  assd_px: number | null;
+  regions: { agreement: CocoRle; model_only: CocoRle; reference_only: CocoRle };
 }
 
 export interface ResearchModel {
@@ -351,7 +626,7 @@ export interface ResearchModel {
   status: string;
   validated: boolean;
   gate: { allowed: boolean; blockers: string[] };
-  inference_input?: 'image_2d' | 'ecg_12lead' | 'tabular_survival' | 'volume_nifti';
+  inference_input?: 'image_2d' | 'ecg_12lead' | 'tabular_survival' | 'volume_nifti' | 'echo_video' | 'head_ct_series';
   run_scope?: 'RESEARCH' | 'EXPLORATORY_ONLY';
   dataset_license: string | null;
   model_card_path: string | null;
@@ -359,6 +634,10 @@ export interface ResearchModel {
   checkpoint_sha256: string | null;
   output_status: string;
   held_out_evaluation?: Record<string, unknown>;
+  /** Inputs besides the upload that a fusion model takes (e.g. age_years, sex). */
+  demographic_inputs?: string[];
+  requires_clinical_features?: boolean;
+  clinical_metadata_contract?: { age_range: [number, number]; categories: { gender: string[]; region: string[] } } | null;
 }
 
 export interface ResearchModelListing {
@@ -405,6 +684,8 @@ export interface ReportStatement {
   extraction_method: 'TRANSPARENT_RULE_BASELINE';
   extractor_version: string;
   created_at: string;
+  /** True for statements of an earlier analysis of a report that was analysed again (returned only on request). */
+  analysis_superseded?: boolean;
 }
 
 /** "~" marks a value the report prints as approximate; it is never treated as exact. */
@@ -608,6 +889,8 @@ export interface AnatomyEvidenceItem {
   temporality?: string;
   comparison?: string | null;
   documented_region?: string | null;
+  /** The atlas name the documented region resolves to (the region text is as read). */
+  atlas_structure_name?: string | null;
   review_status?: string;
   source_span?: string;
   value?: number;
@@ -635,7 +918,7 @@ export interface AnatomySystemEvidence {
   items: AnatomyEvidenceItem[];
   counts: Record<MappingCategory, number>;
   state_counts: Record<MappingState, number>;
-  highlight: { organ_schematic: boolean; verified_structures: string[]; spatially_registered: string[]; documented_structures?: string[] };
+  highlight: { organ_schematic: boolean; verified_structures: string[]; spatially_registered: string[]; documented_structures?: string[]; verified_structure_names?: string[]; documented_structure_names?: string[] };
 }
 
 export interface AnatomyEvidenceResponse {
@@ -679,11 +962,16 @@ export interface ModalityRegistryResponse {
 }
 
 export interface ImagingMetadata {
+  input_assessment?: FilmAssessment;
+  /** Whole-slide images (container WSI) only. */
+  wsi?: WsiDescription;
   upload_id: number;
   filename: string;
   sha256: string;
   container: string;
   dimensions: Array<number | null>;
+  /** Raster images: the EXIF orientation tag (1 = stored upright); dimensions are as displayed. */
+  exif_orientation?: number;
   slices: number;
   spacing_mm: number[] | null;
   spatial_metadata: string;
@@ -726,6 +1014,12 @@ export interface DicomSeriesReport {
   ordered_upload_ids?: number[];
   identifying_tags_present?: string[];
   slice_steps_mm?: number[];
+  /** Cine series: images per slice position (cardiac phases), their median trigger times and the phase assembled. */
+  cardiac_phases?: number;
+  phase_trigger_times_ms?: number[];
+  phase?: number;
+  phase_semantics?: string;
+  modality_tags?: string[];
 }
 
 export interface SeriesRenderInfo {
@@ -809,7 +1103,8 @@ export interface ChestRadiographOutput {
   operating_point: number;
   weak_margin: number;
   findings: Array<{ finding: string; score: number; above_operating_point: boolean; weak: boolean }>;
-  attention: Array<{ finding: string; zones: Record<string, number>; outside_lungs: number; top_zone: string | null; grid: number[][] }>;
+  /** peak_xy and region_box_xyxy (source pixels) exist on runs made since the localisation evaluation. */
+  attention: Array<{ finding: string; zones: Record<string, number>; outside_lungs: number; top_zone: string | null; grid: number[][]; peak_xy?: [number, number] | null; region_box_xyxy?: [number, number, number, number] | null; region_rule?: string }>;
   anatomy: Array<{ name: string; fraction: number; contours: number[][][] }>;
   input_checks: {
     status: string; right_lung_fraction: number; left_lung_fraction: number; heart_fraction: number; lungs_on_expected_sides: boolean;
@@ -831,6 +1126,33 @@ export interface ChestRadiographModelCard {
   operating_point: number;
   weak_margin: number;
   weights_sha256: Record<string, string>;
+  /** Attention peak vs radiologist boxes (NIH ChestX-ray14), when evaluated. */
+  attention_localisation?: {
+    overall: { boxes: number; pointing_hit_rate: number; chance_hit_rate: number; mean_iou: number };
+    per_finding: Record<string, { boxes: number; pointing_hit_rate: number; chance_hit_rate: number; mean_iou: number }>;
+    dataset: string; rule: string; caveats: string[]; report_path: string;
+  } | null;
+}
+
+/** TotalSegmentator (third-party CT organ segmentation): availability, publisher and the local check on LUNA16. */
+export interface CtOrganModelCard {
+  model_id: string;
+  display_name: string;
+  output_status: string;
+  available: boolean;
+  status: string;
+  reason?: string;
+  fast?: boolean;
+  full_resolution?: boolean;
+  device?: string;
+  publisher: { name: string; version: string; licence: string; citation: string; training_data: string };
+  local_external_check: {
+    reference: string;
+    scans: number;
+    mode: string;
+    dice_lungs: { mean: number; ci95: [number, number]; median: number; min: number };
+    note: string;
+  } | null;
 }
 
 /** A report page rendered for side-by-side checking, with its identifier lines painted out. */
@@ -1084,9 +1406,66 @@ export interface FusionRecord {
   gated_weights: Record<string, number> | null;
   fused_status: string;
   fused_prediction: Record<string, unknown> | null;
+  evidence_synthesis?: EvidenceSynthesis | null;
   paired_data_validated: boolean;
   abstention_reason: string | null;
   notice: string;
+}
+
+export interface FilmAssessment {
+  version: string;
+  source_type: string;
+  inference_eligibility: string;
+  model_compatibility: string;
+  classification_basis: string;
+  limitations: string[];
+  source_annotations: { coloured_marks_suspected: boolean; is_ai_mask: boolean };
+  panels: Array<{ panel_id: number; row: number; column: number; bbox_xyxy: number[] }>;
+}
+
+export interface EvidenceSynthesis {
+  version: string;
+  status: string;
+  summary: string;
+  concordance: string;
+  evidence_mask: Record<string, number>;
+  model_output_mask: Record<string, number>;
+  report_findings: Array<{
+    entity: string; assertion: string; laterality: string | null; anatomical_site: string | null;
+    review_status: string; anatomical_association: string; examination_id: number | null; atlas_structure_id: string | null;
+    sources: Array<{ upload_id: number; statement_id: number; page: number | null; sha256: string;
+      source_span: string; normalized_span: string; review_status: string }>;
+  }>;
+  model_findings: Array<{ model_id: string; model_version: string; modality: string; label: string; run_id: number; run_ids: number[]; upload_id: number; upload_ids: number[]; review_status: string; validation_status: string }>;
+  abstentions: Array<{ upload_id: number; model_id: string; reason: string; status: string; attempt_count: number; run_ids: number[]; job_ids: number[] }>;
+  contradictions: Array<{ type: string; resolution: string }>;
+  limitations: string[];
+  /** Earlier analyses of re-analysed reports; kept as history, excluded from these findings. */
+  superseded_report_run_ids?: number[];
+  /** Secondary NLP model readings of the same report text; listed, not counted as findings. */
+  secondary_model_mentions?: Array<{ entity: string; assertion: string; laterality: string | null; anatomical_site: string | null;
+    category: string; extractor_versions: string[]; statement_ids: number[] }>;
+}
+
+export interface CaseWorkflow {
+  version: string; case_id: number; generated_at: string;
+  mode: "EMPTY" | "COMBINED" | "DOCUMENT_ONLY" | "SCAN_ONLY";
+  evidence_mask: Record<string, number>; model_output_mask: Record<string, number>;
+  pending_report_upload_ids: number[]; active_report_job_ids: number[]; unlinked_upload_ids: number[];
+  stages: Array<{ id: string; title: string; status: string; detail: string; path: string; source_upload_ids: number[] }>;
+  sources: Array<{ upload_id: number; sha256: string; modality: string; examination_id: number | null; latest_run_id: number | null; latest_run_status: string }>;
+  examinations: Array<{ id: number; date: string; modality: string; upload_ids: number[] }>;
+  forecast_evaluation_ids: number[]; clinical_validation: string;
+}
+
+export interface BaselineForecast {
+  id: number; predicted_value: number | null; unit: string; observations_count: number;
+  ineligibility_reason: string | null; notice: string;
+  chronological_series: Array<{ date: string; value: number; upload_id: number; source_span: string }>;
+  baseline_analysis: { status: string; method: string; version: string; validation_status: string;
+    forecast_date: string | null; interval_reason: string;
+    observed_change: { absolute: number; from_date: string; to_date: string; clinical_direction: string } | null;
+    backtest: { mae: number; rmse: number; folds: unknown[]; maximum_evaluated_horizon_days: number } | null };
 }
 
 export interface ConcordanceSummary {
@@ -1110,6 +1489,8 @@ export interface LongitudinalSourceSnapshot {
   value: number;
   source_file_id: number;
   source_span: string;
+  original_value?: number;
+  correction_review_id?: number | null;
 }
 
 export interface LongitudinalNumericDelta {
@@ -1132,6 +1513,8 @@ export interface LongitudinalStatementSnapshot {
   comparison: string | null;
   source_span: string;
   source_file_id: number;
+  correction_review_id?: number | null;
+  correction_state?: string;
 }
 
 export interface LongitudinalStatementIdentity {
@@ -1200,6 +1583,8 @@ export interface LongitudinalComparisonResponse {
     reason: string;
   };
   notice?: string;
+  evidence_view?: string;
+  excluded_evidence?: Array<{ kind: string; id: number; source_file_id: number; reason: string }>;
 }
 
 export interface Finding {
@@ -1427,6 +1812,10 @@ export interface ModelRegistryRecord {
   research_inference?: boolean;
   research_gate?: { allowed: boolean; blockers: string[] };
   held_out_evaluation?: Record<string, unknown>;
+  /** Third-party models served through their own endpoint rather than the generic research route. */
+  inference_route?: string;
+  /** A narrower local check than a held-out evaluation (e.g. one organ, or attention localisation only). */
+  local_evaluation?: { scope: string; dataset: string; headline: string; report_path: string };
 }
 
 export interface ModelRegistryResponse {
@@ -1722,6 +2111,42 @@ class ApiClient {
     }
   }
 
+  /** The entry page: name, age, gender and role open a private workspace without a password. */
+  async enterWorkspace(entry: VisitorEntry): Promise<VisitorSession> {
+    const session = await this.request<Omit<VisitorSession, 'user'>>('/auth/enter', { method: 'POST', body: JSON.stringify(entry) }, false);
+    this.setToken(session.access_token);
+    try {
+      return { ...session, user: await this.getMe() };
+    } catch (error) {
+      this.setToken(null);
+      throw error;
+    }
+  }
+
+  /** Continue a workspace from the key this browser kept; null when the key has expired or the account is gone. */
+  async resumeWorkspace(token: string): Promise<User | null> {
+    this.setToken(token);
+    try {
+      return await this.getMe();
+    } catch {
+      this.setToken(null);
+      return null;
+    }
+  }
+
+  /** Try the demo: a temporary guest account with one synthetic case, signed in at once. */
+  async startGuestDemo(): Promise<GuestSession> {
+    const session = await this.request<Omit<GuestSession, 'user'>>('/auth/guest', { method: 'POST' }, false);
+    this.setToken(session.access_token);
+    try {
+      const user = await this.getMe();
+      return { ...session, user };
+    } catch (error) {
+      this.setToken(null);
+      throw error;
+    }
+  }
+
   async register(input: RegisterUserInput): Promise<RegisterUserResult> {
     try {
       const user = await this.request<User>(
@@ -1761,6 +2186,12 @@ class ApiClient {
 
   getModels(): Promise<ModelRegistryResponse> {
     return this.request<ModelRegistryResponse>('/models');
+  }
+
+  getResearchJobs(): Promise<{ available: boolean; observed_at: string; scope: string; notice: string;
+    jobs: Array<{ id: string; label: string; status: string; last_event_at: string | null; completed: number | null; expected: number | null; failed: number | null;
+      transfer?: { received_bytes: number; expected_bytes: number; verified: false } | null }> }> {
+    return this.request('/system/research-jobs');
   }
 
   getModel(modelId: ResourceId): Promise<ModelRegistryRecord> {
@@ -1980,8 +2411,107 @@ class ApiClient {
     return this.request<ResearchModelListing>('/research-models');
   }
 
+  selectUploadModel(uploadId: ResourceId, options: { declared_input_type?: string; task: string; target?: string; frame_index?: number }): Promise<{
+    status: string; reason: string; selected_model_id: string | null; declared_input_type?: string;
+    notice?: string; candidates: Array<{ model_id: string; display_name: string }>; rejected: Array<{ model_id: string; reasons: string[] }>;
+  }> {
+    return this.request(`/uploads/${resourcePath(uploadId)}/model-selection`, { method: 'POST', body: JSON.stringify(options) });
+  }
+
+  getResearchLearning(): Promise<{
+    notice: string; clinical_activation: boolean; strategies: string[];
+    benchmark: { dataset: string; status: string; labeled_rows: number; unlabeled_rows: number; pseudo_labeled_rows: number;
+      metrics: { supervised_seed: { accuracy: number }; semi_supervised: { accuracy: number }; offline_workflow_policy: { coverage: number; selective_accuracy: number | null } } } | null;
+  }> {
+    return this.request('/research-learning');
+  }
+
   getResearchModelEvaluation(modelId: string): Promise<{ model_id: string; task: string; gate: { allowed: boolean; blockers: string[] }; report: Record<string, unknown> }> {
     return this.request(`/research-models/${encodeURIComponent(modelId)}/evaluation`);
+  }
+
+  /** Earlier research runs on one upload, newest first, each with its latest review. */
+  listResearchRuns(uploadId: ResourceId): Promise<{ file_id: number; runs: ResearchRun[] }> {
+    return this.request(`/uploads/${resourcePath(uploadId)}/research-inference`);
+  }
+
+  getVideoMetadata(uploadId: ResourceId): Promise<VideoMetadata & { file_id: number; filename: string }> {
+    return this.request(`/uploads/${resourcePath(uploadId)}/video`);
+  }
+
+  /** One decoded video frame as an object URL (the caller revokes it). */
+  async getVideoFrameUrl(uploadId: ResourceId, index: number): Promise<string> {
+    const { blob } = await this.requestBlob(`/uploads/${resourcePath(uploadId)}/video/frame?index=${index}`);
+    return URL.createObjectURL(blob);
+  }
+
+  /** Scores sampled frames of an endoscopy video with a still-image research model. */
+  async runVideoFrameAnalysis(uploadId: ResourceId, modelId: string, intervalS: number, maxFrames: number, onQueued?: (job: QueuedJob) => void): Promise<ResearchRun> {
+    const response = await this.request<ResearchRun | { queued_job: QueuedJob }>(`/uploads/${resourcePath(uploadId)}/video-frame-analysis`, {
+      method: 'POST',
+      body: JSON.stringify({ model_id: modelId, interval_s: intervalS, max_frames: maxFrames, attest_gi_endoscopy_video: true }),
+    });
+    if (!('queued_job' in response)) return response;
+    return this.getResearchRun(await this.waitForJob(response.queued_job, onQueued));
+  }
+
+  listReferenceAnnotations(uploadId: ResourceId): Promise<{ file_id: number; annotations: ReferenceAnnotation[] }> {
+    return this.request(`/uploads/${resourcePath(uploadId)}/reference-annotations`);
+  }
+
+  addReferenceAnnotation(uploadId: ResourceId, mask: File, fields: { source: ReferenceAnnotation['source']; sourceDetail: string; className: string }): Promise<ReferenceAnnotation> {
+    const form = new FormData();
+    form.append('mask', mask);
+    form.append('source', fields.source);
+    form.append('source_detail', fields.sourceDetail);
+    form.append('class_name', fields.className);
+    return this.request<ReferenceAnnotation>(`/uploads/${resourcePath(uploadId)}/reference-annotations`, { method: 'POST', body: form });
+  }
+
+  /** Saves a reviewer's edit of a 2-D segmentation run's mask; the run itself is unchanged. */
+  addMaskCorrection(runId: ResourceId, mask: Blob, fields: { className: string; note: string }): Promise<ReferenceAnnotation & { comparison_with_run: ReferenceComparison }> {
+    const form = new FormData();
+    form.append('mask', mask, 'correction.png');
+    form.append('class_name', fields.className);
+    form.append('note', fields.note);
+    return this.request<ReferenceAnnotation & { comparison_with_run: ReferenceComparison }>(`/research-inference/${resourcePath(runId)}/mask-corrections`, { method: 'POST', body: form });
+  }
+
+  compareWithReference(runId: ResourceId, annotationId: ResourceId): Promise<ReferenceComparison> {
+    return this.request<ReferenceComparison>(`/research-inference/${resourcePath(runId)}/reference-comparison/${resourcePath(annotationId)}`);
+  }
+
+  /** Reference boxes (JSON or YOLO text, in the image's pixels) as a GROUND_TRUTH layer. */
+  addReferenceBoxes(uploadId: ResourceId, boxes: File, fields: { source: ReferenceAnnotation['source']; sourceDetail: string; className: string }): Promise<ReferenceAnnotation> {
+    const form = new FormData();
+    form.append('boxes', boxes);
+    form.append('source', fields.source);
+    form.append('source_detail', fields.sourceDetail);
+    form.append('class_name', fields.className);
+    return this.request<ReferenceAnnotation>(`/uploads/${resourcePath(uploadId)}/reference-boxes`, { method: 'POST', body: form });
+  }
+
+  /** Saves a reviewer's edit of one axial plane of a volumetric run's mask; the run itself is unchanged. */
+  addVolumeSliceCorrection(runId: ResourceId, sliceIndex: number, mask: Blob, fields: { className: string; note: string }): Promise<ReferenceAnnotation & { summary: VolumeCorrectionSummary }> {
+    const form = new FormData();
+    form.append('mask', mask, `slice-${sliceIndex}.png`);
+    form.append('slice_index', String(sliceIndex));
+    form.append('class_name', fields.className);
+    form.append('note', fields.note);
+    return this.request<ReferenceAnnotation & { summary: VolumeCorrectionSummary }>(`/research-inference/${resourcePath(runId)}/volume-slice-corrections`, { method: 'POST', body: form });
+  }
+
+  getVolumeSliceCorrections(runId: ResourceId): Promise<VolumeCorrectionSummary & { run_id: number }> {
+    return this.request(`/research-inference/${resourcePath(runId)}/volume-slice-corrections`);
+  }
+
+  /** Model-versus-model agreement on one upload; neither run is ground truth. */
+  compareRuns(runId: ResourceId, otherRunId: ResourceId): Promise<RunAgreement> {
+    return this.request<RunAgreement>(`/research-inference/${resourcePath(runId)}/agreement/${resourcePath(otherRunId)}`);
+  }
+
+  compareWithReferenceBoxes(runId: ResourceId, annotationId: ResourceId): Promise<BoxComparison> {
+    return this.request<BoxComparison>(`/research-inference/${resourcePath(runId)}/reference-comparison/${resourcePath(annotationId)}`);
   }
 
   async runResearchModel(uploadId: ResourceId, modelId: string, declaredInputType: string, onQueued?: (job: QueuedJob) => void, options: ResearchRunOptions = {}): Promise<ResearchRun> {
@@ -1992,6 +2522,10 @@ class ApiClient {
         declared_input_type: declaredInputType,
         ...(options.companionUploadId !== undefined ? { companion_upload_id: options.companionUploadId } : {}),
         ...(options.amplitudeUnit ? { amplitude_unit: options.amplitudeUnit } : {}),
+        ...(options.ageYears !== undefined ? { age_years: options.ageYears } : {}),
+        ...(options.sex ? { sex: options.sex } : {}),
+        ...(options.frameIndex !== undefined ? { frame_index: options.frameIndex } : {}),
+        ...(options.clinicalFeatures ? { clinical_features: options.clinicalFeatures } : {}),
       }),
     });
     if (!('queued_job' in response)) return response;
@@ -2027,21 +2561,29 @@ class ApiClient {
     return this.request<void>(`/portal/cases/${resourcePath(caseId)}/caregivers/${resourcePath(userId)}`, { method: 'DELETE' });
   }
 
-  assembleDicomSeries(caseId: ResourceId, uploadIds: number[]): Promise<DicomSeriesReport> {
-    return this.request<DicomSeriesReport>(`/cases/${resourcePath(caseId)}/dicom-series/assemble`, { method: 'POST', body: JSON.stringify({ upload_ids: uploadIds }) });
+  assembleDicomSeries(caseId: ResourceId, uploadIds: number[], phase: number | null = null): Promise<DicomSeriesReport> {
+    return this.request<DicomSeriesReport>(`/cases/${resourcePath(caseId)}/dicom-series/assemble`, {
+      method: 'POST', body: JSON.stringify({ upload_ids: uploadIds, ...(phase !== null ? { phase } : {}) }),
+    });
   }
 
-  async renderDicomSeries(caseId: ResourceId, uploadIds: number[], plane: { axis: 'axial' | 'coronal' | 'sagittal'; index: number | null; center?: number; width?: number }): Promise<{ url: string; info: SeriesRenderInfo }> {
+  async renderDicomSeries(caseId: ResourceId, uploadIds: number[], plane: { axis: 'axial' | 'coronal' | 'sagittal'; index: number | null; center?: number; width?: number; phase?: number | null }): Promise<{ url: string; info: SeriesRenderInfo }> {
     const { blob, headers } = await this.requestBlob(`/cases/${resourcePath(caseId)}/dicom-series/render`, {
       upload_ids: uploadIds, axis: plane.axis, ...(plane.index !== null ? { index: plane.index } : {}),
       ...(plane.center !== undefined && plane.width !== undefined ? { center: plane.center, width: plane.width } : {}),
+      ...(plane.phase !== undefined && plane.phase !== null ? { phase: plane.phase } : {}),
     });
     return { url: URL.createObjectURL(blob), info: JSON.parse(headers.get('X-MedTwin-Render') ?? '{}') as SeriesRenderInfo };
   }
 
-  async runSeriesResearchModel(caseId: ResourceId, uploadIds: number[], modelId: string, onQueued?: (job: QueuedJob) => void): Promise<ResearchRun> {
+  async runSeriesResearchModel(caseId: ResourceId, uploadIds: number[], modelId: string, onQueued?: (job: QueuedJob) => void,
+    options: { declaredInputType?: 'MRI' | 'CT_ABDOMEN_VOLUME' | 'CT_CHEST_VOLUME' | 'HEAD_CT_SERIES'; phase?: number | null; shortAxisAttested?: boolean } = {}): Promise<ResearchRun> {
     const response = await this.request<ResearchRun | { queued_job: QueuedJob }>(`/cases/${resourcePath(caseId)}/dicom-series/research-inference`, {
-      method: 'POST', body: JSON.stringify({ upload_ids: uploadIds, model_id: modelId, declared_input_type: 'MRI' }),
+      method: 'POST', body: JSON.stringify({
+        upload_ids: uploadIds, model_id: modelId, declared_input_type: options.declaredInputType ?? 'MRI',
+        ...(options.phase !== undefined && options.phase !== null ? { phase: options.phase } : {}),
+        short_axis_attested: options.shortAxisAttested ?? false,
+      }),
     });
     if (!('queued_job' in response)) return response;
     return this.getResearchRun(await this.waitForJob(response.queued_job, onQueued));
@@ -2049,6 +2591,11 @@ class ApiClient {
 
   getResearchRun(runId: ResourceId): Promise<ResearchRun> {
     return this.request<ResearchRun>(`/research-inference/${resourcePath(runId)}`);
+  }
+
+  /** Surfaces of a volumetric run's own mask, in the scan's voxel frame (mm); not registered to the atlas. */
+  getVolumeSurfaces(runId: ResourceId): Promise<VolumeSurfaces> {
+    return this.request<VolumeSurfaces>(`/research-inference/${resourcePath(runId)}/surfaces`);
   }
 
   getAnalysisJob(jobId: ResourceId): Promise<AnalysisJob> {
@@ -2211,12 +2758,14 @@ class ApiClient {
     caseId: ResourceId,
     priorExamId?: number,
     currentExamId?: number,
+    samePatientConfirmed = false,
   ): Promise<TResponse> {
     return this.request<TResponse>(`/cases/${resourcePath(caseId)}/compare`, {
       method: 'POST',
       body: JSON.stringify({
         prior_exam_id: priorExamId,
         current_exam_id: currentExamId,
+        same_patient_confirmed: samePatientConfirmed,
       }),
     });
   }
@@ -2285,6 +2834,17 @@ class ApiClient {
     return { url: URL.createObjectURL(blob), info: JSON.parse(headers.get('X-MedTwin-Render') ?? '{}') as RenderInfo };
   }
 
+  /** A region of a whole-slide image at one pyramid level (object URL of a PNG). */
+  async getWsiRegionUrl(uploadId: ResourceId, region: { level: number; x: number; y: number; width: number; height: number }): Promise<string> {
+    const query = new URLSearchParams({ level: String(region.level), x: String(region.x), y: String(region.y), width: String(region.width), height: String(region.height) });
+    const { blob } = await this.requestBlob(`/uploads/${resourcePath(uploadId)}/wsi/region?${query}`);
+    return URL.createObjectURL(blob);
+  }
+
+  getWsiTissue(uploadId: ResourceId): Promise<WsiTissueGrid> {
+    return this.request<WsiTissueGrid>(`/uploads/${resourcePath(uploadId)}/wsi/tissue`);
+  }
+
   async getUploadObjectUrl(uploadId: ResourceId): Promise<string> {
     const { blob } = await this.requestBlob(`/uploads/${resourcePath(uploadId)}/content`);
     return URL.createObjectURL(blob);
@@ -2296,6 +2856,21 @@ class ApiClient {
 
   getChestRadiographModel(): Promise<ChestRadiographModelCard> {
     return this.request<ChestRadiographModelCard>('/chest-radiograph-model');
+  }
+
+  getCtOrganModel(): Promise<CtOrganModelCard> {
+    return this.request<CtOrganModelCard>('/ct-organ-model');
+  }
+
+  /** Runs TotalSegmentator (third-party) on a CT NIfTI upload; the result is a volumetric research run pending review.
+   * With a background worker the request returns a queued job, which is followed to its run. */
+  async runCtOrganSegmentation(uploadId: ResourceId, fast: boolean, onQueued?: (job: QueuedJob) => void): Promise<ResearchRun> {
+    const response = await this.request<ResearchRun | { queued_job: QueuedJob }>(`/uploads/${resourcePath(uploadId)}/ct-organ-segmentation`, {
+      method: 'POST',
+      body: JSON.stringify({ attest_ct_volume: true, fast }),
+    });
+    if (!('queued_job' in response)) return response;
+    return this.getResearchRun(await this.waitForJob(response.queued_job, onQueued));
   }
 
   /** Runs the third-party chest-radiograph research model; the result is a finding pending review. */
@@ -2327,6 +2902,42 @@ class ApiClient {
 
   runFusion(caseId: ResourceId): Promise<FusionRecord> {
     return this.request<FusionRecord>(`/cases/${resourcePath(caseId)}/fusion`, { method: 'POST' });
+  }
+
+  getEvidenceSynthesis(caseId: ResourceId): Promise<EvidenceSynthesis> {
+    return this.request<EvidenceSynthesis>(`/cases/${resourcePath(caseId)}/evidence-synthesis`);
+  }
+
+  getCaseWorkflow(caseId: ResourceId): Promise<CaseWorkflow> {
+    return this.request<CaseWorkflow>(`/cases/${resourcePath(caseId)}/workflow`);
+  }
+
+  processPendingReports(caseId: ResourceId): Promise<{ workflow: CaseWorkflow; notice: string; results: Array<{ upload_id: number; status: string; reason?: string; job?: QueuedJob }> }> {
+    return this.request(`/cases/${resourcePath(caseId)}/workflow/process-reports`, { method: "POST", body: JSON.stringify({ max_reports: 10 }) });
+  }
+
+  getPdfFilmAssessment(uploadId: number, page: number): Promise<FilmAssessment> {
+    return this.request<FilmAssessment>(`/uploads/${uploadId}/pages/${page}/film-assessment`);
+  }
+
+  runMultimodel(uploadId: number, modelIds: string[], declaredInputType: string): Promise<{ queued_job: QueuedJob }> {
+    return this.request<{ queued_job: QueuedJob }>(`/uploads/${uploadId}/multimodel`, { method: "POST", body: JSON.stringify({ model_ids: modelIds, declared_input_type: declaredInputType }) });
+  }
+
+  evaluateBaseline(caseId: number, target: string, unit: string, horizon: number, method: "persistence" | "linear"): Promise<BaselineForecast> {
+    return this.request<BaselineForecast>(`/cases/${caseId}/forecast`, { method: "POST", body: JSON.stringify({
+      case_id: caseId, target_metric: target, unit, horizon_days: horizon, method, same_patient_confirmed: true,
+    }) });
+  }
+
+  getForecastHistory(caseId: number): Promise<Array<{ id: number; target_metric: string; unit: string; horizon_days: number; predicted_value: number | null; eligibility_status: string; baseline_analysis: BaselineForecast["baseline_analysis"] | null; created_at: string }>> {
+    return this.request(`/cases/${caseId}/forecast-history`);
+  }
+
+  linkUploadExamination(uploadId: number, examId: number, dateAttributeId?: number): Promise<UploadedFile> {
+    return this.request<UploadedFile>(`/uploads/${uploadId}/examination`, { method: "PATCH", body: JSON.stringify({
+      examination_id: examId, same_patient_confirmed: true, source_date_attribute_id: dateAttributeId,
+    }) });
   }
 
   getConcordance(caseId: ResourceId): Promise<ConcordanceSummary> {

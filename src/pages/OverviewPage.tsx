@@ -18,7 +18,13 @@ export default function OverviewPage() {
   const manifest = useAsync(() => loadManifest(), []);
   const readiness = useAsync(() => api.getReadiness(), []);
   const gpu = useAsync(() => api.getGpuTelemetry(), []);
+  const taskAudit = useWorkspace((state) => state.datasetTaskAudit);
   const activatable = models.filter((model) => model.activation.eligible).length;
+  // Research use (served with input checks; trained here or third-party on its own route) is a different gate from clinical activation.
+  const researchRunnable = models.filter((model) => model.research_inference || model.inference_route).length;
+  const auditTasks = taskAudit?.datasets.flatMap((dataset) => dataset.tasks) ?? [];
+  const eligibleTasks = auditTasks.filter((task) => task.training_eligible).length;
+  // The discovery scan lists folders found on disk; its flags are not updated when a task is curated.
   const eligibleDatasets = datasets?.datasets.filter((item) => item.training_eligible || item.validation_eligible).length ?? 0;
 
   return (
@@ -57,8 +63,10 @@ export default function OverviewPage() {
         <div className="space-y-4">
           <Card title="Registries" eyebrow="Activation gates">
             <ul className="space-y-2.5 text-sm">
-              <li className="flex items-center justify-between gap-2"><Link to="/models" className="text-ink hover:underline">Models activation-eligible</Link><span className="tabular text-ink-2">{activatable} of {models.length}</span></li>
-              <li className="flex items-center justify-between gap-2"><Link to="/datasets" className="text-ink hover:underline">Datasets eligible for training/validation</Link><span className="tabular text-ink-2">{eligibleDatasets} of {datasets?.datasets.length ?? "—"}</span></li>
+              <li className="flex items-center justify-between gap-2"><Link to="/models" className="text-ink hover:underline">Models runnable for research use</Link><span className="tabular text-ink-2">{researchRunnable} of {models.length}</span></li>
+              <li className="flex items-center justify-between gap-2"><Link to="/models" className="text-ink hover:underline">Models clinically activation-eligible</Link><span className="tabular text-ink-2">{activatable} of {models.length}</span></li>
+              <li className="flex items-center justify-between gap-2"><Link to="/datasets" className="text-ink hover:underline">Dataset tasks eligible for training</Link><span className="tabular text-ink-2">{taskAudit ? `${eligibleTasks} of ${auditTasks.length}` : "—"}</span></li>
+              <li className="flex items-center justify-between gap-2"><Link to="/datasets" className="text-ink-2 hover:underline">Discovery-scan folders flagged eligible</Link><span className="tabular text-ink-3">{eligibleDatasets} of {datasets?.datasets.length ?? "—"}</span></li>
               <li className="flex items-center justify-between gap-2"><Link to="/anatomy-studio" className="text-ink hover:underline">Anatomy systems / variants</Link><span className="tabular text-ink-2">{manifest.data ? `${manifest.data.totals.systems} / ${manifest.data.totals.available_variants}` : "—"}</span></li>
               <li className="flex items-center justify-between gap-2"><span>Named atlas structures</span><span className="tabular text-ink-2">{manifest.data ? formatCount(manifest.data.totals.atlas_structures) : "—"}</span></li>
             </ul>

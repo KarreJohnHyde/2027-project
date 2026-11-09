@@ -48,15 +48,29 @@ FAMILIES = {
     "gi_kvasir_v2_classifier": "GI endoscopy", "gi_gastrovision_27class_classifier": "GI endoscopy",
     "gi_kvasir_seg_polyp_segmenter": "GI endoscopy", "angiography_stenosis_detector": "Coronary angiography",
     "angiography_syntax_segmenter": "Coronary angiography", "kidney_stone_detector": "CT",
-    "hematology_cnmc_all_classifier": "Blood-cell microscopy",
+    "hematology_cnmc_all_classifier": "Blood-cell microscopy", "mura_study_baseline": "Musculoskeletal radiograph",
+    "brain_ct_rsna_ich_classifier": "Head CT",
+    "brain_ct_rsna_ich_25d_classifier": "Head CT",
+    "bone_fracture_detector": "Musculoskeletal radiograph",
+    "cxr_tuberculosis_nlm_classifier": "Chest radiograph",
+    "skin_padufes_image_classifier": "Clinical skin photograph",
+    "skin_padufes_image_tabular_classifier": "Clinical skin photograph",
 }
+# Models whose network reads 2-D images, whether the upload is one image or slices of a DICOM series.
+IMAGE_NETWORK_INPUTS = {"image_2d", "head_ct_series"}
 # One test split per family supplies its cross-domain images.
 FAMILY_SOURCE = {"GI endoscopy": "gi_kvasir_v2_classifier", "Coronary angiography": "angiography_stenosis_detector",
-                 "CT": "kidney_stone_detector", "Blood-cell microscopy": "hematology_cnmc_all_classifier"}
+                 "CT": "kidney_stone_detector", "Blood-cell microscopy": "hematology_cnmc_all_classifier",
+                 "Musculoskeletal radiograph": "mura_study_baseline", "Head CT": "brain_ct_rsna_ich_classifier"}
+# Families whose source model may not be trained yet join the cross-domain check once registered.
+OPTIONAL_FAMILY_SOURCE = {"Chest radiograph": "cxr_tuberculosis_nlm_classifier",
+                          "Clinical skin photograph": "skin_padufes_image_classifier"}
 
 
 def split_paths(model: dict, split: str) -> list[Path]:
-    manifest = _resolve_artifact_path(model["artifact_bundle"]["split_manifest_path"])
+    # Data kept inside an archive (RSNA ICH) supplies an exported per-split sample on disk instead.
+    bundle = model["artifact_bundle"]
+    manifest = _resolve_artifact_path(bundle.get("ood_sample_manifest_path") or bundle["split_manifest_path"])
     with manifest.open(encoding="utf-8") as handle:
         rows = [row for row in csv.DictReader(handle) if row.get("split") == split]
     paths = []
@@ -110,7 +124,7 @@ def refusal(reference: dict, values: list[np.ndarray]) -> dict:
 
 def main(selected: list[str]) -> None:
     models = {m["model_id"]: m for m in _load_registry()["models"]
-              if m.get("research_inference") and m.get("inference_input", "image_2d") == "image_2d"}
+              if m.get("research_inference") and m.get("inference_input", "image_2d") in IMAGE_NETWORK_INPUTS}
     targets = [model_id for model_id in models if not selected or model_id in selected]
     raw = json.loads(REGISTRY.read_text(encoding="utf-8"))
     for model_id in targets:
@@ -125,6 +139,7 @@ def main(selected: list[str]) -> None:
             metadata={"model_id": model_id, "checkpoint_sha256": bundle["checkpoint_sha256"],
                       "feature_version": model_inference.FEATURE_VERSION,
                       "feature_source": {"image_classifier": "every backbone stage, spatial mean",
+                                         "image_multilabel_classifier": "every backbone stage, spatial mean",
                                          "object_detector": "ResNet stages 1-4 of the detector backbone, spatial mean",
                                          "semantic_segmenter": "every U-Net encoder level and the bottleneck, spatial mean"}[model_inference.load_model(model)[1]["kind"]],
                       "fit_split": "train", "calibration_split": "val", "evaluation_split": "test", "seed": SEED,
@@ -132,7 +147,8 @@ def main(selected: list[str]) -> None:
         )
         evaluation = {"in_distribution_test": refusal(reference, features(model, test_paths, "test-all")), "cross_domain": {}}
         own_family = FAMILIES[model_id]
-        for family, source in FAMILY_SOURCE.items():
+        sources = {**FAMILY_SOURCE, **{family: source for family, source in OPTIONAL_FAMILY_SOURCE.items() if source in models}}
+        for family, source in sources.items():
             if family == own_family:
                 continue
             paths = sample(split_paths(models[source], "test"), CROSS_DOMAIN_N, f"{model_id}:{family}")

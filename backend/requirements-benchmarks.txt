@@ -1,0 +1,7 @@
+# Optional official loader for the acquired MedMNIST NPZ benchmark files.
+# Install over the existing local GPU or CPU research environment, not the web deployment.
+# medmnist uses the existing torch, torchvision, numpy, Pillow, pandas, scikit-learn,
+# scikit-image and tqdm packages; their versions remain in the corresponding locks.
+medmnist==3.0.2
+fire==0.7.1
+termcolor==3.3.0

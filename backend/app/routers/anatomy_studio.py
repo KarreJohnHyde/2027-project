@@ -11,8 +11,8 @@ from sqlalchemy.orm import Session
 
 from app.config import ANATOMY_MANIFEST_PATH
 from app.database import get_db
-from app.models.entities import AnatomyRegistrationReview, User, UserRole
-from app.services.anatomy_evidence import build_case_anatomy_evidence
+from app.models.entities import AnatomyRegistrationReview, User
+from app.services.anatomy_evidence import account_standing, build_case_anatomy_evidence
 from app.services.audit_service import log_audit_event
 from app.services.auth import get_current_user, verify_case_access
 
@@ -76,7 +76,7 @@ class RegistrationReviewCreate(BaseModel):
     comments: Optional[str] = Field(None, max_length=2000)
 
 
-def _serialize_review(review: AnatomyRegistrationReview) -> dict[str, Any]:
+def _serialize_review(review: AnatomyRegistrationReview, db: Session) -> dict[str, Any]:
     return {
         "id": review.id,
         "layer_id": review.layer_id,
@@ -88,6 +88,8 @@ def _serialize_review(review: AnatomyRegistrationReview) -> dict[str, Any]:
         "decision": review.decision,
         "comments": review.comments,
         "reviewer_id": review.reviewer_id,
+        # Any account may review a layer; this says whether the reviewer was a verified clinician.
+        "reviewer_standing": account_standing(db.get(User, review.reviewer_id) if review.reviewer_id else None),
         "created_at": review.created_at.isoformat(),
     }
 
@@ -97,7 +99,7 @@ def list_registration_reviews(layer_id: Optional[str] = None, db: Session = Depe
     query = db.query(AnatomyRegistrationReview)
     if layer_id:
         query = query.filter(AnatomyRegistrationReview.layer_id == layer_id)
-    return [_serialize_review(row) for row in query.order_by(AnatomyRegistrationReview.created_at.desc()).all()]
+    return [_serialize_review(row, db) for row in query.order_by(AnatomyRegistrationReview.created_at.desc()).all()]
 
 
 @router.post("/anatomy/registration-reviews", status_code=status.HTTP_201_CREATED)
@@ -108,8 +110,6 @@ def create_registration_review(payload: RegistrationReviewCreate, db: Session = 
     bound to exactly the placement that was reviewed. An accepted review never
     upgrades the layer to 'registered'; it permits educational display only.
     """
-    if current_user.role not in (UserRole.CLINICIAN, UserRole.ADMIN, UserRole.RESEARCHER):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Reviewer role required.")
     manifest = _manifest()
     hybrid = next((system["hybrid"] for system in manifest["systems"] if system.get("hybrid")), None)
     layer = next((item for item in (hybrid or {}).get("layers", []) if item["id"] == payload.layer_id), None)
@@ -139,4 +139,4 @@ def create_registration_review(payload: RegistrationReviewCreate, db: Session = 
         db=db, action="ANATOMY_REGISTRATION_REVIEWED", resource_type="ANATOMY_LAYER", resource_id=payload.layer_id,
         user=current_user, details={"decision": payload.decision, "review_id": review.id},
     )
-    return _serialize_review(review)
+    return _serialize_review(review, db)

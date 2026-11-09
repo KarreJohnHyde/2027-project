@@ -22,6 +22,71 @@ All work is on branch `feature/medtwin-2-integration`. This repository has no re
 | next | 2026-10-29 | Vercel deployment as two services, durable storage (PostgreSQL, private Blob copies of encrypted uploads), operator account provisioning, valve findings with their written severity, dataset task audit in containers (entry below). |
 | next | 2026-10-29 | Report data integrity: identifier masking with per-category counts, per-result specimen and method, per-page dates, date and age conflicts made visible (entry below). |
 | next | 2026-10-29 | Document verification beside each page, page types, grouped findings, parallel OCR with a cached reading, OCR engine comparison, third-party chest-radiograph research model, documented regions on the 3-D atlas (entry below). |
+| next | 2026-10-30 | Universal-directive cycle: served 2-D inference checked against every held-out test image, EXIF orientation applied before inference, stored runs restored in the viewer with clinician review, reference (ground-truth) masks and per-image comparison, patient-derived surfaces of volumetric runs, organ-level anatomy tint, collection-date labels and page-type rules v3 from the owner's two new cases (entry below). |
+| next | 2026-10-30 | First Vercel deployment (public, open registration) from a staged, privacy-scanned copy; `.vercelignore` folder rules fixed so the CLI uploads the allowlisted files (entry below). |
+| next | 2026-10-30 | Every account has every feature: no role or verification gate on any workspace page or action; per-case privacy, four-eyes and the administrator-only global audit log stay; reviews say whether the reviewer was a verified clinician (entry below). |
+| next | 2026-11-04 | Entry page instead of sign-in and registration (name, age, gender, role; no password); RSNA intracranial-haemorrhage slice model (entry below). |
+| next | 2026-11-04 | "Try the demo" guest accounts with a fictional sample case; secondary NLP beside the rules (scispaCy on by default, medSpaCy ConText agreement, RadGraph-XL, MedCAT wired in); MURA radiograph model trained; TotalSegmentator CT organ segmentation with a LUNA16 lung check (entry below). |
+| next | 2026-11-05 | Brain MRI stroke-lesion and glioma segmentation (ISLES 2022, MSD BrainTumour), ECG + age/sex fusion, reviewer mask corrections, chest-radiograph attention marks measured on NIH radiologist boxes, endoscopy video frame timeline (entry below). |
+| next | 2026-11-06 | Head-CT case audit on the stored record: re-analysis supersedes earlier analyses, secondary NLP reads OCR-normalised words, same-line skeletal site for a negated fracture, applicability refusals explain colour versus content, registry counts separated, glioma model published (entry below; the workflow, synthesis and session-key work of the same day is in `docs/implementation/MASTER_IMPLEMENTATION_STATUS.md`). |
+| `bfca545a41` + next | 2026-11-06 | Printed ECG/echo/urinalysis/symptom extraction, echo ejection-fraction video path, fracture task defined, reference boxes, model-versus-model comparison, volume slice and polygon corrections, video region linking, film grid completion, whole-slide image viewing, CT intensity mode for the volumetric trainer (entry below). |
+| next | 2026-11-06 | Every scan format reaches the research models (DICOM frames, NRRD/MetaImage, CT series reoriented exactly), a file-disclosure hole in NRRD/MetaImage reading closed, cardiac scanner series with a measured axis-convention rule, head CT series for a neighbouring-slice haemorrhage model, RSNA export window measured, resumable training, TB and LIDC data, access drafts (entry below). |
+
+## Scan formats, cardiac and head CT series, resumable training, TB and LIDC (2026-11-06, evening)
+
+Owner decisions this session: the LIDC-IDRI 300-patient subset (28 GB, CC BY 3.0) and the NLM tuberculosis sets were approved for download; the DeepSA and PhysioNet requests are drafted for the owner to send (nothing was sent).
+
+- **Security fix**: an NRRD header can name a separate data file (`data file:`), and a MetaImage header an `ElementDataFile`; ITK reads that path anywhere on the machine, so an upload could have displayed another local file's bytes as an image. Such headers are now refused at upload and before every read (`imaging_readers.check_attached_data`).
+- **DICOM frames for 2-D models** (`app/services/dicom_raster.py`): Modality LUT, then the model's declared DICOM window or the frame's own VOI (LINEAR, LINEAR_EXACT, SIGMOID, VOI LUT sequence), MONOCHROME1 inverted, 8-bit stored values used as stored, colour decoded to RGB; the Modality tag must fit the declared input type; multi-frame files need a frame choice (the frame on display). The converted frame passes the same document and applicability gates; the conversion is recorded with the run. A synthetic RGB endoscopy frame gives exactly the same output and applicability score as DICOM and as PNG. Reference masks and boxes attach to single-frame DICOM.
+- **Volume formats**: NRRD and single-file MetaImage feed the volume models in NIfTI voxel order with the same checks; orientation codes are compared in NIfTI terms. A DICOM series for a CT model whose development frames record an orientation is permuted and flipped into it (no resampling) and the mask returned to the series grid.
+- **RSNA export window** (`docs/validation/RSNA_PNG_WINDOW_ESTIMATE.md`): every RSNA PNG uses exactly 79 inner grey levels in steps of 255/80, so the export window is 80 HU wide with truncation; level 40 HU from tissue peaks (estimated). Declared on the head-CT model for DICOM input.
+- **Cardiac scanner series** (`docs/validation/CARDIAC_SCANNER_SERIES.md`): cine series are assembled for a chosen phase (trigger-time ordinal); MR, double-oblique and slice-count checks plus the requester's attestation; the axis convention is chosen among 16 by anatomy (right ventricle anterior-right in patient coordinates, shrinking left ventricle, development layout). Held-out ACDC with simulated geometry: 91 of 98 accepted, mean macro Dice 0.750 against 0.753 with the publisher's convention.
+- **Neighbouring-slice haemorrhage model** (`ml_training/rsna_ich_25d.py`, training queued): slice below, slice, slice above as channels, the single-slice model's patient split and a paired comparison; serving on an assembled head CT series windowed like the training PNGs, every slice checked against the applicability reference (more than half outside refuses the series).
+- **Resumable training**: the detector, echo, multichannel volume and 2.5-D trainers write their state after every epoch and resume after a shutdown (a power-off at 17:58 had ended the fracture run at epoch 15 of 20 with nothing saved).
+- **Data**: NLM Shenzhen and Montgomery radiographs mirrored from NLM's data server with per-file MD5 checks (Open-i was down); `scripts/register_nlm_tb_dataset.py` (terms from the read-me files, near-duplicate-aware splits). LIDC-IDRI: `scripts/prepare_lidc_dataset.py` (NIfTI in HU, two-of-four reader consensus nodule masks, registry record). Chest radiograph and chest CT input types added.
+- **Drafts**: `docs/access/DEEPSA_PERMISSION_REQUEST_DRAFT.md`, `docs/access/PHYSIONET_RESEARCH_SUMMARY_DRAFT.md`.
+
+## Extraction gaps, echo EF, fracture task, review tools, video linking, whole-slide images, CT pipeline (2026-11-06)
+
+Owner decisions recorded in `scripts/dataset_task_audit.py` (2026-11-06): the fracture detector has one 'fracture' class (the non-fracture 'humerus' class excluded; one copy of the twice-packed archive); the owner holds the Stanford AIMI agreement for EchoNet-Dynamic; the MSD Task03 Liver and Task07 Pancreas downloads (CC BY-SA 4.0) are approved.
+
+- **Report extraction** (`test_report_extraction_gaps.py`): printed ECG values (ventricular rate, PR, QRS, QT, QTc, the QT/QTc pair), echo M-mode dimensions with cm/mm conversion, "RDW (SD)", ESR printed as "ONE HOUR READING", 21 symptom terms (SYMPTOM statements with assertion), qualitative urinalysis rows as LAB_QUALITATIVE statements with the printed result (only inside a urine section), OCR letter drops in contusion/oedema terms.
+- **Detector trainer fixes**: YOLO segmentation polygons were silently skipped (only 5-number box lines were read), so the fracture labels yielded no boxes; polygons now become their bounding boxes. The final leakage summary referenced an undefined variable and would have failed after training. Native 512 px input (the images are at most 512 px; 640 upsampled them and filled GPU memory).
+- **Echo ejection fraction** (`app/services/echo_inference.py`, `ml_training/echo_ef.py`, `scripts/build_echo_ood_reference.py`, `EchoEfPanel`): EchoNet-format 112 x 112 video only (other formats refused, never resized), 32-frame clips at every second frame shared by trainer and server, multi-clip average, feature-space applicability reference on the centre clip, heart-failure range band. Training queued; results follow.
+- **Reference boxes** (`POST /uploads/{id}/reference-boxes`, migration `2026_11_06_003`): JSON or YOLO boxes as a GROUND_TRUTH layer; one-to-one matching at IoU 0.5 against a detection run.
+- **Model versus model** (`GET /research-inference/{run}/agreement/{other}`): mask Dice, box matching, class/label agreement and volume differences between two runs on one upload, side by side; neither is ground truth.
+- **Corrections**: polygon fill and cut in the 2-D editor; volumetric runs corrected one axial plane at a time (`POST /research-inference/{run}/volume-slice-corrections`, migration `2026_11_06_004`) with the corrected volume per structure.
+- **Video**: regions marked on successive sampled frames are linked by box overlap (one-frame gaps); classification shows runs of the same top class. Not evaluated on video.
+- **Film panels**: grid completion adds faint montage cells the contour pass missed (marked GRID_COMPLETION, content-checked); on the owner's three film photographs it added none (two were complete, the third is a two-slice close-up).
+- **Whole-slide images** (`app/services/wsi_reader.py`, `WsiPanel`): SVS/NDPI/tiled TIFF uploads, tile-by-tile region reads, microns per pixel, a colour-rule tissue grid. No pathology model (no slide-level labels).
+- **CT volumes** (`ml_training/volumetric_multichannel.py --intensity ct`, `scripts/prepare_msd_ct_datasets.py`): Hounsfield window from training-foreground percentiles, z-scored with training statistics recorded in the checkpoint, no crop, and an input gate on HU percentiles that refuses MRI-like volumes. Tested on synthetic CT; the MSD archives are still downloading.
+- Not built, with reasons in `docs/research/RESEARCH_CAPABILITY_BLOCKERS.md`: an RSNA neighbouring-slice model and scanner-series cardiac MRI orientation.
+
+## Head-CT case audit, re-analysis, applicability explanations, glioma model (next, 2026-11-06)
+
+Audit report: `docs/implementation/CASE_D_AUDIT_2026-11-06.md`. Verified on the stored CASE-D record (redacted copy, pseudonym) in an isolated QA database; no patient detail is recorded here.
+
+- **Re-analysing a report no longer shows it twice.** Each upload's latest successful report analysis is current (`app/services/report_runs.py`); earlier runs keep their statements, attributes, reviews and corrections as history. Statements, effective evidence, documented attributes, evidence synthesis, anatomy evidence, comparison, concordance, analytics, chest-radiograph report linking and the workflow review count use the current analysis; `?include_superseded=true` returns history with `analysis_superseded` flags. On CASE-D: 59 current statements, 88 from two earlier analyses kept as history.
+- **Secondary NLP on readable words.** scispaCy and RadGraph-XL now read the OCR-normalised text that the rules read, with every offset mapped back so quotes still come from the source. Glued runs such as "basalgangliaarenormal" no longer appear as entities; RadGraph now reads "hemorrhagic", "contusion", "perilesional", "edema". A model entity containing a 20-letter run the normaliser could not split is excluded and counted (`secondary_entities_excluded.UNREADABLE_OCR_RUN`).
+- **Secondary readings are not findings.** The evidence synthesis lists secondary NLP readings of the same text in `secondary_model_mentions`; they are not report findings and cannot create contradictions. CASE-D: 8 report findings (was 33), 25 secondary mentions, 0 contradictions.
+- **Negated fracture site.** A finding with no site of its own takes the single same-system site of the sentence just before it on the same line ("Bony cranium is unremarkable. No fractures noted." gives Fracture, negated, cranium) with a `SITE_FROM_PRECEDING_SENTENCE` cue for review. Never across lines, anatomical systems or two candidate sites.
+- **Applicability refusals explain themselves.** The CASE-D film crop's score of 58,899,915 (limit 2.50) is explained: 73% of pixels are coloured, the head-CT model was trained on greyscale slices only, so the input-statistics stage has near-zero training variance along colour directions; a greyscale copy still scores 8,568, so the content differs too. Refusals now say whether colour alone, intensity, or the network's features account for the distance; the copy is never analysed and the threshold is unchanged. 200 held-out RSNA test slices through the serving path: 0 refused, median score 1.08; the same slices with a 3-8% colour cast: all refused (median 1.46e7).
+- **Registry counts.** The overview separated "runnable for research use" (18 of 28 models: 16 trained and held-out tested here, 2 third-party on their own routes), "clinically activation-eligible" (0 of 28), dataset tasks eligible for training (14 of 35 in the task audit) and the 2026-10-23 discovery scan's folder flags (0 of 33, not updated by task curation), which had been read as "nothing is eligible".
+- **Glioma model published** (`brain_mri_glioma_segresnet`, MSD Task01): 73 held-out patients, whole tumour Dice 0.908 (95% CI 0.890-0.923), tumour core 0.856 (0.831-0.879), enhancing tumour 0.802 (0.759-0.838); 73 of 73 test volumes pass the input gate; served masks differ from the evaluated masks in 418 voxels in all (0.005% of foreground, GPU numerics).
+- Tests: `backend/tests/test_case_d_regressions.py` (synthetic text and images only).
+
+## Brain MRI lesions, fusion, mask corrections, chest-radiograph attention, endoscopy video (next, 2026-11-05)
+
+- **Licensed brain MRI data found locally**: ISLES 2022 (`MedTwin_Datasets/Stroke_ISLES2022`, CC BY 4.0 declared in its `dataset_description.json` and `LICENSE`) and the Medical Segmentation Decathlon Task01 BrainTumour (`MedTwin_Datasets/Brain_Tumour_MSD`, CC BY-SA 4.0 in its `dataset.json`), registered with their archive hashes. `scripts/prepare_brain_mri_datasets.py` stacks each ISLES subject's DWI and ADC into one 4-D NIfTI (FLAIR is on its own grid and unused); MSD images are already 4-D.
+- **Multi-channel volumetric pipeline** (`ml_training/volumetric_multichannel.py`, `volumetric-monai-multichannel-v2`): SegResNet on patches from a cache of preprocessed volumes; crop to the non-zero box, per-channel z-score, optional resampling to the training spacing and back. The preprocessing and inference are the serving module's own functions (`app.services.volume_inference.preprocess_multichannel` / `predict_multichannel`), so validation and the held-out test ran the serving code. The input envelope now records channels, both in-plane spacings, voxel-axis layout and the share of non-zero voxels; nothing is reoriented or resampled outside the trained rule. Patient-level bootstrap CIs, lesion-wise detection, Dice by lesion size and volume agreement are reported.
+- **Ischaemic stroke lesion model** (`brain_mri_stroke_lesion_segresnet`, ISLES 2022, DWI + ADC, 2 mm): patients split 174 / 38 / 38. Held-out (38 patients, through the serving function): Dice 0.752 (95% CI 0.666-0.822); 161 of 295 reference lesions touched (sensitivity 0.55), component precision 0.85, 0.76 false-positive components per case; Dice 0.64 / 0.80 / 0.82 for the smallest / middle / largest third of lesion volumes; lesion volume bias -3.9 mL (limits -38.7 to 31.0). 37 of 38 test cases pass the input gate (one has 5 mm slices, outside the 2-4.8 mm development range). One development case is not skull-stripped, so the non-zero-share check cannot refuse a head with skull for this model; the card says so. Served masks equal the evaluated masks in 32 of 37 cases, 6 voxels differing in all (0.007% of the lesion voxels, GPU numerics).
+
+- **ECG + age/sex fusion** (`ptbxl_ecg_demographic_fusion`, `ml_training/ecg_fusion.py`): the ECG network's pooled features joined with an age/sex embedding, trained beside an ECG-only arm with identical data order, augmentation, epochs and seed (PTB-XL folds 1-8 / 9 / 10). On the 2,163 held-out records: fusion macro AUROC 0.920 (95% CI 0.912-0.927), ECG only 0.918 (0.911-0.925); paired difference +0.001 (95% CI -0.001 to +0.004), so no gain is shown (only NORM improves, +0.003). The served model takes age and sex from the request or the case's reviewed demographics (never from extracted text) and refuses without both; the run records where they came from. The ECG panel now offers both ECG models.
+- **Reviewer mask corrections**: brush and eraser on a 2-D segmentation run's mask at the image's own pixels (`MaskCorrectionEditor`), saved through `POST /research-inference/{run_id}/mask-corrections` as a `REVIEWER_CORRECTION` layer linked to the run (`reference_annotations.derived_from_run_id`, migration `2026_11_05_001`). The run is unchanged; the comparison shows what the reviewer removed and added, and says a correction is anchored to the model output, not independent ground truth. Uploaded reference masks can no longer claim to be corrections.
+- **Chest-radiograph attention marks**: the Grad-CAM peak and the connected region at half its maximum (rule fixed before evaluation) are drawn on the radiograph. Measured on the 984 NIH ChestX-ray14 radiologist boxes (official test list; `scripts/evaluate_cxr_attention_localisation.py`): the peak fell inside the box 26.4% of the time (95% CI 23.6-29.3%; a random point 7.5%); cardiomegaly 69%, mass 39%, infiltration 35%, pneumonia 25%, effusion 24%, nodule 6%, atelectasis 5%, pneumothorax 2% (below chance). The viewer states the rate for the finding shown. The classifier was trained by its publisher on this collection with image-level labels, so this measures where attention points, not accuracy. NIH ChestX-ray14 is registered for evaluation only.
+- **Owner's head-CT case (CASE-D-NEURO-CT, redacted locally before upload; pseudonym chosen by the owner)**: the report's main finding, a haemorrhagic contusion with perilesional oedema, was missed because OCR read the bold lines without spaces and the vocabulary had no contusion term. Fixed: long glued runs (20+ letters) may now be split around one short OCR slip (at most four letters); contusion and oedema terms added; lobe sites tolerate merged words. The finding is now extracted, affirmed, in the parietal lobe and shown on the brain atlas as named in a report (unconfirmed). The head-CT haemorrhage model refused the photographed film crops as outside its training images, as intended. SQLite connections now wait up to 30 s for a worker's write lock (a research request failed with "database is locked" while the packet was being read).
+- **Independent review** (Codex, read-only, 11 findings, all fixed): both in-plane spacings are checked and the resampled grid is bounded; brain volumes whose voxel-axis layout is outside the development set are refused (nothing is reoriented); a queued video job re-checks that its upload is still current; reviewed demographics whose source document was withdrawn or unassociated are not fed to the fusion model; video sampling never materialises the whole frame range, frame times come from the decoder with variable frame rate flagged, and a frame's mask is shown only over that frame; the mask editor offers every model class, including ones the model missed (their model mask counts as empty); a correction compared with another run is not described as an edit of it; volumetric confidence intervals resample patients; lesion F1 is 0, not undefined, when nothing is detected.
+- **Endoscopy video**: MP4 and AVI uploads (signature and a decode check on upload); `POST /uploads/{id}/video-frame-analysis` samples frames at an interval (0.2-30 s, at most 240 frames), measures brightness, dark share and sharpness, and scores each frame with a still-image endoscopy model after that model's applicability check; refused frames are kept and shown grey. The viewer shows the video's timeline and any frame with its mask or boxes. No tracking or smoothing; not evaluated on video.
 
 ## Verification, page types, grouped findings, faster reading, OCR comparison, chest radiographs (next, 2026-10-29)
 
@@ -187,3 +252,134 @@ Prompted by a review of a real report packet run through the app (findings recor
 ## Not removed
 
 These Phase 1 components are no longer imported, so they are excluded from the bundle. They are kept for reference and are candidates for deletion: `src/components/{AnatomicalViewer, CaseHeader, CaseManagementView, ClinicalCatalogPanel, CreateCaseModal, DashboardView, DigitalTwin3D, EcgAnalysisView, FileUploadModal, Header, HumanReviewPanel, IeeeValidationView, ImageAnalysisView, LoginPage, LongitudinalComparisonView, ModalityViewer, MultimodalFusionPanel, ReportConcordancePanel, ReportNlpView, Sidebar, ThreeCanvas, TimelineForecastingPanel, UserManagementView}.tsx`. Every backend capability they used now has a consumer in the new pages.
+
+## 2026-10-30 — universal directive, first cycle
+
+- `scripts/verify_upload_inference_parity.py --only images`: the seven 2-D models' served functions run on every
+  held-out test image (5,210) and are compared with the predictions saved at training and with the publishers' masks
+  and boxes (`docs/validation/UPLOAD_INFERENCE_PARITY.json`).
+- `imaging_readers.open_raster`: the EXIF orientation tag is applied for metadata, all 2-D models, both image gates
+  and the chest-radiograph path, so overlays match what browsers display; outputs record `exif_orientation_applied`.
+- Research runs: `GET /uploads/{id}/research-inference` (with each run's latest review); reference masks
+  (`ReferenceAnnotation`, `POST/GET /uploads/{id}/reference-annotations`, any account with edit access, declared source) and
+  `GET /research-inference/{run}/reference-comparison/{annotation}` (per-image agreement, not a performance estimate);
+  `GET /research-inference/{run}/surfaces` (marching cubes of a volumetric run's own mask in the scan's voxel frame,
+  not registered to the atlas).
+- Viewer: stored runs restored after reload, confirm/reject review, layer legend and opacity, Input · Reference · Model
+  comparison, 3-D surfaces of volumetric runs; "Reset zoom" works again; an organ-level schematic association tints the
+  whole organ in the single-organ anatomy view.
+- Reports: "BLOOD COLLECTION DT"-style labels give the sampling date; page-type rules v3 (pathology, clinic notes,
+  request forms, MRI, echocardiography, colonoscopy; tolerant of OCR-glued words).
+- Documents: `docs/implementation/UNIVERSAL_MEDICAL_AI_PROGRESS.md`, `docs/implementation/REAL_IMAGE_FAILURE_MATRIX.md`,
+  `docs/research/EXISTING_MODEL_CHECKPOINT_VERIFICATION.md`, `docs/research/RESEARCH_CAPABILITY_BLOCKERS.md`,
+  `docs/validation/PAPER_TABLE_V.md`. Backend tests 515 passed, 2 skipped; frontend checks and 38 node tests pass. Independent review (built-in code-review; Codex was out of quota): 9 of 10 findings fixed.
+
+## 2026-10-30 — every account has every feature
+
+The owner decided that no feature is reserved for administrator-created accounts. A self-registered (public,
+unverified) account now gets the whole workspace: overview dashboard, documents, document verification, imaging and
+uploads, research models, anatomy and prognosis studios, reports, catalog orders, reviewed demographics and its own
+private record.
+
+- Backend: reviews, correction proposals and decisions, anatomy mapping, landmark manifests (propose, decide, apply),
+  hybrid-layer registration reviews, catalog orders and lab reports, reviewed demographics, reference masks and the
+  personal record accept any signed-in account (`get_current_user`).
+- Frontend: no redirect to the personal record, the full navigation and the case controls for every account; review,
+  landmark and reference-mask controls are no longer hidden by role.
+- Still enforced, because they protect other people's data rather than gate features: each account sees only its own
+  cases and the cases shared with it (`verify_case_access`); a proposal cannot be approved by the account that made it
+  (four-eyes); case members are managed by the case owner; the global audit log (`GET /api/v1/system/audit`) is for
+  administrators.
+- Every review and decision records who made it: research-run reviews carry `reviewer_role` and
+  `reviewer_verified_professional`, hybrid-layer reviews `reviewer_standing`, landmark manifests `proposer_standing` and
+  `decider_standing`. The viewer says "verified clinician" or "not a verified clinician" next to a review.
+- Checked in the browser with a freshly self-registered account on the QA stack: lands on the Overview Dashboard with
+  all 18 navigation entries, creates a case, uploads a public Kvasir-SEG test image, runs the polyp segmenter, records a
+  review (stored as public, not a verified clinician) and sees the overlay; a second account gets 403 on that case.
+- Backend tests 517 passed, 2 skipped; frontend typecheck, lint, build and node tests pass; privacy scan clean.
+
+## 2026-10-30 — first Vercel deployment
+
+- Project `medtwin` (Hobby plan), production https://medtwin-seven.vercel.app: public, no Vercel login, open
+  registration. Health, readiness, deep links and the reference 3-D models answer without authentication; the
+  sign-in page renders with no script or content-security-policy errors.
+- Deployed with the CLI from a staged copy of exactly the allowlisted files (260 files, 8.8 MB, privacy scan exit 0,
+  no Git metadata, datasets, databases, uploads, keys or weights). See `docs/deployment/VERCEL_SERVICES.md`.
+- `.vercelignore`: folder re-inclusions no longer end in `/`; with the slash the CLI uploaded only 9 top-level files.
+  `VERCEL_SUPPORT_LARGE_FUNCTIONS=1` set (the 837 MB backend bundle exceeded the 500 MB default).
+- A comment and a test quoted a collection timestamp from one of the owner's reports; both now use made-up values.
+- Not available on Vercel: research-model inference (no PyTorch or checkpoints), uploads above 4.5 MB. Until a
+  database and a private Blob store are connected, storage is temporary (`temporary_storage: true`).
+
+## 2026-10-31 to 2026-11-04 — demo accounts, secondary NLP, MURA, CT organs
+
+- **Try the demo** (`POST /api/v1/auth/guest`, login page button): a guest account signed in for 24 hours with one case
+  of three fictional documents (two laboratory reports three months apart, one CT report; `backend/app/data/demo`),
+  analysed by the ordinary upload path, so every value shown is extracted, not prepared. Guests are kept like every
+  account (`users.is_guest`, migration `2026_10_31_001_guest_accounts`); `guest-` usernames are reserved; 5 per minute
+  per address. A banner says the case is fictional. The post-registration message no longer says accounts are limited.
+- **Accounts kept**: the development database was backed up before the migration (10 accounts, 14 cases) and the
+  migration rehearsed on a copy. Accounts on the Vercel deployment last only until a database is connected there.
+- **Secondary NLP** beside the rule extractor, never replacing it: scispaCy now runs by default wherever its WSL
+  environment exists (`MEDTWIN_SCISPACY=auto`); medSpaCy 1.3.1 ConText and sectionizer re-assess every rule statement's
+  span in WSL and the agreement is recorded per report (`secondary_clinical_nlp`); MedCAT 2.3.0 runs in the same WSL
+  environment, but the only model pack present is its 2-concept example (a UMLS or SNOMED CT pack is needed); RadGraph-XL
+  (MIT, owner-approved download) adds imaging-report observations with their anatomy (`MODEL_RADGRAPH_OBSERVATION`).
+  The tools run in parallel (about 13 s added per report on this PC) and are off on Vercel and in tests.
+- **MURA** (`mura_study_baseline`): trained after the owner confirmed the Stanford agreement. EfficientNet-B0; held-out
+  study-level AUROC 0.898 (0.880–0.917) and Cohen's kappa 0.677 (0.632–0.718) on 1,199 studies; image applicability
+  gate built (refuses endoscopy, CT and microscopy, not angiograms). `ml_training/classify.py` now reports study-level
+  metrics and the patient bootstrap unit; the first report's unit labels were corrected (values unchanged).
+- **CT organ segmentation** (`ct_totalsegmentator_v2`, TotalSegmentator v2, Apache-2.0; owner-approved 1.49 GB of
+  weights, usage statistics off): Medical Imaging runs it on a CT NIfTI after a Hounsfield-unit check; masks and
+  patient-derived 3-D surfaces in the scan's own frame (surfaces now crop per structure and coarsen on large grids).
+  Local check on 60 random LUNA16 CTs: lung Dice 0.974 (0.972–0.975) against LUNA16's published masks.
+- Still blocked: brain models (licensed data; the RSNA archive's terms are unchecked), DeepSA (no licence published),
+  MedCAT linking (licensed model pack). See `docs/research/RESEARCH_CAPABILITY_BLOCKERS.md`.
+- Setup: `scripts/setup_third_party_models.ps1`, `scripts/setup_clinical_nlp_wsl.sh`; datasets and repositories added to
+  the root by 2026-11-04 are Git-ignored, and MedTwin's README, overwritten by an extraction, was restored.
+- Independent review by Codex (CLI 0.164.0, read-only, source files only): 13 findings, 12 fixed. CT segmentation is a
+  queued GPU job (worker mode returns 202), refuses withdrawn or unassociated uploads (the chest-radiograph endpoint now
+  too), checks a voxel budget and reads only a strided sample before loading, and converts metre/micron headers to mm;
+  the guest endpoint runs its analyses off the event loop; medSpaCy layers spans by expanded tokens; WSL worker errors
+  carry only the exit status and exception type, malformed replies and any other secondary-tool failure become
+  `UNAVAILABLE` without losing the rule extraction, and configured paths are shell-quoted; surfaces find bounding boxes
+  by axis reductions and pad each structure so coarse meshes close; stored CT runs show even when no registered
+  volumetric model can run. Declined: `dataset_task_audit.py --only` still reads every manifest, because the selected
+  dataset's cross-dataset duplicate overlap needs them.
+- Backend tests 542 passed, 4 skipped (the live scispaCy, medSpaCy/MedCAT and RadGraph tests, which pass when run with
+  `MEDTWIN_TEST_WSL=1` / `MEDTWIN_TEST_RADGRAPH=1`, and the PostgreSQL smoke test); frontend checks pass; privacy scan clean.
+
+## 2026-11-04 — entry page, RSNA intracranial haemorrhage
+
+- **Entry page** (owner's decision): the sign-in and registration pages are removed. The front door asks for name, age,
+  gender and role (`POST /api/v1/auth/enter`; self-reported, unverified; the role grants nothing) and opens a private
+  workspace with every feature, without a password. The browser keeps the workspace's key (90 days) and offers
+  "Continue as" followed by the person's name; clearing the browser's data ends access. Accounts are kept (`users.is_visitor`, `age`, `gender`,
+  `stated_role`; migration `2026_11_04_001_entry_page_profiles`, rehearsed on a copy of the development database). The
+  10 existing password accounts open their workspaces from a collapsed "username and password from before" section, so
+  their cases stay reachable. Workspaces stay private to each person; `visitor-` usernames are reserved; 10 entries per
+  minute per address. "Try the demo" stays on the entry page.
+- **RSNA intracranial haemorrhage** (`brain_ct_rsna_ich_classifier`, owner-confirmed licensed RSNA data):
+  `ml_training/rsna_ich.py` trains a slice-level, multi-label EfficientNet-B0 (epidural, subdural, intraparenchymal,
+  intraventricular, subarachnoid, any) on whole-patient splits of 752,763 slices read straight from the archive. The
+  RSNA labels cover haemorrhage only; there is no ischaemic stroke, tumour or infection model. Serving supports
+  multi-label image models (`multilabel_classification` output, per-label thresholds from validation), with the
+  applicability gate built from an exported per-split sample (`scripts/export_rsna_ood_sample.py`).
+- RSNA results on 74,811 slices of 1,894 held-out patients: per-subtype AUROC 0.969–0.992 (mean 0.978); study-level any
+  haemorrhage AUROC 0.980 (0.973–0.986, 2,162 studies). Thresholds were first chosen by Youden's J, which put rare labels
+  near zero (epidural 0.003, about 1 flag in 28 correct); they were re-selected on validation by F1
+  (`ml_training/rsna_ich_operating_points.py`, test images not re-read): any haemorrhage sensitivity 0.834, specificity
+  0.976, PPV 0.855; epidural stays weak (sensitivity 0.424, PPV 0.245). Applicability gate: 0.7% of its own test slices
+  refused, every other image family caught. Served outputs match the evaluation on 300 test slices (max probability
+  difference 0.0019, 0 of 1,800 threshold decisions differ; `scripts/verify_rsna_serving_parity.py`).
+- The research-inference request now accepts the `XRAY` (MURA) and `HEAD_CT` input types; MURA uploads were refused
+  by the request schema before this fix. A test keeps the schema in step with the model input types.
+
+## 2026-11-05 — one shared space
+
+- Owner's decision: every account lists, opens and works on every case, its uploads, findings, reviews, analytics and
+  evaluation runs (`MEDTWIN_SHARED_WORKSPACE`, default on; `false` restores per-account privacy, and the 23 tests that
+  check that mode run with the `private_workspace` marker). Only a case's creator can delete the whole case; four-eyes
+  on proposals and the administrator-only global audit log stay. The entry page says that everything entered is visible
+  to all users. `GET /evaluation/runs/{id}` no longer fails on a name clash with its local `config` variable.

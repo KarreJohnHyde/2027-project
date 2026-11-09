@@ -1,0 +1,248 @@
+{
+  "model_id": "brain_ct_rsna_ich_classifier",
+  "run_id": "brain_ct_rsna_ich_classifier-20261104T133551Z",
+  "task_id": "rsna-ich-slice-multilabel",
+  "dataset": "RSNA Intracranial Hemorrhage Detection (PNG conversion)",
+  "dataset_version": "a1f6865986d5ada5b57ac86913d4411f5c60b9dea9d607d291d73df44dc39c68",
+  "dataset_license": {
+    "status": "OWNER_CONFIRMED",
+    "name": "RSNA Intracranial Hemorrhage Detection dataset terms (non-commercial research use)",
+    "authorized_by": "repository owner (recorded interactive statement)",
+    "authorized_on": "2026-11-04",
+    "note": "The owner stated that this is the licensed RSNA download; the archive is a PNG conversion of the RSNA training set.",
+    "citation": "Flanders AE, et al. Construction of a Machine Learning Dataset through Collaboration: The RSNA 2019 Brain CT Hemorrhage Challenge. Radiol Artif Intell 2020;2(3):e190211."
+  },
+  "split_method": "whole patients 80/10/10, seed 20261104",
+  "split_counts": {
+    "train": 604258,
+    "val": 73946,
+    "test": 74811
+  },
+  "train_slices_used": 604258,
+  "patients_per_split": {
+    "train": 15149,
+    "val": 1894,
+    "test": 1894
+  },
+  "selection": {
+    "criterion": "mean validation AUROC over the six labels",
+    "best_epoch": 3,
+    "val_mean_auroc": 0.9748984972635905
+  },
+  "test_n": 74811,
+  "test_patients": 1894,
+  "group_unit": "patient",
+  "per_label": {
+    "edh": {
+      "name": "epidural",
+      "positives": 304,
+      "auroc": 0.972771167755127,
+      "auroc_ci95": {
+        "status": "COMPUTED",
+        "low": 0.9609733909368515,
+        "high": 0.9828359305858612,
+        "resamples": 300,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.138345,
+      "sensitivity": 0.4243421052631579,
+      "specificity": 0.994671641590723,
+      "ppv": 0.24524714828897337,
+      "f1": 0.3108433734939759,
+      "flagged_slices": 526,
+      "operating_point": "F1 on the validation patients",
+      "youden_operating_point": {
+        "threshold": 0.002726,
+        "sensitivity": 0.9473684210526315,
+        "specificity": 0.8984256512810876,
+        "ppv": 0.03665987780040733,
+        "f1": 0.07058823529411765,
+        "flagged_slices": 7856
+      }
+    },
+    "sdh": {
+      "name": "subdural",
+      "positives": 4810,
+      "auroc": 0.9686849117279053,
+      "auroc_ci95": {
+        "status": "COMPUTED",
+        "low": 0.9603258579969406,
+        "high": 0.974695035815239,
+        "resamples": 300,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.331661,
+      "sensitivity": 0.7291060291060291,
+      "specificity": 0.9764574791788688,
+      "ppv": 0.6803103782735208,
+      "f1": 0.7038635223281485,
+      "flagged_slices": 5155,
+      "operating_point": "F1 on the validation patients",
+      "youden_operating_point": {
+        "threshold": 0.047958,
+        "sensitivity": 0.922037422037422,
+        "specificity": 0.9054870644705075,
+        "ppv": 0.40132114740747443,
+        "f1": 0.5592333396381061,
+        "flagged_slices": 11051
+      }
+    },
+    "iph": {
+      "name": "intraparenchymal",
+      "positives": 3719,
+      "auroc": 0.9861828088760376,
+      "auroc_ci95": {
+        "status": "COMPUTED",
+        "low": 0.9838359817862511,
+        "high": 0.9880810305476189,
+        "resamples": 300,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.41401,
+      "sensitivity": 0.7942995428878731,
+      "specificity": 0.9910397794407247,
+      "ppv": 0.8226120857699805,
+      "f1": 0.8082079343365253,
+      "flagged_slices": 3591,
+      "operating_point": "F1 on the validation patients",
+      "youden_operating_point": {
+        "threshold": 0.040465,
+        "sensitivity": 0.9365420812046249,
+        "specificity": 0.9459292184774658,
+        "ppv": 0.47536508803057187,
+        "f1": 0.6306355241716458,
+        "flagged_slices": 7327
+      }
+    },
+    "ivh": {
+      "name": "intraventricular",
+      "positives": 2493,
+      "auroc": 0.9920305609703064,
+      "auroc_ci95": {
+        "status": "COMPUTED",
+        "low": 0.9893284708261489,
+        "high": 0.9941301643848419,
+        "resamples": 300,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.349089,
+      "sensitivity": 0.825511432009627,
+      "specificity": 0.9941923172654111,
+      "ppv": 0.8305084745762712,
+      "f1": 0.828002414001207,
+      "flagged_slices": 2478,
+      "operating_point": "F1 on the validation patients",
+      "youden_operating_point": {
+        "threshold": 0.012528,
+        "sensitivity": 0.9703168872843964,
+        "specificity": 0.940775463923228,
+        "ppv": 0.3609370337212772,
+        "f1": 0.5261555193039695,
+        "flagged_slices": 6702
+      }
+    },
+    "sah": {
+      "name": "subarachnoid",
+      "positives": 3709,
+      "auroc": 0.9687584638595581,
+      "auroc_ci95": {
+        "status": "COMPUTED",
+        "low": 0.9636014491319657,
+        "high": 0.972841902077198,
+        "resamples": 300,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.429011,
+      "sensitivity": 0.6300889727689404,
+      "specificity": 0.9881437934235324,
+      "ppv": 0.7349056603773585,
+      "f1": 0.6784729278560023,
+      "flagged_slices": 3180,
+      "operating_point": "F1 on the validation patients",
+      "youden_operating_point": {
+        "threshold": 0.042882,
+        "sensitivity": 0.9045564842275546,
+        "specificity": 0.9054456977300217,
+        "ppv": 0.33290335384004766,
+        "f1": 0.4866903604845144,
+        "flagged_slices": 10078
+      }
+    },
+    "any": {
+      "name": "any intracranial haemorrhage",
+      "positives": 10962,
+      "auroc": 0.9783101677894592,
+      "auroc_ci95": {
+        "status": "COMPUTED",
+        "low": 0.9745329856872559,
+        "high": 0.9813853055238724,
+        "resamples": 300,
+        "unit": "patient"
+      },
+      "threshold_from_validation": 0.442426,
+      "sensitivity": 0.8338806787082649,
+      "specificity": 0.9757866215602436,
+      "ppv": 0.8553382614391316,
+      "f1": 0.8444731858284448,
+      "flagged_slices": 10687,
+      "operating_point": "F1 on the validation patients",
+      "youden_operating_point": {
+        "threshold": 0.127435,
+        "sensitivity": 0.924557562488597,
+        "specificity": 0.9319174928346567,
+        "ppv": 0.6998342770335589,
+        "f1": 0.7966514698946706,
+        "flagged_slices": 14482
+      }
+    }
+  },
+  "mean_auroc": 0.9777896801630656,
+  "study_level_any": {
+    "unit": "study (highest slice probability of 'any')",
+    "studies": 2162,
+    "positive_studies": 884,
+    "auroc": 0.9799526798801861,
+    "auroc_ci95": {
+      "status": "COMPUTED",
+      "low": 0.9729075553278699,
+      "high": 0.9860658953043531,
+      "resamples": 500,
+      "unit": "patient"
+    }
+  },
+  "checkpoint": {
+    "path": "artifacts/training/brain_ct_rsna_ich_classifier-20261104T133551Z/model.pt",
+    "sha256": "39b8068ea6c9337224db124897d9f1adf14ca6c0ad88bbc9268a59ec7a664a08"
+  },
+  "held_out_predictions": "artifacts/training/brain_ct_rsna_ich_classifier-20261104T133551Z/predictions_test.csv",
+  "training_seconds": 4365.5,
+  "config": {
+    "epochs": 3,
+    "batch_size": 64,
+    "image_size": 256,
+    "lr": 0.0003,
+    "workers": 6,
+    "seed": 20261104,
+    "max_train_slices": 0
+  },
+  "limitations": [
+    "Haemorrhage subtypes only (RSNA labels); no ischaemic stroke, tumour, infection or other pathology.",
+    "Slice-level model on single-window PNGs; it does not see neighbouring slices or other CT windows.",
+    "Internal held-out test on unseen patients of the same RSNA collection; no external validation.",
+    "Operating thresholds come from the validation patients (Youden's J); probabilities are not calibrated for any clinical population.",
+    "Research-only output; not validated for clinical use."
+  ],
+  "reporting_context": {
+    "dataset": "RSNA ICH",
+    "dataset_version": "a1f6865986d5ada5",
+    "split": "test",
+    "checkpoint": "sha256:39b8068ea6c9337224db124897d9f1adf14ca6c0ad88bbc9268a59ec7a664a08",
+    "reporting_status": "INTERNAL_HELD_OUT"
+  },
+  "report_corrections": [
+    {
+      "date": "2026-11-04",
+      "change": "Operating thresholds re-selected on the validation patients by F1 (Youden's J kept as youden_operating_point): Youden's J gave near-zero thresholds for rare labels. AUROC values unchanged; test images not re-read; checkpoint hash changed."
+    }
+  ]
+}

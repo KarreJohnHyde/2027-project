@@ -34,7 +34,7 @@ const GOOD = /^(COMPLETED|HEALTHY|READY|VALID|PASS|PASSED|SUPPORTED|COMPUTED|OBS
 const INFO = /^(ADD|RECORDED|EXTERNALLY_EVALUATED)$/;
 const SERIOUS = /^(ABOVE|BELOW)_DOCUMENTED|^(HIGH|LOW|CRITICAL_HIGH|CRITICAL_LOW|ABNORMAL)$/;
 
-export function toneFor(status: string): Tone {
+function toneFor(status: string): Tone {
   const code = status.toUpperCase();
   if (CRITICAL.test(code)) return "critical";
   if (SERIOUS.test(code)) return "serious";

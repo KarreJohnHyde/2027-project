@@ -24,7 +24,7 @@ import type { AnatomyManifest, AnatomySystem, AnatomyVariant, AtlasStructure, St
 import type { SectionState, TargetSummary } from "./AnatomyViewport";
 import { useViewportStats } from "./viewportStats";
 
-export const MAPPING_STYLE: Record<MappingState, { label: string; swatch: string; description: string }> = {
+const MAPPING_STYLE: Record<MappingState, { label: string; swatch: string; description: string }> = {
   SPATIALLY_REGISTERED: { label: "Spatially registered", swatch: "bg-map-spatial", description: "Validated image registration. None exists, so nothing is shown in this category." },
   REGION_VERIFIED: { label: "Region verified", swatch: "bg-map-verified", description: "Clinician-confirmed source statement naming a labelled atlas structure." },
   SCHEMATIC_ORGAN_ONLY: { label: "Schematic organ only", swatch: "bg-map-schematic", description: "Organ-level association only; carries no location." },
@@ -272,7 +272,8 @@ export function PerformanceOverlay() {
 
 function EvidenceItem({ item, mentions = [item], onFocus }: { item: AnatomyEvidenceItem; mentions?: AnatomyEvidenceItem[]; onFocus?: (atlasId: string) => void }) {
   const style = MAPPING_STYLE[item.mapping_state];
-  const atlasId = item.mapping_state === "REGION_VERIFIED" || item.mapping_state === "SPATIALLY_REGISTERED" ? item.atlas_structure_id : null;
+  const reportedPreview = item.mapping_state === "SCHEMATIC_ORGAN_ONLY" && item.assertion === "AFFIRMED" && item.certainty === "CERTAIN" && item.temporality === "CURRENT";
+  const atlasId = item.mapping_state === "REGION_VERIFIED" || item.mapping_state === "SPATIALLY_REGISTERED" ? item.atlas_structure_id : reportedPreview ? item.candidate_atlas_structure_id : null;
   return (
     <li className="rounded-lg border border-line bg-surface p-2.5">
       <div className="flex items-start justify-between gap-2">
@@ -290,15 +291,16 @@ function EvidenceItem({ item, mentions = [item], onFocus }: { item: AnatomyEvide
         </div>
         {atlasId && onFocus && (
           <button type="button" className="shrink-0 rounded-md border border-line px-1.5 py-0.5 text-[11px] text-ink-2 hover:bg-surface-2" onClick={() => onFocus(atlasId)} title={atlasId}>
-            Locate
+            {reportedPreview ? "View reported region" : "Locate"}
           </button>
         )}
       </div>
       {[...new Set(mentions.map((mention) => mention.source_span).filter(Boolean))].map((span) => (
         <p key={span} className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-ink-2">“{span}”</p>
       ))}
-      {item.documented_region && <p className="mt-1 text-[11px] text-ink-3">Documented region: {item.documented_region}{item.mapping_state !== "REGION_VERIFIED" && item.candidate_atlas_structure_id ? " (awaiting clinician confirmation)" : ""}</p>}
+      {item.documented_region && <p className="mt-1 text-[11px] text-ink-3">Documented region: {item.atlas_structure_name ?? item.documented_region}{item.atlas_structure_name && item.atlas_structure_name.toLowerCase() !== item.documented_region.toLowerCase() ? ` (as read: “${item.documented_region}”)` : ""}{item.mapping_state !== "REGION_VERIFIED" && item.candidate_atlas_structure_id ? " (awaiting clinician confirmation)" : ""}</p>}
       <p className="mt-1 text-[11px] leading-4 text-ink-3">{item.reason}</p>
+      {reportedPreview && atlasId && <p className="mt-1 text-[11px] text-warning-text">Reported anatomical association — not patient registered. Extraction awaits review.</p>}
     </li>
   );
 }

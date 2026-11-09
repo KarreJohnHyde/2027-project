@@ -3,6 +3,7 @@
 Synthetic, de-identified fixtures only.
 """
 
+import pytest
 from app.models.entities import Case, CaseMembership
 from tests.conftest import get_auth_headers
 
@@ -53,6 +54,7 @@ def test_replacing_a_file_keeps_the_previous_version_and_its_provenance(client, 
     assert stale.status_code == 409 and stale.json()["detail"]["code"] == "NOT_THE_LATEST_VERSION"
 
 
+@pytest.mark.private_workspace
 def test_withdrawal_is_a_reasoned_tombstone(client, db_session, test_users):
     owner, viewer = test_users["clinician_a"], test_users["clinician_b"]
     case = Case(pseudonymous_id="WITHDRAW-TEST", created_by_id=owner.id)

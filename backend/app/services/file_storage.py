@@ -20,7 +20,10 @@ from app.config import UPLOAD_DIR, MAX_UPLOAD_SIZE_BYTES, MAX_IMAGE_UPLOAD_SIZE_
 from app.services import upload_store
 from app.models.entities import ModalityType
 
-IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".bmp", ".dcm", ".nii", ".nii.gz", ".nrrd", ".mha")
+IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".bmp", ".dcm", ".nii", ".nii.gz", ".nrrd", ".mha", ".mp4", ".avi", ".svs", ".tif", ".tiff", ".ndpi")
+VIDEO_EXTENSIONS = (".mp4", ".avi")
+WSI_EXTENSIONS = (".svs", ".tif", ".tiff", ".ndpi")
+TIFF_MAGIC = (b"II*\x00", b"MM\x00*", b"II+\x00", b"MM\x00+")
 ECG_EXTENSIONS = (".csv", ".dat", ".hea")
 SIGNAL_EXTENSIONS = (".edf", ".bdf")
 REPORT_EXTENSIONS = (".txt", ".json", ".pdf", ".docx", ".md", ".xlsx", ".hl7")
@@ -47,6 +50,9 @@ EXPECTED_MIME_TYPES = {
     ".edf": {"application/octet-stream", "application/edf", "application/x-edf"},
     ".bdf": {"application/octet-stream"},
     ".hea": {"application/octet-stream", "text/plain"},
+    ".mp4": {"video/mp4", "application/octet-stream"},
+    ".avi": {"video/x-msvideo", "video/avi", "video/msvideo", "application/octet-stream"},
+    **{suffix: {"image/tiff", "application/octet-stream"} for suffix in (".svs", ".tif", ".tiff", ".ndpi")},
 }
 
 
@@ -118,6 +124,9 @@ def validate_signature(ext: str, head: bytes) -> None:
         ".mha": b"ObjectType" in head[:1024] and b"ElementDataFile" in head,
         ".edf": head.startswith(b"0       "),
         ".bdf": head.startswith(b"\xffBIOSEMI"),
+        ".mp4": len(head) >= 12 and head[4:8] == b"ftyp",
+        ".avi": len(head) >= 12 and head[:4] == b"RIFF" and head[8:12] == b"AVI ",
+        **{suffix: head[:4] in TIFF_MAGIC for suffix in WSI_EXTENSIONS},
     }
     if ext in checks and not checks[ext]:
         detail = {
@@ -129,6 +138,31 @@ def validate_signature(ext: str, head: bytes) -> None:
 
 
 def validate_complete_content(ext: str, path: Path) -> None:
+    if ext in (".nrrd", ".mha"):
+        from app.services.imaging_readers import ImagingReadError, check_attached_data
+
+        try:
+            check_attached_data(path, "NRRD" if ext == ".nrrd" else "METAIMAGE")
+        except ImagingReadError as exc:
+            raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=str(exc))
+    if ext in WSI_EXTENSIONS:
+        from app.services.wsi_reader import MAX_THUMBNAIL_SOURCE, WsiError, describe
+
+        try:
+            slide = describe(path)
+        except WsiError as exc:
+            raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=str(exc))
+        smallest = min(max(level["width"], level["height"]) for level in slide["levels"])
+        if smallest > MAX_THUMBNAIL_SOURCE:
+            raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+                                detail=f"WSI_NO_REDUCED_LEVEL: the slide has no pyramid level of at most {MAX_THUMBNAIL_SOURCE} px on its long side.")
+    if ext in VIDEO_EXTENSIONS:
+        from app.services.video_frames import VideoError, probe
+
+        try:
+            probe(path)
+        except VideoError as exc:
+            raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=str(exc))
     if ext in SIGNAL_EXTENSIONS:
         from app.services.edf_reader import EdfError, read_file_header
 

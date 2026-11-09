@@ -1,0 +1,57 @@
+{
+  "model_id": "brain_mri_glioma_segresnet",
+  "dataset_id": "msd-task01-brain-tumour",
+  "dataset_version": "d3b2c312fdb061078d241b43627a187111d78864e660cad57ba12b11e8ab548a",
+  "manifest_sha256": "dea01f0e20df7dd3f733f39d4eb324cf71665bf592290103eaabd28c34f3571d",
+  "derived_from": "NIfTI headers and voxels of the development cases (manifest train and validation splits); test cases do not shape the range",
+  "development_cases": 411,
+  "ndim": [
+    4
+  ],
+  "channels": [
+    "FLAIR",
+    "T1w",
+    "T1gd",
+    "T2w"
+  ],
+  "in_plane_spacing_mm": {
+    "min": 1.0,
+    "max": 1.0
+  },
+  "in_plane_square_pixels": true,
+  "slice_spacing_mm": {
+    "min": 1.0,
+    "max": 1.0
+  },
+  "slice_axis_last": false,
+  "matrix": {
+    "i": {
+      "min": 240,
+      "max": 240
+    },
+    "j": {
+      "min": 240,
+      "max": 240
+    },
+    "k": {
+      "min": 155,
+      "max": 155
+    }
+  },
+  "nonzero_fraction": {
+    "min": 0.126,
+    "max": 0.2073,
+    "margin": 0.05,
+    "development_cases_above_half": 0,
+    "note": "Cases with more than half their voxels non-zero are probably not skull-stripped; when there are any, the range cannot tell a head with skull from a skull-stripped brain."
+  },
+  "orientations": [
+    "RAS"
+  ],
+  "held_out_test_cases": {
+    "total": 73,
+    "accepted_by_gate": 73,
+    "refusal_reasons": {},
+    "warnings": {}
+  }
+}

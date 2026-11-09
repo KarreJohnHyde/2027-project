@@ -37,6 +37,7 @@ from app.models.entities import (
 )
 from app.routers import (
     analysis,
+    workflow,
     anatomy,
     anatomy_studio,
     auth,
@@ -64,6 +65,7 @@ from app.routers import (
     research_models,
     reviews,
     system,
+    video,
 )
 from app.request_context import REQUEST_ID_HEADER, get_request_id
 from app.security import RequestIdMiddleware, SecurityHeadersMiddleware
@@ -187,6 +189,7 @@ app.add_middleware(RequestIdMiddleware)
 
 for router in (
     auth.router,
+    workflow.router,
     members.router,
     portal.router,
     cases.router,
@@ -214,6 +217,7 @@ for router in (
     evaluation.router,
     research.router,
     research_models.router,
+    video.router,
 ):
     app.include_router(router, prefix=API_PREFIX)
 

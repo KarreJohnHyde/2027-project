@@ -1,6 +1,12 @@
 # MedTwin 2.0
 
-> **Current verification (2026-10-29):** see the [completeness audit](docs/verification/COMPLETENESS_AUDIT_2026-10-29.md) and [working-app demonstration guide](docs/demo/DEMONSTRATION_GUIDE.md). Older test counts and capability statements below are historical. The research roadmap is not clinically validated; Vercel configuration is a blocked local draft, not a deployment.
+> **Priority execution (2026-11-09):** The target is commercial clinician decision support in India; release remains blocked. Python startup is repaired, Transformers/RadGraph are migrated, and hardened containers passed a full local encrypted recovery drill. All 131 MSD liver CT/mask cases have a checked 91/20/20 manifest. The RCC-AID candidate now has 142 paired scans from 101 patient groups, with curation and rights review pending; the kidney tumour model remains rejected. The [current work and verification report](docs/development/PRIORITY_EXECUTION_2026-11-09.md), [local startup repair](docs/development/LOCAL_STARTUP_REPAIR_2026-11-09.md) and [India release review](docs/deployment/INDIA_COMMERCIAL_RELEASE_REVIEW_2026-11-09.md) distinguish completed work from remaining clinical, rights, native-policy and off-host recovery blockers. Zero models are clinically activated or commercially cleared. Earlier verification counts below are historical.
+
+> **Image security:** All reported critical findings were removed through updates and unused-component removal. Four high backend OS findings remain, plus a frontend scanner/vendor-version discrepancy. See the [image audit and remaining work](docs/security/IMAGE_SECURITY_REVIEW_2026-11-09.md). Passing functional tests does not clear these release blockers.
+
+> **Heterogeneous evidence update (2026-11-06):** source-linked report synthesis now works when imaging abstains; raster/PDF film-panel previews, examination linking, multimodel job batches and opt-in chronological research baselines are integrated. See [implementation status, root causes and reproducible checks](docs/implementation/HETEROGENEOUS_EVIDENCE_STATUS.md). Private case access is the default; demo guests remain isolated even in explicit shared-workspace mode. Existing data is preserved through additive migrations.
+
+> **Current verification (2026-11-06):** the [continued acceptance status](docs/implementation/CONTINUED_ACCEPTANCE_STATUS.md) records the final comparison, baseline, film-control and anatomy-navigation repairs: 613 backend tests passed, four skipped; frontend checks and all four browser acceptance checks passed. Seventeen application screenshots and four JSON outputs were saved. A separate RSNA held-out digital CT control completed real checkpoint inference. The [master implementation status](docs/implementation/MASTER_IMPLEMENTATION_STATUS.md) describes the integrated workflow and capability limits. Earlier audits and test counts below are historical. This is research software, not clinical validation or a deployment.
 
 MedTwin is a software-only research prototype for authenticated, provenance-preserving review of de-identified clinical evidence. It is not a validated medical device, does not replace a clinician, and must not be used with identifiable patient data in this development phase.
 
@@ -21,7 +27,7 @@ Every patient-facing result traces to an uploaded source and a recorded computat
 - **Biomarkers:** longitudinal series with registered unit conversions, Δx, Δx%, rate, OLS/Theil–Sen from n ≥ 3 and Mann–Kendall from n ≥ 4. CKD-EPI 2021 eGFR is computed only from documented inputs.
 - **Laboratory transcription:** transcription against the test catalog, and investigation orders. A position is computed only against the laboratory's printed interval; without one it is `INDETERMINATE`.
 - **Anatomy:** ten system workspaces, 43 generic reference variants plus the Z-Anatomy atlas, structure hierarchy, sections and clinician-confirmed region mapping (`docs/anatomy/README.md`). This is reference anatomy only, never patient anatomy.
-- **Prognosis and risk:** a target-trial specification and organ capability registry. Every forecast, scenario, risk score and treatment effect is reported as unavailable, with reasons.
+- **Prognosis and risk:** a target-trial specification and organ capability registry. Opt-in persistence and linear research baselines use reviewed, dated measurements and chronological backtesting; retained history and horizon limits are exposed in Prognosis Studio. These are not validated medical forecasts. Disease-specific scenarios, risk scores and treatment effects remain unavailable with reasons.
 - **Validation Center:** evaluates uploaded held-out predictions in the `MedTwin_2_Validation_Kit` formats. Tasks: classification, multiclass, regression, survival, forecast, lab-extraction audit, segmentation (single pair or ZIP) and COCO detection. Bootstrap CIs are cluster-aware. Each run is bound to dataset, version, split, checkpoint and code commit.
 - **Research traceability:** `docs/research/traceability.json` maps the revised draft's claims and equations to code, tests and gaps (`docs/research/implementation_gaps.md`).
 - **Registries and reports:** read-only dataset and model registries (every model is blocked from clinical activation), append-only review with four-eyes approval of corrections, and JSON evidence export with SHA-256 plus a printable report.
@@ -29,7 +35,7 @@ Every patient-facing result traces to an uploaded source and a recorded computat
 ## What is not operational
 
 - No image, ECG or clinical-language model is clinically activated; the research models above have internal held-out evaluations only, with no external or clinical validation. Of the manuscript's Section X experiments, the image classification, detection/segmentation and PTB-XL runs were executed as internal evaluations; `X-MURA`, `X-DOC-EXTRACTION`, `X-MIMIC-CXR` and `X-FORECAST` have not been run (`docs/research/IEEE_TRACEABILITY_REPORT.md`).
-- No forecast, calibrated diagnostic confidence, patient-specific anatomy (L3), validated registration or case-level multimodal fusion is produced. These need data that does not exist here: a longitudinal cohort with a defined population and endpoint for forecasts, same-patient paired multimodal data for fusion, and, for registration, reviewed patient landmarks on real studies plus an observer study (the four-eyes landmark-manifest workflow that gates L2 exists as an API; there is no landmark-placement interface yet).
+- No clinically validated forecast, calibrated diagnostic confidence, patient-specific anatomy (L3), validated registration or learned case-level multimodal prediction is produced. Rule-based report synthesis and research baselines remain distinct from those claims. Validation requires a longitudinal cohort with a defined endpoint, paired multimodal data, or independently reviewed patient landmarks and an observer study, respectively.
 - Clinical validation of any component needs independent, annotated clinical data under an approved protocol; none has been done. No EEG model exists (recordings are read and shown, not interpreted).
 - Docker: a full Compose run (worker profile) has been executed locally: health, migrations, an analysis job run by the worker container, encrypted uploads and database on the volume, non-root containers, frontend security headers, restart persistence and clean shutdown. CI builds both images and runs a Playwright browser regression suite against a throwaway stack (`tools/browser-qa/e2e`).
 
@@ -41,6 +47,15 @@ Every patient-facing result traces to an uploaded source and a recorded computat
 - Git LFS before committing the curated GLB asset.
 
 ## Local development
+
+On Windows, start the backend and frontend together (reusing verified MedTwin services already running):
+
+```powershell
+cd D:\project
+npm run dev:full
+```
+
+Open `http://localhost:8443`. Stop only the services this launcher started with `npm run dev:stop`. Startup logs and ownership state are under `.cache/dev-stack`; reused managed services are left running. This uses the existing Python environment and installed Node dependencies.
 
 The Figma Make Vite server is already managed on `$PORT` (`8443` by default). Do not start a second Vite process in that environment. Start only the canonical backend:
 

@@ -19,9 +19,9 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.entities import LabInvestigationReport, OrderedPackage, UploadedFile, User, UserRole
+from app.models.entities import LabInvestigationReport, OrderedPackage, UploadedFile, User
 from app.services.audit_service import log_audit_event
-from app.services.auth import get_current_user, require_role, verify_case_access
+from app.services.auth import get_current_user, verify_case_access
 from app.services.clinical_catalog import (
     get_all_imaging_services,
     get_all_packages,
@@ -206,7 +206,7 @@ def create_case_order(
     case_id: int,
     req: OrderCreateRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(UserRole.CLINICIAN)),
+    current_user: User = Depends(get_current_user),
 ):
     """Orders a catalog package or imaging study for a case."""
     verify_case_access(case_id, current_user, db)
@@ -243,7 +243,7 @@ def update_case_order_status(
     order_id: int,
     req: OrderStatusUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(UserRole.CLINICIAN)),
+    current_user: User = Depends(get_current_user),
 ):
     """Advances an order's status. Completed and cancelled orders are final."""
     verify_case_access(case_id, current_user, db)
@@ -293,7 +293,7 @@ def create_case_lab_report(
     case_id: int,
     req: LabReportCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(UserRole.CLINICIAN)),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Records laboratory results for a case. When linked to an ordered package,

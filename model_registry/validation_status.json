@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-25T14:02:05+00:00",
+  "generated_at": "2026-11-09T15:16:00+00:00",
   "generator": "scripts/write_validation_status.py",
   "summary": {
-    "models": 21,
+    "models": 31,
     "clinically_activatable": 0,
-    "research_runnable": 11
+    "research_runnable": 18
   },
   "definitions": {
     "clinical_activation": "Requires status VALIDATED, validated=true, a complete artifact bundle, verified licence and matching checkpoint hash.",
@@ -31,27 +31,9 @@
       }
     },
     {
-      "model_id": "mura_study_baseline",
-      "status": "WEIGHTS_MISSING",
-      "registry_state": "CHECKPOINT_MISSING",
-      "validated": false,
-      "supported_modalities": [
-        "XRAY"
-      ],
-      "clinical_activation": {
-        "eligible": false,
-        "blockers": [
-          "STATUS_NOT_VALIDATED",
-          "VALIDATION_FLAG_FALSE",
-          "ARTIFACT_BUNDLE_INCOMPLETE",
-          "DATASET_LICENSE_UNVERIFIED"
-        ]
-      }
-    },
-    {
       "model_id": "monai_runtime",
-      "status": "DISCOVERED",
-      "registry_state": "DISCOVERED",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
       "validated": false,
       "supported_modalities": [],
       "clinical_activation": {
@@ -67,8 +49,8 @@
     },
     {
       "model_id": "medcat_adapter",
-      "status": "DEPENDENCY_MISSING",
-      "registry_state": "DEPENDENCY_MISSING",
+      "status": "WEIGHTS_MISSING",
+      "registry_state": "CHECKPOINT_MISSING",
       "validated": false,
       "supported_modalities": [
         "DOCUMENT"
@@ -102,9 +84,28 @@
       }
     },
     {
+      "model_id": "medspacy_context_adapter",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "DOCUMENT"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "PROCESSOR_ONLY_NOT_ACTIVATABLE_AS_MODEL",
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE",
+          "DATASET_LICENSE_UNVERIFIED"
+        ]
+      }
+    },
+    {
       "model_id": "radgraph_adapter",
-      "status": "DEPENDENCY_MISSING",
-      "registry_state": "DEPENDENCY_MISSING",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
       "validated": false,
       "supported_modalities": [
         "DOCUMENT"
@@ -313,8 +314,7 @@
         "blockers": [
           "STATUS_NOT_VALIDATED",
           "VALIDATION_FLAG_FALSE",
-          "ARTIFACT_BUNDLE_INCOMPLETE",
-          "ARTIFACT_FILES_MISSING"
+          "ARTIFACT_BUNDLE_INCOMPLETE"
         ]
       },
       "research_inference": {
@@ -476,8 +476,7 @@
         "blockers": [
           "STATUS_NOT_VALIDATED",
           "VALIDATION_FLAG_FALSE",
-          "ARTIFACT_BUNDLE_INCOMPLETE",
-          "ARTIFACT_FILES_MISSING"
+          "ARTIFACT_BUNDLE_INCOMPLETE"
         ]
       },
       "research_inference": {
@@ -538,8 +537,7 @@
         "blockers": [
           "STATUS_NOT_VALIDATED",
           "VALIDATION_FLAG_FALSE",
-          "ARTIFACT_BUNDLE_INCOMPLETE",
-          "ARTIFACT_FILES_MISSING"
+          "ARTIFACT_BUNDLE_INCOMPLETE"
         ]
       },
       "research_inference": {
@@ -557,6 +555,306 @@
       },
       "evaluation_report_path": "docs/validation/models/acdc_cardiac_mri_3d_unet.json",
       "checkpoint_sha256": "b18afcf66effbfd8c8db515958e798cb7b03f322b4a1da354d41edb5edc2d60e"
+    },
+    {
+      "model_id": "cxr_torchxrayvision_densenet121",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "XRAY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      }
+    },
+    {
+      "model_id": "ct_totalsegmentator_v2",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "CT"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      }
+    },
+    {
+      "model_id": "mura_study_baseline",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "XRAY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 3197,
+        "accuracy": 0.821707851110416,
+        "macro_f1": 0.8205299570758642,
+        "accuracy_95ci": [
+          0.8020761076007417,
+          0.840121078860031
+        ],
+        "ece_temperature_scaled": 0.022626754004842677
+      },
+      "evaluation_report_path": "docs/validation/models/mura_study_baseline.json",
+      "checkpoint_sha256": "e5604f7efe4c480bc58e0a29d159255fb4ba8a08644cfa10de76f665595215be"
+    },
+    {
+      "model_id": "brain_ct_rsna_ich_classifier",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "HEAD_CT"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 74811,
+        "test_patients": 1894,
+        "mean_auroc": 0.9777896801630656,
+        "epidural_auroc": 0.972771167755127,
+        "subdural_auroc": 0.9686849117279053,
+        "intraparenchymal_auroc": 0.9861828088760376,
+        "intraventricular_auroc": 0.9920305609703064,
+        "subarachnoid_auroc": 0.9687584638595581,
+        "any intracranial haemorrhage_auroc": 0.9783101677894592,
+        "study_level_any_auroc": 0.9799526798801861
+      },
+      "evaluation_report_path": "docs/validation/models/brain_ct_rsna_ich_classifier.json",
+      "checkpoint_sha256": "39b8068ea6c9337224db124897d9f1adf14ca6c0ad88bbc9268a59ec7a664a08"
+    },
+    {
+      "model_id": "ptbxl_ecg_demographic_fusion",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "ECG"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 2163,
+        "macro_auroc": 0.9196368336677552,
+        "macro_auprc": 0.8076345720018949,
+        "macro_auroc_95ci": [
+          0.9118195351958275,
+          0.926806902885437
+        ],
+        "macro_f1_at_validation_thresholds": 0.7247600610747172,
+        "ecg_only_macro_auroc_same_test_records": 0.9183802843093872,
+        "fusion_minus_ecg_only_macro_auroc": 0.0012565493583679421,
+        "fusion_minus_ecg_only_95ci": [
+          -0.00118379265069955,
+          0.0037624606490135625
+        ],
+        "fusion_conclusion": "NO_DIFFERENCE_SHOWN"
+      },
+      "evaluation_report_path": "docs/validation/models/ptbxl_ecg_demographic_fusion.json",
+      "checkpoint_sha256": "21a7e9f044f898f99ee21fd93075ec1f4d1de5dc3bd24b2e10b645026b883200"
+    },
+    {
+      "model_id": "brain_mri_stroke_lesion_segresnet",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "BRAIN_MRI_DIFFUSION"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 38,
+        "test_patients": 38,
+        "mean_case_macro_dice": 0.7521296853129834,
+        "ischaemic_stroke_lesion_dice": 0.7521296853129834,
+        "lesion_sensitivity": 0.5457627118644067,
+        "lesion_f1": 0.6655757471363362,
+        "false_positive_components_per_case": 0.7631578947368421
+      },
+      "evaluation_report_path": "docs/validation/models/brain_mri_stroke_lesion_segresnet.json",
+      "checkpoint_sha256": "058be494f9b04b603fa47bfc7425707bb6802408eac37d5ce8daa910a86d14ca"
+    },
+    {
+      "model_id": "brain_mri_glioma_segresnet",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "BRAIN_MRI_MULTISEQUENCE"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 73,
+        "test_patients": 73,
+        "mean_case_macro_dice": 0.7516052276173116,
+        "peritumoural_oedema_dice": 0.8092591212653976,
+        "necrotic_or_non_enhancing_tumour_core_dice": 0.6435822346446309,
+        "enhancing_tumour_dice": 0.801974326941906,
+        "whole_tumour_dice": 0.9079231792897922,
+        "tumour_core_dice": 0.8557776097768195
+      },
+      "evaluation_report_path": "docs/validation/models/brain_mri_glioma_segresnet.json",
+      "checkpoint_sha256": "2f2836466ff27cdb06f0807dcd2dc97cb6b8498bcf25692ff23cf8e0481c7c42"
+    },
+    {
+      "model_id": "skin_padufes_image_classifier",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "DERMATOLOGY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 304,
+        "accuracy": 0.5592105263157895,
+        "macro_f1": 0.5386516301733693,
+        "accuracy_95ci": [
+          null,
+          null
+        ],
+        "ece_temperature_scaled": 0.0951481727196982
+      },
+      "evaluation_report_path": "docs/validation/models/skin_padufes_image_classifier.json",
+      "checkpoint_sha256": "550aa164889daf8645742cad13c6ae865c179dfc0c6581279beb516a022f7b3c"
+    },
+    {
+      "model_id": "skin_padufes_image_tabular_classifier",
+      "status": "READY_UNVALIDATED",
+      "registry_state": "READY_UNVALIDATED",
+      "validated": false,
+      "supported_modalities": [
+        "DERMATOLOGY"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": true,
+        "blockers": []
+      },
+      "held_out_evaluation": {
+        "test_n": 304,
+        "accuracy": 0.6578947368421053,
+        "macro_f1": 0.6146354087156798,
+        "accuracy_95ci": [
+          null,
+          null
+        ],
+        "ece_temperature_scaled": 0.0603087897363462
+      },
+      "evaluation_report_path": "docs/validation/models/skin_padufes_image_tabular_classifier.json",
+      "checkpoint_sha256": "429070bdee8e65daa4bd34b273f9389209b0b524a0fbef3d0b98e2a87bd68396"
+    },
+    {
+      "model_id": "ct_kidney_tumour_segresnet",
+      "status": "FAILED",
+      "registry_state": "FAILED",
+      "validated": false,
+      "supported_modalities": [
+        "CT_ABDOMEN_VOLUME"
+      ],
+      "clinical_activation": {
+        "eligible": false,
+        "blockers": [
+          "STATUS_NOT_VALIDATED",
+          "VALIDATION_FLAG_FALSE",
+          "ARTIFACT_BUNDLE_INCOMPLETE"
+        ]
+      },
+      "research_inference": {
+        "allowed": false,
+        "blockers": [
+          "STATUS_FAILED",
+          "DECLARED_TARGET_FAILED_EVALUATION"
+        ]
+      },
+      "held_out_evaluation": null,
+      "evaluation_report_path": "docs/validation/models/ct_kidney_tumour_segresnet.json",
+      "checkpoint_sha256": "9acfa4f810ff7eb7be0e35c9ff465f1dee9385f7dc4ce9141ee54ae6e58651a2"
     }
   ]
 }

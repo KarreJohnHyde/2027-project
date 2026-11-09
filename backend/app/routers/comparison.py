@@ -5,7 +5,7 @@ Implements Section IX endpoints for semantic report diffing and numeric delta an
 
 from typing import Optional
 from pydantic import BaseModel
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -20,6 +20,7 @@ router = APIRouter(prefix="/cases", tags=["Longitudinal Comparison"])
 class CompareRequest(BaseModel):
     prior_exam_id: Optional[int] = None
     current_exam_id: Optional[int] = None
+    same_patient_confirmed: bool = False
 
 
 @router.post("/{case_id}/compare")
@@ -38,6 +39,8 @@ def compare_case_examinations(
 
     prior_id = payload.prior_exam_id if payload else None
     current_id = payload.current_exam_id if payload else None
+    if len(case.examinations) >= 2 and not (payload and payload.same_patient_confirmed):
+        raise HTTPException(status_code=400, detail="SAME_PATIENT_CONFIRMATION_REQUIRED: Confirm the selected examinations belong to the same patient.")
 
     result = ComparisonService.compare_examinations(
         db=db,
@@ -56,6 +59,7 @@ def compare_case_examinations(
             "case_id": case.id,
             "prior_exam_id": prior_id,
             "current_exam_id": current_id,
+            "same_patient_confirmed": bool(payload and payload.same_patient_confirmed),
             "status": result.get("status"),
             "semantic_diff_count": len(result.get("semantic_report_diff", [])),
             "numeric_delta_count": len(result.get("numeric_deltas", [])),

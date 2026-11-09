@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { FlaskConical } from "lucide-react";
-import { Button, ErrorBlock, LoadingBlock, SelectInput, Unavailable } from "./ui";
+import { Button, ErrorBlock, LoadingBlock, SelectInput, TextInput, Unavailable } from "./ui";
 import { ResultView } from "./ResearchModelPanel";
 import { api, type ResearchRun, type UploadedFile } from "../services/api";
-import { errorMessage, humanize } from "../lib/format";
+import { errorMessage, formatNumber, humanize } from "../lib/format";
 import { useAsync } from "../lib/useAsync";
 
 const suffix = (upload: UploadedFile) => upload.filename.toLowerCase().split(".").pop() ?? "";
@@ -22,19 +22,29 @@ export default function EcgResearchPanel({ uploads }: { uploads: UploadedFile[] 
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [run, setRun] = useState<ResearchRun | null>(null);
-  const model = models[0] ?? null;
+  const [modelId, setModelId] = useState<string | null>(null);
+  const [age, setAge] = useState("");
+  const [sex, setSex] = useState<"" | "M" | "F">("");
+  const model = models.find((item) => item.model_id === modelId) ?? models[0] ?? null;
+  const fusion = (model?.demographic_inputs?.length ?? 0) > 0;
+  const evaluation = model?.held_out_evaluation ?? {};
+  const difference = typeof evaluation.fusion_minus_ecg_only_macro_auroc === "number" ? evaluation.fusion_minus_ecg_only_macro_auroc : null;
+  const conclusion = difference === null ? null : `macro AUROC ${difference >= 0 ? "+" : ""}${formatNumber(difference, 4)} (${humanize(String(evaluation.fusion_conclusion ?? "")).toLowerCase()})`;
+  const ageYears = age.trim() === "" ? undefined : Number(age);
+  const ageValid = ageYears === undefined || (Number.isFinite(ageYears) && ageYears >= 0 && ageYears <= 120);
   const record = records.find((upload) => upload.id === recordId) ?? records[0] ?? null;
   const wfdb = record !== null && suffix(record) === "hea";
   const signal = wfdb ? signals.find((upload) => upload.id === signalId) ?? null : null;
-  const ready = model !== null && record !== null && attested && (wfdb ? signal !== null : unit !== "");
+  const ready = model !== null && record !== null && attested && (wfdb ? signal !== null : unit !== "") && (!fusion || ageValid);
 
   async function execute() {
     if (!model || !record) return;
     setBusy("Running");
     setError(null);
     try {
+      const demographics = fusion ? { ageYears, sex: sex || undefined } : {};
       setRun(await api.runResearchModel(record.id, model.model_id, "ECG", (job) => setBusy(`${humanize(job.status)}${job.message ? ` · ${job.message}` : ""}`),
-        wfdb ? { companionUploadId: signal?.id } : { amplitudeUnit: unit || undefined }));
+        { ...(wfdb ? { companionUploadId: signal?.id } : { amplitudeUnit: unit || undefined }), ...demographics }));
     } catch (failure) {
       setError(errorMessage(failure));
     } finally {
@@ -50,7 +60,33 @@ export default function EcgResearchPanel({ uploads }: { uploads: UploadedFile[] 
   }
   return (
     <div className="space-y-3">
-      <p className="text-[11px] leading-4 text-ink-2">{listing.data?.notice} Model: {model.display_name}. Records must be resting 12-lead ECGs at 100 Hz lasting 10 s; nothing is resampled, cropped or padded, and anything else is refused.</p>
+      <p className="text-[11px] leading-4 text-ink-2">{listing.data?.notice} Records must be resting 12-lead ECGs at 100 Hz lasting 10 s; nothing is resampled, cropped or padded, and anything else is refused.</p>
+      {models.length > 1 && (
+        <label className="block text-xs text-ink-2">
+          Model
+          <SelectInput aria-label="ECG research model" value={model.model_id} onChange={(event) => { setModelId(event.target.value); setRun(null); }}>
+            {models.map((item) => <option key={item.model_id} value={item.model_id}>{item.display_name}</option>)}
+          </SelectInput>
+        </label>
+      )}
+      {fusion && (
+        <div className="space-y-2 rounded-lg border border-line p-3">
+          <p className="text-[11px] leading-4 text-ink-2">
+            This model fuses the ECG with the patient's age and sex. Leave both blank to use the case's latest reviewed demographics (sex and date of birth);
+            without them the run is refused.{conclusion ? ` Held-out comparison with the same network without age and sex: ${conclusion}.` : ""}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <label className="text-xs text-ink-2">Age (years)<TextInput type="number" min={0} max={120} value={age} onChange={(event) => setAge(event.target.value)} className="h-8 w-28 text-xs" aria-invalid={!ageValid} /></label>
+            <label className="text-xs text-ink-2">Sex
+              <SelectInput aria-label="Sex for the fusion model" value={sex} onChange={(event) => setSex(event.target.value as "" | "M" | "F")}>
+                <option value="">From reviewed demographics</option>
+                <option value="F">Female</option>
+                <option value="M">Male</option>
+              </SelectInput>
+            </label>
+          </div>
+        </div>
+      )}
       <label className="block text-xs text-ink-2">
         Record
         <SelectInput aria-label="ECG record" value={record?.id ?? ""} onChange={(event) => { setRecordId(Number(event.target.value)); setSignalId(null); setRun(null); }}>

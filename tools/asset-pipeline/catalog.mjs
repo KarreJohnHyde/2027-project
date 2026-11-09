@@ -284,7 +284,7 @@ export const SYSTEMS = [
       },
     ],
     atlas: true,
-    limitations: ["Lesion and tumour overlays require validated stroke/tumour models with matched labels; none is configured."],
+    limitations: ["Brain MRI research models (ischaemic stroke lesion, glioma sub-regions) link a reviewer-confirmed run to the brain at organ level only; their masks are shown as patient-derived 3-D surfaces in the scan's own frame, never placed on this atlas (no registration)."],
   },
   {
     id: "liver",

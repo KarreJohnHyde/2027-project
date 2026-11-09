@@ -17,7 +17,7 @@ const IMAGE_CHECKS: Array<[string, string]> = [
   ["Measurement reproducibility", "NOT_VERIFIED"],
 ];
 
-export default function HistoricalComparisonPage() {
+function Comparison() {
   const selected = useSelectedCase()!;
   const uploads = useWorkspace((state) => state.evidence.uploads);
   const loadEvidence = useWorkspace((state) => state.loadEvidence);
@@ -26,17 +26,18 @@ export default function HistoricalComparisonPage() {
   const [currentId, setCurrentId] = useState<number | null>(exams.length > 1 ? exams[exams.length - 1].id : null);
   const [result, setResult] = useState<LongitudinalComparisonResponse | null>(null);
   const [busy, setBusy] = useState(false);
+  const [samePatient, setSamePatient] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const prior = exams.find((exam) => exam.id === priorId);
   const current = exams.find((exam) => exam.id === currentId);
   const chronological = Boolean(prior && current && prior.id !== current.id && prior.exam_date < current.exam_date);
 
   async function compare() {
-    if (!priorId || !currentId) return;
+    if (!priorId || !currentId || !samePatient) return;
     setBusy(true);
     setError(null);
     try {
-      setResult(await api.compareExaminations<LongitudinalComparisonResponse>(selected.id, priorId, currentId));
+      setResult(await api.compareExaminations<LongitudinalComparisonResponse>(selected.id, priorId, currentId, samePatient));
       await loadEvidence();
     } catch (requestError) {
       setResult(null);
@@ -58,15 +59,16 @@ export default function HistoricalComparisonPage() {
         ) : (
           <div className="grid gap-3 lg:grid-cols-[1fr_auto_1fr_auto] lg:items-end">
             <Field label="Prior examination">
-              <SelectInput value={priorId ?? ""} onChange={(event) => { setPriorId(Number(event.target.value)); setResult(null); }}>{exams.map((exam) => <option key={exam.id} value={exam.id}>{formatDate(exam.exam_date)} · {humanize(exam.modality)}</option>)}</SelectInput>
+              <SelectInput value={priorId ?? ""} onChange={(event) => { setPriorId(Number(event.target.value)); setSamePatient(false); setResult(null); }}>{exams.map((exam) => <option key={exam.id} value={exam.id}>{formatDate(exam.exam_date)} · {humanize(exam.modality)}</option>)}</SelectInput>
             </Field>
             <GitCompareArrows aria-hidden size={17} className="mb-2.5 hidden text-ink-3 lg:block" />
             <Field label="Current examination">
-              <SelectInput value={currentId ?? ""} onChange={(event) => { setCurrentId(Number(event.target.value)); setResult(null); }}>{exams.map((exam) => <option key={exam.id} value={exam.id}>{formatDate(exam.exam_date)} · {humanize(exam.modality)}</option>)}</SelectInput>
+              <SelectInput value={currentId ?? ""} onChange={(event) => { setCurrentId(Number(event.target.value)); setSamePatient(false); setResult(null); }}>{exams.map((exam) => <option key={exam.id} value={exam.id}>{formatDate(exam.exam_date)} · {humanize(exam.modality)}</option>)}</SelectInput>
             </Field>
-            <Button variant="primary" icon={GitCompareArrows} loading={busy} disabled={!chronological} onClick={() => void compare()}>Compare</Button>
+            <Button variant="primary" icon={GitCompareArrows} loading={busy} disabled={!chronological || !samePatient} onClick={() => void compare()}>Compare</Button>
           </div>
         )}
+        {exams.length >= 2 && <label className="mt-3 flex items-start gap-2 text-xs text-ink-2"><input type="checkbox" checked={samePatient} onChange={(event) => { setSamePatient(event.target.checked); setResult(null); }} />I checked the source identity: these two examinations belong to the same patient.</label>}
         {exams.length >= 2 && !chronological && <p className="mt-3 text-xs text-warning-text">Choose two distinct examinations with the prior date earlier than the current date.</p>}
         {error && <div className="mt-3"><ErrorBlock message={error} /></div>}
         {result && <p className="mt-3 flex flex-wrap items-center gap-2 text-sm text-ink-2"><StatusBadge status={result.status} /> {result.reason}{intervalDays !== null && <span className="text-ink-3">Interval {intervalDays} days.</span>}</p>}
@@ -80,8 +82,8 @@ export default function HistoricalComparisonPage() {
                 {result.numeric_deltas!.map((delta) => (
                   <tr key={`${delta.prior.measurement_id}-${delta.current.measurement_id}`}>
                     <td><span className="font-medium text-ink">{delta.display_name}</span><span className="block font-mono text-[11px] text-ink-3">{delta.name}</span>{delta.name.endsWith("_size") && <span className="mt-0.5 block text-[11px] text-warning-text">Lesion identity across reports not verified</span>}</td>
-                    <td className="whitespace-nowrap tabular">{formatNumber(delta.prior.value, 4)} {delta.unit}</td>
-                    <td className="whitespace-nowrap tabular">{formatNumber(delta.current.value, 4)} {delta.unit}</td>
+                    <td className="whitespace-nowrap tabular">{formatNumber(delta.prior.value, 4)} {delta.unit}{delta.prior.correction_review_id && <span className="block text-[11px] text-ink-3">Approved correction #{delta.prior.correction_review_id}; original {formatNumber(delta.prior.original_value, 4)}</span>}</td>
+                    <td className="whitespace-nowrap tabular">{formatNumber(delta.current.value, 4)} {delta.unit}{delta.current.correction_review_id && <span className="block text-[11px] text-ink-3">Approved correction #{delta.current.correction_review_id}; original {formatNumber(delta.current.original_value, 4)}</span>}</td>
                     <td className="whitespace-nowrap tabular font-medium text-ink">{formatNumber(delta.absolute_delta, 4)} {delta.unit}</td>
                     <td className="whitespace-nowrap tabular">{delta.percent_change === null ? "Undefined (zero baseline)" : `${formatNumber(delta.percent_change, 2)}%`}</td>
                     <td className="whitespace-nowrap tabular text-ink-2">{intervalDays ? `${formatNumber(delta.absolute_delta / intervalDays, 5)} ${delta.unit}/day` : "—"}</td>
@@ -134,6 +136,8 @@ export default function HistoricalComparisonPage() {
         </>
       )}
 
+      {(result?.excluded_evidence?.length ?? 0) > 0 && <Card title="Evidence excluded from this comparison" className="mt-4"><ul className="space-y-1 text-xs text-ink-2">{result!.excluded_evidence!.map((item) => <li key={`${item.kind}-${item.id}`}>{humanize(item.kind)} #{item.id} · upload #{item.source_file_id}: {humanize(item.reason)}</li>)}</ul><p className="mt-2 text-xs text-ink-3">Excluded evidence does not establish absence, improvement or resolution. Source records remain in the audit history.</p></Card>}
+
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <Card title="Imaging comparison" eyebrow="Registration-dependent">
           <Unavailable code="REGISTRATION_UNAVAILABLE" reason={result?.image_comparison?.reason ?? "Images are never subtracted or overlaid without validated registration."}>
@@ -150,4 +154,9 @@ export default function HistoricalComparisonPage() {
       </div>
     </>
   );
+}
+
+export default function HistoricalComparisonPage() {
+  const selected = useSelectedCase()!;
+  return <Comparison key={selected.id} />;
 }

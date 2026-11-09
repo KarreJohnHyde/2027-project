@@ -1,6 +1,7 @@
 """Patient and caregiver portal: own record only, reviewed results only, never the clinical API.
 All accounts and reports are synthetic test fixtures."""
 
+import pytest
 from app.models.entities import Finding, User, UserRole, VerificationStatus
 from app.services.auth import get_password_hash
 from tests.conftest import get_auth_headers
@@ -24,6 +25,7 @@ def _case_with_report(client, clinician):
     return case_id, upload["id"]
 
 
+@pytest.mark.private_workspace
 def test_patient_sees_only_reviewed_results_and_never_the_clinical_api(client, db_session, test_users):
     clinician = get_auth_headers(test_users["clinician_a"])
     patient_user = _personal(db_session, "portal_patient")
@@ -74,6 +76,7 @@ def test_patient_manages_caregivers_and_caregivers_cannot_extend_access(client, 
     assert client.get(f"/api/v1/portal/cases/{case_id}", headers=caregiver).status_code == 404
 
 
+@pytest.mark.private_workspace
 def test_public_user_can_create_private_record_and_upload_only_deidentified_documents(client, db_session):
     patient_user = _personal(db_session, "self_upload_patient")
     patient = get_auth_headers(patient_user)
@@ -140,6 +143,8 @@ def test_public_user_can_create_private_record_and_upload_only_deidentified_docu
     ).status_code == 404
 
 
-def test_only_public_accounts_can_create_personal_records(client, db_session, test_users):
+def test_every_account_can_keep_a_personal_record(client, db_session, test_users):
     clinician = get_auth_headers(test_users["clinician_a"])
-    assert client.post("/api/v1/portal/cases", headers=clinician).status_code == 403
+    first = client.post("/api/v1/portal/cases", headers=clinician)
+    assert first.status_code == 201, first.text
+    assert client.post("/api/v1/portal/cases", headers=clinician).json()["case_id"] == first.json()["case_id"], "one personal record per account"

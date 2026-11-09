@@ -1,0 +1,18 @@
+# Optional local research stack, installed over the validated GPU environment.
+# Source repositories and purposes are recorded in docs/data/MULTIMODAL_RESOURCES_2026-11-07.md.
+# OpenCLIP 4.2.1 requires newer timm; 3.2.0 preserves the project's timm 1.0.22 lock.
+-r requirements-multimodal-lock.txt
+torchio==1.2.1
+kornia==0.9.0
+trimesh==5.1.1
+highdicom==0.28.2
+open-clip-torch==3.2.0
+pylibjpeg==2.1.0
+pylibjpeg-libjpeg==2.5.0
+pylibjpeg-openjpeg==2.6.0
+# Differentiable CT-to-radiograph projection and 2D/3D registration research.
+# Upstream requires pyvista[all]; its notebook/rendering dependencies are included,
+# but no notebook server or rendering service is started by installing them.
+diffdrr==0.6.1
+# Kaggle's public Google Storage transport publishes Castagnoli CRC32C checksums.
+google-crc32c==1.9.0

@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/start-vite.mjs",
+    "dev:full": "powershell -NoProfile -File scripts/dev.ps1 -Mode dev -StateDir .cache/dev-stack",
+    "dev:stop": "powershell -NoProfile -File scripts/dev.ps1 -Mode dev -StateDir .cache/dev-stack -Stop",
     "build": "vite build",
     "build:check": "vite build --mode check",
     "supabase:login": "npx --yes supabase@2.122.0 login",

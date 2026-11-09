@@ -19,7 +19,7 @@ from tests.conftest import get_auth_headers
 AXIAL = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0]
 
 
-def _slice(series_uid, z, instance, orientation=AXIAL, spacing=(0.8, 0.7), value=0, patient_name=""):
+def _slice(series_uid, z, instance, orientation=AXIAL, spacing=(0.8, 0.7), value=0, patient_name="", trigger_time=None, modality="CT"):
     meta = FileMetaDataset()
     meta.MediaStorageSOPClassUID = pydicom.uid.CTImageStorage
     meta.MediaStorageSOPInstanceUID = generate_uid()
@@ -30,7 +30,9 @@ def _slice(series_uid, z, instance, orientation=AXIAL, spacing=(0.8, 0.7), value
     ds.SOPInstanceUID = meta.MediaStorageSOPInstanceUID
     ds.SeriesInstanceUID = series_uid
     ds.StudyInstanceUID = "1.2.826.0.1.3680043.10.1.1"
-    ds.Modality = "CT"
+    ds.Modality = modality
+    if trigger_time is not None:
+        ds.TriggerTime = trigger_time
     ds.PatientName = patient_name
     ds.InstanceNumber = instance
     ds.ImageOrientationPatient = orientation
@@ -197,6 +199,89 @@ def test_series_volume_matches_the_nifti_voxel_order(tmp_path):
         volume_inference.from_series(series, {"row": 1.5, "column": 1.9, "slice": 8.0}, envelope)
 
 
+def test_cine_series_are_assembled_for_one_chosen_phase(tmp_path):
+    series = generate_uid()
+    # Three positions, two phases each (trigger times differ slightly between positions, as on scanners).
+    datasets = [_slice(series, z, index * 2 + phase + 1, value=1000 + 100 * phase + index, trigger_time=time + index, modality="MR")
+                for index, z in enumerate([0.0, 8.0, 16.0]) for phase, time in enumerate([0.0, 310.0])]
+    random.Random(3).shuffle(datasets)
+    paths = _write(tmp_path, datasets)
+    unchosen = assemble_series(paths)
+    assert unchosen["issues"] == ["CARDIAC_PHASE_REQUIRED"] and unchosen["cardiac_phases"] == 2
+    assert unchosen["phase_trigger_times_ms"] == [1.0, 311.0]
+    late = assemble_series(paths, phase=1, load_pixels=True)
+    assert late["status"] == "ASSEMBLED" and late["phase"] == 1 and late["modality_tags"] == ["MR"]
+    assert late["volume"][:, 0, 0].tolist() == [76.0, 77.0, 78.0]  # stored 1100 + index, rescaled by -1024, in position order
+    assert assemble_series(paths, phase=2)["issues"] == ["CARDIAC_PHASE_OUT_OF_RANGE"]
+    (tmp_path / "untimed").mkdir()
+    untimed = [_slice(series, z, i) for i, z in enumerate([0.0, 0.0, 8.0, 8.0])]
+    assert assemble_series(_write(tmp_path / "untimed", untimed))["issues"] == ["DUPLICATE_SLICE_POSITION"]
+
+
+def _short_axis_report(normal, slices=8, tags=("MR",)):
+    return {"slice_normal_lps": list(normal), "shape_slices_rows_columns": [slices, 4, 4], "modality_tags": list(tags)}
+
+
+def test_short_axis_plausibility_refuses_body_axis_stacks():
+    from app.services import volume_inference
+
+    oblique = np.array([0.6, 0.5, -0.62])
+    assert volume_inference.short_axis_plausibility(_short_axis_report(oblique))["status"] == "PASSED"
+    with pytest.raises(volume_inference.VolumeInputError, match="SLICE_NORMAL_ALIGNED_WITH_BODY_AXIS") as refused:
+        volume_inference.short_axis_plausibility(_short_axis_report([0.0, 0.05, 1.0]))
+    assert "axial" in str(refused.value)
+    with pytest.raises(volume_inference.VolumeInputError, match="TOO_FEW_SLICES_FOR_SHORT_AXIS_STACK"):
+        volume_inference.short_axis_plausibility(_short_axis_report(oblique, slices=4))
+    with pytest.raises(volume_inference.VolumeInputError, match="SERIES_MODALITY_NOT_MR"):
+        volume_inference.short_axis_plausibility(_short_axis_report(oblique, tags=("CT",)))
+
+
+def _phantom_heart(shape=(40, 36, 8)):
+    """Labels on the development layout: LV (3) a disc shrinking along k, RV (1) a disc at -i of the LV, myocardium (2) a ring."""
+    grid_i, grid_j = np.indices(shape[:2])
+    labels = np.zeros(shape, np.uint8)
+    for k in range(shape[2]):
+        radius = 7 - 0.6 * k
+        lv = (grid_i - 22) ** 2 + (grid_j - 18) ** 2
+        labels[..., k][lv <= (radius + 2) ** 2] = 2
+        labels[..., k][lv <= radius ** 2] = 3
+        labels[..., k][((grid_i - 9) ** 2 + (grid_j - 18) ** 2) <= 16] = 1
+    return labels
+
+
+def test_the_axis_convention_is_chosen_from_the_ventricle_layout(monkeypatch):
+    from app.services import volume_inference as vi
+
+    truth = _phantom_heart()
+    prior = {"rv_label": 1, "lv_label": 3, "rv_direction_deg": vi.ventricle_direction_deg(truth, (1.0, 1.0, 8.0), 1, 3),
+             "rv_direction_limit_deg": 45.0}
+    # The "model" segments the image it is given exactly (labels are stored in the image), so a series stored in any
+    # of the 16 conventions must come back on its own grid with the development layout recovered.
+    monkeypatch.setattr(vi, "predict", lambda network, payload, device, item: item.image.astype(np.uint8))
+    for variant in (vi.ORIENTATION_VARIANTS[0], (True, False, True, False), (False, True, False, True), (True, True, True, True)):
+        series = vi._orient(truth.astype(np.float32), variant)
+        mask, report = vi.choose_convention(None, {}, None, vi.VolumeInput(series, (1.0, 1.0, 8.0)), prior)
+        assert np.array_equal(mask, series), variant
+        assert abs(report["chosen"]["rv_direction_offset_deg"]) < 1 and report["chosen"]["lv_area_trend"] < 0
+    # Without a shrinking left ventricle in any convention the series is refused.
+    flat = np.where(truth == 3, 3, np.where(truth == 1, 1, 0)).astype(np.float32)
+    flat[..., :] = flat[..., :1]
+    with pytest.raises(vi.VolumeInputError, match="SLICE_ORDER_NOT_BASE_TO_APEX_IN_ANY_CONVENTION"):
+        vi.choose_convention(None, {}, None, vi.VolumeInput(flat, (1.0, 1.0, 8.0)), prior)
+
+
+def test_the_right_ventricle_must_be_anterior_right_in_patient_coordinates():
+    from app.services import volume_inference as vi
+
+    labels = _phantom_heart()  # RV at lower i than the LV
+    # i runs to the patient's left (+x in LPS), j posterior (+y): the RV at lower i, same j, is to the patient's right.
+    affine = np.diag([1.0, 1.0, 8.0, 1.0])
+    assert vi.right_ventricle_is_right_anterior(labels, affine, 1, 3)["status"] == "PASSED"
+    mirrored = np.diag([-1.0, 1.0, 8.0, 1.0])  # i runs to the patient's right: the same labels put the RV on the left
+    with pytest.raises(vi.VolumeInputError, match="RIGHT_VENTRICLE_NOT_RIGHT_ANTERIOR"):
+        vi.right_ventricle_is_right_anterior(labels, mirrored, 1, 3)
+
+
 def test_series_inference_refuses_models_that_do_not_take_volumes(client, db_session, test_users, monkeypatch):
     from app.services import model_inference
 
@@ -209,4 +294,4 @@ def test_series_inference_refuses_models_that_do_not_take_volumes(client, db_ses
                                                                           "inference_input": "image_2d", "supported_modalities": ["MRI"]})
     response = client.post(f"/api/v1/cases/{case.id}/dicom-series/research-inference", headers=get_auth_headers(owner),
                            json={"upload_ids": upload_ids, "model_id": "image_classifier"})
-    assert response.status_code == 400 and "only volumetric models" in response.json()["detail"]
+    assert response.status_code == 400 and "only volumetric and series models" in response.json()["detail"]

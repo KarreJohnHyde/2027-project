@@ -70,7 +70,24 @@ def stage_scores(reference: dict[str, Any], stages: Sequence[np.ndarray]) -> np.
     """(images, stages) matrix of each stage's distance divided by its validation median."""
     if len(stages) != len(reference["stages"]):
         raise OodReferenceError("OOD_REFERENCE_FEATURES_MISMATCH")
-    return np.column_stack([_stage_distance(stage, values) / stage["normaliser"] for stage, values in zip(reference["stages"], stages)])
+    count = None
+    for stage, values in zip(reference["stages"], stages):
+        values = np.asarray(values, dtype=np.float64)
+        if values.ndim != 2 or values.shape[1] != len(stage["center"]) or (count is not None and count != len(values)):
+            raise OodReferenceError("OOD_REFERENCE_FEATURES_MISMATCH")
+        count = len(values)
+        if not np.isfinite(values).all():
+            raise OodReferenceError("OOD_INPUT_NONFINITE")
+        for key in (*_STAGE_KEYS, "residual_variance", "normaliser"):
+            if not np.isfinite(stage[key]).all():
+                raise OodReferenceError("OOD_REFERENCE_NONFINITE")
+        if any(np.any(np.asarray(stage[key]) <= 0) for key in ("scale", "eigenvalues", "residual_variance", "normaliser")):
+            raise OodReferenceError("OOD_REFERENCE_INVALID_VARIANCE")
+    with np.errstate(over="ignore", invalid="ignore", divide="ignore"):
+        result = np.column_stack([_stage_distance(stage, values) / stage["normaliser"] for stage, values in zip(reference["stages"], stages)])
+    if not np.isfinite(result).all():
+        raise OodReferenceError("OOD_SCORE_NONFINITE")
+    return result
 
 
 def score(reference: dict[str, Any], stages: Sequence[np.ndarray]) -> np.ndarray:
@@ -83,9 +100,11 @@ def fit_reference(fit_stages: Sequence[np.ndarray], calibration_stages: Sequence
                   quantile: float = DEFAULT_QUANTILE, combine: str = "mean", metadata: Optional[dict[str, Any]] = None) -> dict[str, Any]:
     """Fit one Gaussian per stage on ``fit_stages`` and set normalisers and threshold from ``calibration_stages``."""
     fitted = []
+    if not fit_stages or len(fit_stages) != len(calibration_stages) or not 0 < quantile <= 1:
+        raise ValueError("Matching fit/calibration stages and a quantile in (0, 1] are required.")
     for values in fit_stages:
         values = np.asarray(values, dtype=np.float64)
-        if values.ndim != 2 or values.shape[0] < 3:
+        if values.ndim != 2 or values.shape[0] < 3 or not np.isfinite(values).all():
             raise ValueError("At least three feature vectors per stage are needed to fit a reference.")
         fitted.append(_fit_stage(values, components))
     if combine not in COMBINATIONS:

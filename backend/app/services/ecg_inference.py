@@ -203,9 +203,26 @@ def input_report(record: EcgRecord) -> dict:
             "processing": "No resampling, filtering, cropping or padding; physical mV standardised per lead with the training-fold mean and SD."}
 
 
-def build_network(classes: int, leads: int = 12):
-    """The compact 1D ResNet of ml_training.ecg; strict state-dict loading verifies every
-    parameter name and shape against the checkpoint."""
+DEMOGRAPHIC_AGE_CAP_YEARS = 90.0  # PTB-XL records ages of 90 and over as 300
+
+
+def demographic_vector(age_years: float | None, sex: str | None) -> list[float]:
+    """Age/sex encoding of the ECG + demographics fusion model (ml_training.ecg_fusion, v1):
+    [age / 100 clipped to 0-0.9, age missing, female (1) / male (0), sex missing (value 0.5)]."""
+    if age_years is None or not np.isfinite(age_years) or age_years < 0:
+        age, age_missing = 0.0, 1.0
+    else:
+        age, age_missing = min(float(age_years), DEMOGRAPHIC_AGE_CAP_YEARS) / 100.0, 0.0
+    female, sex_missing = {"F": (1.0, 0.0), "M": (0.0, 0.0)}.get(str(sex or "").strip().upper(), (0.5, 1.0))
+    return [age, age_missing, female, sex_missing]
+
+
+FUSION_ARCH = "resnet1d_compact_demographic_fusion"
+
+
+def build_network(classes: int, leads: int = 12, demographic_fusion: bool = False):
+    """The compact 1D ResNet of ml_training.ecg, or the ECG + age/sex fusion network of ml_training.ecg_fusion;
+    strict state-dict loading verifies every parameter name and shape against the checkpoint."""
     import torch
     from torch import nn
 
@@ -233,7 +250,22 @@ def build_network(classes: int, leads: int = 12):
             features = self.layers(self.stem(x))
             return self.head(torch.cat([features.mean(-1), features.amax(-1)], dim=1))
 
-    return ResNet1d()
+    class Fusion(nn.Module):
+        """ECG features (mean and max pooled, 512) joined with a 16-unit age/sex embedding (intermediate fusion)."""
+
+        def __init__(self):
+            super().__init__()
+            base = ResNet1d()
+            self.stem, self.layers = base.stem, base.layers
+            self.demographics = nn.Sequential(nn.Linear(4, 16), nn.ReLU(inplace=True))
+            self.head = nn.Sequential(nn.Dropout(0.3), nn.Linear(512 + 16, classes))
+
+        def forward(self, x, demographics):
+            features = self.layers(self.stem(x))
+            pooled = torch.cat([features.mean(-1), features.amax(-1)], dim=1)
+            return self.head(torch.cat([pooled, self.demographics(demographics)], dim=1))
+
+    return Fusion() if demographic_fusion else ResNet1d()
 
 
 def verify_contract(payload: dict, contract: dict) -> None:
@@ -242,15 +274,21 @@ def verify_contract(payload: dict, contract: dict) -> None:
         raise EcgInputError("CHECKPOINT_INPUT_CONTRACT_MISMATCH", "the checkpoint's input metadata differs from the registered preprocessing contract")
 
 
-def classify(network, payload: dict, device, record: EcgRecord, precision) -> dict:
+def classify(network, payload: dict, device, record: EcgRecord, precision, demographics: dict | None = None) -> dict:
+    """demographics (fusion model only): {"vector": demographic_vector(...), ...provenance}."""
     import torch
 
     mean = np.asarray(payload["lead_mean_mv"], dtype=np.float32)[:, None]
     std = np.asarray(payload["lead_std_mv"], dtype=np.float32)[:, None]
     standardised = (record.signal_mv.T - mean) / std
     context, precision_note = precision
+    signal = torch.from_numpy(np.ascontiguousarray(standardised))[None].to(device)
     with torch.no_grad(), context:
-        logits = network(torch.from_numpy(np.ascontiguousarray(standardised))[None].to(device)).float().cpu().numpy()[0]
+        if demographics is None:
+            logits = network(signal).float().cpu().numpy()[0]
+        else:
+            vector = torch.tensor([demographics["vector"]], dtype=torch.float32, device=device)
+            logits = network(signal, vector).float().cpu().numpy()[0]
     classes = []
     for index, name in enumerate(payload["classes"]):
         a, b = payload["platt"][index]
@@ -261,4 +299,5 @@ def classify(network, payload: dict, device, record: EcgRecord, precision) -> di
             "numeric_precision": precision_note,
             "probability_semantics": "Per-class Platt scaling fitted on the PTB-XL validation fold; not a calibrated clinical probability.",
             "threshold_semantics": "Per-class maximum-F1 thresholds chosen on the PTB-XL validation fold; classes are not mutually exclusive.",
-            "input": input_report(record)}
+            "input": input_report(record),
+            **({"demographic_inputs": {key: value for key, value in demographics.items() if key != "vector"}} if demographics is not None else {})}

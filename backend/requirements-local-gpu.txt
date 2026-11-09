@@ -6,3 +6,5 @@
 torch==2.14.1+cu130
 torchvision==0.29.1+cu130
 monai==1.6.1
+# Marching cubes for patient-derived surfaces of volumetric runs (app.services.volume_inference).
+scikit-image==0.26.0

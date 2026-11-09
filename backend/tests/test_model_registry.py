@@ -26,12 +26,16 @@ def test_registry_exposes_truthful_non_activatable_statuses(client, test_users):
     models = {item["model_id"]: item for item in payload["models"]}
     assert models["clinical_rules_v1"]["status"] == "READY_UNVALIDATED"
     assert models["clinical_rules_v1"]["processor_only"] is True
-    assert models["mura_study_baseline"]["status"] == "WEIGHTS_MISSING"
+    assert models["brain_imaging_adapter"]["status"] == "WEIGHTS_MISSING"
+    # Trained on MURA v1.1 (ml_training/classify.py) after the owner confirmed the Stanford agreement: research only.
+    assert models["mura_study_baseline"]["status"] == "READY_UNVALIDATED"
+    assert models["mura_study_baseline"]["validated"] is False
     # Trained on PTB-XL 1.0.1 (ml_training/ecg.py): research evidence, never clinically activatable.
     assert models["ptbxl_ecg_baseline"]["status"] == "READY_UNVALIDATED"
     assert models["ptbxl_ecg_baseline"]["validated"] is False
     assert models["ptbxl_ecg_baseline"]["inference_input"] == "ecg_12lead"
-    assert models["medcat_adapter"]["status"] == "DEPENDENCY_MISSING"
+    assert models["medcat_adapter"]["status"] == "WEIGHTS_MISSING"  # installed; only the 2-concept example pack exists
+    assert models["medspacy_context_adapter"]["status"] == "READY_UNVALIDATED"
     assert models["monai_runtime"]["status"] == "READY_UNVALIDATED"
     assert models["monai_runtime"]["processor_only"] is True
     assert models["monai_runtime"]["validated"] is False
@@ -43,12 +47,12 @@ def test_registry_exposes_truthful_non_activatable_statuses(client, test_users):
 def test_model_detail_and_activation_explain_missing_bundle(client, test_users):
     headers = get_auth_headers(test_users["clinician_a"])
 
-    detail = client.get("/api/v1/models/mura_study_baseline", headers=headers)
+    detail = client.get("/api/v1/models/brain_imaging_adapter", headers=headers)
     assert detail.status_code == 200
     assert "checkpoint_path" in detail.json()["activation"]["missing_fields"]
 
     activation = client.get(
-        "/api/v1/models/mura_study_baseline/activation", headers=headers
+        "/api/v1/models/brain_imaging_adapter/activation", headers=headers
     )
     assert activation.status_code == 200
     assert activation.json()["activation"]["eligible"] is False
@@ -69,7 +73,15 @@ def test_capability_registry_separates_processing_from_inference(client, test_us
     assert capabilities["clinical_text_rules"]["verification_status"] == "IMPLEMENTED_NOT_VALIDATED"
     assert capabilities["image_preprocessing"]["inference_operational"] is False
     assert capabilities["ecg_quality_preview"]["inference_operational"] is False
-    assert capabilities["multimodal_fusion"]["operational"] is False
+    fusion = capabilities["multimodal_fusion"]
+    # Operational only with a runnable registered fusion model, and then its held-out comparison is stated.
+    assert fusion["operational"] == bool(fusion.get("runnable_models"))
+    if fusion["operational"]:
+        assert fusion["verification_status"] == "INTERNAL_HELD_OUT_EVALUATION_ONLY"
+        assert any("against the ECG network alone" in item for item in fusion["limitations"])
+    else:
+        assert fusion["verification_status"] == "PROPOSED_ONLY"
+    assert capabilities["reviewer_mask_corrections"]["operational"] is True
 
 
 @pytest.mark.parametrize("installed", [True, False])
@@ -80,7 +92,10 @@ def test_monai_capability_reports_current_dependency_without_model_validation(mo
     monkeypatch.setattr(model_registry, "list_models", model_registry._load_registry)
     monkeypatch.setattr(model_registry, "_module_available", lambda module: installed if module == "monai" else False)
     monkeypatch.setattr(model_registry, "_research_image_models_capability", lambda: {"capability_id": "research_image_models", "operational": False})
-    monkeypatch.setattr(model_registry, "scispacy_mode", lambda: "disabled")
+    monkeypatch.setattr(model_registry, "_research_volume_models_capability", lambda: {"capability_id": "research_volume_models", "operational": False})
+    monkeypatch.setattr(model_registry, "_multimodal_fusion_capability", lambda: {"capability_id": "multimodal_fusion", "operational": False})
+    monkeypatch.setattr(model_registry, "_attention_localisation_capability", lambda: {"capability_id": "attention_localisation", "operational": False})
+    monkeypatch.setattr(model_registry, "scispacy_enabled", lambda: False)
     capabilities = {item["capability_id"]: item for item in model_registry.get_capabilities()["capabilities"]}
     monai = capabilities["monai_framework"]
     assert monai["operational"] is installed

@@ -57,11 +57,33 @@ EXPLAINABILITY_METHODS: tuple[dict[str, Any], ...] = (
 EXPLANATION_PROVENANCE_FIELDS = ("model_id", "model_version", "input_sha256", "preprocessing_version", "method", "method_parameters", "baseline_definition", "generated_at", "reviewer_status")
 
 
+def _explainability_methods() -> list[dict[str, Any]]:
+    """The static method list, with the two methods MedTwin now applies to research models marked as such
+    (and the measured localisation of the Grad-CAM marks, when that evaluation has been run)."""
+    from app.services import cxr_research
+
+    summary = cxr_research.localisation_summary()
+    methods = []
+    for method in EXPLAINABILITY_METHODS:
+        method = dict(method)
+        if method["method"] == "Grad-CAM":
+            method.update({"applies_to": "Convolutional image classifiers (used on the research chest-radiograph model)", "status": "USED_ON_RESEARCH_MODELS"})
+            if summary:
+                overall = summary["overall"]
+                method["limits"] += (f" On {overall['boxes']} NIH radiologist boxes its peak fell inside the box {overall['pointing_hit_rate']:.0%} of the "
+                                     f"time (a random point {overall['chance_hit_rate']:.0%}); the rate is shown per finding beside each mark.")
+        elif method["method"] == "Segmentation mask overlay":
+            method.update({"applies_to": "Segmentation models (research models, with their held-out evaluation)", "status": "USED_ON_RESEARCH_MODELS",
+                           "limits": method["limits"] + " Reviewers can save a correction beside the run; the model output is never changed."})
+        methods.append(method)
+    return methods
+
+
 def risk_registry() -> dict[str, Any]:
     return {
         "schema_version": "medtwin-risk-registry-1.0.0",
         "models": list(RISK_MODELS),
-        "explainability_methods": list(EXPLAINABILITY_METHODS),
+        "explainability_methods": _explainability_methods(),
         "explanation_provenance_fields": list(EXPLANATION_PROVENANCE_FIELDS),
         "distinctions": [
             {"term": "Classifier confidence", "meaning": "A model's score for a label on one input. Not a probability of a future event, and not calibrated unless calibration is shown."},

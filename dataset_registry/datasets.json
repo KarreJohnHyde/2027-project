@@ -25,7 +25,7 @@
     {
       "dataset_id": "2d-segmentation-dataset",
       "source_path": "D:\\project\\2d segmentation dataset",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "dataset_candidate",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -37,13 +37,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "2d segmentation dataset"
@@ -106,7 +107,7 @@
     {
       "dataset_id": "behsof",
       "source_path": "D:\\project\\BEHSOF",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "dataset_candidate",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -118,13 +119,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "NAFLD",
@@ -220,7 +222,7 @@
     {
       "dataset_id": "brain-stroke-ct-dataset",
       "source_path": "D:\\project\\Brain_Stroke_CT_Dataset",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "dataset_candidate",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -232,13 +234,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "DICOM tags were not read or emitted; PHI/de-identification status is unverified.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "Bleeding",
@@ -297,7 +300,7 @@
     {
       "dataset_id": "cerebrovascular-lesions",
       "source_path": "D:\\project\\cerebrovascular lesions",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "dataset_candidate",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -309,13 +312,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "Acute ischemic infarction",
@@ -696,7 +700,7 @@
     {
       "dataset_id": "dataset",
       "source_path": "D:\\project\\DATASET",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "dataset_candidate",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -708,13 +712,14 @@
       "split_status": "directory_splits_observed_not_patient_verified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "License is unknown; do not redistribute or use for training until verified.",
         "Directory split names do not prove patient/study-disjoint partitioning.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "Brain Tumor CT scan Images",
@@ -935,7 +940,7 @@
     {
       "dataset_id": "external-test",
       "source_path": "D:\\project\\External_test",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "possible_split_fragment",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -947,7 +952,7 @@
       "split_status": "split_fragment_name_observed_not_verified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
@@ -955,7 +960,8 @@
         "License is unknown; do not redistribute or use for training until verified.",
         "Directory split names do not prove patient/study-disjoint partitioning.",
         "This path may overlap another registered root; deduplicate before counting or splitting.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "Hemorrhage",
@@ -1137,7 +1143,7 @@
     {
       "dataset_id": "lungcancerdataset",
       "source_path": "D:\\project\\LungcancerDataSet",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "dataset_candidate",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -1149,13 +1155,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "Data",
@@ -1194,7 +1201,7 @@
     {
       "dataset_id": "mri-tumor-detection-dataset-training-and-testing",
       "source_path": "D:\\project\\mri-tumor-detection-dataset(training and testing)",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "dataset_candidate",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -1206,14 +1213,15 @@
       "split_status": "directory_splits_observed_not_patient_verified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
         "Directory split names do not prove patient/study-disjoint partitioning.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "Testing",
@@ -1479,7 +1487,7 @@
     {
       "dataset_id": "segmentations",
       "source_path": "D:\\project\\segmentations",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "possible_dataset_component",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -1491,13 +1499,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [],
       "file_inventory": {
@@ -1532,7 +1541,7 @@
     {
       "dataset_id": "split-data",
       "source_path": "D:\\project\\split_data",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "dataset_candidate",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -1544,14 +1553,15 @@
       "split_status": "directory_splits_observed_not_patient_verified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
         "Directory split names do not prove patient/study-disjoint partitioning.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "test",
@@ -1596,7 +1606,7 @@
     {
       "dataset_id": "st000001",
       "source_path": "D:\\project\\ST000001",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "dataset_candidate",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -1608,14 +1618,15 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "DICOM tags were not read or emitted; PHI/de-identification status is unverified.",
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "SE000001",
@@ -1781,7 +1792,7 @@
     {
       "dataset_id": "testing",
       "source_path": "D:\\project\\Testing",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "possible_split_fragment",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -1793,7 +1804,7 @@
       "split_status": "split_fragment_name_observed_not_verified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
@@ -1801,7 +1812,8 @@
         "License is unknown; do not redistribute or use for training until verified.",
         "Directory split names do not prove patient/study-disjoint partitioning.",
         "This path may overlap another registered root; deduplicate before counting or splitting.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "glioma",
@@ -1949,7 +1961,7 @@
     {
       "dataset_id": "training",
       "source_path": "D:\\project\\Training",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "possible_split_fragment",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -1961,7 +1973,7 @@
       "split_status": "split_fragment_name_observed_not_verified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
@@ -1969,7 +1981,8 @@
         "License is unknown; do not redistribute or use for training until verified.",
         "Directory split names do not prove patient/study-disjoint partitioning.",
         "This path may overlap another registered root; deduplicate before counting or splitting.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [
         "glioma",
@@ -2158,7 +2171,7 @@
     {
       "dataset_id": "volume-pt1",
       "source_path": "D:\\project\\volume_pt1",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "possible_dataset_component",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -2170,13 +2183,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [],
       "file_inventory": {
@@ -2211,7 +2225,7 @@
     {
       "dataset_id": "volume-pt2",
       "source_path": "D:\\project\\volume_pt2",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "possible_dataset_component",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -2223,13 +2237,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [],
       "file_inventory": {
@@ -2264,7 +2279,7 @@
     {
       "dataset_id": "volume-pt3",
       "source_path": "D:\\project\\volume_pt3",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "possible_dataset_component",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -2276,13 +2291,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [],
       "file_inventory": {
@@ -2317,7 +2333,7 @@
     {
       "dataset_id": "volume-pt4",
       "source_path": "D:\\project\\volume_pt4",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "possible_dataset_component",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -2329,13 +2345,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [],
       "file_inventory": {
@@ -2370,7 +2387,7 @@
     {
       "dataset_id": "volume-pt5",
       "source_path": "D:\\project\\volume_pt5",
-      "path_exists": true,
+      "path_exists": false,
       "registry_kind": "possible_dataset_component",
       "medical_domain": "unknown",
       "modality": "unknown",
@@ -2382,13 +2399,14 @@
       "split_status": "unverified",
       "license_status": "unknown",
       "supported_models": [],
-      "integration_status": "DISCOVERED_CATALOG_ONLY",
+      "integration_status": "MOVED_OUT_UNLICENSED",
       "training_eligible": false,
       "validation_eligible": false,
       "limitations": [
         "No local README, license, or dataset configuration was found in this path.",
         "License is unknown; do not redistribute or use for training until verified.",
-        "Folder names were not promoted to ground-truth class labels."
+        "Folder names were not promoted to ground-truth class labels.",
+        "Moved out of the project on 2026-11-06 at the owner's request (licence unverified, not used by any model) to D:/MedTwin_Removed_Datasets_2026-11-06; restore.ps1 there moves it back."
       ],
       "observed_top_level_directories": [],
       "file_inventory": {

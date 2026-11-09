@@ -4,6 +4,8 @@ import { CreateExaminationDialog } from "../components/CaseDialogs";
 import { FindingCard } from "../components/FindingReview";
 import { OrdersCard } from "../components/LabEntry";
 import ReviewedDemographicsCard from "../components/ReviewedDemographicsCard";
+import ExaminationEvidenceLinker from "../components/ExaminationEvidenceLinker";
+import CaseWorkflowPanel from "../components/CaseWorkflowPanel";
 import { Button, Card, ErrorBlock, Hash, PageHeader, SelectInput, StatusBadge, Table, TextInput } from "../components/ui";
 import { api, type CaseMemberRole } from "../services/api";
 import { errorMessage, formatBytes, formatDate, humanize } from "../lib/format";
@@ -140,7 +142,9 @@ export default function CaseWorkspacePage() {
         description={selected.description || "Pseudonymous research case. Clinical records, model interpretation and unsupported information are kept visibly distinct."}
         actions={<><Button icon={CalendarPlus} onClick={() => setExamDialog(true)}>Add examination</Button><Button variant="primary" icon={Upload} onClick={() => navigate("/upload")}>Add evidence</Button></>}
       />
-      <div className="grid gap-4 xl:grid-cols-[1fr_1.6fr]">
+      <CaseWorkflowPanel key={`workflow-${selected.id}`} caseId={selected.id} />
+      <ExaminationEvidenceLinker key={selected.id} />
+      <div className="mt-4 grid gap-4 xl:grid-cols-[1fr_1.6fr]">
         <Card title="Examination timeline" eyebrow={`${examinations.length} dated`}>
           {examinations.length === 0 ? <p className="text-sm text-ink-2">No examinations. Add one to enable longitudinal comparison.</p> : (
             <ol className="relative space-y-3 border-l border-line pl-4">

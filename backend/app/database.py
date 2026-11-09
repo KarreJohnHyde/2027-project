@@ -53,6 +53,9 @@ def build_engine(url: str, encryption: str = "off", key: Optional[str] = None) -
     target: "str | URL" = url
     if url.startswith("sqlite"):
         connect_args["check_same_thread"] = False
+        # A worker job can hold the write lock for many seconds (OCR of a scanned packet); an API write waits
+        # for it instead of failing with "database is locked" after sqlite3's default 5 s.
+        connect_args["timeout"] = 30
     if encryption == "sqlcipher":
         if not url.startswith("sqlite:///") or url.endswith(":memory:"):
             raise DatabaseKeyError("SQLCipher encryption needs a file-backed SQLite DATABASE_URL (sqlite:///path).")

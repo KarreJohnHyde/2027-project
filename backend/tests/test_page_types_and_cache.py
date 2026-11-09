@@ -8,12 +8,14 @@ import pytest
 from app.services import derived_text, ocr, upload_store
 from app.services.page_classifier import (
     BILLING,
+    CONSULTATION_NOTE,
     DISCHARGE_SUMMARY,
     IMAGING_REPORT,
     LABORATORY_REPORT,
     PATHOLOGY_REPORT,
     PRESCRIPTION,
     PROCEDURE_REPORT,
+    REQUEST_FORM,
     UNCLASSIFIED,
     classify_page,
     classify_pages,
@@ -38,12 +40,34 @@ CT_IMPRESSION_PAGE = "IMPRESSION:\nBILATERAL LOWER LOBE RETICULAR OPACITIES.\nFE
         ("Rx\nTab. Paracetamol 500 mg 1-0-1 x 5 days after food\nCap. Omeprazole 20 mg OD before food", PRESCRIPTION),
         ("BILL\nBill No: 123 Invoice\nNet amount 1,200.00 GST 18%\nAmount paid", BILLING),
         ("Thank you", UNCLASSIFIED),
+        # A histopathology continuation page whose header names the endoscopy that took the biopsy.
+        ("INSTRUCTIONS FOR ENDOSCOPY PROCEDURES - COLONOSCOPY\nplasma cells. Crypt architecture is preserved.\n"
+         "No granulomas. No evidence of dysplasia.\nIMPRESSION\nMild chronic colitis. Suggested IHC - CMV for exclusion.", PATHOLOGY_REPORT),
+        ("MEDICAL REPORT\nDIAGNOSIS\nS/p appendicectomy\nBRIEF HISTORY\nabdominal pain for 10 days\nEXAMINATION\nBP - 118/76mm Hg\nADVICE\nTo do CBC after 2 weeks",
+         CONSULTATION_NOTE),
+        ("Pre Existing Illness:\nHistory of hypertension\nComplaints:\nback pain for 5 days\nExamination:\nBP: 138/88 mmHg\nInvestigations Advised:\nMRI lumbar spine\n"
+         "Was on Tab. Amlodipine 5 mg", CONSULTATION_NOTE),
+        # OCR glue and misreads: "Existinglllness", "InvestigationsAdvised", BP followed by its unit; the note also summarises imaging.
+        ("Pre Existinglllness:\nComplaints:\nHistory of headache\nExamination:\nBP:142/86mmHg\nInvestigationsAdvised and done:\n"
+         "MRI Lumbar spine - hyperintense disc signal at L4-5. CT Brain - Normal", CONSULTATION_NOTE),
+        ("URGENT / ROUTINE Radiology Requisition\nRequest screened by\nClinical Information:\nType of Radiological Investigations - Xray / CT / USG / MRI\n"
+         "Area of Interest:\nPregnancy: Yes / No Drug Allergy: Yes / No", REQUEST_FORM),
+        ("A few T2 hyperintense white matter foci. Diffusion weighted images reveal no abnormality.\nIMPRESSION:\nnonspecific white matter foci.",
+         IMAGING_REPORT),
+        ("ECHO-CARDIOGRAPHY REPORT\nNormal LV systolic function LVEF ~ 62%.\nMild Mitral regurgitation.\nNo regional wall motion abnormality.", IMAGING_REPORT),
+        ("COLONOSCOPY\nINDICATION: bleeding per rectum\nPREMEDICATION: IV midazolam\nEXAMINEDUPTO: caecum\nFINDINGS: BBPS-7. SCOPECOULDNOT be advanced into the ileum.\n"
+         "IMPRESSION: sigmoid polyp", PROCEDURE_REPORT),
     ],
 )
 def test_each_page_is_typed_from_what_it_prints(text, kind):
     result = classify_page(text)
     assert result["document_type"] == kind
     assert (result["cues"] != []) == (kind != UNCLASSIFIED)
+
+
+def test_a_named_echocardiography_page_is_not_general_ultrasound():
+    result = classify_page("ECHO-CARDIOGRAPHY REPORT\nDoppler study\nLVEF 60%\nTrivial mitral regurgitation")
+    assert (result["document_type"], result["imaging_modality"]) == (IMAGING_REPORT, "ECHOCARDIOGRAPHY")
 
 
 def test_imaging_modality_and_a_continued_page():

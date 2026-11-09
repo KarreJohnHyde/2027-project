@@ -5,3 +5,5 @@ torch==2.14.1+cpu
 torchvision==0.29.1+cpu
 # Pure-Python medical-imaging transforms/networks; shared by 2-D and 3-D trainers.
 monai==1.6.1
+# Marching cubes for patient-derived surfaces of volumetric runs (app.services.volume_inference).
+scikit-image==0.26.0

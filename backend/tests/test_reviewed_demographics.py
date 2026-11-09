@@ -67,6 +67,7 @@ def test_invalid_context_rejected(client, test_users, demographic_case, changes)
     assert response.status_code == 422
 
 
+@pytest.mark.private_workspace
 def test_case_scope_and_review_role_enforced(client, db_session, test_users, demographic_case):
     url = endpoint(demographic_case)
     other = test_users["clinician_b"]
@@ -76,15 +77,14 @@ def test_case_scope_and_review_role_enforced(client, db_session, test_users, dem
     owner.role = UserRole.PUBLIC
     owner.verification_status = VerificationStatus.UNVERIFIED
     db_session.commit()
+    # Every account may record on its own case (owner's decision, 2026-10-30); other accounts' cases stay closed.
     public_read = client.get(url, headers=get_auth_headers(owner))
-    assert public_read.status_code == 200 and public_read.json()["can_record"] is False
-    assert client.post(url, headers=get_auth_headers(owner), json=payload()).status_code == 403
-    owner.role = UserRole.CLINICIAN
-    db_session.commit()
-    assert client.get(url, headers=get_auth_headers(owner)).json()["can_record"] is False
-    assert client.post(url, headers=get_auth_headers(owner), json=payload()).status_code == 403
+    assert public_read.status_code == 200 and public_read.json()["can_record"] is True
+    recorded = client.post(url, headers=get_auth_headers(owner), json=payload())
+    assert recorded.status_code == 201, recorded.text
 
 
+@pytest.mark.private_workspace
 def test_viewer_can_read_but_not_record(client, db_session, test_users, demographic_case):
     viewer = test_users["clinician_b"]
     db_session.add(CaseMembership(case_id=demographic_case.id, user_id=viewer.id, role="VIEWER", granted_by_id=test_users["clinician_a"].id))

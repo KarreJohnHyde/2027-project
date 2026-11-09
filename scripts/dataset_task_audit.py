@@ -89,6 +89,22 @@ LICENSES = {
     "STANFORD_RUA": {"status": "PERMISSION_UNVERIFIED", "name": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
                      "source": "https://echonet.github.io/dynamic/ (agreement terms); https://aimi.stanford.edu/datasets/mura-msk-xrays", "verified_on": "2026-10-25",
                      "note": "Usable only after the user confirms their own Stanford AIMI registration and acceptance of the agreement for this dataset."},
+    # MURA only: the owner confirmed their own acceptance of the agreement (EchoNet stays unconfirmed).
+    "STANFORD_RUA_MURA": {"status": "PERMISSION_UNVERIFIED", "authorization_status": "VERIFIED",
+                          "authorization_reason": "Repository owner confirmed on 2026-10-31 that they accepted the Stanford AIMI Research Use Agreement when downloading MURA.",
+                          "authorized_by": "repository owner (recorded interactive decision)", "authorized_on": "2026-10-31",
+                          "authorization_scope": "personal, non-commercial research training and evaluation; no redistribution of images",
+                          "name": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
+                          "source": "https://aimi.stanford.edu/datasets/mura-msk-xrays", "verified_on": "2026-10-25",
+                          "citation": "Rajpurkar P, Irvin J, Bagul A, et al. MURA: Large Dataset for Abnormality Detection in Musculoskeletal Radiographs. arXiv:1712.06957 (2017)."},
+    # EchoNet-Dynamic: the owner confirmed their own acceptance of the agreement for this dataset.
+    "STANFORD_RUA_ECHONET": {"status": "PERMISSION_UNVERIFIED", "authorization_status": "VERIFIED",
+                             "authorization_reason": "Repository owner confirmed on 2026-11-06 that they hold the Stanford AIMI Research Use Agreement for EchoNet-Dynamic.",
+                             "authorized_by": "repository owner (recorded interactive decision)", "authorized_on": "2026-11-06",
+                             "authorization_scope": "personal, non-commercial research training and evaluation; no redistribution of videos",
+                             "name": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
+                             "source": "https://echonet.github.io/dynamic/", "verified_on": "2026-10-25",
+                             "citation": "Ouyang D, He B, Ghorbani A, et al. Video-based AI for beat-to-beat assessment of cardiac function. Nature 580:252-256 (2020)."},
 }
 
 # Curated from the archive inventories (class folders, metadata files) and official dataset pages.
@@ -221,17 +237,21 @@ DATASETS = [
                 "unlabelled_dir": "C-NMC_Leukemia/testing_data/", "subject_pattern": r"^UID_(H?\d+)_\d+_\d+_(all|hem)\.bmp$", "content_threshold": 10}]},
     {"archive": "archive_58", "id": "bone-fracture-roboflow-v4", "title": "Bone fracture detection v4 (Roboflow)", "modality": "XRAY", "system": "skeletal",
      "identity": "4148 X-ray images with YOLO boxes in 7 classes; the archive holds two identical copies", "license": "BONE_FRACTURE_ROBOFLOW", "labels": "YOLO",
-     "official_splits": True, "patient_ids": "NONE_AVAILABLE",
-     "tasks": [{"id": "bone-fracture-detection", "type": "DETECTION", "target": "fracture boxes",
-                "needs_review": "class set mixes fracture labels with a non-fracture 'humerus' class; task definition needs clinical review"}]},
+     "official_splits": True, "patient_ids": "NONE_AVAILABLE", "yolo_root": "BoneFractureYolo8/",
+     "notes": ["Only the BoneFractureYolo8/ copy is used; the second folder is a byte-identical copy of it."],
+     # Owner decision 2026-11-06: one 'fracture' class; the 'humerus' class marks the bone, not a fracture.
+     "tasks": [{"id": "bone-fracture-detection", "type": "DETECTION",
+                "target": "fracture boxes: the six region-specific fracture classes merged into one 'fracture' class; the non-fracture 'humerus' class (index 4) excluded (owner decision, 2026-11-06)",
+                "class_name": "fracture"}]},
     {"archive": "archive_60", "id": "mura-v1.1", "title": "MURA v1.1 musculoskeletal radiographs (Stanford AIMI)", "modality": "XRAY", "system": "skeletal",
-     "identity": "40,009 upper-extremity radiographs in 14,863 studies with study-level normal/abnormal labels; public valid split", "license": "STANFORD_RUA",
+     "identity": "40,009 upper-extremity radiographs in 14,863 studies with study-level normal/abnormal labels; public valid split", "license": "STANFORD_RUA_MURA",
      "labels": "STUDY_LABEL_CSV", "official_splits": True, "patient_ids": "PSEUDONYMOUS_PATIENT_FOLDERS",
-     "tasks": [{"id": "mura-study-abnormality", "type": "CLASSIFICATION", "target": "study-level normal vs abnormal"}]},
+     "tasks": [{"id": "mura-study-abnormality", "type": "STUDY_IMAGE_CLASSIFICATION", "target": "study-level normal vs abnormal", "root": "MURA-v1.1/"}]},
     {"archive": "archive_56", "id": "echonet-dynamic", "title": "EchoNet-Dynamic echocardiography videos (Stanford AIMI)", "modality": "ECHO", "system": "heart",
-     "identity": "10,030 apical-4-chamber videos with EF, ESV/EDV and LV tracings", "license": "STANFORD_RUA", "labels": "VIDEO_WITH_EF", "official_splits": True,
+     "identity": "10,030 apical-4-chamber videos with EF, ESV/EDV and LV tracings", "license": "STANFORD_RUA_ECHONET", "labels": "VIDEO_WITH_EF", "official_splits": True,
      "patient_ids": "ONE_VIDEO_PER_PATIENT",
-     "tasks": [{"id": "echonet-ef-regression", "type": "REGRESSION", "target": "left-ventricular ejection fraction"}]},
+     "tasks": [{"id": "echonet-ef-regression", "type": "ECHO_EF_REGRESSION", "target": "left-ventricular ejection fraction (%) from an apical-4-chamber video",
+                "file_list": "EchoNet-Dynamic/FileList.csv", "trainer": "ml_training/echo_ef.py"}]},
     {"archive": "archive_24", "id": "kits19-labels", "title": "KiTS19 kidney tumour segmentations and clinical data (no CT imaging)", "modality": "CT", "system": "kidneys",
      "identity": "210 case folders with segmentation.nii and kits.json clinical records; imaging.nii files are absent", "license": "KITS19", "labels": "MASKS_WITHOUT_IMAGES",
      "official_splits": False, "patient_ids": "PSEUDONYMOUS_CASE_IDS", "tasks": [{"id": "kits19-kidney-tumour-segmentation", "type": "SEGMENTATION_VOLUMES",
@@ -500,6 +520,58 @@ def prepare_classification(unit: dict, task: dict, threshold: int) -> dict:
     }
 
 
+def prepare_study_images(unit: dict, task: dict, threshold: int) -> dict:
+    """MURA: the publisher's labelled-study CSVs label every view of a study. The publisher's validation
+    split is the frozen test set and must share no patient with its training split; whole patients of
+    the training split are divided into train/validation (seed). The bootstrap unit is the patient, and
+    near-duplicates crossing splits are audited as for publisher splits."""
+    location, root = manifest_locations(unit), task["root"]
+    samples = []
+    for publisher_split, split in (("train", None), ("valid", "test")):
+        with Path(location[f"{root}{publisher_split}_labeled_studies.csv"]).open(encoding="utf-8", newline="") as handle:
+            study_labels = {row[0]: int(row[1]) for row in csv.reader(handle) if row}
+        with Path(location[f"{root}{publisher_split}_image_paths.csv"]).open(encoding="utf-8", newline="") as handle:
+            for row in csv.reader(handle):
+                if not row:
+                    continue
+                entry = row[0]
+                study = entry.rsplit("/", 1)[0] + "/"
+                if study not in study_labels or not location.get(entry):
+                    raise ValueError(f"{entry}: no labelled study, or missing on disk")
+                parts = entry.split("/")  # MURA-v1.1/<split>/XR_<PART>/patient<N>/study<k>_<positive|negative>/image<j>.png
+                label = "abnormal" if study_labels[study] == 1 else "normal"
+                if parts[4].endswith("_positive") != (label == "abnormal"):
+                    raise ValueError(f"{entry}: the study folder name disagrees with the labelled-study CSV")
+                samples.append({"entry": entry, "path": location[entry], "label": label, "subject_id": parts[3],
+                                "study_id": "/".join(parts[2:5]), "body_part": parts[2], "publisher_split": publisher_split, "split": split})
+    training = sorted({s["subject_id"] for s in samples if s["publisher_split"] == "train"})
+    shared = set(training) & {s["subject_id"] for s in samples if s["publisher_split"] == "valid"}
+    if shared:
+        raise ValueError(f"{len(shared)} patients occur in both publisher splits; the test set would not be patient-disjoint")
+    shuffled = training[:]
+    random.Random(SPLIT_SEED).shuffle(shuffled)
+    validation = set(shuffled[:round(len(shuffled) * SPLIT_FRACTIONS["val"] / (SPLIT_FRACTIONS["train"] + SPLIT_FRACTIONS["val"]))])
+    for sample in samples:
+        if sample["split"] is None:
+            sample["split"] = "val" if sample["subject_id"] in validation else "train"
+    leakage = split_leakage(samples, threshold)
+    for sample in samples:
+        sample["group_id"] = sample["subject_id"]
+    counts = Counter((sample["split"], sample["label"]) for sample in samples)
+    labels = sorted({sample["label"] for sample in samples})
+    path, version = write_samples(task["id"], samples, ["entry", "path", "label", "split", "group_id", "study_id", "body_part", "publisher_split", "dhash"])
+    return {
+        "samples": len(samples), "labels": labels, "per_split": {split: sum(counts[(split, label)] for label in labels) for split in SPLIT_FRACTIONS},
+        "per_split_per_label": {split: {label: counts[(split, label)] for label in labels} for split in SPLIT_FRACTIONS},
+        "studies_per_split": {split: len({s["study_id"] for s in samples if s["split"] == split}) for split in SPLIT_FRACTIONS},
+        "patients_per_split": {split: len({s["subject_id"] for s in samples if s["split"] == split}) for split in SPLIT_FRACTIONS},
+        "patients_in_both_publisher_splits": 0, **leakage, "group_unit": "patient",
+        "split_method": (f"publisher validation split frozen as test; publisher training patients divided into train/validation, seed {SPLIT_SEED}; "
+                         "labels per study from the publisher's CSV; group unit: patient"),
+        "sample_manifest": path, "dataset_version": version,
+    }
+
+
 def manifest_locations(unit: dict) -> dict[str, str]:
     return {row["entry"].replace("\\", "/"): row["location"] for row in read_manifest(unit["archive"])}
 
@@ -728,8 +800,11 @@ def yolo_samples(unit: dict) -> list[dict]:
     rows = read_manifest(unit["archive"])
     location = {row["entry"].replace("\\", "/"): row["location"] for row in rows}
     samples = []
+    root = unit.get("yolo_root", "")  # archives holding several identical copies use one of them
     for entry, path in location.items():
         parts = entry.split("/")
+        if root and not entry.startswith(root):
+            continue
         if len(parts) >= 3 and parts[-2] == "images" and Path(entry).suffix.lower() in IMAGE_SUFFIXES:
             label_entry = "/".join(parts[:-2]) + "/labels/" + Path(parts[-1]).stem + ".txt"
             label_path = location.get(label_entry, "")
@@ -873,6 +948,27 @@ def prepare_official(unit: dict, task: dict, threshold: int) -> dict:
             **({"publisher_split_audit": resplit["audit"]} if resplit else {}), "sample_manifest": path, "dataset_version": version}
 
 
+def prepare_echonet(unit: dict, task: dict, threshold: int) -> dict:
+    """EchoNet-Dynamic: the publisher's split from FileList.csv, one video per patient; EF is the target."""
+    location = {row["entry"].replace("\\", "/"): row["location"] for row in read_manifest(unit["archive"])}
+    with Path(location[task["file_list"]]).open(encoding="utf-8", newline="") as handle:
+        listing = list(csv.DictReader(handle))
+    videos = {Path(entry).stem: (entry, path) for entry, path in location.items() if "/Videos/" in entry}
+    samples, missing = [], []
+    for row in listing:
+        found = videos.get(row["FileName"])
+        if not found:
+            missing.append(row["FileName"])
+            continue
+        samples.append({"entry": found[0], "path": found[1], "split": {"TRAIN": "train", "VAL": "val", "TEST": "test"}[row["Split"].strip().upper()],
+                        "group_id": row["FileName"], "ef": row["EF"], "esv": row["ESV"], "edv": row["EDV"], "fps": row["FPS"],
+                        "frames": row["NumberOfFrames"], "height": row["FrameHeight"], "width": row["FrameWidth"]})
+    path, version = write_samples(task["id"], samples, ["entry", "path", "split", "group_id", "ef", "esv", "edv", "fps", "frames", "height", "width"])
+    return {"samples": len(samples), "per_split": dict(Counter(sample["split"] for sample in samples)),
+            "split_method": "publisher splits kept (FileList.csv Split; one video per patient)", "videos_listed_but_missing": len(missing),
+            "sample_manifest": path, "dataset_version": version}
+
+
 def task_flags(unit: dict, task: dict, overlaps: dict) -> list[str]:
     flags = []
     if unit.get("privacy") == "PRIVACY_REVIEW_REQUIRED":
@@ -927,12 +1023,25 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--dhash-threshold", type=int, default=4)
     parser.add_argument("--skip-hashing", action="store_true", help="Skip near-duplicate analysis and sample manifests.")
+    parser.add_argument("--only", action="append", default=[], metavar="DATASET_ID",
+                        help="Re-audit only these datasets; every other record is kept unchanged from the existing tasks.json.")
     args = parser.parse_args()
     sys.stdout.reconfigure(encoding="utf-8")
     imported = {record["archive_id"]: record for record in json.loads((ROOT / "dataset_registry" / "imported.json").read_text(encoding="utf-8"))["archives"]}
     overlaps = overlap_matrix(DATASETS)
+    registry_path = ROOT / "dataset_registry" / "tasks.json"
+    existing = {record["id"]: record for record in json.loads(registry_path.read_text(encoding="utf-8"))["datasets"]} if registry_path.exists() else {}
+    kept = {}
+    if args.only:
+        unknown = set(args.only) - {unit["id"] for unit in DATASETS}
+        if unknown:
+            raise SystemExit(f"unknown dataset ids: {sorted(unknown)}")
+        kept = existing
     records = []
     for unit in DATASETS:
+        if args.only and unit["id"] not in args.only and unit["id"] in kept:
+            records.append(kept[unit["id"]])
+            continue
         archive = imported[unit["archive"]]
         license_info = LICENSES[unit["license"]]
         record = {key: unit[key] for key in ("id", "archive", "title", "modality", "system", "identity", "labels", "official_splits", "patient_ids")}
@@ -961,14 +1070,20 @@ def main() -> int:
             if eligible and not args.skip_hashing:
                 print(f"preparing {task['id']} ...", flush=True)
                 prepare = {"CLASSIFICATION": prepare_classification, "SUBJECT_CLASSIFICATION": prepare_subject_classification,
+                           "STUDY_IMAGE_CLASSIFICATION": prepare_study_images,
                            "SEGMENTATION_MASK_FOLDERS": prepare_mask_folders, "SEGMENTATION_VOLUMES": prepare_volumes,
-                           "ECG_MULTILABEL": prepare_ptbxl, "SURVIVAL": prepare_survival}.get(task["type"], prepare_official)
+                           "ECG_MULTILABEL": prepare_ptbxl, "SURVIVAL": prepare_survival,
+                           "ECHO_EF_REGRESSION": prepare_echonet}.get(task["type"], prepare_official)
                 entry["preparation"] = prepare(unit, task, args.dhash_threshold)
                 apply_task_readiness(entry, entry["preparation"])
                 if entry["preparation"].get("test_images_with_cross_split_duplicate"):
                     entry["flags"].append("LEAKAGE_RISK_CROSS_SPLIT_NEAR_DUPLICATES")
             record["tasks"].append(entry)
         records.append(record)
+    # Records registered outside this script's DATASETS list (by a dataset preparation script: MSD CT, NLM TB, LIDC)
+    # are kept on every run, not only with --only.
+    known = {unit["id"] for unit in DATASETS}
+    records += [record for record_id, record in existing.items() if record_id not in known]
     output = {"generated_at": date.today().isoformat(), "tool": "scripts/dataset_task_audit.py", "split_seed": SPLIT_SEED,
               "dhash_threshold": args.dhash_threshold, "datasets": records}
     (ROOT / "dataset_registry" / "tasks.json").write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")

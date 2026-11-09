@@ -27,10 +27,10 @@ from typing import Any
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.models.entities import ClinicalReportStatement, Finding, HumanReview, MedicalMeasurement, ModalityType, UploadedFile
+from app.models.entities import ClinicalReportStatement, Finding, HumanReview, MedicalMeasurement, ModalityType, UploadedFile, User
 from app.services import upload_store
 from app.services.imaging_readers import ImagingReadError, read_metadata
-from app.services.terminology import ANALYTES_BY_NAME, ANATOMY_SYSTEMS, bilateral_atlas_structures
+from app.services.terminology import ANALYTES_BY_NAME, ANATOMY_SYSTEMS, atlas_structure_name, bilateral_atlas_structures
 
 SYSTEM_LABELS = {
     "heart": "Heart", "lungs": "Lungs", "brain": "Brain", "liver": "Liver", "pancreas": "Pancreas",
@@ -66,12 +66,25 @@ def _mapped(base: dict[str, Any], state: str, reason: str) -> dict[str, Any]:
     return {**base, "mapping_state": state, "mapping_category": LEGACY_CATEGORY[state], "reason": reason}
 
 
+def account_standing(user: User | None) -> dict[str, Any]:
+    """Any account may review or decide, so records say whether the account was a verified professional."""
+    verified = bool(user and user.role.value in ("clinician", "admin") and user.verification_status.value == "VERIFIED")
+    return {"role": user.role.value if user else None, "verified_professional": verified}
+
+
+def reviewer_standing(review: HumanReview) -> dict[str, Any]:
+    """Who confirmed: any account may review, so the record says whether it was a verified professional."""
+    standing = account_standing(review.reviewer)
+    return {"reviewer_role": standing["role"], "reviewer_verified_professional": standing["verified_professional"]}
+
+
 def _review_provenance(review: HumanReview | None) -> dict[str, Any] | None:
     if review is None:
         return None
     return {
         "review_id": review.id,
         "reviewer_id": review.reviewer_id,
+        **reviewer_standing(review),
         "scope": "FINDING_LEVEL",
         "status": review.review_status,
         "reviewed_at": review.reviewed_at.isoformat() if review.reviewed_at else None,
@@ -97,6 +110,8 @@ def _statement_item(statement: ClinicalReportStatement, review: HumanReview | No
         "temporality": statement.temporality,
         "comparison": statement.comparison,
         "documented_region": statement.anatomical_site,
+        # The atlas name the documented region resolves to; the region text above is as read (OCR may have glued it).
+        "atlas_structure_name": atlas_structure_name(statement.atlas_structure_id),
         "laterality": statement.laterality,
         "source_span": statement.source_span,
         "review_status": review.review_status if review else "PENDING_HUMAN_REVIEW",
@@ -208,12 +223,14 @@ def _research_finding_item(finding: Finding, review: HumanReview | None) -> dict
     return _mapped(
         base,
         "SCHEMATIC_ORGAN_ONLY",
-        "Clinician-confirmed research output associated with the model registry's organ only; source-image coordinates are not registered to the atlas.",
+        "Reviewer-confirmed research output associated with the model registry's organ only; source-image coordinates are not registered to the atlas.",
     )
 
 
 def build_case_anatomy_evidence(db: Session, case_id: int) -> dict[str, Any]:
-    statements = db.query(ClinicalReportStatement).filter(ClinicalReportStatement.case_id == case_id).all()
+    from app.services.report_runs import current_statements
+
+    statements = db.query(ClinicalReportStatement).filter(ClinicalReportStatement.case_id == case_id, current_statements(db, [case_id])).all()
     measurements = db.query(MedicalMeasurement).filter(MedicalMeasurement.case_id == case_id).all()
     images = db.query(UploadedFile).filter(
         UploadedFile.case_id == case_id, UploadedFile.modality == ModalityType.IMAGE, UploadedFile.is_associated.is_(True)
@@ -242,6 +259,15 @@ def build_case_anatomy_evidence(db: Session, case_id: int) -> dict[str, Any]:
         scoped = [item for item in items if item.get("system") == system_id] if system_id != "hybrid" else [item for item in items if item.get("system")]
         counts = {category: sum(1 for item in scoped if item["mapping_category"] == category) for category in MAPPING_CATEGORIES}
         state_counts = {state: sum(1 for item in scoped if item["mapping_state"] == state) for state in MAPPING_STATES}
+        verified = sorted({item["atlas_structure_id"] for item in scoped if item["mapping_state"] == "REGION_VERIFIED"})
+        # Structures an affirmed, certain, current statement names, not yet confirmed by a
+        # clinician: shown apart from verified regions, never as a located finding.
+        documented = sorted({
+            structure for item in scoped
+            if item["kind"] == "REPORT_STATEMENT" and item["mapping_state"] == "SCHEMATIC_ORGAN_ONLY" and item.get("assertion") == "AFFIRMED"
+            and item.get("certainty") == "CERTAIN" and item.get("temporality") == "CURRENT"
+            for structure in item.get("candidate_atlas_structure_ids") or []
+        })
         systems[system_id] = {
             "system_id": system_id,
             "label": SYSTEM_LABELS[system_id],
@@ -250,15 +276,12 @@ def build_case_anatomy_evidence(db: Session, case_id: int) -> dict[str, Any]:
             "state_counts": state_counts,
             "highlight": {
                 "organ_schematic": state_counts["SCHEMATIC_ORGAN_ONLY"] > 0,
-                "verified_structures": sorted({item["atlas_structure_id"] for item in scoped if item["mapping_state"] == "REGION_VERIFIED"}),
-                # Structures an affirmed, certain, current statement names, not yet confirmed by a
-                # clinician: shown apart from verified regions, never as a located finding.
-                "documented_structures": sorted({
-                    structure for item in scoped
-                    if item["kind"] == "REPORT_STATEMENT" and item["mapping_state"] == "SCHEMATIC_ORGAN_ONLY" and item.get("assertion") == "AFFIRMED"
-                    and item.get("certainty") == "CERTAIN" and item.get("temporality") == "CURRENT"
-                    for structure in item.get("candidate_atlas_structure_ids") or []
-                }),
+                "verified_structures": verified,
+                "documented_structures": documented,
+                # Atlas names of the same structures: models whose parts carry their own ids (the lobe-labelled
+                # brain) are matched by the curated structure label instead.
+                "verified_structure_names": sorted({name for name in map(atlas_structure_name, verified) if name}),
+                "documented_structure_names": sorted({name for name in map(atlas_structure_name, documented) if name}),
                 "spatially_registered": sorted({item["atlas_structure_id"] for item in scoped if item["mapping_state"] == "SPATIALLY_REGISTERED" and item["atlas_structure_id"]}),
             },
         }

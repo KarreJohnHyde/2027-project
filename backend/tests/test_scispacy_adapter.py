@@ -41,11 +41,24 @@ def _report(tmp_path):
     return path
 
 
-def test_disabled_by_default_and_rule_output_unchanged(tmp_path, monkeypatch):
-    monkeypatch.delenv("MEDTWIN_SCISPACY", raising=False)
+def test_switched_off_leaves_rule_output_unchanged(tmp_path, monkeypatch):
+    monkeypatch.setenv("MEDTWIN_SCISPACY", "off")
     result = nlp_processor.analyze_clinical_report(_report(tmp_path), "0" * 64)
     assert result["provenance"]["secondary_model_ner"] == {"status": "DISABLED"}
     assert not any(item["category"].startswith("MODEL_") for item in result["statements"])
+
+
+def test_auto_follows_the_wsl_environment(monkeypatch):
+    """The default runs scispaCy wherever its WSL environment exists, and nowhere else (servers, Vercel)."""
+    from app.services import wsl_runtime
+
+    monkeypatch.delenv("MEDTWIN_SCISPACY", raising=False)
+    monkeypatch.setattr(wsl_runtime, "environment_present", lambda python: False)
+    assert scispacy_adapter.enabled() is False
+    monkeypatch.setattr(wsl_runtime, "environment_present", lambda python: True)
+    assert scispacy_adapter.enabled() is True
+    monkeypatch.setenv("MEDTWIN_SCISPACY", "off")
+    assert scispacy_adapter.enabled() is False
 
 
 def test_worker_failure_keeps_rule_statements(tmp_path, monkeypatch):

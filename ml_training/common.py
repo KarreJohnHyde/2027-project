@@ -109,7 +109,9 @@ class Run:
 
     def write_json(self, name: str, payload: Any) -> Path:
         path = self.directory / name
-        path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        # Paths (e.g. a resume file argument) are recorded as text.
+        path.write_text(json.dumps(payload, indent=2, default=lambda value: str(value) if isinstance(value, Path) else repr(value)) + "\n",
+                        encoding="utf-8")
         return path
 
     def save_checkpoint(self, payload: dict) -> tuple[Path, str]:
@@ -120,6 +122,31 @@ class Run:
     @property
     def elapsed_seconds(self) -> float:
         return round(time.monotonic() - self.started, 1)
+
+
+def save_resume(path: Path | None, identity: dict, state: dict) -> None:
+    """Write the training state after an epoch (atomically), so a shutdown loses at most the epoch in progress."""
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + ".tmp")
+    torch.save({"identity": identity, **state, "saved_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}, temporary)
+    os.replace(temporary, path)
+
+
+def load_resume(path: Path | None, identity: dict) -> dict | None:
+    """The saved training state when ``path`` exists and was written for the same settings; None to start fresh.
+
+    A resumed run continues the same optimiser and schedule, but its data order differs from an uninterrupted run,
+    so the run records where it resumed."""
+    if path is None or not path.exists():
+        return None
+    state = torch.load(path, map_location="cpu", weights_only=False)
+    saved = state.get("identity") or {}
+    different = sorted(key for key in set(identity) | set(saved) if saved.get(key) != identity.get(key))
+    if different:
+        raise SystemExit(f"{path} was written for different settings ({', '.join(different)}); move it aside to start fresh.")
+    return state
 
 
 def bootstrap_ci(metric, n: int, groups: np.ndarray | None, rounds: int = 1000, seed: int = 20261024, unit: str | None = None) -> dict:

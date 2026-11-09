@@ -250,10 +250,10 @@ def _module_available(module_name: str) -> bool:
         return False
 
 
-def scispacy_mode() -> str:
-    from app.services.scispacy_adapter import mode
+def scispacy_enabled() -> bool:
+    from app.services.scispacy_adapter import enabled
 
-    return mode()
+    return enabled()
 
 
 def _research_image_models_capability() -> dict[str, Any]:
@@ -269,7 +269,72 @@ def _research_image_models_capability() -> dict[str, Any]:
         "limitations": ["Trained and evaluated on public datasets with internal held-out splits; no external or clinical validation.",
                         "User-declared applicability is checked alongside printed-document rejection and a checkpoint-bound feature-space out-of-distribution gate.",
                         "The applicability gate has only internal cross-domain testing, can accept unsuitable images and reject suitable ones, and is not clinical or image-quality validation.",
-                        "Outputs stay pending human review and are not mapped onto patient anatomy."],
+                        "Outputs stay pending human review; a confirmed output is linked to its organ schematically (organ level, no location on the atlas)."],
+    }
+
+
+def _research_volume_models_capability() -> dict[str, Any]:
+    from app.services.model_inference import inference_models
+
+    runnable = [model["model_id"] for model in inference_models() if model["gate"]["allowed"] and model["inference_input"] == "volume_nifti"]
+    return {
+        "capability_id": "research_volume_models",
+        "label": "Research-only 3-D volume models (cardiac MRI, brain MRI stroke lesions and gliomas)",
+        "operational": bool(runnable),
+        "verification_status": "INTERNAL_HELD_OUT_EVALUATION_ONLY",
+        "runnable_models": runnable,
+        "limitations": ["Internal held-out tests on public datasets only; no external or clinical validation.",
+                        "Each upload must match the model's development data (channels and their order, voxel spacing, axis layout and, for "
+                        "skull-stripped brain data, the share of non-zero voxels); anything else is refused, nothing is reoriented.",
+                        "Masks are drawn per slice and as patient-derived 3-D surfaces in the scan's own frame; they are not registered to the atlas."],
+    }
+
+
+def _multimodal_fusion_capability() -> dict[str, Any]:
+    """Fusion is operational only when a registered fusion model passes its research gate; its held-out
+    comparison with the single-modality network is stated, whatever it shows."""
+    from app.services.model_inference import inference_models
+
+    fusion = [model for model in inference_models() if model["gate"]["allowed"] and model.get("demographic_inputs")]
+    limitations = []
+    for model in fusion:
+        evaluation = model.get("held_out_evaluation") or {}
+        difference, interval = evaluation.get("fusion_minus_ecg_only_macro_auroc"), evaluation.get("fusion_minus_ecg_only_95ci") or [None, None]
+        if difference is not None and None not in interval:
+            limitations.append(f"{model['display_name']}: 12-lead ECG fused with age and sex; on the same held-out records, macro AUROC "
+                               f"{difference:+.4f} against the ECG network alone (95% CI {interval[0]:+.4f} to {interval[1]:+.4f}, "
+                               f"{str(evaluation.get('fusion_conclusion', '')).replace('_', ' ').lower()}).")
+    limitations.append("Age and sex come from the request or the case's reviewed demographics, never from extracted text.")
+    limitations.append("Image + report + laboratory fusion still needs genuinely paired data with shared outcomes; the case-level gated "
+                       "fusion below stays NOT RUN for that reason.")
+    return {
+        "capability_id": "multimodal_fusion",
+        "label": "Multimodal fusion (ECG + age and sex)",
+        "operational": bool(fusion),
+        "verification_status": "INTERNAL_HELD_OUT_EVALUATION_ONLY" if fusion else "PROPOSED_ONLY",
+        "runnable_models": [model["model_id"] for model in fusion],
+        "limitations": limitations if fusion else ["No genuinely paired dataset or validated fusion model is registered."],
+    }
+
+
+def _attention_localisation_capability() -> dict[str, Any]:
+    from app.services import cxr_research
+
+    available = cxr_research.availability()["available"]
+    summary = cxr_research.localisation_summary()
+    limitations = ["Grad-CAM shows where a score depends on; it is not a detector or a lesion outline."]
+    if summary:
+        overall = summary["overall"]
+        rates = sorted(summary["per_finding"].items(), key=lambda item: -item[1]["pointing_hit_rate"])
+        limitations.insert(0, f"Measured on {overall['boxes']} NIH ChestX-ray14 radiologist boxes: the attention peak fell inside the box "
+                              f"{overall['pointing_hit_rate']:.1%} of the time (a random point {overall['chance_hit_rate']:.1%}); by finding from "
+                              f"{rates[0][1]['pointing_hit_rate']:.0%} ({rates[0][0]}) to {rates[-1][1]['pointing_hit_rate']:.0%} ({rates[-1][0]}).")
+    return {
+        "capability_id": "attention_localisation",
+        "label": "Chest-radiograph attention peak and region (Grad-CAM)",
+        "operational": bool(available),
+        "verification_status": "LOCALISATION_MEASURED_ON_PUBLIC_BOXES" if summary else "IMPLEMENTED_NOT_VALIDATED",
+        "limitations": limitations,
     }
 
 
@@ -277,6 +342,14 @@ def get_capabilities() -> dict[str, Any]:
     """Expose executable boundaries independently from model readiness."""
     models = {item["model_id"]: item for item in list_models()["models"]}
     monai_available = _module_available("monai")
+    from app.services import clinical_nlp_adapter
+
+    from app.services import radgraph_adapter
+
+    clinical_nlp = clinical_nlp_adapter.enabled()
+    radgraph = radgraph_adapter.enabled()
+    pack = clinical_nlp_adapter.model_pack()
+    medcat_example_pack = pack is not None and pack.resolve() == clinical_nlp_adapter.EXAMPLE_PACK.resolve()
     capabilities = [
         {
             "capability_id": "document_parsing",
@@ -326,12 +399,24 @@ def get_capabilities() -> dict[str, Any]:
             "verification_status": "IMPLEMENTED_AND_TESTED",
             "limitations": ["Only compatible, explicitly represented measurements may be compared."],
         },
+        _research_volume_models_capability(),
+        _multimodal_fusion_capability(),
+        _attention_localisation_capability(),
         {
-            "capability_id": "multimodal_fusion",
-            "label": "Paired multimodal fusion",
-            "operational": False,
-            "verification_status": "PROPOSED_ONLY",
-            "limitations": ["No genuinely paired dataset or validated fusion model is registered."],
+            "capability_id": "reviewer_mask_corrections",
+            "label": "Reviewer corrections of 2-D model masks (brush and eraser)",
+            "operational": True,
+            "verification_status": "IMPLEMENTED_AND_TESTED",
+            "limitations": ["Saved beside the run as a REVIEWER_CORRECTION layer with what was added and removed; the model output is unchanged.",
+                            "A correction starts from the model's mask, so it is not independent ground truth; volumetric masks cannot be edited yet."],
+        },
+        {
+            "capability_id": "endoscopy_video_frames",
+            "label": "Endoscopy video, frame by frame (MP4/AVI)",
+            "operational": _module_available("cv2"),
+            "verification_status": "IMPLEMENTED_TESTED_NOT_VALIDATED" if _module_available("cv2") else "DEPENDENCY_MISSING",
+            "limitations": ["Frames sampled at an interval are each scored by a still-image endoscopy model after its applicability check; "
+                            "no tracking or temporal smoothing, and no model was trained or evaluated on video."],
         },
         {
             "capability_id": "patient_registration",
@@ -352,25 +437,34 @@ def get_capabilities() -> dict[str, Any]:
         },
         {
             "capability_id": "medcat",
-            "label": "MedCAT concept annotation",
-            "operational": _module_available("medcat"),
-            "verification_status": "NOT_INSTALLED",
+            "label": "MedCAT concept linking (secondary, WSL)",
+            "operational": clinical_nlp,
+            "verification_status": ("DISABLED" if not clinical_nlp else
+                                    "INTEGRATED_EXAMPLE_PACK_ONLY" if medcat_example_pack else "IMPLEMENTED_TESTED_NOT_VALIDATED"),
             "model_status": models["medcat_adapter"]["status"],
             "limitations": models["medcat_adapter"]["limitations"],
         },
         {
+            "capability_id": "medspacy",
+            "label": "medSpaCy ConText check of rule assertions (secondary, WSL)",
+            "operational": clinical_nlp,
+            "verification_status": "IMPLEMENTED_TESTED_NOT_VALIDATED" if clinical_nlp else "DISABLED",
+            "model_status": models["medspacy_context_adapter"]["status"],
+            "limitations": models["medspacy_context_adapter"]["limitations"],
+        },
+        {
             "capability_id": "scispacy",
             "label": "scispaCy biomedical NER (secondary, WSL)",
-            "operational": scispacy_mode() == "wsl",
-            "verification_status": "IMPLEMENTED_TESTED_NOT_VALIDATED" if scispacy_mode() == "wsl" else "DISABLED",
+            "operational": scispacy_enabled(),
+            "verification_status": "IMPLEMENTED_TESTED_NOT_VALIDATED" if scispacy_enabled() else "DISABLED",
             "model_status": models["scispacy_adapter"]["status"],
             "limitations": models["scispacy_adapter"]["limitations"],
         },
         {
             "capability_id": "radgraph",
-            "label": "RadGraph relation extraction",
-            "operational": False,
-            "verification_status": "DEPENDENCIES_AND_WEIGHTS_MISSING",
+            "label": "RadGraph-XL observations and anatomy on imaging reports (secondary)",
+            "operational": radgraph,
+            "verification_status": "IMPLEMENTED_TESTED_NOT_VALIDATED" if radgraph else "DEPENDENCIES_AND_WEIGHTS_MISSING",
             "model_status": models["radgraph_adapter"]["status"],
             "limitations": models["radgraph_adapter"]["limitations"],
         },

@@ -9,6 +9,8 @@ import { Badge, Button, Card, ErrorBlock, Field, KeyValue, LoadingBlock, PageHea
 import { api, type PrognosisCapability, type PrognosisEvaluation, type ScenarioBlock } from "../services/api";
 import { errorMessage, formatDate, humanize } from "../lib/format";
 import { useAsync } from "../lib/useAsync";
+import { useLocation } from "../lib/router";
+import ResearchBaselinePanel from "../components/ResearchBaselinePanel";
 import { useSelectedCase, useWorkspace } from "../state/workspace";
 
 const HORIZONS = [90, 180, 365, 730, 1825];
@@ -144,12 +146,13 @@ function CapabilityTable({ capability }: { capability: PrognosisCapability }) {
   );
 }
 
-export default function PrognosisStudioPage() {
+function PrognosisStudio() {
   const selected = useSelectedCase()!;
+  const { search } = useLocation();
   const capabilities = useAsync(() => api.getPrognosisCapabilities(), []);
   const anatomy = useAsync(() => Promise.all([loadManifest(), loadAtlasIndex()]), []);
   const history = useAsync(() => api.getPrognosisEvaluations(selected.id), [selected.id]);
-  const [organ, setOrgan] = useState("heart");
+  const [organ, setOrgan] = useState(search.get("organ") ?? "");
   const [intervention, setIntervention] = useState("");
   const [horizon, setHorizon] = useState(365);
   const [evaluation, setEvaluation] = useState<PrognosisEvaluation | null>(null);
@@ -181,10 +184,12 @@ export default function PrognosisStudioPage() {
         title="MedTwin Prognosis Studio — Evidence-Based Longitudinal Risk and Scenario Analysis"
         description="Scenario A and Scenario B are shown side by side only with validated estimates. Without a trained, validated model and a defined causal estimand, each panel shows the observed evidence and why its forecast is unavailable."
       />
-      <Card title="Scenario definition">
+      <ResearchBaselinePanel key={selected.id} caseId={selected.id} />
+      <Card title="Scenario definition" className="mt-4">
         <div className="grid gap-3 md:grid-cols-[1fr_1.4fr_10rem_auto] md:items-end">
           <Field label="Organ system">
             <SelectInput value={organ} onChange={(event) => { setOrgan(event.target.value); setEvaluation(null); setSharedSelected(null); }}>
+              <option value="">Select an organ system</option>
               {(capabilities.data?.capabilities ?? []).map((item) => <option key={item.organ_system} value={item.organ_system}>{item.label}</option>)}
             </SelectInput>
           </Field>
@@ -234,4 +239,9 @@ export default function PrognosisStudioPage() {
       )}
     </>
   );
+}
+
+export default function PrognosisStudioPage() {
+  const selected = useSelectedCase()!;
+  return <PrognosisStudio key={selected.id} />;
 }

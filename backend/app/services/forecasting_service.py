@@ -13,6 +13,7 @@ still a prediction.
 """
 
 from datetime import datetime, timezone
+from functools import partial
 from typing import Any, Dict, List, Optional
 
 import numpy as np
@@ -94,6 +95,7 @@ def _store_ineligible(
     horizon_days: int,
     series: List[Dict[str, Any]],
     reason: str,
+    persist: bool = True,
 ) -> Dict[str, Any]:
     record = ForecastRecord(
         case_id=case_id,
@@ -109,9 +111,10 @@ def _store_ineligible(
         eligibility_status=EvidenceStatus.NOT_ELIGIBLE,
         ineligibility_reason=reason,
     )
-    db.add(record)
-    db.commit()
-    db.refresh(record)
+    if persist:
+        db.add(record)
+        db.commit()
+        db.refresh(record)
     return {
         "id": record.id,
         "case_id": case_id,
@@ -137,17 +140,15 @@ def evaluate_case_forecasting(
     target_metric: str = "Joint Space Width",
     unit: str = "mm",
     horizon_days: int = 180,
+    persist: bool = True,
 ) -> Dict[str, Any]:
     """Evaluate data and model eligibility; no forecast is produced without a validated model."""
     series = _matching_numeric_series(case_id, db, target_metric, unit)
+    store = partial(_store_ineligible, persist=persist)
 
-    db.query(ForecastRecord).filter(
-        ForecastRecord.case_id == case_id,
-        ForecastRecord.target_metric == target_metric,
-    ).delete()
-
+    # Forecast evaluations are append-only; never erase earlier research history.
     if not series:
-        return _store_ineligible(
+        return store(
             case_id,
             db,
             target_metric,
@@ -157,7 +158,7 @@ def evaluate_case_forecasting(
             "NOT_ELIGIBLE: No source-linked numeric observations match the requested target and unit with valid collection dates.",
         )
     if len(series) == 1:
-        return _store_ineligible(
+        return store(
             case_id,
             db,
             target_metric,
@@ -167,7 +168,7 @@ def evaluate_case_forecasting(
             "NOT_ELIGIBLE: A single comparable observation cannot establish a longitudinal trend.",
         )
     if len(series) < L_MIN_OBSERVATIONS:
-        return _store_ineligible(
+        return store(
             case_id,
             db,
             target_metric,
@@ -180,7 +181,7 @@ def evaluate_case_forecasting(
     t_vals = np.array([item["timestamp"] for item in series], dtype=float)
     t_rel_days = (t_vals - t_vals[0]) / 86400.0
     if len(np.unique(t_rel_days)) < L_MIN_OBSERVATIONS:
-        return _store_ineligible(
+        return store(
             case_id,
             db,
             target_metric,
@@ -190,7 +191,7 @@ def evaluate_case_forecasting(
             "NOT_ELIGIBLE: Comparable observations require at least three distinct collection dates.",
         )
 
-    result = _store_ineligible(
+    result = store(
         case_id,
         db,
         target_metric,

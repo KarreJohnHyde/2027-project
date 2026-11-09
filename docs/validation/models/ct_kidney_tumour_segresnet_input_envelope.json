@@ -1,0 +1,62 @@
+{
+  "model_id": "ct_kidney_tumour_segresnet",
+  "dataset_id": "kits19-labels",
+  "dataset_version": "455cfd7c06b0a16e608b510704e19226da325a82729425b8c1a696c05ff575dd",
+  "manifest_sha256": "25bc4e50d83e8e292ea7aa13c14f9199c80216f44a279578ae616beb0fa1ebaf",
+  "derived_from": "NIfTI headers and voxels of the development cases (manifest train and validation splits); test cases do not shape the range",
+  "development_cases": 178,
+  "ndim": [
+    3,
+    4
+  ],
+  "channels": [
+    "CT"
+  ],
+  "in_plane_spacing_mm": {
+    "min": 0.4375,
+    "max": 5.0
+  },
+  "in_plane_square_pixels": false,
+  "slice_spacing_mm": {
+    "min": 0.4375,
+    "max": 1.0410000085830688
+  },
+  "slice_axis_last": false,
+  "matrix": {
+    "i": {
+      "min": 29,
+      "max": 1059
+    },
+    "j": {
+      "min": 512,
+      "max": 512
+    },
+    "k": {
+      "min": 512,
+      "max": 796
+    }
+  },
+  "orientations": [
+    "IPL"
+  ],
+  "hu_percentiles": {
+    "p01": {
+      "min": -3028.0,
+      "max": -1009.0
+    },
+    "p99": {
+      "min": 159.0,
+      "max": 561.0
+    },
+    "margin_hu": 100.0,
+    "note": "1st and 99th intensity percentiles of each development CT volume (every 4th voxel per axis)."
+  },
+  "held_out_test_cases": {
+    "total": 32,
+    "accepted_by_gate": 32,
+    "refusal_reasons": {},
+    "warnings": {
+      "SPATIAL_UNIT_NOT_DECLARED_TREATED_AS_MM": 32
+    }
+  }
+}

@@ -20,6 +20,7 @@ never downloaded while serving (scripts/fetch_cxr_weights.py fetches them once).
 from __future__ import annotations
 
 import hashlib
+import json
 import threading
 import time
 from datetime import datetime, timezone
@@ -44,6 +45,7 @@ from app.models.entities import (
 )
 from app.services import upload_store
 from app.services.audit_service import log_audit_event
+from app.services.imaging_readers import open_raster
 
 MODEL_ID = "cxr_torchxrayvision_densenet121"
 DISPLAY_NAME = "Chest radiograph findings, 18 labels (TorchXRayVision DenseNet-121, third-party)"
@@ -65,7 +67,8 @@ PUBLISHER = {
     "citation": "Cohen JP, Viviano JD, Bertin P, et al. TorchXRayVision: A library of chest X-ray datasets and models. MIDL 2022.",
     "training_data": "NIH ChestX-ray14, PadChest, CheXpert, MIMIC-CXR, Google, OpenI, RSNA/Kaggle (publisher's training; their terms apply)",
     "anatomy_model": "PSPNet trained on ChestX-Det (Lian et al., IEEE TMI 2021)",
-    "local_evaluation": "None: MedTwin has no labelled chest radiographs to evaluate these models on.",
+    "local_evaluation": ("Scores: none (no locally labelled radiographs outside the publisher's training collections). Attention: "
+                         "localisation measured against NIH ChestX-ray14 radiologist boxes (attention_localisation)."),
 }
 PREPROCESSING_VERSION = "torchxrayvision-1.5.7: grey levels to [-1024, 1024], centre square crop, 224 px classifier / 512 px anatomy"
 # Each output is scaled so 0.5 is the publisher's operating point for that finding.
@@ -76,6 +79,11 @@ WEAK_MARGIN = 0.1
 MIN_LUNG_FRACTION = 0.03
 ATTENTION_FINDINGS = 3
 ATTENTION_GRID = 28
+# Pre-specified (not tuned on the NIH boxes): the attention region is where Grad-CAM is at least half its maximum.
+ATTENTION_REGION_FRACTION = 0.5
+ATTENTION_REGION_RULE = ("Connected area containing the attention peak where Grad-CAM is at least half its maximum; where the score depends "
+                         "on, not a lesion outline or a detection.")
+LOCALISATION_REPORT = PROJECT_ROOT / "docs" / "validation" / "models" / "cxr_torchxrayvision_attention_localisation.json"
 ZONES = ("upper", "middle", "lower")
 # Report entities (app.services.terminology names) that state each label, and the organ system
 # the statement must be about: "lesion" in a thyroid lobe is not a lung lesion.
@@ -126,9 +134,19 @@ def availability() -> dict[str, Any]:
     return {"available": True, "status": "READY_UNVALIDATED"}
 
 
+def localisation_summary() -> Optional[dict[str, Any]]:
+    """Headline of the attention-localisation evaluation on NIH radiologist boxes, when it has been run."""
+    if not LOCALISATION_REPORT.is_file():
+        return None
+    report = json.loads(LOCALISATION_REPORT.read_text(encoding="utf-8"))
+    return {**report["summary"], "dataset": report["dataset"], "rule": report["rule"], "caveats": report["caveats"],
+            "report_path": "docs/validation/models/cxr_torchxrayvision_attention_localisation.json"}
+
+
 def model_card() -> dict[str, Any]:
     return {"model_id": MODEL_ID, "display_name": DISPLAY_NAME, "output_status": OUTPUT_STATUS, "publisher": PUBLISHER,
-            "operating_point": OPERATING_POINT, "weak_margin": WEAK_MARGIN, "weights_sha256": WEIGHT_SHA256, **availability()}
+            "operating_point": OPERATING_POINT, "weak_margin": WEAK_MARGIN, "weights_sha256": WEIGHT_SHA256,
+            "attention_localisation": localisation_summary(), **availability()}
 
 
 @lru_cache(maxsize=1)
@@ -185,6 +203,79 @@ def _zone_masks(lung: np.ndarray) -> dict[str, np.ndarray]:
     return zones
 
 
+def attention_marks(full: np.ndarray, square: tuple[int, int, int]) -> dict[str, Any]:
+    """Peak and attention region of a Grad-CAM map on the 512-pixel analysis frame, in source pixels.
+
+    The region is the connected area containing the peak where attention is at least ATTENTION_REGION_FRACTION
+    of its maximum; the rule was fixed before the NIH box evaluation (scripts/evaluate_cxr_attention_localisation.py)."""
+    from scipy import ndimage
+
+    left, top, side = square
+    scale = side / full.shape[0]
+    peak_row, peak_col = np.unravel_index(int(np.argmax(full)), full.shape)
+    maximum = float(full[peak_row, peak_col])
+    if not np.isfinite(maximum) or maximum <= 0:
+        return {"peak_xy": None, "region_box_xyxy": None, "region_rule": ATTENTION_REGION_RULE}
+    labelled, _count = ndimage.label(full >= ATTENTION_REGION_FRACTION * maximum)
+    region = labelled == labelled[peak_row, peak_col]
+    rows, cols = np.flatnonzero(region.any(axis=1)), np.flatnonzero(region.any(axis=0))
+    box = [left + cols[0] * scale, top + rows[0] * scale, left + (cols[-1] + 1) * scale, top + (rows[-1] + 1) * scale]
+    return {"peak_xy": [round(left + (peak_col + 0.5) * scale, 1), round(top + (peak_row + 0.5) * scale, 1)],
+            "region_box_xyxy": [round(float(value), 1) for value in box], "region_rule": ATTENTION_REGION_RULE}
+
+
+def _attention(classifier, small: np.ndarray, device, choose, square: tuple[int, int, int],
+               zone_masks: Optional[dict[str, np.ndarray]] = None, lungs: Optional[np.ndarray] = None) -> tuple[dict[str, float], list[dict[str, Any]]]:
+    """Scores and Grad-CAM attention (grid, peak, region and, with lung masks, zone shares) for the chosen findings.
+
+    `choose` is a list of finding names or a function of the score dictionary returning one."""
+    import torch
+    import torch.nn.functional as functional
+
+    features: dict[str, torch.Tensor] = {}
+    handle = classifier.features.register_forward_hook(lambda _module, _inputs, output: features.update(value=output))
+    try:
+        x = torch.from_numpy(small)[None].to(device).requires_grad_(False)
+        outputs = classifier(x)[0]
+        scores = {name: float(value) for name, value in zip(classifier.pathologies, outputs.detach().cpu().numpy()) if name}
+        names = choose(scores) if callable(choose) else list(choose)
+        attention = []
+        for name in names:
+            activation = features["value"]
+            gradient = torch.autograd.grad(outputs[classifier.pathologies.index(name)], activation, retain_graph=True)[0]
+            cam = torch.relu((gradient.mean(dim=(2, 3), keepdim=True) * activation).sum(dim=1, keepdim=True))
+            full = functional.interpolate(cam, size=(512, 512), mode="bilinear", align_corners=False)[0, 0].detach().cpu().numpy()
+            grid = functional.interpolate(cam, size=(ATTENTION_GRID, ATTENTION_GRID), mode="bilinear", align_corners=False)[0, 0].detach().cpu().numpy()
+            peak = float(grid.max()) or 1.0
+            entry: dict[str, Any] = {"finding": name}
+            if zone_masks is not None and lungs is not None:
+                total = float(full.sum()) or 1.0
+                shares = {zone: round(float(full[mask].sum()) / total, 3) for zone, mask in zone_masks.items()}
+                entry.update({"zones": shares, "outside_lungs": round(1.0 - float(full[lungs].sum()) / total, 3),
+                              "top_zone": max(shares, key=shares.get) if shares else None})
+            entry["grid"] = [[round(float(value) / peak, 2) for value in row] for row in grid]
+            entry.update(attention_marks(full, square))
+            attention.append(entry)
+    finally:
+        handle.remove()
+    return scores, attention
+
+
+def attention_for(image: Image.Image, findings: list[str]) -> dict[str, Any]:
+    """Scores and attention marks for named findings, without the anatomy gate (used by the localisation evaluation)."""
+    import torchvision
+    import torchxrayvision as xrv
+
+    classifier, _anatomy, _autoencoder, device = _models()
+    gray = np.asarray(image.convert("L"), dtype=np.float32)
+    normalised = xrv.datasets.normalize(gray, 255)[None, ...]
+    square = _square(gray)
+    small = torchvision.transforms.Compose([xrv.datasets.XRayCenterCrop(), xrv.datasets.XRayResizer(224)])(normalised)
+    with _lock:
+        scores, attention = _attention(classifier, small, device, findings, square)
+    return {"scores": scores, "attention": attention, "analysis_square": list(square), "image_size": [int(gray.shape[1]), int(gray.shape[0])]}
+
+
 def analyse(image: Image.Image, statements: list[ClinicalReportStatement]) -> dict[str, Any]:
     """Scores, attention by lung zone, anatomy outlines, input checks and the report comparison."""
     import torch
@@ -225,33 +316,12 @@ def analyse(image: Image.Image, statements: list[ClinicalReportStatement]) -> di
             raise CxrNotApplicable("No frontal chest anatomy was recognised (both lungs, each on its own side); nothing was scored. "
                                    f"Right lung {right_fraction:.1%}, left lung {left_fraction:.1%} of the frame.")
 
-        features: dict[str, torch.Tensor] = {}
-        handle = classifier.features.register_forward_hook(lambda _module, _inputs, output: features.update(value=output))
-        try:
-            x = torch.from_numpy(small)[None].to(device).requires_grad_(False)
-            outputs = classifier(x)[0]
-            scores = {name: float(value) for name, value in zip(classifier.pathologies, outputs.detach().cpu().numpy()) if name}
-            ranked = sorted(scores, key=lambda name: -scores[name])
-            lungs = right | left
-            zone_masks = {f"right_{zone}": mask for zone, mask in _zone_masks(right).items()}
-            zone_masks |= {f"left_{zone}": mask for zone, mask in _zone_masks(left).items()}
-            attention = []
-            for name in ranked[:ATTENTION_FINDINGS]:
-                activation = features["value"]
-                gradient = torch.autograd.grad(outputs[classifier.pathologies.index(name)], activation, retain_graph=True)[0]
-                cam = torch.relu((gradient.mean(dim=(2, 3), keepdim=True) * activation).sum(dim=1, keepdim=True))
-                full = functional.interpolate(cam, size=(512, 512), mode="bilinear", align_corners=False)[0, 0].detach().cpu().numpy()
-                total = float(full.sum()) or 1.0
-                shares = {zone: round(float(full[mask].sum()) / total, 3) for zone, mask in zone_masks.items()}
-                grid = functional.interpolate(cam, size=(ATTENTION_GRID, ATTENTION_GRID), mode="bilinear", align_corners=False)[0, 0].detach().cpu().numpy()
-                peak = float(grid.max()) or 1.0
-                attention.append({
-                    "finding": name, "zones": shares, "outside_lungs": round(1.0 - float(full[lungs].sum()) / total, 3),
-                    "top_zone": max(shares, key=shares.get) if shares else None,
-                    "grid": [[round(float(value) / peak, 2) for value in row] for row in grid],
-                })
-        finally:
-            handle.remove()
+        lungs = right | left
+        zone_masks = {f"right_{zone}": mask for zone, mask in _zone_masks(right).items()}
+        zone_masks |= {f"left_{zone}": mask for zone, mask in _zone_masks(left).items()}
+        scores, attention = _attention(classifier, small, device, lambda found: sorted(found, key=lambda name: -found[name])[:ATTENTION_FINDINGS],
+                                       square, zone_masks, lungs)
+        ranked = sorted(scores, key=lambda name: -scores[name])
 
     findings = [{"finding": name, "score": round(scores[name], 3), "above_operating_point": scores[name] > OPERATING_POINT,
                  "weak": abs(scores[name] - OPERATING_POINT) < WEAK_MARGIN} for name in ranked]
@@ -308,13 +378,21 @@ def report_comparison(findings: list[dict[str, Any]], statements: list[ClinicalR
 
 def execute(db: Session, file_record: UploadedFile, actor: Optional[User], content_check: Optional[dict] = None) -> InferenceRun:
     """Run on one image upload and record the output as a finding pending human review."""
-    statements = db.query(ClinicalReportStatement).filter(ClinicalReportStatement.case_id == file_record.case_id).all()
+    from app.services.report_runs import current_statements
+    from app.services.model_usage_policy import registered_model_usage_gate
+    usage = registered_model_usage_gate(MODEL_ID)
+    if not usage["allowed"]:
+        raise CxrUnavailable(", ".join(usage["blockers"]))
+
+    statements = db.query(ClinicalReportStatement).filter(ClinicalReportStatement.case_id == file_record.case_id,
+                                                          current_statements(db, [file_record.case_id])).all()
     started_at = datetime.now(timezone.utc)
     start = time.perf_counter()
     with upload_store.materialize(Path(file_record.file_path)) as plain:
-        with Image.open(plain) as image:
-            output = analyse(image, statements)
+        image, orientation = open_raster(plain)
+        output = analyse(image, statements)
     output["input_checks"]["printed_document"] = content_check
+    output["input_checks"]["exif_orientation_applied"] = orientation
     exec_ms = round((time.perf_counter() - start) * 1000, 2)
     run = InferenceRun(case_id=file_record.case_id, file_id=file_record.id, modality=file_record.modality, model_name=MODEL_ID,
                        model_version=WEIGHT_SHA256["classifier"][:16], preprocessing_version=PREPROCESSING_VERSION,

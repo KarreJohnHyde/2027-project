@@ -16,6 +16,7 @@ from typing import Any, Optional
 
 from sqlalchemy.orm import Session
 
+from app import config
 from app.config import ANATOMY_MANIFEST_PATH, PROJECT_ROOT
 from app.models.entities import Case, CaseMembership, ClinicalReportStatement, EvaluationRun, MedicalMeasurement, UploadedFile, User, UserRole
 from app.services.dataset_registry import load_dataset_registry
@@ -217,14 +218,16 @@ def _documented_position(item: MedicalMeasurement) -> str:
 
 
 def case_charts(db: Session, user: User) -> list[dict[str, Any]]:
-    if user.role == UserRole.ADMIN:
+    if (config.SHARED_WORKSPACE and not user.is_guest) or user.role == UserRole.ADMIN:
         case_ids = [row.id for row in db.query(Case.id).all()]
     else:
         # Patient and caregiver links open the portal only, never analytics over unreviewed evidence.
         shared = {row.case_id for row in db.query(CaseMembership.case_id).filter(CaseMembership.user_id == user.id, CaseMembership.role.in_(("VIEWER", "EDITOR")))}
         case_ids = [row.id for row in db.query(Case.id).filter(Case.created_by_id == user.id).all()] + list(shared)
     uploads = db.query(UploadedFile).filter(UploadedFile.case_id.in_(case_ids)).all() if case_ids else []
-    statements = db.query(ClinicalReportStatement).filter(ClinicalReportStatement.case_id.in_(case_ids)).all() if case_ids else []
+    from app.services.report_runs import current_statements
+
+    statements = db.query(ClinicalReportStatement).filter(ClinicalReportStatement.case_id.in_(case_ids), current_statements(db, case_ids)).all() if case_ids else []
     measurements = db.query(MedicalMeasurement).filter(MedicalMeasurement.case_id.in_(case_ids)).all() if case_ids else []
     common = dict(source="Authorised case records", time_frame="All records to date", population=f"{len(case_ids)} authorised case(s)", model_version="rules-v1/v2 transparent extractor")
     assertion = Counter(f"{item.negation} / {item.certainty or 'NOT_ASSESSED_V1'}" for item in statements)

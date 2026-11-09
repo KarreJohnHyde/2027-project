@@ -49,7 +49,11 @@ def test_real_acdc_training_fails_closed_without_explicit_authorization(tmp_path
     assert not output.exists()
 
 
-def test_recorded_owner_authorization_opens_the_real_data_gate(tmp_path: Path) -> None:
+def test_recorded_owner_authorization_opens_the_research_data_gate(tmp_path: Path, monkeypatch) -> None:
+    from ml_training import volumetric_manifest as vm
+    context = tmp_path / "research-context.json"
+    context.write_text(json.dumps({"training_purpose": "research"}))
+    monkeypatch.setattr(vm, "RELEASE_CONTEXT", context)
     authorized = _registry(tmp_path, {"status": "SOURCE_AND_CITATION_VERIFIED_TERMS_NOT_FOUND", "authorization_status": "VERIFIED"})
     evidence = enforce_training_license({"dataset_id": "acdc-cardiac-mri", "synthetic_test_fixture": False}, authorized)
     assert evidence["authorized"] is True and evidence["authorization_status"] == "VERIFIED"

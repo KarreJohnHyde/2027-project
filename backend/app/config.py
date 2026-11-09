@@ -4,11 +4,14 @@ Follows IEEE manuscript specification with environment variable overrides and sa
 """
 
 import json
+import hashlib
 import os
-import secrets
 import tempfile
 from pathlib import Path
 from typing import List
+
+from sqlalchemy.engine import make_url
+from app.local_secrets import resolve_signing_key
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,10 +32,6 @@ DEBUG: bool = os.getenv("DEBUG", "false").strip().lower() in {"1", "true", "yes"
 API_PREFIX: str = "/api/v1"
 
 # Security & Authentication
-_configured_secret = os.getenv("SECRET_KEY", "").strip()
-if ENVIRONMENT in {"production", "staging"} and len(_configured_secret) < 32:
-    raise RuntimeError("SECRET_KEY must contain at least 32 characters outside development/test environments.")
-SECRET_KEY: str = _configured_secret or secrets.token_urlsafe(48)
 ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", str(60 * 24)))
 
@@ -78,6 +77,15 @@ if ENVIRONMENT == "test" and not _configured_database_url:
     raise RuntimeError("DATABASE_URL must be explicitly set when ENVIRONMENT=test.")
 DATABASE_URL: str = normalise_database_url(_configured_database_url) or f"sqlite:///{STATE_DIR / 'medtwin.db'}"
 
+# Keep local session credentials valid across API/worker restarts. Production
+# continues to require an explicitly configured signing key.
+_database_location = make_url(DATABASE_URL)
+_local_state = Path(_database_location.database).resolve().parent if _database_location.drivername.startswith("sqlite") and _database_location.database not in {None, ":memory:"} else STATE_DIR
+_local_database_identity = str(Path(_database_location.database).resolve()) if _database_location.drivername.startswith("sqlite") and _database_location.database not in {None, ":memory:"} else _database_location.render_as_string(hide_password=True)
+_local_key_name = f".medtwin-session-{hashlib.sha256(_local_database_identity.encode()).hexdigest()[:16]}.key"
+DEV_SECRET_FILE: Path = Path(os.getenv("MEDTWIN_DEV_SECRET_FILE", "").strip() or _local_state / _local_key_name)
+SECRET_KEY: str = resolve_signing_key(os.getenv("SECRET_KEY", "").strip(), ENVIRONMENT, DEV_SECRET_FILE)
+
 # File Storage & Limits
 _configured_upload_dir = os.getenv("UPLOAD_DIR", os.getenv("UPLOAD_DIRECTORY", "")).strip()
 UPLOAD_DIR: Path = Path(_configured_upload_dir or STATE_DIR / "uploads")
@@ -97,6 +105,10 @@ MAX_IMAGE_UPLOAD_SIZE_BYTES: int = int(os.getenv("MAX_IMAGE_UPLOAD_SIZE_BYTES", 
 ALLOWED_EXTENSIONS: set = {
     # Medical images and volumes
     ".png", ".jpg", ".jpeg", ".bmp", ".dcm", ".nii", ".nii.gz", ".nrrd", ".mha",
+    # Endoscopy video (decoded with OpenCV; frames are scored by still-image research models)
+    ".mp4", ".avi",
+    # Whole-slide pathology images (tiled, pyramidal TIFF: Aperio SVS, Hamamatsu NDPI, generic tiled TIFF)
+    ".svs", ".tif", ".tiff", ".ndpi",
     # ECG records
     ".csv", ".dat", ".hea",
     # EEG and other physiological recordings
@@ -125,11 +137,24 @@ ALLOWED_MIME_TYPES: set = {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/msword",
     "application/octet-stream",
+    "image/tiff",
+    "video/mp4",
+    "video/x-msvideo",
+    "video/avi",
+    "video/msvideo",
 }
 
 # Rate limits (requests per minute per client) for sensitive endpoints.
 RATE_LIMIT_LOGIN_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_LOGIN_PER_MINUTE", "10"))
 RATE_LIMIT_UPLOAD_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_UPLOAD_PER_MINUTE", "60"))
+# Each "Try the demo" press creates an account and analyses three documents.
+RATE_LIMIT_GUEST_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_GUEST_PER_MINUTE", "5"))
+# Private case boundaries by default. Shared installations must opt in explicitly.
+SHARED_WORKSPACE: bool = os.getenv("MEDTWIN_SHARED_WORKSPACE", "false").strip().lower() in {"1", "true", "yes", "on"}
+# Each entry-page submission creates an account.
+RATE_LIMIT_ENTRY_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_ENTRY_PER_MINUTE", "10"))
+# An entry-page account has no password: its token is its only key, so it lasts longer than a sign-in.
+VISITOR_SESSION_DAYS: int = int(os.getenv("VISITOR_SESSION_DAYS", "90"))
 RATE_LIMIT_ENABLED: bool = os.getenv("RATE_LIMIT_ENABLED", "true").strip().lower() in {"1", "true", "yes", "on"}
 
 # Anatomy manifests produced by tools/asset-pipeline.

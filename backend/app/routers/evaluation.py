@@ -17,6 +17,7 @@ from typing import Literal, Optional
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
+from app import config as app_config
 from app.database import get_db
 from app.models.entities import EvaluationRun, User, UserRole
 from app.services.audit_service import log_audit_event
@@ -431,7 +432,7 @@ async def run_detection_evaluation(
 @router.get("/runs")
 def list_evaluation_runs(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     query = db.query(EvaluationRun)
-    if current_user.role != UserRole.ADMIN:
+    if (not app_config.SHARED_WORKSPACE or current_user.is_guest) and current_user.role != UserRole.ADMIN:
         query = query.filter(EvaluationRun.created_by_id == current_user.id)
     runs = query.order_by(EvaluationRun.created_at.desc()).limit(100).all()
     response = []
@@ -448,7 +449,7 @@ def list_evaluation_runs(db: Session = Depends(get_db), current_user: User = Dep
 @router.get("/runs/{run_id}")
 def get_evaluation_run(run_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     query = db.query(EvaluationRun).filter(EvaluationRun.id == run_id)
-    if current_user.role != UserRole.ADMIN:
+    if (not app_config.SHARED_WORKSPACE or current_user.is_guest) and current_user.role != UserRole.ADMIN:
         query = query.filter(EvaluationRun.created_by_id == current_user.id)
     run = query.first()
     if run is None:

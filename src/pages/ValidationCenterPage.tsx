@@ -834,7 +834,7 @@ function TrainedModelsTab() {
         {active.run_scope === "EXPLORATORY_ONLY" && <Badge tone="warning">Exploratory only: held-out evidence does not support use</Badge>}
         {active.inference_input === "tabular_survival" && <Badge tone="neutral">Evaluation evidence only: no upload inference path</Badge>}
         {active.inference_input === "ecg_12lead" && <Badge tone="neutral">Upload inference: digital WFDB/CSV records, from Multimodal</Badge>}
-        {active.inference_input === "volume_nifti" && <Badge tone="neutral">Upload inference: single NIfTI frames inside the spacing envelope, from Medical Imaging</Badge>}
+        {active.inference_input === "volume_nifti" && <Badge tone="neutral">Upload inference: single NIfTI, NRRD or MetaImage volumes (or an assembled DICOM series) inside the spacing envelope, from Medical Imaging</Badge>}
       </div>
       <TrainedModelReport key={active.model_id} modelId={active.model_id} />
     </div>

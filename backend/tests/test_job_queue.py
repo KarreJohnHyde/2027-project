@@ -70,6 +70,7 @@ def test_idempotency_key_returns_the_original_job(client, test_users, monkeypatc
     assert len(ids) == 1
 
 
+@pytest.mark.private_workspace
 def test_cancellation_and_terminal_conflict(client, test_users, db_session, monkeypatch):
     monkeypatch.setenv("MEDTWIN_JOB_EXECUTION", "worker")
     headers = get_auth_headers(test_users["clinician_a"])

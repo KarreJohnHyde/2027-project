@@ -21,7 +21,7 @@ import { errorMessage } from "../lib/format";
 
 const CASE_KEY = "medtwin.selectedCase";
 
-function rememberCase(id: number | null) {
+export function rememberCase(id: number | null) {
   try {
     if (id === null) window.localStorage.removeItem(CASE_KEY);
     else window.localStorage.setItem(CASE_KEY, String(id));
@@ -120,26 +120,28 @@ export const useWorkspace = create<WorkspaceState>((set, get) => ({
 
   loadShell: async () => {
     try {
+      const sessionUserId = get().user?.id;
       const [cases, health] = await Promise.all([api.getCases(), api.getSystemHealth()]);
-      const [models, capabilities, datasets, datasetTaskAudit] = await Promise.allSettled([
-        api.getModels(),
-        api.getCapabilities(),
-        api.getDatasets(),
-        api.getDatasetTaskAudit(),
-      ]);
+      if (get().user?.id !== sessionUserId) return;
       const remembered = get().caseId ?? recalledCase();
       const caseId = remembered && cases.some((item) => item.id === remembered) ? remembered : cases[0]?.id ?? null;
-      set({
-        cases,
-        health,
-        models: models.status === "fulfilled" ? models.value.models : [],
-        capabilities: capabilities.status === "fulfilled" ? capabilities.value.capabilities : [],
-        datasets: datasets.status === "fulfilled" ? datasets.value : null,
-        datasetTaskAudit: datasetTaskAudit.status === "fulfilled" ? datasetTaskAudit.value : null,
-        caseId,
-      });
+      // Case access must not wait for optional registries, which can hash large
+      // research checkpoints. Publish the authorised case context immediately.
+      set({ cases, health, caseId });
       rememberCase(caseId);
-      await get().loadEvidence();
+      const loadMetadata = async () => {
+        const [models, capabilities, datasets, datasetTaskAudit] = await Promise.allSettled([
+          api.getModels(), api.getCapabilities(), api.getDatasets(), api.getDatasetTaskAudit(),
+        ]);
+        if (get().user?.id !== sessionUserId) return;
+        set({
+          models: models.status === "fulfilled" ? models.value.models : [],
+          capabilities: capabilities.status === "fulfilled" ? capabilities.value.capabilities : [],
+          datasets: datasets.status === "fulfilled" ? datasets.value : null,
+          datasetTaskAudit: datasetTaskAudit.status === "fulfilled" ? datasetTaskAudit.value : null,
+        });
+      };
+      await Promise.all([get().loadEvidence(), loadMetadata()]);
     } catch (error) {
       if (error instanceof ApiError && error.status === 401) get().logout();
       else set({ notice: { tone: "error", text: errorMessage(error) } });

@@ -1,0 +1,57 @@
+{
+  "model_id": "brain_mri_stroke_lesion_segresnet",
+  "dataset_id": "isles-2022",
+  "dataset_version": "577bbf290a101762a6fa117b31706d6acef0ba8b4f24630e50e9088b91432609",
+  "manifest_sha256": "6555d7a70f0b9eca1e2a893da112800e3a3b20875a0a4d282230b2b57c06d77b",
+  "derived_from": "NIfTI headers and voxels of the development cases (manifest train and validation splits); test cases do not shape the range",
+  "development_cases": 212,
+  "ndim": [
+    4
+  ],
+  "channels": [
+    "DWI",
+    "ADC"
+  ],
+  "in_plane_spacing_mm": {
+    "min": 0.875,
+    "max": 2.0
+  },
+  "in_plane_square_pixels": true,
+  "slice_spacing_mm": {
+    "min": 2.0,
+    "max": 4.800000190734863
+  },
+  "slice_axis_last": false,
+  "matrix": {
+    "i": {
+      "min": 112,
+      "max": 256
+    },
+    "j": {
+      "min": 112,
+      "max": 256
+    },
+    "k": {
+      "min": 25,
+      "max": 76
+    }
+  },
+  "nonzero_fraction": {
+    "min": 0.1397,
+    "max": 1.0,
+    "margin": 0.05,
+    "development_cases_above_half": 1,
+    "note": "Cases with more than half their voxels non-zero are probably not skull-stripped; when there are any, the range cannot tell a head with skull from a skull-stripped brain."
+  },
+  "orientations": [
+    "LAS"
+  ],
+  "held_out_test_cases": {
+    "total": 38,
+    "accepted_by_gate": 37,
+    "refusal_reasons": {
+      "SLICE_SPACING_OUTSIDE_DEVELOPMENT_RANGE": 1
+    },
+    "warnings": {}
+  }
+}

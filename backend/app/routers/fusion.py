@@ -17,6 +17,23 @@ from app.services.audit_service import log_audit_event
 router = APIRouter(tags=["Multimodal Fusion"])
 
 
+@router.get("/cases/{case_id}/evidence-synthesis")
+def preview_evidence_synthesis(case_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    from app.services.evidence_synthesis import synthesize
+    verify_case_access(case_id, current_user, db, access="read")
+    return synthesize(case_id, db)
+
+
+@router.get("/cases/{case_id}/fusion/results/{run_id}", response_model=FusionResponse)
+def get_fusion_result(case_id: int, run_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    verify_case_access(case_id, current_user, db, access="read")
+    record = db.get(MultimodalFusionRecord, run_id)
+    if record is None or record.case_id != case_id:
+        raise HTTPException(status_code=404, detail="Fusion run not found.")
+    return {field: getattr(record, field) for field in ("id", "case_id", "modality_mask", "active_modalities_count",
+            "gated_weights", "fused_status", "fused_prediction", "evidence_synthesis", "paired_data_validated", "abstention_reason")}
+
+
 @router.post("/cases/{case_id}/fusion", response_model=FusionResponse)
 @router.post("/fusion/{case_id}/evaluate", response_model=FusionResponse)
 @router.post("/fusion/{case_id}", response_model=FusionResponse)
@@ -67,8 +84,7 @@ def get_latest_fusion(
     ).order_by(MultimodalFusionRecord.created_at.desc()).first()
 
     if not latest_record:
-        # Evaluate now if not yet run
-        return evaluate_multimodal_fusion(case_id, db)
+        return None
 
     return {
         "id": latest_record.id,
@@ -78,6 +94,7 @@ def get_latest_fusion(
         "gated_weights": latest_record.gated_weights,
         "fused_status": latest_record.fused_status.value,
         "fused_prediction": latest_record.fused_prediction,
+        "evidence_synthesis": latest_record.evidence_synthesis,
         "paired_data_validated": latest_record.paired_data_validated,
         "abstention_reason": latest_record.abstention_reason
     }

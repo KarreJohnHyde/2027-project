@@ -16,11 +16,12 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.entities import Finding, AnatomicalAsset, AnatomicalMapping, LandmarkManifest, RepresentationLevel, User, UserRole
+from app.models.entities import Finding, AnatomicalAsset, AnatomicalMapping, LandmarkManifest, RepresentationLevel, User
 from app.schemas.entities import AnatomicalAssetResponse, RegistrationGateCheck, RegistrationResponse
-from app.services.auth import get_current_user, require_role, verify_case_access
+from app.services.auth import get_current_user, verify_case_access
 from app.services.registration_service import evaluate_registration_gate
 from app.services.audit_service import log_audit_event
+from app.services.anatomy_evidence import account_standing
 from app.services.anatomy_registry import REFERENCE_ASSETS
 
 router = APIRouter(tags=["3D Anatomy & Registration"])
@@ -102,7 +103,8 @@ def execute_registration_gate(
     threshold = gate_req.threshold_mm if gate_req.threshold_mm is not None else 5.0
     # The public request does not accept a self-asserted evidence-verification flag: raw
     # coordinates exercise TRE mathematics but never promote a finding beyond L1. Only an
-    # approved landmark manifest (proposed and approved by two verified clinicians) can.
+    # approved landmark manifest (proposed and approved by two different accounts with case edit
+    # access; the manifest records whether each was a verified clinician) can.
     if manifest is not None:
         gate_result = evaluate_registration_gate(
             source_pts, target_pts, tau_tre=threshold, requested_region=manifest.requested_region,
@@ -199,7 +201,8 @@ class LandmarkManifestDecision(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-def _serialize_manifest(manifest: LandmarkManifest) -> dict:
+def _serialize_manifest(manifest: LandmarkManifest, db: Session) -> dict:
+    decider = db.get(User, manifest.decided_by_id) if manifest.decided_by_id else None
     return {
         "id": manifest.id, "finding_id": manifest.finding_id, "case_id": manifest.case_id, "coordinate_frame": manifest.coordinate_frame,
         "requested_region": manifest.requested_region, "fit_pairs": len(manifest.fit_landmarks), "held_out_pairs": len(manifest.held_out_landmarks),
@@ -209,6 +212,9 @@ def _serialize_manifest(manifest: LandmarkManifest) -> dict:
         "threshold_mm": manifest.threshold_mm, "status": manifest.status, "created_by_id": manifest.created_by_id,
         "created_at": manifest.created_at.isoformat(), "decided_by_id": manifest.decided_by_id,
         "decided_at": manifest.decided_at.isoformat() if manifest.decided_at else None, "decision_comment": manifest.decision_comment,
+        # Any account with case edit access may propose or decide; this says who they were.
+        "proposer_standing": account_standing(db.get(User, manifest.created_by_id) if manifest.created_by_id else None),
+        "decider_standing": account_standing(decider) if decider else None,
     }
 
 
@@ -217,10 +223,10 @@ def propose_landmark_manifest(
     finding_id: int,
     payload: LandmarkManifestCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(UserRole.CLINICIAN, UserRole.ADMIN)),
+    current_user: User = Depends(get_current_user),
 ):
     """Propose landmark correspondences for a finding's registration. Held-out landmarks are declared
-    now and are never used for fitting; another verified clinician must approve the manifest."""
+    now and are never used for fitting; another account with case edit access must approve the manifest."""
     finding = db.get(Finding, finding_id)
     if finding is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Finding not found.")
@@ -246,7 +252,7 @@ def propose_landmark_manifest(
     db.refresh(manifest)
     log_audit_event(db=db, action="LANDMARK_MANIFEST_PROPOSED", resource_type="FINDING", resource_id=str(finding.id), user=current_user,
                     details={"manifest_id": manifest.id, "fit_pairs": len(payload.fit_pairs), "held_out_pairs": len(payload.held_out_pairs)})
-    return _serialize_manifest(manifest)
+    return _serialize_manifest(manifest, db)
 
 
 @router.get("/findings/{finding_id}/landmark-manifests")
@@ -256,7 +262,7 @@ def list_landmark_manifests(finding_id: int, db: Session = Depends(get_db), curr
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Finding not found.")
     verify_case_access(finding.case_id, current_user, db, access="read")
     rows = db.query(LandmarkManifest).filter(LandmarkManifest.finding_id == finding_id).order_by(LandmarkManifest.id.asc()).all()
-    return [_serialize_manifest(manifest) for manifest in rows]
+    return [_serialize_manifest(manifest, db) for manifest in rows]
 
 
 @router.post("/landmark-manifests/{manifest_id}/decision")
@@ -264,7 +270,7 @@ def decide_landmark_manifest(
     manifest_id: int,
     payload: LandmarkManifestDecision,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(UserRole.CLINICIAN, UserRole.ADMIN)),
+    current_user: User = Depends(get_current_user),
 ):
     """Approve or reject a proposed manifest; the proposer cannot decide their own manifest."""
     manifest = db.get(LandmarkManifest, manifest_id)
@@ -272,7 +278,7 @@ def decide_landmark_manifest(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Landmark manifest not found.")
     verify_case_access(manifest.case_id, current_user, db)
     if manifest.created_by_id == current_user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="A second, independent clinician must decide this manifest.")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="A second, independent reviewer must decide this manifest.")
     if manifest.status != "PROPOSED":
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Manifest already {manifest.status}.")
     manifest.status = payload.decision
@@ -283,7 +289,7 @@ def decide_landmark_manifest(
     db.refresh(manifest)
     log_audit_event(db=db, action=f"LANDMARK_MANIFEST_{payload.decision}", resource_type="FINDING", resource_id=str(manifest.finding_id),
                     user=current_user, details={"manifest_id": manifest.id})
-    return _serialize_manifest(manifest)
+    return _serialize_manifest(manifest, db)
 
 
 class EvaluateRegistrationRequest(BaseModel):

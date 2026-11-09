@@ -24,6 +24,7 @@ coverage.xml
 htmlcov/
 
 # Local secrets. Keep the documented, placeholder-only template.
+.medtwin-session*.key
 .env
 .env.*
 !.env.example
@@ -215,3 +216,18 @@ htmlcov/
 /test_server.py
 # Evidence staged into the Vercel backend bundle by backend/vercel_build.py
 backend/deployment_files/
+
+# Datasets and upstream repositories added to the workspace root by 2026-11-04 (brain haemorrhage,
+# RSNA ICH, curated copies, DeepSA and other repositories). Data and upstream source stay local; an
+# extraction had replaced MedTwin's README.md (copy in _imports/overwritten_by_extraction_20261104/).
+/MedTwin_Datasets/
+/Brain_Data_Organised/
+/head_ct/
+/Head_CT_Hemorrhage/
+/Brain_CT_Hemorrhage/
+/Brain_Hemorrhage_Multiclass/
+/RSNA_PNG/
+/External_Repositories/
+/1st-RSNA-Intracranial-Hemorrhage-Detection-master/
+/RSNA2019_Intracranial-Hemorrhage-Detection-master/
+/rsna-master/

@@ -1,0 +1,1142 @@
+{
+  "model_id": "ct_kidney_tumour_segresnet",
+  "run_id": "ct_kidney_tumour_segresnet-20261109",
+  "task_type": "volumetric_semantic_segmentation",
+  "dataset_id": "kits19-labels",
+  "dataset_version": "455cfd7c06b0a16e608b510704e19226da325a82729425b8c1a696c05ff575dd",
+  "split_counts": {
+    "train": 146,
+    "val": 32,
+    "test": 32
+  },
+  "split_method": "patients split by sha256(seed:patient_id) ordering (ml_training.volumetric_manifest)",
+  "test_n": 32,
+  "test_patients": 32,
+  "metrics": {
+    "mean_case_macro_dice": 0.4164542417174584,
+    "mean_case_macro_dice_95ci": {
+      "status": "COMPUTED",
+      "low": 0.4019337681558315,
+      "high": 0.42892280657168036,
+      "resamples": 2000,
+      "unit": "patient"
+    },
+    "per_structure": {
+      "kidney": {
+        "mean_dice": 0.8329084834349167,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.803867536311663,
+          "high": 0.8578456131433607,
+          "resamples": 2000,
+          "unit": "patient"
+        },
+        "mean_iou": 0.7210898430128234,
+        "scored_cases": 32,
+        "reference_positive_cases": 32,
+        "both_empty_cases_excluded": 0
+      },
+      "renal_tumour": {
+        "mean_dice": 0.0,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.0,
+          "high": 0.0,
+          "resamples": 2000,
+          "unit": "patient"
+        },
+        "mean_iou": 0.0,
+        "scored_cases": 32,
+        "reference_positive_cases": 32,
+        "both_empty_cases_excluded": 0
+      }
+    }
+  },
+  "clinical_indices": {
+    "kidney_volume_ml": {
+      "n_patients": 32,
+      "bias": 99.149,
+      "limits_of_agreement": [
+        -17.004,
+        215.302
+      ],
+      "mean_absolute_error": 100.55,
+      "reference_mean": 406.762
+    },
+    "renal_tumour_volume_ml": {
+      "n_patients": 32,
+      "bias": -144.773,
+      "limits_of_agreement": [
+        -689.188,
+        399.641
+      ],
+      "mean_absolute_error": 144.773,
+      "reference_mean": 144.773
+    }
+  },
+  "selection": {
+    "criterion": "validation mean of case-level macro foreground Dice (serving inference path)",
+    "best_epoch": 20,
+    "best_score": 0.4124483879849933
+  },
+  "epochs_run": 20,
+  "config": {
+    "manifest_path": "D:\\project\\_derived\\datasets\\kits19-segmentation\\manifest.json",
+    "output_dir": "D:\\project\\artifacts\\training\\ct_kidney_tumour_segresnet-20261109",
+    "model_id": "ct_kidney_tumour_segresnet",
+    "channel_names": [
+      "CT"
+    ],
+    "registry_path": "D:\\project\\dataset_registry\\tasks.json",
+    "device": "cuda",
+    "epochs": 20,
+    "iterations_per_epoch": 60,
+    "batch_size": 2,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "patch_size": [
+      96,
+      96,
+      96
+    ],
+    "init_filters": 8,
+    "blocks_down": [
+      1,
+      2,
+      2,
+      4
+    ],
+    "blocks_up": [
+      1,
+      1,
+      1
+    ],
+    "dropout": 0.2,
+    "foreground_probability": 0.6,
+    "target_spacing": [
+      3.0,
+      3.0,
+      3.0
+    ],
+    "foreground_crop": true,
+    "overlap": 0.5,
+    "sliding_window_mode": "gaussian",
+    "sw_batch_size": 2,
+    "validate_every": 5,
+    "seed": 20261109,
+    "amp": true,
+    "workers": 0,
+    "cache_dir": "D:\\project\\_derived\\cache\\kits19-3mm",
+    "regions": {},
+    "lesion_detection": false,
+    "volume_semantics": "Research voxel-count volumes on one CT; no histologic diagnosis or clinical tumour staging.",
+    "allow_synthetic_test_fixture": false,
+    "intensity": "ct",
+    "ct_clip_hu": [
+      -73.0,
+      296.0
+    ],
+    "ct_mean": 101.9496,
+    "ct_std": 72.4723,
+    "device_effective": "cuda",
+    "amp_effective": true,
+    "preprocessing": {
+      "version": "nifti-foreground-crop-channel-zscore-resample-v2",
+      "foreground_crop": false,
+      "intensity": "ct_hu_window",
+      "normalisation": "clip to the 0.5-99.5 percentiles of training foreground HU, then z-score with the training foreground mean and SD",
+      "ct_clip_hu": [
+        -73.0,
+        296.0
+      ],
+      "ct_mean": 101.9496,
+      "ct_std": 72.4723,
+      "target_spacing_mm": [
+        3.0,
+        3.0,
+        3.0
+      ],
+      "resampling": "trilinear (align_corners=False) for images and class probabilities; nearest-exact for training masks",
+      "sliding_window_overlap": 0.5,
+      "sliding_window_mode": "gaussian",
+      "sw_batch_size": 2
+    },
+    "architecture": {
+      "name": "monai.networks.nets.SegResNet",
+      "spatial_dims": 3,
+      "in_channels": 1,
+      "out_channels": 3,
+      "init_filters": 8,
+      "blocks_down": [
+        1,
+        2,
+        2,
+        4
+      ],
+      "blocks_up": [
+        1,
+        1,
+        1
+      ],
+      "dropout_prob": 0.2
+    }
+  },
+  "determinism": "seeded sampling and initialisation; cuDNN autotuning on CUDA (benchmark on, deterministic off), so a rerun can differ slightly",
+  "checkpoint": {
+    "path": "D:\\project\\artifacts\\training\\ct_kidney_tumour_segresnet-20261109\\best.pt",
+    "sha256": "9acfa4f810ff7eb7be0e35c9ff465f1dee9385f7dc4ce9141ee54ae6e58651a2"
+  },
+  "held_out_predictions": "D:\\project\\artifacts\\training\\ct_kidney_tumour_segresnet-20261109\\held_out_predictions",
+  "evaluation_path": "app.services.volume_inference.predict_multichannel (the serving function), float16 autocast on CUDA",
+  "cases": [
+    {
+      "case_id": "case_00001",
+      "patient_id": "case_00001",
+      "classes": {
+        "1": {
+          "reference_voxels": 1488213,
+          "predicted_voxels": 1945806,
+          "dice": 0.8546796042770876,
+          "iou": 0.7462362562203602,
+          "predicted_ml": 620.8351,
+          "reference_ml": 474.834
+        },
+        "2": {
+          "reference_voxels": 22771,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 7.2654
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4273398021385438,
+      "voxel_spacing_mm": [
+        0.5,
+        0.798828,
+        0.798828
+      ]
+    },
+    {
+      "case_id": "case_00010",
+      "patient_id": "case_00010",
+      "classes": {
+        "1": {
+          "reference_voxels": 204728,
+          "predicted_voxels": 228104,
+          "dice": 0.8495813618216768,
+          "iou": 0.7384975639537452,
+          "predicted_ml": 392.9865,
+          "reference_ml": 352.7135
+        },
+        "2": {
+          "reference_voxels": 8715,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 15.0145
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4247906809108384,
+      "voxel_spacing_mm": [
+        3.0,
+        0.757812,
+        0.757812
+      ]
+    },
+    {
+      "case_id": "case_00013",
+      "patient_id": "case_00013",
+      "classes": {
+        "1": {
+          "reference_voxels": 197192,
+          "predicted_voxels": 248954,
+          "dice": 0.8633900113415788,
+          "iou": 0.759618532264235,
+          "predicted_ml": 349.0089,
+          "reference_ml": 276.4437
+        },
+        "2": {
+          "reference_voxels": 26741,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 37.4882
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4316950056707894,
+      "voxel_spacing_mm": [
+        3.0,
+        0.683594,
+        0.683594
+      ]
+    },
+    {
+      "case_id": "case_00026",
+      "patient_id": "case_00026",
+      "classes": {
+        "1": {
+          "reference_voxels": 377152,
+          "predicted_voxels": 405103,
+          "dice": 0.8265182069785428,
+          "iou": 0.7043298088591903,
+          "predicted_ml": 775.3925,
+          "reference_ml": 721.8925
+        },
+        "2": {
+          "reference_voxels": 120676,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 230.9814
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4132591034892714,
+      "voxel_spacing_mm": [
+        2.5,
+        0.875,
+        0.875
+      ]
+    },
+    {
+      "case_id": "case_00032",
+      "patient_id": "case_00032",
+      "classes": {
+        "1": {
+          "reference_voxels": 187136,
+          "predicted_voxels": 254220,
+          "dice": 0.8368618530166124,
+          "iou": 0.71948620650696,
+          "predicted_ml": 385.9719,
+          "reference_ml": 284.121
+        },
+        "2": {
+          "reference_voxels": 5791,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 8.7922
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4184309265083062,
+      "voxel_spacing_mm": [
+        2.5,
+        0.779297,
+        0.779297
+      ]
+    },
+    {
+      "case_id": "case_00038",
+      "patient_id": "case_00038",
+      "classes": {
+        "1": {
+          "reference_voxels": 168031,
+          "predicted_voxels": 160649,
+          "dice": 0.9083424607520993,
+          "iou": 0.832076386682497,
+          "predicted_ml": 487.8136,
+          "reference_ml": 510.2292
+        },
+        "2": {
+          "reference_voxels": 26226,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 79.6357
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4541712303760497,
+      "voxel_spacing_mm": [
+        5.0,
+        0.779297,
+        0.779297
+      ]
+    },
+    {
+      "case_id": "case_00039",
+      "patient_id": "case_00039",
+      "classes": {
+        "1": {
+          "reference_voxels": 142581,
+          "predicted_voxels": 176340,
+          "dice": 0.8800988332533762,
+          "iou": 0.7858718781498488,
+          "predicted_ml": 435.899,
+          "reference_ml": 352.4494
+        },
+        "2": {
+          "reference_voxels": 3652,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 9.0275
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4400494166266881,
+      "voxel_spacing_mm": [
+        5.0,
+        0.703125,
+        0.703125
+      ]
+    },
+    {
+      "case_id": "case_00049",
+      "patient_id": "case_00049",
+      "classes": {
+        "1": {
+          "reference_voxels": 1105936,
+          "predicted_voxels": 1501493,
+          "dice": 0.8432536418057788,
+          "iou": 0.7289875051970502,
+          "predicted_ml": 556.9684,
+          "reference_ml": 410.2393
+        },
+        "2": {
+          "reference_voxels": 20248,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 7.5109
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4216268209028894,
+      "voxel_spacing_mm": [
+        0.5,
+        0.861328,
+        0.861328
+      ]
+    },
+    {
+      "case_id": "case_00050",
+      "patient_id": "case_00050",
+      "classes": {
+        "1": {
+          "reference_voxels": 369532,
+          "predicted_voxels": 426736,
+          "dice": 0.9099599632284607,
+          "iou": 0.8347949914973432,
+          "predicted_ml": 507.1175,
+          "reference_ml": 439.1384
+        },
+        "2": {
+          "reference_voxels": 2063,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 2.4516
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.45497998161423037,
+      "voxel_spacing_mm": [
+        2.5,
+        0.689453,
+        0.689453
+      ]
+    },
+    {
+      "case_id": "case_00051",
+      "patient_id": "case_00051",
+      "classes": {
+        "1": {
+          "reference_voxels": 190007,
+          "predicted_voxels": 237972,
+          "dice": 0.8642526852953065,
+          "iou": 0.7609550769838461,
+          "predicted_ml": 549.3589,
+          "reference_ml": 438.6316
+        },
+        "2": {
+          "reference_voxels": 20970,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 48.4093
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.43212634264765326,
+      "voxel_spacing_mm": [
+        2.5,
+        0.960938,
+        0.960938
+      ]
+    },
+    {
+      "case_id": "case_00052",
+      "patient_id": "case_00052",
+      "classes": {
+        "1": {
+          "reference_voxels": 1079136,
+          "predicted_voxels": 1312327,
+          "dice": 0.901072690650033,
+          "iou": 0.8199565912899479,
+          "predicted_ml": 600.9859,
+          "reference_ml": 494.1951
+        },
+        "2": {
+          "reference_voxels": 36199,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 16.5775
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4505363453250165,
+      "voxel_spacing_mm": [
+        0.5,
+        0.957031,
+        0.957031
+      ]
+    },
+    {
+      "case_id": "case_00054",
+      "patient_id": "case_00054",
+      "classes": {
+        "1": {
+          "reference_voxels": 118867,
+          "predicted_voxels": 139507,
+          "dice": 0.9112294580724066,
+          "iou": 0.8369343428957378,
+          "predicted_ml": 665.2212,
+          "reference_ml": 566.802
+        },
+        "2": {
+          "reference_voxels": 1681,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 8.0156
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4556147290362033,
+      "voxel_spacing_mm": [
+        5.0,
+        0.976562,
+        0.976562
+      ]
+    },
+    {
+      "case_id": "case_00057",
+      "patient_id": "case_00057",
+      "classes": {
+        "1": {
+          "reference_voxels": 163776,
+          "predicted_voxels": 254545,
+          "dice": 0.7639683401024572,
+          "iou": 0.6180815305052818,
+          "predicted_ml": 516.3095,
+          "reference_ml": 332.1971
+        },
+        "2": {
+          "reference_voxels": 55450,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 112.4727
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.3819841700512286,
+      "voxel_spacing_mm": [
+        3.0,
+        0.822266,
+        0.822266
+      ]
+    },
+    {
+      "case_id": "case_00064",
+      "patient_id": "case_00064",
+      "classes": {
+        "1": {
+          "reference_voxels": 118581,
+          "predicted_voxels": 164775,
+          "dice": 0.8320840215135731,
+          "iou": 0.7124519544564508,
+          "predicted_ml": 407.3112,
+          "reference_ml": 293.1232
+        },
+        "2": {
+          "reference_voxels": 4010,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 9.9124
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.41604201075678654,
+      "voxel_spacing_mm": [
+        5.0,
+        0.703125,
+        0.703125
+      ]
+    },
+    {
+      "case_id": "case_00067",
+      "patient_id": "case_00067",
+      "classes": {
+        "1": {
+          "reference_voxels": 449075,
+          "predicted_voxels": 672687,
+          "dice": 0.7524697752286136,
+          "iou": 0.6031675708430277,
+          "predicted_ml": 390.3034,
+          "reference_ml": 260.5603
+        },
+        "2": {
+          "reference_voxels": 1872824,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 1086.6414
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.3762348876143068,
+      "voxel_spacing_mm": [
+        1.0,
+        0.761719,
+        0.761719
+      ]
+    },
+    {
+      "case_id": "case_00074",
+      "patient_id": "case_00074",
+      "classes": {
+        "1": {
+          "reference_voxels": 151918,
+          "predicted_voxels": 206313,
+          "dice": 0.7035237039787177,
+          "iou": 0.5426429361938515,
+          "predicted_ml": 433.7434,
+          "reference_ml": 319.3857
+        },
+        "2": {
+          "reference_voxels": 10585,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 22.2534
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.35176185198935883,
+      "voxel_spacing_mm": [
+        5.0,
+        0.648438,
+        0.648438
+      ]
+    },
+    {
+      "case_id": "case_00075",
+      "patient_id": "case_00075",
+      "classes": {
+        "1": {
+          "reference_voxels": 129403,
+          "predicted_voxels": 160029,
+          "dice": 0.8765582243843113,
+          "iou": 0.7802435723951285,
+          "predicted_ml": 399.987,
+          "reference_ml": 323.4384
+        },
+        "2": {
+          "reference_voxels": 2064,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 5.1589
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.43827911219215565,
+      "voxel_spacing_mm": [
+        5.0,
+        0.707031,
+        0.707031
+      ]
+    },
+    {
+      "case_id": "case_00076",
+      "patient_id": "case_00076",
+      "classes": {
+        "1": {
+          "reference_voxels": 137485,
+          "predicted_voxels": 183201,
+          "dice": 0.8532021977884909,
+          "iou": 0.7439866000293668,
+          "predicted_ml": 420.743,
+          "reference_ml": 315.7507
+        },
+        "2": {
+          "reference_voxels": 2029,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 4.6598
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.42660109889424547,
+      "voxel_spacing_mm": [
+        5.0,
+        0.677734,
+        0.677734
+      ]
+    },
+    {
+      "case_id": "case_00092",
+      "patient_id": "case_00092",
+      "classes": {
+        "1": {
+          "reference_voxels": 179726,
+          "predicted_voxels": 191669,
+          "dice": 0.8802972576367479,
+          "iou": 0.7861883554726201,
+          "predicted_ml": 473.7912,
+          "reference_ml": 444.269
+        },
+        "2": {
+          "reference_voxels": 200954,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 496.743
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.44014862881837397,
+      "voxel_spacing_mm": [
+        5.0,
+        0.703125,
+        0.703125
+      ]
+    },
+    {
+      "case_id": "case_00138",
+      "patient_id": "case_00138",
+      "classes": {
+        "1": {
+          "reference_voxels": 314644,
+          "predicted_voxels": 349966,
+          "dice": 0.9146296324160034,
+          "iou": 0.842688965658739,
+          "predicted_ml": 490.6178,
+          "reference_ml": 441.0998
+        },
+        "2": {
+          "reference_voxels": 12036,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 16.8733
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4573148162080017,
+      "voxel_spacing_mm": [
+        3.0,
+        0.683594,
+        0.683594
+      ]
+    },
+    {
+      "case_id": "case_00139",
+      "patient_id": "case_00139",
+      "classes": {
+        "1": {
+          "reference_voxels": 125672,
+          "predicted_voxels": 144629,
+          "dice": 0.7966452214383225,
+          "iou": 0.6620202417698636,
+          "predicted_ml": 463.7172,
+          "reference_ml": 402.9362
+        },
+        "2": {
+          "reference_voxels": 306276,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 981.9984
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.39832261071916125,
+      "voxel_spacing_mm": [
+        5.0,
+        0.800781,
+        0.800781
+      ]
+    },
+    {
+      "case_id": "case_00143",
+      "patient_id": "case_00143",
+      "classes": {
+        "1": {
+          "reference_voxels": 90697,
+          "predicted_voxels": 130024,
+          "dice": 0.8158353758817692,
+          "iou": 0.6889543558939435,
+          "predicted_ml": 547.8344,
+          "reference_ml": 382.1367
+        },
+        "2": {
+          "reference_voxels": 14197,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 59.8167
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4079176879408846,
+      "voxel_spacing_mm": [
+        5.0,
+        0.917969,
+        0.917969
+      ]
+    },
+    {
+      "case_id": "case_00149",
+      "patient_id": "case_00149",
+      "classes": {
+        "1": {
+          "reference_voxels": 292871,
+          "predicted_voxels": 376764,
+          "dice": 0.8490177484749154,
+          "iou": 0.7376462559261383,
+          "predicted_ml": 717.7465,
+          "reference_ml": 557.9278
+        },
+        "2": {
+          "reference_voxels": 119513,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 227.6758
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4245088742374577,
+      "voxel_spacing_mm": [
+        3.0,
+        0.796875,
+        0.796875
+      ]
+    },
+    {
+      "case_id": "case_00152",
+      "patient_id": "case_00152",
+      "classes": {
+        "1": {
+          "reference_voxels": 148606,
+          "predicted_voxels": 174202,
+          "dice": 0.8753314663824936,
+          "iou": 0.7783017308815267,
+          "predicted_ml": 454.8693,
+          "reference_ml": 388.0341
+        },
+        "2": {
+          "reference_voxels": 3636,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 9.4942
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4376657331912468,
+      "voxel_spacing_mm": [
+        5.0,
+        0.722656,
+        0.722656
+      ]
+    },
+    {
+      "case_id": "case_00155",
+      "patient_id": "case_00155",
+      "classes": {
+        "1": {
+          "reference_voxels": 1107747,
+          "predicted_voxels": 1479281,
+          "dice": 0.8351049930654016,
+          "iou": 0.716892928627934,
+          "predicted_ml": 485.9336,
+          "reference_ml": 363.8873
+        },
+        "2": {
+          "reference_voxels": 18505,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 6.0788
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4175524965327008,
+      "voxel_spacing_mm": [
+        0.5,
+        0.810547,
+        0.810547
+      ]
+    },
+    {
+      "case_id": "case_00172",
+      "patient_id": "case_00172",
+      "classes": {
+        "1": {
+          "reference_voxels": 103400,
+          "predicted_voxels": 137447,
+          "dice": 0.68441790846471,
+          "iou": 0.5202396056227789,
+          "predicted_ml": 403.2392,
+          "reference_ml": 303.3528
+        },
+        "2": {
+          "reference_voxels": 212247,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 622.686
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.342208954232355,
+      "voxel_spacing_mm": [
+        5.0,
+        0.766,
+        0.766
+      ]
+    },
+    {
+      "case_id": "case_00175",
+      "patient_id": "case_00175",
+      "classes": {
+        "1": {
+          "reference_voxels": 167024,
+          "predicted_voxels": 193371,
+          "dice": 0.8981922612688855,
+          "iou": 0.8151987226948318,
+          "predicted_ml": 515.8989,
+          "reference_ml": 445.6072
+        },
+        "2": {
+          "reference_voxels": 4684,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 12.4966
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.44909613063444276,
+      "voxel_spacing_mm": [
+        5.0,
+        0.730469,
+        0.730469
+      ]
+    },
+    {
+      "case_id": "case_00189",
+      "patient_id": "case_00189",
+      "classes": {
+        "1": {
+          "reference_voxels": 180526,
+          "predicted_voxels": 292624,
+          "dice": 0.6696988270104618,
+          "iou": 0.503418955502739,
+          "predicted_ml": 805.9484,
+          "reference_ml": 497.2068
+        },
+        "2": {
+          "reference_voxels": 134700,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 370.9923
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.3348494135052309,
+      "voxel_spacing_mm": [
+        5.0,
+        0.742188,
+        0.742188
+      ]
+    },
+    {
+      "case_id": "case_00191",
+      "patient_id": "case_00191",
+      "classes": {
+        "1": {
+          "reference_voxels": 670275,
+          "predicted_voxels": 719132,
+          "dice": 0.903430024463674,
+          "iou": 0.8238690139421443,
+          "predicted_ml": 495.161,
+          "reference_ml": 461.5204
+        },
+        "2": {
+          "reference_voxels": 3780,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 2.6027
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.451715012231837,
+      "voxel_spacing_mm": [
+        1.25,
+        0.742188,
+        0.742188
+      ]
+    },
+    {
+      "case_id": "case_00195",
+      "patient_id": "case_00195",
+      "classes": {
+        "1": {
+          "reference_voxels": 169990,
+          "predicted_voxels": 187608,
+          "dice": 0.8318446971179928,
+          "iou": 0.7121011179469993,
+          "predicted_ml": 547.06,
+          "reference_ml": 495.6864
+        },
+        "2": {
+          "reference_voxels": 36926,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 107.6752
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4159223485589964,
+      "voxel_spacing_mm": [
+        5.0,
+        0.763672,
+        0.763672
+      ]
+    },
+    {
+      "case_id": "case_00203",
+      "patient_id": "case_00203",
+      "classes": {
+        "1": {
+          "reference_voxels": 467312,
+          "predicted_voxels": 834399,
+          "dice": 0.5609155949362032,
+          "iou": 0.38977254771330594,
+          "predicted_ml": 338.2743,
+          "reference_ml": 189.4533
+        },
+        "2": {
+          "reference_voxels": 7498,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 3.0398
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.2804577974681016,
+      "voxel_spacing_mm": [
+        1.0,
+        0.636719,
+        0.636719
+      ]
+    },
+    {
+      "case_id": "case_00209",
+      "patient_id": "case_00209",
+      "classes": {
+        "1": {
+          "reference_voxels": 156339,
+          "predicted_voxels": 181235,
+          "dice": 0.9066634278706298,
+          "iou": 0.8292628738329152,
+          "predicted_ml": 553.0853,
+          "reference_ml": 477.1088
+        },
+        "2": {
+          "reference_voxels": 753,
+          "predicted_voxels": 0,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.0,
+          "reference_ml": 2.298
+        }
+      },
+      "regions": {},
+      "macro_foreground_dice": 0.4533317139353149,
+      "voxel_spacing_mm": [
+        5.0,
+        0.78125,
+        0.78125
+      ]
+    }
+  ],
+  "task_id": "kits19-kidney-tumour-segmentation",
+  "dataset_license": "CC BY-NC-SA 4.0 (KiTS19 data); local non-commercial research only",
+  "limitations": [
+    "Internal held-out patients only; no independent external or clinical validation.",
+    "Renal-surgery cohort; healthy kidneys and incidental lesions in general populations are not established use cases.",
+    "Tumour masks do not determine histology, malignancy, stage or treatment.",
+    "One contrast abdominal CT volume in Hounsfield units within the recorded development geometry and intensity envelope.",
+    "Initial bounded training experiment; measured results must be assessed before proposing further research use.",
+    "FAILED TARGET: zero held-out Dice for renal_tumour. Upload inference is blocked; a zero mask must not imply absence of disease.",
+    "Research-only output; not clinically validated and not for diagnosis or treatment decisions.",
+    "Evaluation and serving use float16 autocast on CUDA with cuDNN autotuning; a rerun of training can differ slightly."
+  ],
+  "citation": "Heller N et al. The KiTS19 Challenge Data: 300 Kidney Tumor Cases with Clinical Context, CT Semantic Segmentations, and Surgical Outcomes. arXiv:1904.00445.",
+  "research_quality_assessment": {
+    "status": "FAILED_DECLARED_TARGET",
+    "failed_targets": [
+      "renal_tumour"
+    ],
+    "rule": "A declared target with zero mean Dice despite positive held-out references blocks upload use. This is not a clinical acceptance threshold."
+  },
+  "input_envelope": "docs/validation/models/ct_kidney_tumour_segresnet_input_envelope.json"
+}

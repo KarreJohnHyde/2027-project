@@ -14,13 +14,15 @@ test("held-out coordinates must not repeat fitting pairs", () => {
   assert.throws(() => validateLandmarkPartition([pair], [pair]));
   assert.doesNotThrow(() => validateLandmarkPartition([pair], [{ source: [9, 8, 7], target: [6, 5, 4] }]));
 });
-test("landmark mutations need independently verified clinical role and case edit access", () => {
+test("landmark mutations are open to any active account with case edit access", () => {
   const clinician = { id: 10, role: "clinician", verification_status: "VERIFIED", is_active: true };
   assert.equal(canManageLandmarks(clinician, 10, []), true);
   assert.equal(canManageLandmarks(clinician, 99, [{ user_id: 10, role: "EDITOR" }]), true);
   assert.equal(canManageLandmarks(clinician, 99, [{ user_id: 10, role: "VIEWER" }]), false);
-  assert.equal(canManageLandmarks({ ...clinician, verification_status: "UNVERIFIED" }, 10, []), false);
-  assert.equal(canManageLandmarks({ ...clinician, role: "researcher" }, 10, []), false);
+  assert.equal(canManageLandmarks({ ...clinician, verification_status: "UNVERIFIED" }, 10, []), true);
+  assert.equal(canManageLandmarks({ ...clinician, role: "public", verification_status: "UNVERIFIED" }, 10, []), true);
+  assert.equal(canManageLandmarks({ ...clinician, role: "public" }, 99, []), false);
+  assert.equal(canManageLandmarks({ ...clinician, is_active: false }, 10, []), false);
   assert.equal(canManageLandmarks(null, 10, []), false);
 });
 test("independent decisions refuse own proposals, unavailable points and decided manifests", () => {

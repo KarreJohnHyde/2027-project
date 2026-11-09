@@ -16,6 +16,7 @@ from typing import Dict, Any
 from sqlalchemy.orm import Session
 
 from app.models.entities import Finding, MultimodalFusionRecord, EvidenceStatus
+from app.services.evidence_synthesis import eligible_upload, synthesize
 
 
 def evaluate_multimodal_fusion(
@@ -35,7 +36,11 @@ def evaluate_multimodal_fusion(
         ]),
     ).all()
 
-    # Map findings by modality
+    synthesis = synthesize(case_id, db)
+    # Linked findings inherit their upload's association/withdrawal boundaries.
+    findings = [f for f in findings if f.inference_run is None or
+                (f.inference_run.case_id == case_id and eligible_upload(f.inference_run.file, case_id))]
+    # The legacy predictive gate is separate from the complete evidence inventory.
     modality_findings = {}
     for f in findings:
         modality_findings[f.modality.value] = f
@@ -58,6 +63,7 @@ def evaluate_multimodal_fusion(
             gated_weights=None,
             fused_status=EvidenceStatus.ABSTAIN,
             fused_prediction=None,
+            evidence_synthesis=synthesis,
             paired_data_validated=False,
             abstention_reason="ABSTAIN: No valid, associated modalities available for case."
         )
@@ -66,6 +72,7 @@ def evaluate_multimodal_fusion(
         db.refresh(record)
         return {
             "id": record.id,
+            "evidence_synthesis": synthesis,
             "case_id": case_id,
             "modality_mask": mask,
             "active_modalities_count": 0,
@@ -85,13 +92,14 @@ def evaluate_multimodal_fusion(
             case_id=case_id,
             modality_mask=mask,
             active_modalities_count=1,
-            gated_weights={present_mod: 1.0, **{k: 0.0 for k in mask if k != present_mod}},
+            gated_weights=None,
             fused_status=EvidenceStatus.NOT_RUN,
             fused_prediction={
                 "dominant_modality": present_mod,
                 "finding_label": finding.label,
-                "confidence": finding.raw_confidence
+                "confidence": None
             },
+            evidence_synthesis=synthesis,
             paired_data_validated=False,
             abstention_reason=f"NOT RUN: Single modality ({present_mod}) present. Multi-modality fusion unnecessary."
         )
@@ -100,6 +108,7 @@ def evaluate_multimodal_fusion(
         db.refresh(record)
         return {
             "id": record.id,
+            "evidence_synthesis": synthesis,
             "case_id": case_id,
             "modality_mask": mask,
             "active_modalities_count": 1,
@@ -122,6 +131,7 @@ def evaluate_multimodal_fusion(
         gated_weights=None,
         fused_status=EvidenceStatus.NOT_RUN,
         fused_prediction=None,
+        evidence_synthesis=synthesis,
         paired_data_validated=False,
         abstention_reason="NOT RUN: Fusion requires genuinely paired same-patient data, compatible validated encoders, and a validated fusion model."
     )
@@ -131,6 +141,7 @@ def evaluate_multimodal_fusion(
 
     return {
         "id": record.id,
+        "evidence_synthesis": synthesis,
         "case_id": case_id,
         "modality_mask": mask,
         "active_modalities_count": active_count,

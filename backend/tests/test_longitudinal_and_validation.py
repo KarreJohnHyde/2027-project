@@ -86,7 +86,7 @@ def test_longitudinal_comparison_endpoint(client, longitudinal_context):
     cases = cases_res.json()
     assert expected_case_id in {case["id"] for case in cases}
 
-    res = client.post(f"/api/v1/cases/{expected_case_id}/compare", json={}, headers=auth_headers)
+    res = client.post(f"/api/v1/cases/{expected_case_id}/compare", json={"same_patient_confirmed": True}, headers=auth_headers)
     assert res.status_code == 200
     data = res.json()
 

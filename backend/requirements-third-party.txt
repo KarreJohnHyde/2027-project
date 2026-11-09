@@ -1,0 +1,64 @@
+# Third-party research models in the main .venv (Windows, local GPU workstation; not for Vercel).
+# Installed by scripts/setup_third_party_models.ps1 with every package already in .venv held at its version.
+# TotalSegmentator 2.18.0 and nnU-Net 2.8.1 come from TotalSegmentator-master and nnUNet-master in the
+# project; RadGraph 0.1.18 from radgraph-master (its top-level "tests" folder excluded: installed, it would
+# shadow backend/tests). Weights live in artifacts/third_party/{totalsegmentator,radgraph} (Git-ignored).
+#
+# nnU-Net / TotalSegmentator
+acvl-utils==0.2.7
+batchgenerators==0.25.6
+batchgeneratorsv2==0.3.7
+blosc2==4.14.1
+connected-components-3d==4.1.1
+dicom2nifti==2.6.2
+dynamic-network-architectures==0.4.4
+einops==0.8.2
+graphviz==0.21
+imagecodecs==2026.10.10
+matplotlib==3.11.2
+python-gdcm==3.2.6
+scikit-learn==1.9.1
+seaborn==0.13.2
+timm==1.0.22
+xmltodict==1.0.4
+yacs==0.1.8
+# Use the traceable local RadGraph Transformers-5 fork built by
+# scripts/build_radgraph_tf5.py, not an unpatched upstream install.
+transformers==5.22.2
+huggingface-hub==2.4.0
+tokenizers==0.23.3
+safetensors==0.8.0
+# Existing policy-compatible regex build, also used in the tested migration.
+regex==2026.9.29
+appdirs==1.4.4
+dotmap==1.3.30
+h5py==3.16.0
+jsonpickle==4.1.4
+nltk==3.10.4
+
+# Complete TotalSegmentator's publisher-declared dependencies. Added on 2026-11-07
+# with all 157 previously installed distributions constrained to their existing versions.
+# Rendering/report packages being installed does not enable a new clinical model or UI.
+pyarrow==26.0.1
+blosc==1.11.4
+imgkit==1.2.3
+xvfbwrapper==0.2.37
+fury==2.1.0
+uharfbuzz==0.56.0
+# Pinned dependencies of FURY 2's renderer; no system rendering service is installed.
+aiohappyeyeballs==2.7.1
+aiohttp==3.14.5
+aiosignal==1.4.0
+attrs==26.1.0
+freetype-py==2.5.1
+frozenlist==1.8.0
+glfw==2.11.0
+hsluv==5.0.5
+multidict==7.2.1
+polyxios==0.5.1
+propcache==0.5.4
+pygfx==0.17.0
+pylinalg==0.6.8
+rendercanvas==3.0.0
+wgpu==0.33.0
+yarl==1.25.1

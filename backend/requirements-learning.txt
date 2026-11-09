@@ -1,0 +1,4 @@
+# Offline research feature learning. Already present in the local research env.
+# No endpoint accepts serialized estimators or trains on patient uploads.
+scikit-learn==1.9.1
+joblib==1.6.0

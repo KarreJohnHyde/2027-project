@@ -39,9 +39,10 @@ function edf() {
 
 async function signIn(page) {
   await page.goto("/");
+  await page.getByText("Have a username and password from before?").click();
   await page.fill("#login-username", process.env.MEDTWIN_E2E_USERNAME);
   await page.fill("#login-password", process.env.MEDTWIN_E2E_PASSWORD);
-  await page.click("button[type=submit]");
+  await page.getByRole("button", { name: "Open my existing workspace" }).click();
   await page.waitForFunction(() => Boolean(localStorage.getItem("medtwin_token")), null, { timeout: 30_000 });
   const token = await page.evaluate(() => localStorage.getItem("medtwin_token"));
   const cases = await (await page.request.get("/api/v1/cases", { headers: { Authorization: `Bearer ${token}` } })).json();
@@ -83,7 +84,7 @@ test("a report upload is analysed and its statements and values are shown with t
   ].join("\n")));
   await page.goto("/documents", { waitUntil: "networkidle" });
   // Other specs share the stack and case; open this upload rather than whichever report is first.
-  await page.getByLabel("Report").selectOption({ label: "e2e-report.txt" });
+  await page.getByLabel("Report", { exact: true }).selectOption({ label: "e2e-report.txt" });
   await expect(page.locator("[data-testid=source-statement]").first()).toBeVisible({ timeout: 30_000 });
   await expect(page.getByText(/Ha?emoglobin/i).first()).toBeVisible();
 });
@@ -127,18 +128,23 @@ test("a patient account sees only the results its clinician has reviewed", async
 
   const patient = await browser.newPage();
   await patient.goto("/");
+  await patient.getByText("Have a username and password from before?").click();
   await patient.fill("#login-username", "e2e_patient");
   await patient.fill("#login-password", password);
-  await patient.click("button[type=submit]");
+  await patient.getByRole("button", { name: "Open my existing workspace" }).click();
+  // Every account has every page (2026-10-30); the personal record stays at /portal.
+  await expect(patient.getByRole("link", { name: "Document Intelligence" })).toBeVisible({ timeout: 30_000 });
+  await patient.goto("/portal");
   await expect(patient.getByRole("heading", { name: "Your health record" })).toBeVisible({ timeout: 30_000 });
   await expect(patient.getByText("No reviewed results yet.", { exact: false })).toBeVisible();
-  await expect(patient.getByRole("link", { name: "Document Intelligence" })).toHaveCount(0);
 
   expect((await page.request.post(`/api/v1/reviews/${findingId}`, { headers: auth, data: { review_status: "CONFIRMED" } })).status()).toBe(201);
   await patient.reload();
   await expect(patient.getByRole("cell", { name: "Potassium" })).toBeVisible({ timeout: 30_000 });
   await expect(patient.getByRole("cell", { name: /3\.5 – 5\.1/ })).toBeVisible();
   await patient.goto("/documents");
-  await expect(patient.getByRole("heading", { name: "Your health record" })).toBeVisible();
+  // Workspace navigation does not redirect patient accounts to /portal.
+  // No case was selected in this fresh context, so the document page asks for one.
+  await expect(patient.getByText("Document Intelligence needs a case", { exact: true })).toBeVisible();
   await patient.close();
 });

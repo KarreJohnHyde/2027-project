@@ -1,0 +1,141 @@
+{
+  "model_id": "skin_padufes_image_classifier",
+  "family": "Clinical skin photograph",
+  "reference_path": "artifacts/training/skin_padufes_image_classifier-20261109/ood_reference.npz",
+  "reference_sha256": "e9f97289b9591ffdd87cadc5676e2539f41f7fa26021b593475388471ce2a52b",
+  "threshold": 5.086,
+  "metadata": {
+    "model_id": "skin_padufes_image_classifier",
+    "checkpoint_sha256": "550aa164889daf8645742cad13c6ae865c179dfc0c6581279beb516a022f7b3c",
+    "feature_version": "input-statistics+network-stages-v1",
+    "feature_source": "every backbone stage, spatial mean",
+    "fit_split": "train",
+    "calibration_split": "val",
+    "evaluation_split": "test",
+    "seed": 20261028,
+    "dataset_version": "3e5e8b61d2fc84599fcb28f6c3173ba29c1d28eb7bea47e6aa896296fdd82014",
+    "score_version": "multistage-ppca-mahalanobis-v2",
+    "stage_dimensions": [
+      15,
+      64,
+      128,
+      256,
+      512
+    ],
+    "stage_components": [
+      14,
+      63,
+      64,
+      64,
+      64
+    ],
+    "fit_n": 1637,
+    "calibration_n": 357,
+    "calibration_quantile": 0.99,
+    "stage_combination": "mean"
+  },
+  "evaluation": {
+    "in_distribution_test": {
+      "n": 304,
+      "refused": 2,
+      "refusal_rate": 0.0066,
+      "refusal_rate_95ci_wilson": [
+        0.0018,
+        0.0237
+      ],
+      "distance_quantiles": {
+        "0.05": 0.63,
+        "0.5": 1.12,
+        "0.95": 3.01
+      }
+    },
+    "cross_domain": {
+      "GI endoscopy": {
+        "n": 300,
+        "refused": 184,
+        "refusal_rate": 0.6133,
+        "refusal_rate_95ci_wilson": [
+          0.5571,
+          0.6667
+        ],
+        "distance_quantiles": {
+          "0.05": 1.77,
+          "0.5": 8.07,
+          "0.95": 27.42
+        }
+      },
+      "Coronary angiography": {
+        "n": 300,
+        "refused": 71,
+        "refusal_rate": 0.2367,
+        "refusal_rate_95ci_wilson": [
+          0.1921,
+          0.2879
+        ],
+        "distance_quantiles": {
+          "0.05": 3.65,
+          "0.5": 4.56,
+          "0.95": 6.03
+        }
+      },
+      "CT": {
+        "n": 196,
+        "refused": 196,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9808,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 14.66,
+          "0.5": 25.09,
+          "0.95": 43.68
+        }
+      },
+      "Blood-cell microscopy": {
+        "n": 300,
+        "refused": 300,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9874,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 58.89,
+          "0.5": 71.29,
+          "0.95": 74.84
+        }
+      },
+      "Musculoskeletal radiograph": {
+        "n": 300,
+        "refused": 300,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9874,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 8.67,
+          "0.5": 18.96,
+          "0.95": 46.52
+        }
+      },
+      "Head CT": {
+        "n": 300,
+        "refused": 300,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9874,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 43.1,
+          "0.5": 74.76,
+          "0.95": 156.02
+        }
+      }
+    }
+  },
+  "runtime_seconds": 98.4,
+  "interpretation": "Refusal of in-distribution test images is the gate's false-refusal rate; refusal of other families' images is its cross-domain catch rate. Neither is a clinical performance measure."
+}

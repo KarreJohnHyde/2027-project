@@ -105,7 +105,7 @@ function VerificationWorkspace({ upload: activeUpload, reportSelect }: { upload:
   const checked = allItems.filter((item) => checks[item.id]);
   const differing = allItems.filter((item) => checks[item.id]?.verdict === "DIFFERS");
   const findingIds = [...new Set(allItems.map((item) => Number(item.kind === "measurement" ? item.measurement.finding_id : item.statement.finding_id)))];
-  const canReview = user?.role === "clinician" || user?.role === "admin";
+  const canReview = Boolean(user);
 
   function setCheck(id: string, check: Check | null) {
     setChecks((current) => {

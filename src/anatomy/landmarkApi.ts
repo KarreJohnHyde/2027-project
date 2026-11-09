@@ -1,6 +1,8 @@
 import { api, ApiError, API_V1_BASE } from "../services/api";
 import type { LandmarkPair } from "./landmarkValidation";
 
+export type AccountStanding = { role: string | null; verified_professional: boolean };
+
 export type LandmarkManifest = {
   id: number;
   finding_id: number;
@@ -16,6 +18,9 @@ export type LandmarkManifest = {
   created_by_id: number;
   created_at: string;
   decided_by_id: number | null;
+  /** Any account with case edit access may propose or decide; this says whether each was a verified clinician. */
+  proposer_standing?: AccountStanding;
+  decider_standing?: AccountStanding | null;
   decided_at: string | null;
   decision_comment: string | null;
 };

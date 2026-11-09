@@ -1,0 +1,141 @@
+{
+  "model_id": "skin_padufes_image_tabular_classifier",
+  "dataset": "PAD-UFES-20",
+  "dataset_version": "3e5e8b61d2fc84599fcb28f6c3173ba29c1d28eb7bea47e6aa896296fdd82014",
+  "arm": "image_tabular",
+  "test_n": 304,
+  "test_patients": 199,
+  "classes": [
+    "actinic_keratosis",
+    "basal_cell_carcinoma",
+    "melanoma",
+    "nevus",
+    "seborrheic_keratosis",
+    "squamous_cell_carcinoma"
+  ],
+  "split_counts": {
+    "train": 1637,
+    "val": 357,
+    "test": 304
+  },
+  "group_unit": "patient",
+  "source_manifest": "_derived/datasets/multimodal/pad-ufes-20/samples.jsonl",
+  "encoder": "torchvision ResNet18 IMAGENET1K_V1, frozen",
+  "clinical_features": [
+    "age",
+    "gender",
+    "region"
+  ],
+  "metadata_preprocessing": {
+    "version": "pad-age-gender-region-train-only-v1",
+    "fitted_on": "train",
+    "age_mean": 60.36224801466096,
+    "age_std": 16.277416830466642,
+    "age_median": 62.0,
+    "age_range": [
+      6.0,
+      94.0
+    ],
+    "categories": {
+      "gender": [
+        "FEMALE",
+        "MALE"
+      ],
+      "region": [
+        "ABDOMEN",
+        "ARM",
+        "BACK",
+        "CHEST",
+        "EAR",
+        "FACE",
+        "FOOT",
+        "FOREARM",
+        "HAND",
+        "LIP",
+        "NECK",
+        "NOSE",
+        "SCALP",
+        "THIGH"
+      ]
+    },
+    "dimension": 22
+  },
+  "selection": {
+    "criterion": "validation macro F1",
+    "C": 0.1,
+    "val_macro_f1": 0.5767231186534985,
+    "candidates": [
+      {
+        "C": 0.01,
+        "val_macro_f1": 0.5766870818139737
+      },
+      {
+        "C": 0.1,
+        "val_macro_f1": 0.5767231186534985
+      },
+      {
+        "C": 1.0,
+        "val_macro_f1": 0.5503191144732612
+      }
+    ],
+    "standardization_fitted_on": "train",
+    "class_weight": "balanced from training labels only"
+  },
+  "metrics": {
+    "accuracy": 0.6578947368421053,
+    "macro_f1": 0.6146354087156798,
+    "balanced_accuracy": 0.607626558142022,
+    "ece_temperature_scaled": 0.0603087897363462,
+    "ece_uncalibrated": 0.14710290357470512
+  },
+  "macro_f1_ci95": {
+    "status": "COMPUTED",
+    "low": 0.5101426565610949,
+    "high": 0.6968744314385219,
+    "resamples": 300,
+    "unit": "patient"
+  },
+  "per_class": {
+    "actinic_keratosis": {
+      "test_n": 97,
+      "sensitivity": 0.7731958762886598
+    },
+    "basal_cell_carcinoma": {
+      "test_n": 99,
+      "sensitivity": 0.6060606060606061
+    },
+    "melanoma": {
+      "test_n": 5,
+      "sensitivity": 0.4
+    },
+    "nevus": {
+      "test_n": 33,
+      "sensitivity": 0.8787878787878788
+    },
+    "seborrheic_keratosis": {
+      "test_n": 33,
+      "sensitivity": 0.6363636363636364
+    },
+    "squamous_cell_carcinoma": {
+      "test_n": 37,
+      "sensitivity": 0.35135135135135137
+    }
+  },
+  "calibration": {
+    "method": "temperature_scaling",
+    "fitted_on": "validation",
+    "temperature": 1.6379376649856567
+  },
+  "checkpoint_sha256": "429070bdee8e65daa4bd34b273f9389209b0b524a0fbef3d0b98e2a87bd68396",
+  "limitations": [
+    "Internal patient-separated holdout from PAD-UFES-20, not independent external or clinical validation.",
+    "Six clinical skin-lesion categories; not all skin diseases, dermoscopy, histopathology or whole-slide interpretation.",
+    "Training source has variable diagnostic confirmation; a predicted class is not a confirmed diagnosis.",
+    "Only five melanoma images are present in the frozen test split; rare-class estimates are unstable.",
+    "Frozen ImageNet ResNet18 features; regularization and temperature selected on validation only.",
+    "Source age/gender/region can encode cohort bias; no clinical fairness or safety claim.",
+    "Research-only; no treatment, exclusion of malignancy or clinical activation."
+  ],
+  "clinical_validated": false,
+  "elapsed_seconds": 43.325093300001754
+}

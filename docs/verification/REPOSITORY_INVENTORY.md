@@ -1,5 +1,10 @@
 # Source-repository inventory and integration status
 
+Update 2026-11-06: nine unused source extractions listed below were moved out of the project;
+the table is the historical 2026-10-27 inventory. Installed runtimes and source required by
+setup scripts were retained. See `docs/data/PUBLIC_DATA_ACQUISITION_2026-11-06.md` for current
+cleanup and acquisition evidence.
+
 Audited 2026-10-27 on the local workstation. A downloaded or extracted source tree is **not** an
 installed runtime, and an installed package is not an integrated, tested capability. Status
 words: `PRESENT` (archive in Downloads), `EXTRACTED` (source folder under `D:\project`, never

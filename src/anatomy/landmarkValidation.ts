@@ -34,8 +34,8 @@ export function canManageLandmarks(
   ownerId: number | null,
   members: Array<{ user_id: number; role: string }>,
 ): boolean {
-  return Boolean(user?.is_active && user.verification_status === "VERIFIED"
-    && ["clinician", "admin"].includes(user.role)
+  // Any active account with case edit access; the manifest records whether each actor is a verified clinician.
+  return Boolean(user?.is_active
     && (user.role === "admin" || user.id === ownerId || members.some(member => member.user_id === user.id && member.role === "EDITOR")));
 }
 

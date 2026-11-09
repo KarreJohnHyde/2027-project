@@ -1,9 +1,10 @@
 """Reviewed landmark manifests for registration: four-eyes approval, declared held-out landmarks,
 and L2 only from an approved manifest. Landmarks are synthetic (a known rigid transform)."""
 
+import pytest
 import numpy as np
 
-from app.models.entities import Finding
+from app.models.entities import Finding, User, UserRole, VerificationStatus
 from tests.conftest import get_auth_headers
 
 
@@ -77,6 +78,7 @@ def test_manifests_are_validated_before_review(client, db_session, test_users):
     assert client.post(url, json={**base, "fit_pairs": repeated, "held_out_pairs": repeated[:1]}, headers=owner).status_code == 422
 
 
+@pytest.mark.private_workspace
 def test_reviewers_can_inspect_coordinates_but_other_cases_cannot(client, db_session, test_users):
     owner = get_auth_headers(test_users["clinician_a"])
     reviewer = get_auth_headers(test_users["clinician_b"])
@@ -96,3 +98,27 @@ def test_reviewers_can_inspect_coordinates_but_other_cases_cannot(client, db_ses
     assert manifest["coordinate_frame"] == payload["coordinate_frame"]
     assert manifest["threshold_mm"] == payload["threshold_mm"]
     assert manifest["requested_region"] == payload["requested_region"]
+
+
+@pytest.mark.private_workspace
+def test_any_case_editor_may_decide_and_the_manifest_says_who(client, db_session, test_users):
+    """Every account has every feature (owner's decision, 2026-10-30); four-eyes and case access still apply."""
+    owner = get_auth_headers(test_users["clinician_a"])
+    public = User(username="public_reviewer", email="public-reviewer@test.medtwin", hashed_password="unused", role=UserRole.PUBLIC,
+                  verification_status=VerificationStatus.UNVERIFIED, is_active=True)
+    db_session.add(public)
+    db_session.commit()
+    case_id = _finding(client, owner)
+    finding = db_session.query(Finding).filter(Finding.case_id == case_id).first()
+    payload = {"coordinate_frame": "SYNTHETIC_LPS_mm_to_Atlas_mm", "requested_region": "liver", "threshold_mm": 3.0,
+               "fit_pairs": _pairs(FIT), "held_out_pairs": _pairs(HELD_OUT, seed=1)}
+    manifest = client.post(f"/api/v1/findings/{finding.id}/landmark-manifests", json=payload, headers=owner).json()
+    assert manifest["proposer_standing"] == {"role": "clinician", "verified_professional": True}
+    assert manifest["decider_standing"] is None
+
+    decision = f"/api/v1/landmark-manifests/{manifest['id']}/decision"
+    assert client.post(decision, json={"decision": "APPROVED"}, headers=get_auth_headers(public)).status_code == 403
+    client.post(f"/api/v1/cases/{case_id}/members", json={"username": "public_reviewer", "role": "EDITOR"}, headers=owner)
+    approved = client.post(decision, json={"decision": "APPROVED"}, headers=get_auth_headers(public))
+    assert approved.status_code == 200, approved.text
+    assert approved.json()["decider_standing"] == {"role": "public", "verified_professional": False}

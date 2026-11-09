@@ -236,9 +236,13 @@ export function applyStyles(targets: StyleTarget[], state: StyleState): void {
       if (material.color && original.color) {
         // A documented region also tints the surface: an emissive glow alone washes out on
         // pale tissue under tone mapping. Selection and hover keep their own colours.
-        const documented = state.documentedKeys.has(target.key) && target.key !== state.selectedKey && target.key !== state.hoveredKey
-          && !state.verifiedKeys.has(target.key);
+        const plain = target.key !== state.selectedKey && target.key !== state.hoveredKey && !state.verifiedKeys.has(target.key);
+        const documented = plain && state.documentedKeys.has(target.key);
+        const schematic = plain && !documented && state.schematicKeys.has(target.key);
         material.color.copy(documented ? state.colors.documented : original.color);
+        // An organ-level association blends the whole surface toward the schematic colour; a pale organ
+        // (the white brain models) needs a stronger blend for the light schematic blue to be visible at all.
+        if (schematic) material.color.lerp(state.colors.schematic, original.color.getHSL({ h: 0, s: 0, l: 0 }).l > 0.8 ? 0.8 : 0.45);
       }
       if (material.emissive && original.emissive) {
         if (target.key === state.selectedKey) {

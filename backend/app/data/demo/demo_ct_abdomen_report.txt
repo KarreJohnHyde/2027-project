@@ -1,0 +1,17 @@
+SYNTHETIC DEMONSTRATION REPORT - FICTIONAL PATIENT - NOT MEDICAL DATA
+CT ABDOMEN AND PELVIS WITH CONTRAST
+Date of examination: 16/03/2026
+
+CLINICAL INFORMATION:
+Raised serum creatinine. To rule out obstruction.
+
+FINDINGS:
+The liver is normal in size with no focal lesion.
+The gallbladder shows no calculi.
+Both kidneys are normal in size. A 6 mm calculus is seen in the lower pole of the left kidney.
+There is no hydronephrosis.
+No ascites. No retroperitoneal lymphadenopathy.
+
+IMPRESSION:
+Left lower-pole renal calculus measuring 6 mm, without hydronephrosis.
+No focal liver lesion.

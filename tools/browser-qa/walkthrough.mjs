@@ -193,9 +193,10 @@ async function shot(name, locator) {
 // Sign in through the real form. A fresh Vite server compiles dependencies on the first
 // browser request, so the first navigation gets a longer budget.
 await page.goto(`${base}/`, { timeout: 120000 });
+await page.getByText("Have a username and password from before?").click();
 await page.fill("#login-username", credentials.username);
 await page.fill("#login-password", credentials.password);
-await page.click("button[type=submit]");
+await page.getByRole("button", { name: "Open my existing workspace" }).click();
 await page.waitForFunction(() => Boolean(localStorage.getItem("medtwin_token")), null, { timeout: 20000 });
 const cases = await api("GET", "/cases");
 const caseId = cases.body?.[0]?.id ?? cases.body?.items?.[0]?.id;

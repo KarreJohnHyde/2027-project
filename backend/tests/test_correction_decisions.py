@@ -3,6 +3,7 @@
 Synthetic, de-identified fixtures only.
 """
 
+import pytest
 from app.models.entities import Case, CaseMembership, ClinicalReportStatement, Finding, InferenceRun, MedicalMeasurement, ModalityType, UploadedFile
 from app.services.biomarker_trends import build_series
 from tests.conftest import get_auth_headers
@@ -112,6 +113,7 @@ def test_rejected_and_removed_corrections(client, db_session, test_users):
     assert {item["reason"] for item in series["excluded"]} == {f"REMOVED_BY_APPROVED_CORRECTION_R{removed_id}"}
 
 
+@pytest.mark.private_workspace
 def test_decisions_require_case_access_and_a_correction(client, db_session, test_users):
     owner, member = test_users["clinician_a"], test_users["clinician_b"]
     case, finding, first, _ = _case_with_measurements(db_session, owner, member)

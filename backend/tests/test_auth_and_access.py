@@ -169,7 +169,9 @@ def test_other_department_requires_name(client):
     assert "Enter the name of the other department" in str(registration.json()["detail"])
 
 
-def test_public_registrant_cannot_review_or_mutate_clinical_catalog(client, db_session):
+@pytest.mark.private_workspace
+def test_public_registrant_uses_every_feature_on_their_own_case_only(client, db_session):
+    """Every account gets the full workspace (owner's decision, 2026-10-30); cases stay private to their members."""
     registration = client.post(
         "/api/v1/auth/register",
         json={
@@ -223,12 +225,22 @@ def test_public_registrant_cannot_review_or_mutate_clinical_catalog(client, db_s
         headers=headers,
     )
 
-    assert review.status_code == 403
-    assert order.status_code == 403
-    assert lab_report.status_code == 403
+    assert review.status_code == 201, review.text
+    assert review.json()["review_status"] == "CONFIRMED"
+    assert order.status_code == 201, order.text
+    assert lab_report.status_code == 201, lab_report.text
+
+    other_password = "other1!"
+    other = client.post("/api/v1/auth/register", json={"username": "public_other", "email": "public-other@test.medtwin", "password": other_password})
+    assert other.status_code == 201, other.text
+    other_login = client.post("/api/v1/auth/login", json={"username": "public_other", "password": other_password})
+    other_headers = {"Authorization": f"Bearer {other_login.json()['access_token']}"}
+    assert client.post(f"/api/v1/reviews/{finding.id}", json={"review_status": "REJECTED"}, headers=other_headers).status_code == 403
+    assert client.post(f"/api/v1/cases/{case_id}/orders", json={"item_id": "PKG-GEN-01"}, headers=other_headers).status_code == 403
+    assert client.get(f"/api/v1/cases/{case_id}/measurements", headers=other_headers).status_code == 403
 
 
-def test_unverified_clinician_role_is_not_sufficient_for_privileged_access(
+def test_unverified_accounts_use_features_but_not_the_global_audit_log(
     client, db_session
 ):
     user = User(
@@ -254,8 +266,10 @@ def test_unverified_clinician_role_is_not_sufficient_for_privileged_access(
         headers=get_auth_headers(user),
     )
 
-    assert response.status_code == 403
-    assert response.json()["detail"] == "Professional privileges require a verified account."
+    assert response.status_code == 201, response.text
+    # The audit log lists every account's activity, so it stays with administrators.
+    audit = client.get("/api/v1/system/audit", headers=get_auth_headers(user))
+    assert audit.status_code == 403
 
 
 def test_verification_migration_marks_legacy_users_unverified():
@@ -309,6 +323,7 @@ def test_shared_email_migration_preserves_users_and_replaces_unique_index():
     assert run_migrations(engine) == []
 
 
+@pytest.mark.private_workspace
 def test_cross_case_access_isolation(client, db_session, test_users):
     """
     CRITICAL SECURITY TEST:
@@ -348,6 +363,7 @@ def test_cross_case_access_isolation(client, db_session, test_users):
     assert res_admin.status_code == 200
 
 
+@pytest.mark.private_workspace
 def test_cross_case_upload_job_and_provenance_isolation(client, db_session, test_users):
     owner = test_users["clinician_a"]
     other = test_users["clinician_b"]
@@ -439,6 +455,7 @@ def test_audit_logging_redacts_free_form_file_metadata(db_session, test_users):
     assert event.details["file_hash"] == "a" * 64
 
 
+@pytest.mark.private_workspace
 def test_longitudinal_comparison_enforces_case_ownership(client, db_session, test_users):
     owner = test_users["clinician_a"]
     other = test_users["clinician_b"]
@@ -468,6 +485,7 @@ def test_global_audit_is_admin_only(client, test_users):
     assert admin_response.status_code == 200
 
 
+@pytest.mark.private_workspace
 def test_synthetic_registration_cannot_poison_another_case_provenance(
     client, db_session, test_users
 ):

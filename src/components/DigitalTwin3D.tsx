@@ -25,7 +25,7 @@ type AssetState =
   | { status: "error"; meshCount: 0; assetId: AnatomyOption["id"] };
 
 class ModelErrorBoundary extends React.Component<
-  { children: React.ReactNode; onError: () => void; resetKey: AnatomyOption["id"] },
+  { children: React.ReactNode; onError: () => void },
   { failed: boolean }
 > {
   state = { failed: false };
@@ -36,12 +36,6 @@ class ModelErrorBoundary extends React.Component<
 
   componentDidCatch() {
     this.props.onError();
-  }
-
-  componentDidUpdate(previousProps: Readonly<{ resetKey: AnatomyOption["id"] }>) {
-    if (this.state.failed && previousProps.resetKey !== this.props.resetKey) {
-      this.setState({ failed: false });
-    }
   }
 
   render() {
@@ -151,7 +145,7 @@ export default function DigitalTwin3D({
         data-model-status={asset.status}
         aria-label={`Interactive generic Level 1 ${selected.label} GLB reference`}
       >
-        <ModelErrorBoundary resetKey={selected.id} onError={() => setAsset({ status: "error", meshCount: 0, assetId: selected.id })}>
+        <ModelErrorBoundary key={selected.id} onError={() => setAsset({ status: "error", meshCount: 0, assetId: selected.id })}>
           <Canvas camera={{ position: [0, 0.25, 4.5], fov: 42 }} dpr={[1, 1.75]}>
             <Scene option={selected} onLoaded={handleLoaded} />
           </Canvas>

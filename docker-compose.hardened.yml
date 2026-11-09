@@ -1,0 +1,33 @@
+# Apply after the base file. Validate and smoke-test on a Docker host before use:
+# docker compose -f docker-compose.yml -f docker-compose.hardened.yml config --quiet
+# TLS, trusted proxy addresses, durable keys and off-host recovery remain deployment responsibilities.
+services:
+  backend:
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 256
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=1073741824,mode=1777
+    environment:
+      XDG_CACHE_HOME: /tmp/cache
+      MEDTWIN_RADGRAPH: "off"
+      MEDTWIN_USAGE_PROFILE: "commercial"
+  worker:
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 256
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=1073741824,mode=1777
+    environment:
+      XDG_CACHE_HOME: /tmp/cache
+      MEDTWIN_RADGRAPH: "off"
+      MEDTWIN_USAGE_PROFILE: "commercial"
+  frontend:
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=67108864,mode=1777

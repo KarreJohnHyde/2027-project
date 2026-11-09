@@ -1,0 +1,277 @@
+{
+  "model_id": "brain_mri_stroke_lesion_segresnet",
+  "checkpoint_sha256": "058be494f9b04b603fa47bfc7425707bb6802408eac37d5ce8daa910a86d14ca",
+  "test_cases": 38,
+  "accepted_by_gate": 37,
+  "refused_by_gate": {
+    "sub-strokecase0060": [
+      "SLICE_SPACING_OUTSIDE_DEVELOPMENT_RANGE"
+    ]
+  },
+  "identical_cases": 32,
+  "differing_voxels_total": 6,
+  "max_differing_voxels_in_a_case": 2,
+  "differing_share_of_foreground": 6.730758444297364e-05,
+  "device": "cuda",
+  "cases": [
+    {
+      "case_id": "sub-strokecase0004",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 280,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0005",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 637,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0011",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 938,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0025",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 1026,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0028",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 1003,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0031",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 10246,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0034",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 171,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0036",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 2331,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0065",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 2663,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0076",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 171,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0077",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 4136,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0079",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 53,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0082",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 100,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0083",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 293,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0086",
+      "voxels": 915712,
+      "differing_voxels": 1,
+      "foreground_voxels_either": 5780,
+      "identical": false
+    },
+    {
+      "case_id": "sub-strokecase0107",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 4399,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0113",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 7835,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0128",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 78,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0129",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 92,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0130",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 376,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0144",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 0,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0152",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 184,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0155",
+      "voxels": 409600,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 1478,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0157",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 428,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0185",
+      "voxels": 1105920,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 361,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0187",
+      "voxels": 409600,
+      "differing_voxels": 1,
+      "foreground_voxels_either": 452,
+      "identical": false
+    },
+    {
+      "case_id": "sub-strokecase0189",
+      "voxels": 409600,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 555,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0198",
+      "voxels": 409600,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 386,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0204",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 2133,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0205",
+      "voxels": 903168,
+      "differing_voxels": 1,
+      "foreground_voxels_either": 3827,
+      "identical": false
+    },
+    {
+      "case_id": "sub-strokecase0207",
+      "voxels": 1105920,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 2312,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0213",
+      "voxels": 915712,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 704,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0222",
+      "voxels": 1105920,
+      "differing_voxels": 2,
+      "foreground_voxels_either": 27192,
+      "identical": false
+    },
+    {
+      "case_id": "sub-strokecase0232",
+      "voxels": 491520,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 162,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0233",
+      "voxels": 903168,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 0,
+      "identical": true
+    },
+    {
+      "case_id": "sub-strokecase0236",
+      "voxels": 1105920,
+      "differing_voxels": 1,
+      "foreground_voxels_either": 4673,
+      "identical": false
+    },
+    {
+      "case_id": "sub-strokecase0243",
+      "voxels": 1105920,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 1688,
+      "identical": true
+    }
+  ]
+}

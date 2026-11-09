@@ -4,7 +4,6 @@ import { Button, Card, EmptyState, ErrorBlock, LoadingBlock, PageHeader, SelectI
 import { api, type PortalRecord } from "../services/api";
 import { errorMessage, formatDate, formatNumber, humanize } from "../lib/format";
 import { useAsync } from "../lib/useAsync";
-import { useWorkspace } from "../state/workspace";
 
 const PERSONAL_UPLOAD_ACCEPT = ".txt,.md,.csv,.json,.hl7,.pdf,.docx,.xlsx,.dcm,.nii,.gz,.nrrd,.mha,.png,.jpg,.jpeg,.bmp,.hea,.dat,.edf,.bdf";
 
@@ -63,7 +62,6 @@ function Caregivers({ caseId }: { caseId: number }) {
 /** Read-only view of one's own record for patients and caregivers. */
 export default function PortalPage() {
   const cases = useAsync(() => api.getPortalCases(), []);
-  const user = useWorkspace((state) => state.user);
   const [chosen, setChosen] = useState<number | null>(null);
   const active = cases.data?.find((item) => item.case_id === chosen) ?? cases.data?.[0] ?? null;
   const record = useAsync(() => (active ? api.getPortalRecord(active.case_id) : Promise.resolve(null)), [active?.case_id]);
@@ -131,14 +129,14 @@ export default function PortalPage() {
         eyebrow="My record"
         title="Your health record"
         description="Your private documents and results reviewed by your care team. This page is not a diagnosis; ask your care team about anything you see here."
-        actions={active && user?.role === "public" && !hasPersonalRecord ? <Button icon={Plus} loading={creating} onClick={() => void createPersonalRecord()}>Create private record</Button> : undefined}
+        actions={active && !hasPersonalRecord ? <Button icon={Plus} loading={creating} onClick={() => void createPersonalRecord()}>Create private record</Button> : undefined}
       />
       {createError && <ErrorBlock message={createError} />}
       {cases.loading || cases.data === null ? <LoadingBlock label="Loading" /> : cases.error ? <ErrorBlock message={cases.error} onRetry={cases.reload} /> : !active ? (
         <EmptyState
           title="No personal health record yet"
           detail="Create a private record to store your own de-identified documents. Only this account can access it unless you explicitly share with a caregiver."
-          action={user?.role === "public" ? <Button icon={Plus} loading={creating} onClick={() => void createPersonalRecord()}>Create private record</Button> : undefined}
+          action={<Button icon={Plus} loading={creating} onClick={() => void createPersonalRecord()}>Create private record</Button>}
         />
       ) : (
         <div className="space-y-4">

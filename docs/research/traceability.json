@@ -443,10 +443,12 @@
         "backend/tests/test_training_volumetric.py::test_real_acdc_training_fails_closed_without_explicit_authorization",
         "backend/tests/test_training_volumetric.py::test_synthetic_smoke_executes_validation_training_evaluation_and_resume",
         "backend/tests/test_research_inference.py::test_inference_reports_the_numeric_precision_it_used",
-        "backend/tests/test_training_volumetric.py::test_recorded_owner_authorization_opens_the_real_data_gate",
-        "docs/validation/models/acdc_cardiac_mri_3d_unet.json"
+        "backend/tests/test_training_volumetric.py::test_recorded_owner_authorization_opens_the_research_data_gate",
+        "docs/validation/models/acdc_cardiac_mri_3d_unet.json",
+        "backend/tests/test_commercial_training.py::test_noncommercial_terms_are_blocked_even_in_research_runtime",
+        "backend/tests/test_commercial_training.py::test_commercial_review_is_bound_to_actual_evidence"
       ],
-      "gap": "Seven completed 2-D image bundles have frozen checkpoints, internal held-out reports, modality restrictions and research-only failure states. PTB-XL has weights, internal evaluation evidence and research-only upload inference for digital records. A generic 3-D trainer produced a cardiac cine-MRI segmenter (owner-authorized research use) with held-out cardiac indices; it runs research-only on single NIfTI frames inside its development spacing envelope, reproducing 98/98 held-out masks. Inference reproduces each model's evaluated numeric precision. None is clinically activatable or externally validated; EEG weights and image OOD gates remain unavailable."
+      "gap": "The current registry has 31 entries and 21 checkpoint-backed entries, including the failed KiTS19 tumour experiment. Research adapters and internal reports cover specified tasks only; dedicated source/quality gates still apply. Two skin image/metadata models have internal patient-separated results. The KiTS19 model is blocked after zero tumour Dice on its frozen test. No model is clinically activated or commercially cleared; EEG interpretation, broad pathology diagnosis, registration accuracy and clinical forecasts remain unvalidated or unimplemented. Commercial volumetric training now requires a separate evidence-bound data-rights review; generic research owner authorization is insufficient."
     },
     {
       "id": "VI-VIEWER",
@@ -618,7 +620,7 @@
         "docs/validation/models/gi_kvasir_seg_polyp_segmenter.kit_crosscheck.json",
         "backend/tests/test_training_volumetric.py::test_synthetic_smoke_executes_validation_training_evaluation_and_resume",
         "docs/validation/models/acdc_cardiac_mri_3d_unet.json",
-        "backend/tests/test_training_volumetric.py::test_recorded_owner_authorization_opens_the_real_data_gate"
+        "backend/tests/test_training_volumetric.py::test_recorded_owner_authorization_opens_the_research_data_gate"
       ],
       "gap": "Internal held-out experiments ran on publisher-annotated public data: ARCADE stenosis detection n=300, mAP 0.0618/AP50 0.2029/AR100 0.3585; TEZ kidney-stone detection n=196, mAP 0.2312/AP50 0.6286/AR100 0.3600; ARCADE SYNTAX segmentation n=300, vessel Dice 0.6829/IoU 0.5352 (mean foreground Dice/image 0.3070); Kvasir-SEG n=120, Dice 0.7679/IoU 0.6696. Validation-kit re-scores reproduced headline metrics. Cardiac cine-MRI (ACDC, owner-authorized research use) 3-D segmentation on 50 frozen test patients / 100 ED-ES volumes: mean case macro Dice 0.750 (LV 0.812, myocardium 0.731, RV 0.707); LV ejection fraction vs reference-mask values MAE 9.1 points, bias -5.8, r 0.852; volumes are overestimated (no prespecified connected-component post-processing). Patient-level independence is often unverifiable, rare/absent classes limit interpretation, and no external, clinical or independently re-annotated expert test set was evaluated."
     },

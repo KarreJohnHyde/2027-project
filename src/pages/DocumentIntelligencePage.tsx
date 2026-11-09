@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import PdfFilmPanels from "../components/PdfFilmPanels";
 import { Box, FileCheck2 } from "lucide-react";
 import { Badge, Card, EmptyState, ErrorBlock, LoadingBlock, PageHeader, Segmented, SelectInput, StatusBadge, Table, Unavailable } from "../components/ui";
 import { api, type DocumentedAttribute, type MedicalMeasurement, type ReportStatement, type ReportTextResponse } from "../services/api";
@@ -239,6 +240,7 @@ export default function DocumentIntelligencePage() {
           </div>
         }
       />
+      {activeUpload?.filename.toLowerCase().endsWith(".pdf") && <PdfFilmPanels key={activeUpload.id} uploadId={activeUpload.id} pageCount={text.data?.pages?.length ?? 0} />}
       <div className="grid gap-4 xl:grid-cols-[1.2fr_1fr]">
         <Card title="Document text" eyebrow={text.data ? `${text.data.extractor_version} · identifiers masked automatically · text SHA-256 ${text.data.text_sha256.slice(0, 10)}…` : "Parsed text"}>
           {text.loading && <LoadingBlock label="Parsing document" />}

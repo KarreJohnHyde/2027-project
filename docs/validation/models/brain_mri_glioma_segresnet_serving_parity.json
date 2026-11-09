@@ -1,0 +1,525 @@
+{
+  "model_id": "brain_mri_glioma_segresnet",
+  "checkpoint_sha256": "2f2836466ff27cdb06f0807dcd2dc97cb6b8498bcf25692ff23cf8e0481c7c42",
+  "test_cases": 73,
+  "accepted_by_gate": 73,
+  "refused_by_gate": {},
+  "identical_cases": 5,
+  "differing_voxels_total": 418,
+  "max_differing_voxels_in_a_case": 16,
+  "differing_share_of_foreground": 5.270231764115521e-05,
+  "device": "cuda",
+  "cases": [
+    {
+      "case_id": "BRATS_014",
+      "voxels": 8928000,
+      "differing_voxels": 7,
+      "foreground_voxels_either": 150632,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_015",
+      "voxels": 8928000,
+      "differing_voxels": 10,
+      "foreground_voxels_either": 211284,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_022",
+      "voxels": 8928000,
+      "differing_voxels": 11,
+      "foreground_voxels_either": 245525,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_043",
+      "voxels": 8928000,
+      "differing_voxels": 1,
+      "foreground_voxels_either": 38896,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_051",
+      "voxels": 8928000,
+      "differing_voxels": 7,
+      "foreground_voxels_either": 103465,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_053",
+      "voxels": 8928000,
+      "differing_voxels": 6,
+      "foreground_voxels_either": 79994,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_054",
+      "voxels": 8928000,
+      "differing_voxels": 6,
+      "foreground_voxels_either": 116410,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_058",
+      "voxels": 8928000,
+      "differing_voxels": 6,
+      "foreground_voxels_either": 138020,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_061",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 84486,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_065",
+      "voxels": 8928000,
+      "differing_voxels": 5,
+      "foreground_voxels_either": 132915,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_066",
+      "voxels": 8928000,
+      "differing_voxels": 12,
+      "foreground_voxels_either": 213156,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_069",
+      "voxels": 8928000,
+      "differing_voxels": 7,
+      "foreground_voxels_either": 49373,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_076",
+      "voxels": 8928000,
+      "differing_voxels": 5,
+      "foreground_voxels_either": 195388,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_086",
+      "voxels": 8928000,
+      "differing_voxels": 4,
+      "foreground_voxels_either": 118601,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_121",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 32744,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_124",
+      "voxels": 8928000,
+      "differing_voxels": 6,
+      "foreground_voxels_either": 131619,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_129",
+      "voxels": 8928000,
+      "differing_voxels": 5,
+      "foreground_voxels_either": 187143,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_134",
+      "voxels": 8928000,
+      "differing_voxels": 4,
+      "foreground_voxels_either": 49833,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_156",
+      "voxels": 8928000,
+      "differing_voxels": 13,
+      "foreground_voxels_either": 210472,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_161",
+      "voxels": 8928000,
+      "differing_voxels": 9,
+      "foreground_voxels_either": 104319,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_165",
+      "voxels": 8928000,
+      "differing_voxels": 5,
+      "foreground_voxels_either": 148125,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_167",
+      "voxels": 8928000,
+      "differing_voxels": 5,
+      "foreground_voxels_either": 40227,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_169",
+      "voxels": 8928000,
+      "differing_voxels": 14,
+      "foreground_voxels_either": 80883,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_172",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 136839,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_174",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 102037,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_192",
+      "voxels": 8928000,
+      "differing_voxels": 10,
+      "foreground_voxels_either": 81375,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_203",
+      "voxels": 8928000,
+      "differing_voxels": 2,
+      "foreground_voxels_either": 118978,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_223",
+      "voxels": 8928000,
+      "differing_voxels": 16,
+      "foreground_voxels_either": 260255,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_224",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 15995,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_225",
+      "voxels": 8928000,
+      "differing_voxels": 10,
+      "foreground_voxels_either": 147032,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_226",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 45433,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_238",
+      "voxels": 8928000,
+      "differing_voxels": 1,
+      "foreground_voxels_either": 16639,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_239",
+      "voxels": 8928000,
+      "differing_voxels": 15,
+      "foreground_voxels_either": 167349,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_243",
+      "voxels": 8928000,
+      "differing_voxels": 2,
+      "foreground_voxels_either": 81350,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_246",
+      "voxels": 8928000,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 61002,
+      "identical": true
+    },
+    {
+      "case_id": "BRATS_247",
+      "voxels": 8928000,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 57725,
+      "identical": true
+    },
+    {
+      "case_id": "BRATS_256",
+      "voxels": 8928000,
+      "differing_voxels": 9,
+      "foreground_voxels_either": 111010,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_263",
+      "voxels": 8928000,
+      "differing_voxels": 6,
+      "foreground_voxels_either": 152906,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_264",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 25424,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_272",
+      "voxels": 8928000,
+      "differing_voxels": 6,
+      "foreground_voxels_either": 95030,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_279",
+      "voxels": 8928000,
+      "differing_voxels": 13,
+      "foreground_voxels_either": 184960,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_282",
+      "voxels": 8928000,
+      "differing_voxels": 8,
+      "foreground_voxels_either": 74934,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_299",
+      "voxels": 8928000,
+      "differing_voxels": 5,
+      "foreground_voxels_either": 17436,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_310",
+      "voxels": 8928000,
+      "differing_voxels": 4,
+      "foreground_voxels_either": 135685,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_318",
+      "voxels": 8928000,
+      "differing_voxels": 14,
+      "foreground_voxels_either": 87794,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_327",
+      "voxels": 8928000,
+      "differing_voxels": 1,
+      "foreground_voxels_either": 120929,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_331",
+      "voxels": 8928000,
+      "differing_voxels": 7,
+      "foreground_voxels_either": 143703,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_335",
+      "voxels": 8928000,
+      "differing_voxels": 5,
+      "foreground_voxels_either": 103631,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_339",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 102083,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_357",
+      "voxels": 8928000,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 15317,
+      "identical": true
+    },
+    {
+      "case_id": "BRATS_361",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 126767,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_364",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 50224,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_370",
+      "voxels": 8928000,
+      "differing_voxels": 6,
+      "foreground_voxels_either": 39733,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_386",
+      "voxels": 8928000,
+      "differing_voxels": 2,
+      "foreground_voxels_either": 83893,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_387",
+      "voxels": 8928000,
+      "differing_voxels": 5,
+      "foreground_voxels_either": 154195,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_388",
+      "voxels": 8928000,
+      "differing_voxels": 8,
+      "foreground_voxels_either": 113566,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_398",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 136267,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_409",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 168980,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_410",
+      "voxels": 8928000,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 146256,
+      "identical": true
+    },
+    {
+      "case_id": "BRATS_416",
+      "voxels": 8928000,
+      "differing_voxels": 8,
+      "foreground_voxels_either": 99201,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_419",
+      "voxels": 8928000,
+      "differing_voxels": 6,
+      "foreground_voxels_either": 99540,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_425",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 53654,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_428",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 61563,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_438",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 15898,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_441",
+      "voxels": 8928000,
+      "differing_voxels": 5,
+      "foreground_voxels_either": 148123,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_443",
+      "voxels": 8928000,
+      "differing_voxels": 8,
+      "foreground_voxels_either": 40226,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_448",
+      "voxels": 8928000,
+      "differing_voxels": 12,
+      "foreground_voxels_either": 220025,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_451",
+      "voxels": 8928000,
+      "differing_voxels": 3,
+      "foreground_voxels_either": 177635,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_463",
+      "voxels": 8928000,
+      "differing_voxels": 7,
+      "foreground_voxels_either": 101014,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_466",
+      "voxels": 8928000,
+      "differing_voxels": 0,
+      "foreground_voxels_either": 16639,
+      "identical": true
+    },
+    {
+      "case_id": "BRATS_469",
+      "voxels": 8928000,
+      "differing_voxels": 7,
+      "foreground_voxels_either": 96985,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_475",
+      "voxels": 8928000,
+      "differing_voxels": 8,
+      "foreground_voxels_either": 189912,
+      "identical": false
+    },
+    {
+      "case_id": "BRATS_483",
+      "voxels": 8928000,
+      "differing_voxels": 6,
+      "foreground_voxels_either": 64683,
+      "identical": false
+    }
+  ]
+}

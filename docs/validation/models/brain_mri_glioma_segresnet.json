@@ -1,0 +1,4817 @@
+{
+  "model_id": "brain_mri_glioma_segresnet",
+  "run_id": "brain_mri_glioma_segresnet-20261105T182742Z",
+  "task_type": "volumetric_semantic_segmentation",
+  "dataset_id": "msd-task01-brain-tumour",
+  "dataset_version": "d3b2c312fdb061078d241b43627a187111d78864e660cad57ba12b11e8ab548a",
+  "split_counts": {
+    "train": 338,
+    "val": 73,
+    "test": 73
+  },
+  "split_method": "patients split by sha256(seed:patient_id) ordering (ml_training.volumetric_manifest)",
+  "test_n": 73,
+  "test_patients": 73,
+  "metrics": {
+    "mean_case_macro_dice": 0.7516052276173116,
+    "mean_case_macro_dice_95ci": {
+      "status": "COMPUTED",
+      "low": 0.7282661744316359,
+      "high": 0.7753254191948344,
+      "resamples": 2000,
+      "unit": "patient"
+    },
+    "per_structure": {
+      "peritumoural_oedema": {
+        "mean_dice": 0.8092591212653976,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.7760213817735535,
+          "high": 0.8377078438438652,
+          "resamples": 2000,
+          "unit": "patient"
+        },
+        "mean_iou": 0.6973073189254626,
+        "scored_cases": 73,
+        "reference_positive_cases": 73,
+        "both_empty_cases_excluded": 0
+      },
+      "necrotic_or_non_enhancing_tumour_core": {
+        "mean_dice": 0.6435822346446309,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.5983166916745237,
+          "high": 0.6892326610588868,
+          "resamples": 2000,
+          "unit": "patient"
+        },
+        "mean_iou": 0.5050484202071457,
+        "scored_cases": 73,
+        "reference_positive_cases": 73,
+        "both_empty_cases_excluded": 0
+      },
+      "enhancing_tumour": {
+        "mean_dice": 0.801974326941906,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.7585886204511301,
+          "high": 0.8382373057729362,
+          "resamples": 2000,
+          "unit": "patient"
+        },
+        "mean_iou": 0.6968691051611441,
+        "scored_cases": 73,
+        "reference_positive_cases": 72,
+        "both_empty_cases_excluded": 0
+      }
+    },
+    "regions": {
+      "whole_tumour": {
+        "mean_dice": 0.9079231792897922,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.8899947398130861,
+          "high": 0.9232831749600205,
+          "resamples": 2000,
+          "unit": "patient"
+        },
+        "scored_cases": 73,
+        "labels": [
+          1,
+          2,
+          3
+        ]
+      },
+      "tumour_core": {
+        "mean_dice": 0.8557776097768195,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.8314703650769684,
+          "high": 0.8787503873991406,
+          "resamples": 2000,
+          "unit": "patient"
+        },
+        "scored_cases": 73,
+        "labels": [
+          2,
+          3
+        ]
+      },
+      "enhancing_tumour": {
+        "mean_dice": 0.801974326941906,
+        "mean_dice_95ci": {
+          "status": "COMPUTED",
+          "low": 0.7585886204511301,
+          "high": 0.8382373057729362,
+          "resamples": 2000,
+          "unit": "patient"
+        },
+        "scored_cases": 73,
+        "labels": [
+          3
+        ]
+      }
+    }
+  },
+  "clinical_indices": {
+    "peritumoural_oedema_volume_ml": {
+      "n_patients": 73,
+      "bias": -2.617,
+      "limits_of_agreement": [
+        -24.906,
+        19.673
+      ],
+      "mean_absolute_error": 7.993,
+      "reference_mean": 72.981
+    },
+    "necrotic_or_non_enhancing_tumour_core_volume_ml": {
+      "n_patients": 73,
+      "bias": -2.275,
+      "limits_of_agreement": [
+        -16.664,
+        12.114
+      ],
+      "mean_absolute_error": 4.87,
+      "reference_mean": 19.505
+    },
+    "enhancing_tumour_volume_ml": {
+      "n_patients": 73,
+      "bias": 0.168,
+      "limits_of_agreement": [
+        -8.549,
+        8.884
+      ],
+      "mean_absolute_error": 2.723,
+      "reference_mean": 20.883
+    },
+    "whole_tumour_volume_ml": {
+      "n_patients": 73,
+      "bias": -4.724,
+      "limits_of_agreement": [
+        -25.3,
+        15.853
+      ],
+      "mean_absolute_error": 8.061,
+      "reference_mean": 113.37
+    },
+    "tumour_core_volume_ml": {
+      "n_patients": 73,
+      "bias": -2.107,
+      "limits_of_agreement": [
+        -15.544,
+        11.33
+      ],
+      "mean_absolute_error": 4.899,
+      "reference_mean": 40.389
+    }
+  },
+  "selection": {
+    "criterion": "validation mean of case-level macro foreground Dice (serving inference path)",
+    "best_epoch": 80,
+    "best_score": 0.6938651723814732
+  },
+  "epochs_run": 80,
+  "config": {
+    "manifest_path": "_derived\\datasets\\msd-brain-tumour\\manifest.json",
+    "output_dir": "D:\\project\\artifacts\\training\\brain_mri_glioma_segresnet-20261105T182742Z",
+    "model_id": "brain_mri_glioma_segresnet",
+    "channel_names": [
+      "FLAIR",
+      "T1w",
+      "T1gd",
+      "T2w"
+    ],
+    "registry_path": "D:\\project\\dataset_registry\\tasks.json",
+    "device": "cuda",
+    "epochs": 80,
+    "iterations_per_epoch": 200,
+    "batch_size": 2,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "patch_size": [
+      112,
+      112,
+      96
+    ],
+    "init_filters": 16,
+    "blocks_down": [
+      1,
+      2,
+      2,
+      4
+    ],
+    "blocks_up": [
+      1,
+      1,
+      1
+    ],
+    "dropout": 0.2,
+    "foreground_probability": 0.5,
+    "target_spacing": null,
+    "foreground_crop": true,
+    "overlap": 0.5,
+    "sliding_window_mode": "gaussian",
+    "sw_batch_size": 2,
+    "validate_every": 10,
+    "seed": 20261105,
+    "amp": true,
+    "workers": 0,
+    "cache_dir": "_derived\\cache\\msd_brain_tumour",
+    "regions": {
+      "whole_tumour": [
+        1,
+        2,
+        3
+      ],
+      "tumour_core": [
+        2,
+        3
+      ],
+      "enhancing_tumour": [
+        3
+      ]
+    },
+    "lesion_detection": false,
+    "volume_semantics": "Predicted voxel count x header voxel volume per glioma sub-region on the upload's 1 mm grid. Research output from a model trained on the Medical Segmentation Decathlon (BraTS); not a RANO measurement.",
+    "allow_synthetic_test_fixture": false,
+    "device_effective": "cuda",
+    "amp_effective": true,
+    "preprocessing": {
+      "version": "nifti-foreground-crop-channel-zscore-resample-v2",
+      "foreground_crop": true,
+      "normalisation": "per-channel z-score over that channel's non-zero voxels",
+      "target_spacing_mm": null,
+      "resampling": "trilinear (align_corners=False) for images and class probabilities; nearest-exact for training masks",
+      "sliding_window_overlap": 0.5,
+      "sliding_window_mode": "gaussian",
+      "sw_batch_size": 2
+    },
+    "architecture": {
+      "name": "monai.networks.nets.SegResNet",
+      "spatial_dims": 3,
+      "in_channels": 4,
+      "out_channels": 4,
+      "init_filters": 16,
+      "blocks_down": [
+        1,
+        2,
+        2,
+        4
+      ],
+      "blocks_up": [
+        1,
+        1,
+        1
+      ],
+      "dropout_prob": 0.2
+    }
+  },
+  "determinism": "seeded sampling and initialisation; cuDNN autotuning on CUDA (benchmark on, deterministic off), so a rerun can differ slightly",
+  "checkpoint": {
+    "path": "D:\\project\\artifacts\\training\\brain_mri_glioma_segresnet-20261105T182742Z\\best.pt",
+    "sha256": "2f2836466ff27cdb06f0807dcd2dc97cb6b8498bcf25692ff23cf8e0481c7c42"
+  },
+  "held_out_predictions": "D:\\project\\artifacts\\training\\brain_mri_glioma_segresnet-20261105T182742Z\\held_out_predictions",
+  "evaluation_path": "app.services.volume_inference.predict_multichannel (the serving function), float16 autocast on CUDA",
+  "cases": [
+    {
+      "case_id": "BRATS_014",
+      "patient_id": "BRATS_014",
+      "classes": {
+        "1": {
+          "reference_voxels": 23688,
+          "predicted_voxels": 30272,
+          "dice": 0.7024462564862861,
+          "iou": 0.5413619744058501,
+          "predicted_ml": 30.272,
+          "reference_ml": 23.688
+        },
+        "2": {
+          "reference_voxels": 51736,
+          "predicted_voxels": 62315,
+          "dice": 0.8497075869567123,
+          "iou": 0.7386883346545521,
+          "predicted_ml": 62.315,
+          "reference_ml": 51.736
+        },
+        "3": {
+          "reference_voxels": 72360,
+          "predicted_voxels": 58043,
+          "dice": 0.8247816384592379,
+          "iou": 0.7018113956098452,
+          "predicted_ml": 58.043,
+          "reference_ml": 72.36
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 147784,
+          "predicted_voxels": 150630,
+          "dice": 0.9454985355914937,
+          "iou": 0.8966308416857868,
+          "predicted_ml": 150.63,
+          "reference_ml": 147.784
+        },
+        "tumour_core": {
+          "reference_voxels": 124096,
+          "predicted_voxels": 120358,
+          "dice": 0.9624878300211901,
+          "iou": 0.9276882313976595,
+          "predicted_ml": 120.358,
+          "reference_ml": 124.096
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 72360,
+          "predicted_voxels": 58043,
+          "dice": 0.8247816384592379,
+          "iou": 0.7018113956098452,
+          "predicted_ml": 58.043,
+          "reference_ml": 72.36
+        }
+      },
+      "macro_foreground_dice": 0.7923118273007455,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_015",
+      "patient_id": "BRATS_015",
+      "classes": {
+        "1": {
+          "reference_voxels": 126003,
+          "predicted_voxels": 132261,
+          "dice": 0.8766533469627977,
+          "iou": 0.780394319591893,
+          "predicted_ml": 132.261,
+          "reference_ml": 126.003
+        },
+        "2": {
+          "reference_voxels": 11698,
+          "predicted_voxels": 17565,
+          "dice": 0.5104739773775758,
+          "iou": 0.34270900247774616,
+          "predicted_ml": 17.565,
+          "reference_ml": 11.698
+        },
+        "3": {
+          "reference_voxels": 60991,
+          "predicted_voxels": 61455,
+          "dice": 0.9351060875814645,
+          "iou": 0.8781213571384747,
+          "predicted_ml": 61.455,
+          "reference_ml": 60.991
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 198692,
+          "predicted_voxels": 211281,
+          "dice": 0.9375105189853966,
+          "iou": 0.8823715770721225,
+          "predicted_ml": 211.281,
+          "reference_ml": 198.692
+        },
+        "tumour_core": {
+          "reference_voxels": 72689,
+          "predicted_voxels": 79020,
+          "dice": 0.9161618625131007,
+          "iou": 0.8452939888583453,
+          "predicted_ml": 79.02,
+          "reference_ml": 72.689
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 60991,
+          "predicted_voxels": 61455,
+          "dice": 0.9351060875814645,
+          "iou": 0.8781213571384747,
+          "predicted_ml": 61.455,
+          "reference_ml": 60.991
+        }
+      },
+      "macro_foreground_dice": 0.7740778039739461,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_022",
+      "patient_id": "BRATS_022",
+      "classes": {
+        "1": {
+          "reference_voxels": 147585,
+          "predicted_voxels": 119472,
+          "dice": 0.744530193928637,
+          "iou": 0.5930291515798641,
+          "predicted_ml": 119.472,
+          "reference_ml": 147.585
+        },
+        "2": {
+          "reference_voxels": 91100,
+          "predicted_voxels": 118706,
+          "dice": 0.7566513827059284,
+          "iou": 0.6085593148867984,
+          "predicted_ml": 118.706,
+          "reference_ml": 91.1
+        },
+        "3": {
+          "reference_voxels": 9546,
+          "predicted_voxels": 7344,
+          "dice": 0.6414446417998816,
+          "iou": 0.47215200906476074,
+          "predicted_ml": 7.344,
+          "reference_ml": 9.546
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 248231,
+          "predicted_voxels": 245522,
+          "dice": 0.9523223150036557,
+          "iou": 0.9089840593550282,
+          "predicted_ml": 245.522,
+          "reference_ml": 248.231
+        },
+        "tumour_core": {
+          "reference_voxels": 100646,
+          "predicted_voxels": 126050,
+          "dice": 0.7883509192927974,
+          "iou": 0.650642939317596,
+          "predicted_ml": 126.05,
+          "reference_ml": 100.646
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 9546,
+          "predicted_voxels": 7344,
+          "dice": 0.6414446417998816,
+          "iou": 0.47215200906476074,
+          "predicted_ml": 7.344,
+          "reference_ml": 9.546
+        }
+      },
+      "macro_foreground_dice": 0.714208739478149,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_043",
+      "patient_id": "BRATS_043",
+      "classes": {
+        "1": {
+          "reference_voxels": 27078,
+          "predicted_voxels": 26590,
+          "dice": 0.893269732429008,
+          "iou": 0.8071250589265271,
+          "predicted_ml": 26.59,
+          "reference_ml": 27.078
+        },
+        "2": {
+          "reference_voxels": 3271,
+          "predicted_voxels": 3109,
+          "dice": 0.7003134796238244,
+          "iou": 0.5388326097443319,
+          "predicted_ml": 3.109,
+          "reference_ml": 3.271
+        },
+        "3": {
+          "reference_voxels": 10412,
+          "predicted_voxels": 9196,
+          "dice": 0.9143206854345165,
+          "iou": 0.8421645997745209,
+          "predicted_ml": 9.196,
+          "reference_ml": 10.412
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 40761,
+          "predicted_voxels": 38895,
+          "dice": 0.9314803655719595,
+          "iou": 0.8717484785111732,
+          "predicted_ml": 38.895,
+          "reference_ml": 40.761
+        },
+        "tumour_core": {
+          "reference_voxels": 13683,
+          "predicted_voxels": 12305,
+          "dice": 0.9352008619362783,
+          "iou": 0.8782885226944204,
+          "predicted_ml": 12.305,
+          "reference_ml": 13.683
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 10412,
+          "predicted_voxels": 9196,
+          "dice": 0.9143206854345165,
+          "iou": 0.8421645997745209,
+          "predicted_ml": 9.196,
+          "reference_ml": 10.412
+        }
+      },
+      "macro_foreground_dice": 0.8359679658291164,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_051",
+      "patient_id": "BRATS_051",
+      "classes": {
+        "1": {
+          "reference_voxels": 72568,
+          "predicted_voxels": 68396,
+          "dice": 0.9171987174030248,
+          "iou": 0.8470609816819099,
+          "predicted_ml": 68.396,
+          "reference_ml": 72.568
+        },
+        "2": {
+          "reference_voxels": 19490,
+          "predicted_voxels": 16911,
+          "dice": 0.8547567374522678,
+          "iou": 0.7463538668201881,
+          "predicted_ml": 16.911,
+          "reference_ml": 19.49
+        },
+        "3": {
+          "reference_voxels": 19020,
+          "predicted_voxels": 18155,
+          "dice": 0.9191661062542031,
+          "iou": 0.8504230960676954,
+          "predicted_ml": 18.155,
+          "reference_ml": 19.02
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 111078,
+          "predicted_voxels": 103462,
+          "dice": 0.9550666542369721,
+          "iou": 0.9139976804353644,
+          "predicted_ml": 103.462,
+          "reference_ml": 111.078
+        },
+        "tumour_core": {
+          "reference_voxels": 38510,
+          "predicted_voxels": 35066,
+          "dice": 0.9433782755246276,
+          "iou": 0.8928249852074811,
+          "predicted_ml": 35.066,
+          "reference_ml": 38.51
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 19020,
+          "predicted_voxels": 18155,
+          "dice": 0.9191661062542031,
+          "iou": 0.8504230960676954,
+          "predicted_ml": 18.155,
+          "reference_ml": 19.02
+        }
+      },
+      "macro_foreground_dice": 0.8970405203698318,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_053",
+      "patient_id": "BRATS_053",
+      "classes": {
+        "1": {
+          "reference_voxels": 52006,
+          "predicted_voxels": 61961,
+          "dice": 0.8105153246115103,
+          "iou": 0.6814003924403594,
+          "predicted_ml": 61.961,
+          "reference_ml": 52.006
+        },
+        "2": {
+          "reference_voxels": 9715,
+          "predicted_voxels": 4639,
+          "dice": 0.45910547582555383,
+          "iou": 0.2979473731802152,
+          "predicted_ml": 4.639,
+          "reference_ml": 9.715
+        },
+        "3": {
+          "reference_voxels": 12567,
+          "predicted_voxels": 13392,
+          "dice": 0.8883238953734736,
+          "iou": 0.7990851756878509,
+          "predicted_ml": 13.392,
+          "reference_ml": 12.567
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 74288,
+          "predicted_voxels": 79992,
+          "dice": 0.8827326938034742,
+          "iou": 0.7900819158564036,
+          "predicted_ml": 79.992,
+          "reference_ml": 74.288
+        },
+        "tumour_core": {
+          "reference_voxels": 22282,
+          "predicted_voxels": 18031,
+          "dice": 0.8631458834619106,
+          "iou": 0.7592406720488762,
+          "predicted_ml": 18.031,
+          "reference_ml": 22.282
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 12567,
+          "predicted_voxels": 13392,
+          "dice": 0.8883238953734736,
+          "iou": 0.7990851756878509,
+          "predicted_ml": 13.392,
+          "reference_ml": 12.567
+        }
+      },
+      "macro_foreground_dice": 0.7193148986035126,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_054",
+      "patient_id": "BRATS_054",
+      "classes": {
+        "1": {
+          "reference_voxels": 104691,
+          "predicted_voxels": 93234,
+          "dice": 0.9045345459138563,
+          "iou": 0.8257079605202472,
+          "predicted_ml": 93.234,
+          "reference_ml": 104.691
+        },
+        "2": {
+          "reference_voxels": 15356,
+          "predicted_voxels": 15406,
+          "dice": 0.7796632208569013,
+          "iou": 0.6388918486947256,
+          "predicted_ml": 15.406,
+          "reference_ml": 15.356
+        },
+        "3": {
+          "reference_voxels": 7414,
+          "predicted_voxels": 7767,
+          "dice": 0.9040247678018576,
+          "iou": 0.8248587570621468,
+          "predicted_ml": 7.767,
+          "reference_ml": 7.414
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 127461,
+          "predicted_voxels": 116407,
+          "dice": 0.9454376958026474,
+          "iou": 0.8965214212945322,
+          "predicted_ml": 116.407,
+          "reference_ml": 127.461
+        },
+        "tumour_core": {
+          "reference_voxels": 22770,
+          "predicted_voxels": 23173,
+          "dice": 0.8681627233746164,
+          "iou": 0.7670384615384616,
+          "predicted_ml": 23.173,
+          "reference_ml": 22.77
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 7414,
+          "predicted_voxels": 7767,
+          "dice": 0.9040247678018576,
+          "iou": 0.8248587570621468,
+          "predicted_ml": 7.767,
+          "reference_ml": 7.414
+        }
+      },
+      "macro_foreground_dice": 0.8627408448575385,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_058",
+      "patient_id": "BRATS_058",
+      "classes": {
+        "1": {
+          "reference_voxels": 124364,
+          "predicted_voxels": 116880,
+          "dice": 0.900880436404636,
+          "iou": 0.8196382506901597,
+          "predicted_ml": 116.88,
+          "reference_ml": 124.364
+        },
+        "2": {
+          "reference_voxels": 10581,
+          "predicted_voxels": 11019,
+          "dice": 0.6916666666666667,
+          "iou": 0.5286624203821656,
+          "predicted_ml": 11.019,
+          "reference_ml": 10.581
+        },
+        "3": {
+          "reference_voxels": 8334,
+          "predicted_voxels": 10120,
+          "dice": 0.8168418770998157,
+          "iou": 0.6903911330951726,
+          "predicted_ml": 10.12,
+          "reference_ml": 8.334
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 143279,
+          "predicted_voxels": 138019,
+          "dice": 0.9301665849028432,
+          "iou": 0.8694499272285025,
+          "predicted_ml": 138.019,
+          "reference_ml": 143.279
+        },
+        "tumour_core": {
+          "reference_voxels": 18915,
+          "predicted_voxels": 21139,
+          "dice": 0.8780146801817547,
+          "iou": 0.7825545171339564,
+          "predicted_ml": 21.139,
+          "reference_ml": 18.915
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 8334,
+          "predicted_voxels": 10120,
+          "dice": 0.8168418770998157,
+          "iou": 0.6903911330951726,
+          "predicted_ml": 10.12,
+          "reference_ml": 8.334
+        }
+      },
+      "macro_foreground_dice": 0.8031296600570395,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_061",
+      "patient_id": "BRATS_061",
+      "classes": {
+        "1": {
+          "reference_voxels": 22019,
+          "predicted_voxels": 22028,
+          "dice": 0.7466569800440439,
+          "iou": 0.5957323479331956,
+          "predicted_ml": 22.028,
+          "reference_ml": 22.019
+        },
+        "2": {
+          "reference_voxels": 29097,
+          "predicted_voxels": 28867,
+          "dice": 0.9182251052377338,
+          "iou": 0.8488134728247002,
+          "predicted_ml": 28.867,
+          "reference_ml": 29.097
+        },
+        "3": {
+          "reference_voxels": 32631,
+          "predicted_voxels": 33589,
+          "dice": 0.9008154636061613,
+          "iou": 0.8195306918722867,
+          "predicted_ml": 33.589,
+          "reference_ml": 32.631
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 83747,
+          "predicted_voxels": 84484,
+          "dice": 0.9573740868210971,
+          "iou": 0.9182335435171777,
+          "predicted_ml": 84.484,
+          "reference_ml": 83.747
+        },
+        "tumour_core": {
+          "reference_voxels": 61728,
+          "predicted_voxels": 62456,
+          "dice": 0.9602525285060878,
+          "iou": 0.923543990086741,
+          "predicted_ml": 62.456,
+          "reference_ml": 61.728
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 32631,
+          "predicted_voxels": 33589,
+          "dice": 0.9008154636061613,
+          "iou": 0.8195306918722867,
+          "predicted_ml": 33.589,
+          "reference_ml": 32.631
+        }
+      },
+      "macro_foreground_dice": 0.8552325162959796,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_065",
+      "patient_id": "BRATS_065",
+      "classes": {
+        "1": {
+          "reference_voxels": 97832,
+          "predicted_voxels": 82128,
+          "dice": 0.8538564125361191,
+          "iou": 0.7449820614758073,
+          "predicted_ml": 82.128,
+          "reference_ml": 97.832
+        },
+        "2": {
+          "reference_voxels": 39438,
+          "predicted_voxels": 21258,
+          "dice": 0.6591208646368789,
+          "iou": 0.4915587447472538,
+          "predicted_ml": 21.258,
+          "reference_ml": 39.438
+        },
+        "3": {
+          "reference_voxels": 28821,
+          "predicted_voxels": 29527,
+          "dice": 0.7977651333379037,
+          "iou": 0.663568455266009,
+          "predicted_ml": 29.527,
+          "reference_ml": 28.821
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 166091,
+          "predicted_voxels": 132913,
+          "dice": 0.8731120653904295,
+          "iou": 0.7747993731896101,
+          "predicted_ml": 132.913,
+          "reference_ml": 166.091
+        },
+        "tumour_core": {
+          "reference_voxels": 68259,
+          "predicted_voxels": 50785,
+          "dice": 0.8216961795638588,
+          "iou": 0.6973551008768804,
+          "predicted_ml": 50.785,
+          "reference_ml": 68.259
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 28821,
+          "predicted_voxels": 29527,
+          "dice": 0.7977651333379037,
+          "iou": 0.663568455266009,
+          "predicted_ml": 29.527,
+          "reference_ml": 28.821
+        }
+      },
+      "macro_foreground_dice": 0.7702474701703007,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_066",
+      "patient_id": "BRATS_066",
+      "classes": {
+        "1": {
+          "reference_voxels": 153225,
+          "predicted_voxels": 187164,
+          "dice": 0.8297447919879902,
+          "iou": 0.7090289248936843,
+          "predicted_ml": 187.164,
+          "reference_ml": 153.225
+        },
+        "2": {
+          "reference_voxels": 28787,
+          "predicted_voxels": 8659,
+          "dice": 0.30951236447150565,
+          "iou": 0.1830905816561878,
+          "predicted_ml": 8.659,
+          "reference_ml": 28.787
+        },
+        "3": {
+          "reference_voxels": 11596,
+          "predicted_voxels": 17326,
+          "dice": 0.7094945024548787,
+          "iou": 0.5497803022184118,
+          "predicted_ml": 17.326,
+          "reference_ml": 11.596
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 193608,
+          "predicted_voxels": 213149,
+          "dice": 0.8949815245957661,
+          "iou": 0.8099244895144102,
+          "predicted_ml": 213.149,
+          "reference_ml": 193.608
+        },
+        "tumour_core": {
+          "reference_voxels": 40383,
+          "predicted_voxels": 25985,
+          "dice": 0.7121504339440694,
+          "iou": 0.5529764133283415,
+          "predicted_ml": 25.985,
+          "reference_ml": 40.383
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 11596,
+          "predicted_voxels": 17326,
+          "dice": 0.7094945024548787,
+          "iou": 0.5497803022184118,
+          "predicted_ml": 17.326,
+          "reference_ml": 11.596
+        }
+      },
+      "macro_foreground_dice": 0.6162505529714581,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_069",
+      "patient_id": "BRATS_069",
+      "classes": {
+        "1": {
+          "reference_voxels": 46835,
+          "predicted_voxels": 44416,
+          "dice": 0.8641001194507457,
+          "iou": 0.7607185582526145,
+          "predicted_ml": 44.416,
+          "reference_ml": 46.835
+        },
+        "2": {
+          "reference_voxels": 6413,
+          "predicted_voxels": 4805,
+          "dice": 0.6248885719379569,
+          "iou": 0.4544275897834824,
+          "predicted_ml": 4.805,
+          "reference_ml": 6.413
+        },
+        "3": {
+          "reference_voxels": 378,
+          "predicted_voxels": 149,
+          "dice": 0.36432637571157495,
+          "iou": 0.22273781902552203,
+          "predicted_ml": 0.149,
+          "reference_ml": 0.378
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 53626,
+          "predicted_voxels": 49370,
+          "dice": 0.8977047652336013,
+          "iou": 0.8143959412324279,
+          "predicted_ml": 49.37,
+          "reference_ml": 53.626
+        },
+        "tumour_core": {
+          "reference_voxels": 6791,
+          "predicted_voxels": 4954,
+          "dice": 0.658833546189868,
+          "iou": 0.4912392077196546,
+          "predicted_ml": 4.954,
+          "reference_ml": 6.791
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 378,
+          "predicted_voxels": 149,
+          "dice": 0.36432637571157495,
+          "iou": 0.22273781902552203,
+          "predicted_ml": 0.149,
+          "reference_ml": 0.378
+        }
+      },
+      "macro_foreground_dice": 0.6177716890334258,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_076",
+      "patient_id": "BRATS_076",
+      "classes": {
+        "1": {
+          "reference_voxels": 117498,
+          "predicted_voxels": 118888,
+          "dice": 0.8576396233279466,
+          "iou": 0.7507610040068435,
+          "predicted_ml": 118.888,
+          "reference_ml": 117.498
+        },
+        "2": {
+          "reference_voxels": 82239,
+          "predicted_voxels": 74736,
+          "dice": 0.8626086956521739,
+          "iou": 0.7584097859327217,
+          "predicted_ml": 74.736,
+          "reference_ml": 82.239
+        },
+        "3": {
+          "reference_voxels": 1248,
+          "predicted_voxels": 1764,
+          "dice": 0.6062416998671979,
+          "iou": 0.4349690328727966,
+          "predicted_ml": 1.764,
+          "reference_ml": 1.248
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 200985,
+          "predicted_voxels": 195388,
+          "dice": 0.9655652630224562,
+          "iou": 0.9334230846149719,
+          "predicted_ml": 195.388,
+          "reference_ml": 200.985
+        },
+        "tumour_core": {
+          "reference_voxels": 83487,
+          "predicted_voxels": 76500,
+          "dice": 0.867620494165151,
+          "iou": 0.7661923318945056,
+          "predicted_ml": 76.5,
+          "reference_ml": 83.487
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 1248,
+          "predicted_voxels": 1764,
+          "dice": 0.6062416998671979,
+          "iou": 0.4349690328727966,
+          "predicted_ml": 1.764,
+          "reference_ml": 1.248
+        }
+      },
+      "macro_foreground_dice": 0.7754966729491062,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_086",
+      "patient_id": "BRATS_086",
+      "classes": {
+        "1": {
+          "reference_voxels": 111331,
+          "predicted_voxels": 107123,
+          "dice": 0.9242769644868027,
+          "iou": 0.8592146249297861,
+          "predicted_ml": 107.123,
+          "reference_ml": 111.331
+        },
+        "2": {
+          "reference_voxels": 5165,
+          "predicted_voxels": 5279,
+          "dice": 0.4904251244733818,
+          "iou": 0.3248763161233033,
+          "predicted_ml": 5.279,
+          "reference_ml": 5.165
+        },
+        "3": {
+          "reference_voxels": 7361,
+          "predicted_voxels": 6196,
+          "dice": 0.7985542524157262,
+          "iou": 0.6646611001964636,
+          "predicted_ml": 6.196,
+          "reference_ml": 7.361
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 123857,
+          "predicted_voxels": 118598,
+          "dice": 0.9401827143181208,
+          "iou": 0.887117739085765,
+          "predicted_ml": 118.598,
+          "reference_ml": 123.857
+        },
+        "tumour_core": {
+          "reference_voxels": 12526,
+          "predicted_voxels": 11475,
+          "dice": 0.842464897295946,
+          "iou": 0.7278093729753078,
+          "predicted_ml": 11.475,
+          "reference_ml": 12.526
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 7361,
+          "predicted_voxels": 6196,
+          "dice": 0.7985542524157262,
+          "iou": 0.6646611001964636,
+          "predicted_ml": 6.196,
+          "reference_ml": 7.361
+        }
+      },
+      "macro_foreground_dice": 0.7377521137919704,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_121",
+      "patient_id": "BRATS_121",
+      "classes": {
+        "1": {
+          "reference_voxels": 26582,
+          "predicted_voxels": 26154,
+          "dice": 0.8243325242718447,
+          "iou": 0.7011612903225807,
+          "predicted_ml": 26.154,
+          "reference_ml": 26.582
+        },
+        "2": {
+          "reference_voxels": 13413,
+          "predicted_voxels": 2821,
+          "dice": 0.2844647037082666,
+          "iou": 0.1658168761220826,
+          "predicted_ml": 2.821,
+          "reference_ml": 13.413
+        },
+        "3": {
+          "reference_voxels": 3736,
+          "predicted_voxels": 3768,
+          "dice": 0.8656716417910447,
+          "iou": 0.7631578947368421,
+          "predicted_ml": 3.768,
+          "reference_ml": 3.736
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 43731,
+          "predicted_voxels": 32743,
+          "dice": 0.8397363809922327,
+          "iou": 0.7237461963259326,
+          "predicted_ml": 32.743,
+          "reference_ml": 43.731
+        },
+        "tumour_core": {
+          "reference_voxels": 17149,
+          "predicted_voxels": 6589,
+          "dice": 0.530457494312916,
+          "iou": 0.36096777892443527,
+          "predicted_ml": 6.589,
+          "reference_ml": 17.149
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 3736,
+          "predicted_voxels": 3768,
+          "dice": 0.8656716417910447,
+          "iou": 0.7631578947368421,
+          "predicted_ml": 3.768,
+          "reference_ml": 3.736
+        }
+      },
+      "macro_foreground_dice": 0.6581562899237187,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_124",
+      "patient_id": "BRATS_124",
+      "classes": {
+        "1": {
+          "reference_voxels": 74222,
+          "predicted_voxels": 71069,
+          "dice": 0.8282825501923725,
+          "iou": 0.7068961466165413,
+          "predicted_ml": 71.069,
+          "reference_ml": 74.222
+        },
+        "2": {
+          "reference_voxels": 36118,
+          "predicted_voxels": 23437,
+          "dice": 0.6922004869448409,
+          "iou": 0.5292863929332614,
+          "predicted_ml": 23.437,
+          "reference_ml": 36.118
+        },
+        "3": {
+          "reference_voxels": 26984,
+          "predicted_voxels": 37111,
+          "dice": 0.798377408534207,
+          "iou": 0.6644161105196188,
+          "predicted_ml": 37.111,
+          "reference_ml": 26.984
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 137324,
+          "predicted_voxels": 131617,
+          "dice": 0.939016364183966,
+          "iou": 0.8850432113043295,
+          "predicted_ml": 131.617,
+          "reference_ml": 137.324
+        },
+        "tumour_core": {
+          "reference_voxels": 63102,
+          "predicted_voxels": 60548,
+          "dice": 0.9167003639304488,
+          "iou": 0.8462112728630086,
+          "predicted_ml": 60.548,
+          "reference_ml": 63.102
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 26984,
+          "predicted_voxels": 37111,
+          "dice": 0.798377408534207,
+          "iou": 0.6644161105196188,
+          "predicted_ml": 37.111,
+          "reference_ml": 26.984
+        }
+      },
+      "macro_foreground_dice": 0.7729534818904735,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_129",
+      "patient_id": "BRATS_129",
+      "classes": {
+        "1": {
+          "reference_voxels": 139494,
+          "predicted_voxels": 121202,
+          "dice": 0.8826449197532759,
+          "iou": 0.7899412956160528,
+          "predicted_ml": 121.202,
+          "reference_ml": 139.494
+        },
+        "2": {
+          "reference_voxels": 17023,
+          "predicted_voxels": 13434,
+          "dice": 0.7686246183143448,
+          "iou": 0.6242000853242321,
+          "predicted_ml": 13.434,
+          "reference_ml": 17.023
+        },
+        "3": {
+          "reference_voxels": 54949,
+          "predicted_voxels": 52504,
+          "dice": 0.9535331726429229,
+          "iou": 0.9111929281610729,
+          "predicted_ml": 52.504,
+          "reference_ml": 54.949
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 211466,
+          "predicted_voxels": 187140,
+          "dice": 0.9322288174287392,
+          "iou": 0.8730604764813683,
+          "predicted_ml": 187.14,
+          "reference_ml": 211.466
+        },
+        "tumour_core": {
+          "reference_voxels": 71972,
+          "predicted_voxels": 65938,
+          "dice": 0.9459937640490175,
+          "iou": 0.8975219802143672,
+          "predicted_ml": 65.938,
+          "reference_ml": 71.972
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 54949,
+          "predicted_voxels": 52504,
+          "dice": 0.9535331726429229,
+          "iou": 0.9111929281610729,
+          "predicted_ml": 52.504,
+          "reference_ml": 54.949
+        }
+      },
+      "macro_foreground_dice": 0.8682675702368479,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_134",
+      "patient_id": "BRATS_134",
+      "classes": {
+        "1": {
+          "reference_voxels": 51003,
+          "predicted_voxels": 45218,
+          "dice": 0.7928206940272914,
+          "iou": 0.6567547091842005,
+          "predicted_ml": 45.218,
+          "reference_ml": 51.003
+        },
+        "2": {
+          "reference_voxels": 7730,
+          "predicted_voxels": 4431,
+          "dice": 0.6663925664007894,
+          "iou": 0.49969170057960294,
+          "predicted_ml": 4.431,
+          "reference_ml": 7.73
+        },
+        "3": {
+          "reference_voxels": 408,
+          "predicted_voxels": 183,
+          "dice": 0.4433164128595601,
+          "iou": 0.2847826086956522,
+          "predicted_ml": 0.183,
+          "reference_ml": 0.408
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 59141,
+          "predicted_voxels": 49832,
+          "dice": 0.8552577243904453,
+          "iou": 0.7471181440687477,
+          "predicted_ml": 49.832,
+          "reference_ml": 59.141
+        },
+        "tumour_core": {
+          "reference_voxels": 8138,
+          "predicted_voxels": 4614,
+          "dice": 0.6701693851944793,
+          "iou": 0.5039509376105673,
+          "predicted_ml": 4.614,
+          "reference_ml": 8.138
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 408,
+          "predicted_voxels": 183,
+          "dice": 0.4433164128595601,
+          "iou": 0.2847826086956522,
+          "predicted_ml": 0.183,
+          "reference_ml": 0.408
+        }
+      },
+      "macro_foreground_dice": 0.634176557762547,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_156",
+      "patient_id": "BRATS_156",
+      "classes": {
+        "1": {
+          "reference_voxels": 171595,
+          "predicted_voxels": 153086,
+          "dice": 0.8796079844524318,
+          "iou": 0.785089479616241,
+          "predicted_ml": 153.086,
+          "reference_ml": 171.595
+        },
+        "2": {
+          "reference_voxels": 22347,
+          "predicted_voxels": 22679,
+          "dice": 0.4710167458801581,
+          "iou": 0.30805879960490384,
+          "predicted_ml": 22.679,
+          "reference_ml": 22.347
+        },
+        "3": {
+          "reference_voxels": 28670,
+          "predicted_voxels": 34698,
+          "dice": 0.8723014770862265,
+          "iou": 0.7735236495941785,
+          "predicted_ml": 34.698,
+          "reference_ml": 28.67
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 222612,
+          "predicted_voxels": 210463,
+          "dice": 0.9265739190671362,
+          "iou": 0.8631930372531051,
+          "predicted_ml": 210.463,
+          "reference_ml": 222.612
+        },
+        "tumour_core": {
+          "reference_voxels": 51017,
+          "predicted_voxels": 57377,
+          "dice": 0.8192150857058509,
+          "iou": 0.6937885772325963,
+          "predicted_ml": 57.377,
+          "reference_ml": 51.017
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 28670,
+          "predicted_voxels": 34698,
+          "dice": 0.8723014770862265,
+          "iou": 0.7735236495941785,
+          "predicted_ml": 34.698,
+          "reference_ml": 28.67
+        }
+      },
+      "macro_foreground_dice": 0.7409754024729388,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_161",
+      "patient_id": "BRATS_161",
+      "classes": {
+        "1": {
+          "reference_voxels": 71631,
+          "predicted_voxels": 62733,
+          "dice": 0.7818463278854455,
+          "iou": 0.6418289792028153,
+          "predicted_ml": 62.733,
+          "reference_ml": 71.631
+        },
+        "2": {
+          "reference_voxels": 35916,
+          "predicted_voxels": 41223,
+          "dice": 0.7427371368568428,
+          "iou": 0.5907572383073497,
+          "predicted_ml": 41.223,
+          "reference_ml": 35.916
+        },
+        "3": {
+          "reference_voxels": 120,
+          "predicted_voxels": 359,
+          "dice": 0.3089770354906054,
+          "iou": 0.18271604938271604,
+          "predicted_ml": 0.359,
+          "reference_ml": 0.12
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 107667,
+          "predicted_voxels": 104315,
+          "dice": 0.9107377041446916,
+          "iou": 0.8361050479853099,
+          "predicted_ml": 104.315,
+          "reference_ml": 107.667
+        },
+        "tumour_core": {
+          "reference_voxels": 36036,
+          "predicted_voxels": 41582,
+          "dice": 0.7453168079569172,
+          "iou": 0.5940278890189555,
+          "predicted_ml": 41.582,
+          "reference_ml": 36.036
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 120,
+          "predicted_voxels": 359,
+          "dice": 0.3089770354906054,
+          "iou": 0.18271604938271604,
+          "predicted_ml": 0.359,
+          "reference_ml": 0.12
+        }
+      },
+      "macro_foreground_dice": 0.6111868334109646,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_165",
+      "patient_id": "BRATS_165",
+      "classes": {
+        "1": {
+          "reference_voxels": 146896,
+          "predicted_voxels": 129954,
+          "dice": 0.918107278309554,
+          "iou": 0.8486121219810231,
+          "predicted_ml": 129.954,
+          "reference_ml": 146.896
+        },
+        "2": {
+          "reference_voxels": 6675,
+          "predicted_voxels": 6041,
+          "dice": 0.6709657124882038,
+          "iou": 0.5048520710059171,
+          "predicted_ml": 6.041,
+          "reference_ml": 6.675
+        },
+        "3": {
+          "reference_voxels": 10890,
+          "predicted_voxels": 12129,
+          "dice": 0.8865719622920196,
+          "iou": 0.7962543893874366,
+          "predicted_ml": 12.129,
+          "reference_ml": 10.89
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 164461,
+          "predicted_voxels": 148124,
+          "dice": 0.9339283714829566,
+          "iou": 0.8760465493131036,
+          "predicted_ml": 148.124,
+          "reference_ml": 164.461
+        },
+        "tumour_core": {
+          "reference_voxels": 17565,
+          "predicted_voxels": 18170,
+          "dice": 0.9240800335805233,
+          "iou": 0.8588743237619643,
+          "predicted_ml": 18.17,
+          "reference_ml": 17.565
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 10890,
+          "predicted_voxels": 12129,
+          "dice": 0.8865719622920196,
+          "iou": 0.7962543893874366,
+          "predicted_ml": 12.129,
+          "reference_ml": 10.89
+        }
+      },
+      "macro_foreground_dice": 0.8252149843632592,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_167",
+      "patient_id": "BRATS_167",
+      "classes": {
+        "1": {
+          "reference_voxels": 11202,
+          "predicted_voxels": 29357,
+          "dice": 0.4110554993959417,
+          "iou": 0.25869720386059647,
+          "predicted_ml": 29.357,
+          "reference_ml": 11.202
+        },
+        "2": {
+          "reference_voxels": 2546,
+          "predicted_voxels": 2640,
+          "dice": 0.6864635557269572,
+          "iou": 0.5226071638285379,
+          "predicted_ml": 2.64,
+          "reference_ml": 2.546
+        },
+        "3": {
+          "reference_voxels": 8835,
+          "predicted_voxels": 8227,
+          "dice": 0.9084515297151565,
+          "iou": 0.8322594501718213,
+          "predicted_ml": 8.227,
+          "reference_ml": 8.835
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 22583,
+          "predicted_voxels": 40224,
+          "dice": 0.6379862117279921,
+          "iou": 0.4684139156457496,
+          "predicted_ml": 40.224,
+          "reference_ml": 22.583
+        },
+        "tumour_core": {
+          "reference_voxels": 11381,
+          "predicted_voxels": 10867,
+          "dice": 0.935814455231931,
+          "iou": 0.8793715154586923,
+          "predicted_ml": 10.867,
+          "reference_ml": 11.381
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 8835,
+          "predicted_voxels": 8227,
+          "dice": 0.9084515297151565,
+          "iou": 0.8322594501718213,
+          "predicted_ml": 8.227,
+          "reference_ml": 8.835
+        }
+      },
+      "macro_foreground_dice": 0.6686568616126851,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_169",
+      "patient_id": "BRATS_169",
+      "classes": {
+        "1": {
+          "reference_voxels": 45070,
+          "predicted_voxels": 45556,
+          "dice": 0.6586189393772207,
+          "iou": 0.4910006251850877,
+          "predicted_ml": 45.556,
+          "reference_ml": 45.07
+        },
+        "2": {
+          "reference_voxels": 42316,
+          "predicted_voxels": 35256,
+          "dice": 0.6101686175424123,
+          "iou": 0.43902348532630875,
+          "predicted_ml": 35.256,
+          "reference_ml": 42.316
+        },
+        "3": {
+          "reference_voxels": 26,
+          "predicted_voxels": 67,
+          "dice": 0.25806451612903225,
+          "iou": 0.14814814814814814,
+          "predicted_ml": 0.067,
+          "reference_ml": 0.026
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 87412,
+          "predicted_voxels": 80879,
+          "dice": 0.8789537170734026,
+          "iou": 0.7840476619563028,
+          "predicted_ml": 80.879,
+          "reference_ml": 87.412
+        },
+        "tumour_core": {
+          "reference_voxels": 42342,
+          "predicted_voxels": 35323,
+          "dice": 0.6108285585527586,
+          "iou": 0.4397071090925943,
+          "predicted_ml": 35.323,
+          "reference_ml": 42.342
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 26,
+          "predicted_voxels": 67,
+          "dice": 0.25806451612903225,
+          "iou": 0.14814814814814814,
+          "predicted_ml": 0.067,
+          "reference_ml": 0.026
+        }
+      },
+      "macro_foreground_dice": 0.5089506910162217,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_172",
+      "patient_id": "BRATS_172",
+      "classes": {
+        "1": {
+          "reference_voxels": 99125,
+          "predicted_voxels": 93653,
+          "dice": 0.9415700961727999,
+          "iou": 0.8895913586418482,
+          "predicted_ml": 93.653,
+          "reference_ml": 99.125
+        },
+        "2": {
+          "reference_voxels": 9160,
+          "predicted_voxels": 7814,
+          "dice": 0.7385412984564629,
+          "iou": 0.5854660937791892,
+          "predicted_ml": 7.814,
+          "reference_ml": 9.16
+        },
+        "3": {
+          "reference_voxels": 35681,
+          "predicted_voxels": 35371,
+          "dice": 0.9524573551764904,
+          "iou": 0.9092301491334139,
+          "predicted_ml": 35.371,
+          "reference_ml": 35.681
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 143966,
+          "predicted_voxels": 136838,
+          "dice": 0.9692881867779661,
+          "iou": 0.9404065950771867,
+          "predicted_ml": 136.838,
+          "reference_ml": 143.966
+        },
+        "tumour_core": {
+          "reference_voxels": 44841,
+          "predicted_voxels": 43185,
+          "dice": 0.9515370458728103,
+          "iou": 0.9075542842283189,
+          "predicted_ml": 43.185,
+          "reference_ml": 44.841
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 35681,
+          "predicted_voxels": 35371,
+          "dice": 0.9524573551764904,
+          "iou": 0.9092301491334139,
+          "predicted_ml": 35.371,
+          "reference_ml": 35.681
+        }
+      },
+      "macro_foreground_dice": 0.8775229166019177,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_174",
+      "patient_id": "BRATS_174",
+      "classes": {
+        "1": {
+          "reference_voxels": 47888,
+          "predicted_voxels": 53625,
+          "dice": 0.8360111512811167,
+          "iou": 0.71822951929587,
+          "predicted_ml": 53.625,
+          "reference_ml": 47.888
+        },
+        "2": {
+          "reference_voxels": 26728,
+          "predicted_voxels": 16549,
+          "dice": 0.6595189130485015,
+          "iou": 0.49200165483003516,
+          "predicted_ml": 16.549,
+          "reference_ml": 26.728
+        },
+        "3": {
+          "reference_voxels": 31070,
+          "predicted_voxels": 31861,
+          "dice": 0.9104574851821836,
+          "iou": 0.8356328209316571,
+          "predicted_ml": 31.861,
+          "reference_ml": 31.07
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 105686,
+          "predicted_voxels": 102035,
+          "dice": 0.9633498779613039,
+          "iou": 0.9292912405843945,
+          "predicted_ml": 102.035,
+          "reference_ml": 105.686
+        },
+        "tumour_core": {
+          "reference_voxels": 57798,
+          "predicted_voxels": 48410,
+          "dice": 0.901965953600482,
+          "iou": 0.8214371462870863,
+          "predicted_ml": 48.41,
+          "reference_ml": 57.798
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 31070,
+          "predicted_voxels": 31861,
+          "dice": 0.9104574851821836,
+          "iou": 0.8356328209316571,
+          "predicted_ml": 31.861,
+          "reference_ml": 31.07
+        }
+      },
+      "macro_foreground_dice": 0.8019958498372673,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_192",
+      "patient_id": "BRATS_192",
+      "classes": {
+        "1": {
+          "reference_voxels": 79934,
+          "predicted_voxels": 67704,
+          "dice": 0.8127040463837224,
+          "iou": 0.6844999714758401,
+          "predicted_ml": 67.704,
+          "reference_ml": 79.934
+        },
+        "2": {
+          "reference_voxels": 10317,
+          "predicted_voxels": 6106,
+          "dice": 0.457529075077635,
+          "iou": 0.2966208747828833,
+          "predicted_ml": 6.106,
+          "reference_ml": 10.317
+        },
+        "3": {
+          "reference_voxels": 6527,
+          "predicted_voxels": 7560,
+          "dice": 0.7544544615603038,
+          "iou": 0.6057221019035678,
+          "predicted_ml": 7.56,
+          "reference_ml": 6.527
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 96778,
+          "predicted_voxels": 81370,
+          "dice": 0.8406718009744707,
+          "iou": 0.7251370247709799,
+          "predicted_ml": 81.37,
+          "reference_ml": 96.778
+        },
+        "tumour_core": {
+          "reference_voxels": 16844,
+          "predicted_voxels": 13666,
+          "dice": 0.7483448049819731,
+          "iou": 0.5978841520896617,
+          "predicted_ml": 13.666,
+          "reference_ml": 16.844
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 6527,
+          "predicted_voxels": 7560,
+          "dice": 0.7544544615603038,
+          "iou": 0.6057221019035678,
+          "predicted_ml": 7.56,
+          "reference_ml": 6.527
+        }
+      },
+      "macro_foreground_dice": 0.6748958610072204,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_203",
+      "patient_id": "BRATS_203",
+      "classes": {
+        "1": {
+          "reference_voxels": 99270,
+          "predicted_voxels": 91191,
+          "dice": 0.8858611474265072,
+          "iou": 0.7951083883129123,
+          "predicted_ml": 91.191,
+          "reference_ml": 99.27
+        },
+        "2": {
+          "reference_voxels": 17447,
+          "predicted_voxels": 15143,
+          "dice": 0.766738263270942,
+          "iou": 0.6217157643312102,
+          "predicted_ml": 15.143,
+          "reference_ml": 17.447
+        },
+        "3": {
+          "reference_voxels": 9779,
+          "predicted_voxels": 12642,
+          "dice": 0.7763257660229249,
+          "iou": 0.634421927394664,
+          "predicted_ml": 12.642,
+          "reference_ml": 9.779
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 126496,
+          "predicted_voxels": 118976,
+          "dice": 0.9360986181723374,
+          "iou": 0.879873486548373,
+          "predicted_ml": 118.976,
+          "reference_ml": 126.496
+        },
+        "tumour_core": {
+          "reference_voxels": 27226,
+          "predicted_voxels": 27785,
+          "dice": 0.8845503626547417,
+          "iou": 0.7929989244157623,
+          "predicted_ml": 27.785,
+          "reference_ml": 27.226
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 9779,
+          "predicted_voxels": 12642,
+          "dice": 0.7763257660229249,
+          "iou": 0.634421927394664,
+          "predicted_ml": 12.642,
+          "reference_ml": 9.779
+        }
+      },
+      "macro_foreground_dice": 0.8096417255734581,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_223",
+      "patient_id": "BRATS_223",
+      "classes": {
+        "1": {
+          "reference_voxels": 202099,
+          "predicted_voxels": 178890,
+          "dice": 0.7914296738226038,
+          "iou": 0.6548478451608419,
+          "predicted_ml": 178.89,
+          "reference_ml": 202.099
+        },
+        "2": {
+          "reference_voxels": 45345,
+          "predicted_voxels": 49832,
+          "dice": 0.4657848009498093,
+          "iou": 0.3035980879593486,
+          "predicted_ml": 49.832,
+          "reference_ml": 45.345
+        },
+        "3": {
+          "reference_voxels": 17810,
+          "predicted_voxels": 31526,
+          "dice": 0.6638560077833631,
+          "iou": 0.4968446601941748,
+          "predicted_ml": 31.526,
+          "reference_ml": 17.81
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 265254,
+          "predicted_voxels": 260248,
+          "dice": 0.8858539073114851,
+          "iou": 0.7950967230642577,
+          "predicted_ml": 260.248,
+          "reference_ml": 265.254
+        },
+        "tumour_core": {
+          "reference_voxels": 63155,
+          "predicted_voxels": 81358,
+          "dice": 0.7327230076186917,
+          "iou": 0.578186940995315,
+          "predicted_ml": 81.358,
+          "reference_ml": 63.155
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 17810,
+          "predicted_voxels": 31526,
+          "dice": 0.6638560077833631,
+          "iou": 0.4968446601941748,
+          "predicted_ml": 31.526,
+          "reference_ml": 17.81
+        }
+      },
+      "macro_foreground_dice": 0.640356827518592,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_224",
+      "patient_id": "BRATS_224",
+      "classes": {
+        "1": {
+          "reference_voxels": 18283,
+          "predicted_voxels": 13910,
+          "dice": 0.7720311869039853,
+          "iou": 0.6287058585449762,
+          "predicted_ml": 13.91,
+          "reference_ml": 18.283
+        },
+        "2": {
+          "reference_voxels": 1491,
+          "predicted_voxels": 779,
+          "dice": 0.3876651982378855,
+          "iou": 0.24043715846994534,
+          "predicted_ml": 0.779,
+          "reference_ml": 1.491
+        },
+        "3": {
+          "reference_voxels": 1591,
+          "predicted_voxels": 1304,
+          "dice": 0.8214162348877375,
+          "iou": 0.6969519343493552,
+          "predicted_ml": 1.304,
+          "reference_ml": 1.591
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 21365,
+          "predicted_voxels": 15993,
+          "dice": 0.8354836982707854,
+          "iou": 0.7174512688488415,
+          "predicted_ml": 15.993,
+          "reference_ml": 21.365
+        },
+        "tumour_core": {
+          "reference_voxels": 3082,
+          "predicted_voxels": 2083,
+          "dice": 0.7481122942884801,
+          "iou": 0.5975873801422827,
+          "predicted_ml": 2.083,
+          "reference_ml": 3.082
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 1591,
+          "predicted_voxels": 1304,
+          "dice": 0.8214162348877375,
+          "iou": 0.6969519343493552,
+          "predicted_ml": 1.304,
+          "reference_ml": 1.591
+        }
+      },
+      "macro_foreground_dice": 0.6603708733432027,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_225",
+      "patient_id": "BRATS_225",
+      "classes": {
+        "1": {
+          "reference_voxels": 54587,
+          "predicted_voxels": 51041,
+          "dice": 0.8026659597833907,
+          "iou": 0.6703776329938642,
+          "predicted_ml": 51.041,
+          "reference_ml": 54.587
+        },
+        "2": {
+          "reference_voxels": 30054,
+          "predicted_voxels": 27253,
+          "dice": 0.887535554120788,
+          "iou": 0.797810264776007,
+          "predicted_ml": 27.253,
+          "reference_ml": 30.054
+        },
+        "3": {
+          "reference_voxels": 64294,
+          "predicted_voxels": 68737,
+          "dice": 0.9207778638061805,
+          "iou": 0.8531865988716305,
+          "predicted_ml": 68.737,
+          "reference_ml": 64.294
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 148935,
+          "predicted_voxels": 147031,
+          "dice": 0.9518458201279877,
+          "iou": 0.9081162279429305,
+          "predicted_ml": 147.031,
+          "reference_ml": 148.935
+        },
+        "tumour_core": {
+          "reference_voxels": 94348,
+          "predicted_voxels": 95990,
+          "dice": 0.9599239248074478,
+          "iou": 0.9229362617823262,
+          "predicted_ml": 95.99,
+          "reference_ml": 94.348
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 64294,
+          "predicted_voxels": 68737,
+          "dice": 0.9207778638061805,
+          "iou": 0.8531865988716305,
+          "predicted_ml": 68.737,
+          "reference_ml": 64.294
+        }
+      },
+      "macro_foreground_dice": 0.8703264592367864,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_226",
+      "patient_id": "BRATS_226",
+      "classes": {
+        "1": {
+          "reference_voxels": 51564,
+          "predicted_voxels": 35683,
+          "dice": 0.6777081160383738,
+          "iou": 0.51252535409046,
+          "predicted_ml": 35.683,
+          "reference_ml": 51.564
+        },
+        "2": {
+          "reference_voxels": 9901,
+          "predicted_voxels": 9729,
+          "dice": 0.8465613856342333,
+          "iou": 0.7339457645084356,
+          "predicted_ml": 9.729,
+          "reference_ml": 9.901
+        },
+        "3": {
+          "reference_voxels": 0,
+          "predicted_voxels": 20,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.02,
+          "reference_ml": 0.0
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 61465,
+          "predicted_voxels": 45432,
+          "dice": 0.7574581138853289,
+          "iou": 0.6096036860808287,
+          "predicted_ml": 45.432,
+          "reference_ml": 61.465
+        },
+        "tumour_core": {
+          "reference_voxels": 9901,
+          "predicted_voxels": 9749,
+          "dice": 0.8456997455470738,
+          "iou": 0.7326514416718103,
+          "predicted_ml": 9.749,
+          "reference_ml": 9.901
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 0,
+          "predicted_voxels": 20,
+          "dice": 0.0,
+          "iou": 0.0,
+          "predicted_ml": 0.02,
+          "reference_ml": 0.0
+        }
+      },
+      "macro_foreground_dice": 0.508089833890869,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_238",
+      "patient_id": "BRATS_238",
+      "classes": {
+        "1": {
+          "reference_voxels": 10376,
+          "predicted_voxels": 12970,
+          "dice": 0.8050201319283817,
+          "iou": 0.6736683633235357,
+          "predicted_ml": 12.97,
+          "reference_ml": 10.376
+        },
+        "2": {
+          "reference_voxels": 3052,
+          "predicted_voxels": 1109,
+          "dice": 0.29416005767844267,
+          "iou": 0.1724429416737109,
+          "predicted_ml": 1.109,
+          "reference_ml": 3.052
+        },
+        "3": {
+          "reference_voxels": 2899,
+          "predicted_voxels": 2560,
+          "dice": 0.8822128594980766,
+          "iou": 0.789249426417568,
+          "predicted_ml": 2.56,
+          "reference_ml": 2.899
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 16327,
+          "predicted_voxels": 16639,
+          "dice": 0.9299884729721531,
+          "iou": 0.8691387424165108,
+          "predicted_ml": 16.639,
+          "reference_ml": 16.327
+        },
+        "tumour_core": {
+          "reference_voxels": 5951,
+          "predicted_voxels": 3669,
+          "dice": 0.7484407484407485,
+          "iou": 0.5980066445182725,
+          "predicted_ml": 3.669,
+          "reference_ml": 5.951
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 2899,
+          "predicted_voxels": 2560,
+          "dice": 0.8822128594980766,
+          "iou": 0.789249426417568,
+          "predicted_ml": 2.56,
+          "reference_ml": 2.899
+        }
+      },
+      "macro_foreground_dice": 0.6604643497016337,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_239",
+      "patient_id": "BRATS_239",
+      "classes": {
+        "1": {
+          "reference_voxels": 114525,
+          "predicted_voxels": 118112,
+          "dice": 0.904026444632625,
+          "iou": 0.8248615490814389,
+          "predicted_ml": 118.112,
+          "reference_ml": 114.525
+        },
+        "2": {
+          "reference_voxels": 20649,
+          "predicted_voxels": 15727,
+          "dice": 0.6795139652518144,
+          "iou": 0.5145938293708623,
+          "predicted_ml": 15.727,
+          "reference_ml": 20.649
+        },
+        "3": {
+          "reference_voxels": 31732,
+          "predicted_voxels": 33506,
+          "dice": 0.908887458229866,
+          "iou": 0.8329914866117839,
+          "predicted_ml": 33.506,
+          "reference_ml": 31.732
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 166906,
+          "predicted_voxels": 167345,
+          "dice": 0.9446194626194088,
+          "iou": 0.8950510542518753,
+          "predicted_ml": 167.345,
+          "reference_ml": 166.906
+        },
+        "tumour_core": {
+          "reference_voxels": 52381,
+          "predicted_voxels": 49233,
+          "dice": 0.9239081228964513,
+          "iou": 0.858577359940007,
+          "predicted_ml": 49.233,
+          "reference_ml": 52.381
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 31732,
+          "predicted_voxels": 33506,
+          "dice": 0.908887458229866,
+          "iou": 0.8329914866117839,
+          "predicted_ml": 33.506,
+          "reference_ml": 31.732
+        }
+      },
+      "macro_foreground_dice": 0.8308092893714352,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_243",
+      "patient_id": "BRATS_243",
+      "classes": {
+        "1": {
+          "reference_voxels": 12743,
+          "predicted_voxels": 28528,
+          "dice": 0.4497104504373531,
+          "iou": 0.2900815854459067,
+          "predicted_ml": 28.528,
+          "reference_ml": 12.743
+        },
+        "2": {
+          "reference_voxels": 64882,
+          "predicted_voxels": 49645,
+          "dice": 0.8200162407117972,
+          "iou": 0.6949385822110404,
+          "predicted_ml": 49.645,
+          "reference_ml": 64.882
+        },
+        "3": {
+          "reference_voxels": 3257,
+          "predicted_voxels": 3176,
+          "dice": 0.849370433701228,
+          "iou": 0.7381788705755201,
+          "predicted_ml": 3.176,
+          "reference_ml": 3.257
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 80882,
+          "predicted_voxels": 81349,
+          "dice": 0.9334590799538929,
+          "iou": 0.875221065042248,
+          "predicted_ml": 81.349,
+          "reference_ml": 80.882
+        },
+        "tumour_core": {
+          "reference_voxels": 68139,
+          "predicted_voxels": 52821,
+          "dice": 0.835300925925926,
+          "iou": 0.7171817549438537,
+          "predicted_ml": 52.821,
+          "reference_ml": 68.139
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 3257,
+          "predicted_voxels": 3176,
+          "dice": 0.849370433701228,
+          "iou": 0.7381788705755201,
+          "predicted_ml": 3.176,
+          "reference_ml": 3.257
+        }
+      },
+      "macro_foreground_dice": 0.7063657082834593,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_246",
+      "patient_id": "BRATS_246",
+      "classes": {
+        "1": {
+          "reference_voxels": 50413,
+          "predicted_voxels": 36740,
+          "dice": 0.6894082819868507,
+          "iou": 0.5260282607553711,
+          "predicted_ml": 36.74,
+          "reference_ml": 50.413
+        },
+        "2": {
+          "reference_voxels": 19968,
+          "predicted_voxels": 15102,
+          "dice": 0.6045052751639578,
+          "iou": 0.4331834899877401,
+          "predicted_ml": 15.102,
+          "reference_ml": 19.968
+        },
+        "3": {
+          "reference_voxels": 11012,
+          "predicted_voxels": 9160,
+          "dice": 0.833035891334523,
+          "iou": 0.7138487680543756,
+          "predicted_ml": 9.16,
+          "reference_ml": 11.012
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 81393,
+          "predicted_voxels": 61002,
+          "dice": 0.8508163910249658,
+          "iou": 0.7403659296740366,
+          "predicted_ml": 61.002,
+          "reference_ml": 81.393
+        },
+        "tumour_core": {
+          "reference_voxels": 30980,
+          "predicted_voxels": 24262,
+          "dice": 0.7575033489011984,
+          "iou": 0.6096622861971502,
+          "predicted_ml": 24.262,
+          "reference_ml": 30.98
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 11012,
+          "predicted_voxels": 9160,
+          "dice": 0.833035891334523,
+          "iou": 0.7138487680543756,
+          "predicted_ml": 9.16,
+          "reference_ml": 11.012
+        }
+      },
+      "macro_foreground_dice": 0.7089831494951104,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_247",
+      "patient_id": "BRATS_247",
+      "classes": {
+        "1": {
+          "reference_voxels": 47516,
+          "predicted_voxels": 42576,
+          "dice": 0.6945344758691115,
+          "iou": 0.5320205421215523,
+          "predicted_ml": 42.576,
+          "reference_ml": 47.516
+        },
+        "2": {
+          "reference_voxels": 16428,
+          "predicted_voxels": 5151,
+          "dice": 0.3843551601093656,
+          "iou": 0.23789582377237264,
+          "predicted_ml": 5.151,
+          "reference_ml": 16.428
+        },
+        "3": {
+          "reference_voxels": 10048,
+          "predicted_voxels": 9998,
+          "dice": 0.9189863314376933,
+          "iou": 0.8501153668666359,
+          "predicted_ml": 9.998,
+          "reference_ml": 10.048
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 73992,
+          "predicted_voxels": 57725,
+          "dice": 0.8705330367378546,
+          "iou": 0.7707467903475163,
+          "predicted_ml": 57.725,
+          "reference_ml": 73.992
+        },
+        "tumour_core": {
+          "reference_voxels": 26476,
+          "predicted_voxels": 15149,
+          "dice": 0.7027987987987988,
+          "iou": 0.5417808726572338,
+          "predicted_ml": 15.149,
+          "reference_ml": 26.476
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 10048,
+          "predicted_voxels": 9998,
+          "dice": 0.9189863314376933,
+          "iou": 0.8501153668666359,
+          "predicted_ml": 9.998,
+          "reference_ml": 10.048
+        }
+      },
+      "macro_foreground_dice": 0.6659586558053902,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_256",
+      "patient_id": "BRATS_256",
+      "classes": {
+        "1": {
+          "reference_voxels": 32664,
+          "predicted_voxels": 42270,
+          "dice": 0.736488109536392,
+          "iou": 0.5828897338403042,
+          "predicted_ml": 42.27,
+          "reference_ml": 32.664
+        },
+        "2": {
+          "reference_voxels": 46692,
+          "predicted_voxels": 43407,
+          "dice": 0.8270014095605944,
+          "iou": 0.7050318869102814,
+          "predicted_ml": 43.407,
+          "reference_ml": 46.692
+        },
+        "3": {
+          "reference_voxels": 30400,
+          "predicted_voxels": 25330,
+          "dice": 0.8478377893414678,
+          "iou": 0.7358666874318642,
+          "predicted_ml": 25.33,
+          "reference_ml": 30.4
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 109756,
+          "predicted_voxels": 111007,
+          "dice": 0.9680245330965787,
+          "iou": 0.9380305677239248,
+          "predicted_ml": 111.007,
+          "reference_ml": 109.756
+        },
+        "tumour_core": {
+          "reference_voxels": 77092,
+          "predicted_voxels": 68737,
+          "dice": 0.9075835396251775,
+          "iou": 0.8308036106612432,
+          "predicted_ml": 68.737,
+          "reference_ml": 77.092
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 30400,
+          "predicted_voxels": 25330,
+          "dice": 0.8478377893414678,
+          "iou": 0.7358666874318642,
+          "predicted_ml": 25.33,
+          "reference_ml": 30.4
+        }
+      },
+      "macro_foreground_dice": 0.8037757694794848,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_263",
+      "patient_id": "BRATS_263",
+      "classes": {
+        "1": {
+          "reference_voxels": 117191,
+          "predicted_voxels": 107418,
+          "dice": 0.9227145840104359,
+          "iou": 0.8565182172849303,
+          "predicted_ml": 107.418,
+          "reference_ml": 117.191
+        },
+        "2": {
+          "reference_voxels": 11591,
+          "predicted_voxels": 8288,
+          "dice": 0.6931938226268927,
+          "iou": 0.5304488413272769,
+          "predicted_ml": 8.288,
+          "reference_ml": 11.591
+        },
+        "3": {
+          "reference_voxels": 36544,
+          "predicted_voxels": 37198,
+          "dice": 0.9556833283610425,
+          "iou": 0.9151279054668225,
+          "predicted_ml": 37.198,
+          "reference_ml": 36.544
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 165326,
+          "predicted_voxels": 152904,
+          "dice": 0.9513182289539013,
+          "iou": 0.9071562558057306,
+          "predicted_ml": 152.904,
+          "reference_ml": 165.326
+        },
+        "tumour_core": {
+          "reference_voxels": 48135,
+          "predicted_voxels": 45486,
+          "dice": 0.9455784492795419,
+          "iou": 0.8967745856801329,
+          "predicted_ml": 45.486,
+          "reference_ml": 48.135
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 36544,
+          "predicted_voxels": 37198,
+          "dice": 0.9556833283610425,
+          "iou": 0.9151279054668225,
+          "predicted_ml": 37.198,
+          "reference_ml": 36.544
+        }
+      },
+      "macro_foreground_dice": 0.857197244999457,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_264",
+      "patient_id": "BRATS_264",
+      "classes": {
+        "1": {
+          "reference_voxels": 19162,
+          "predicted_voxels": 17735,
+          "dice": 0.8319917608477654,
+          "iou": 0.7123166883237424,
+          "predicted_ml": 17.735,
+          "reference_ml": 19.162
+        },
+        "2": {
+          "reference_voxels": 733,
+          "predicted_voxels": 2290,
+          "dice": 0.243466754879259,
+          "iou": 0.13860640301318267,
+          "predicted_ml": 2.29,
+          "reference_ml": 0.733
+        },
+        "3": {
+          "reference_voxels": 5165,
+          "predicted_voxels": 5398,
+          "dice": 0.9497301902868504,
+          "iou": 0.9042725797728501,
+          "predicted_ml": 5.398,
+          "reference_ml": 5.165
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 25060,
+          "predicted_voxels": 25423,
+          "dice": 0.9090981122358022,
+          "iou": 0.8333454386984311,
+          "predicted_ml": 25.423,
+          "reference_ml": 25.06
+        },
+        "tumour_core": {
+          "reference_voxels": 5898,
+          "predicted_voxels": 7688,
+          "dice": 0.8262917709406742,
+          "iou": 0.7040010033864292,
+          "predicted_ml": 7.688,
+          "reference_ml": 5.898
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 5165,
+          "predicted_voxels": 5398,
+          "dice": 0.9497301902868504,
+          "iou": 0.9042725797728501,
+          "predicted_ml": 5.398,
+          "reference_ml": 5.165
+        }
+      },
+      "macro_foreground_dice": 0.6750629020046249,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_272",
+      "patient_id": "BRATS_272",
+      "classes": {
+        "1": {
+          "reference_voxels": 93282,
+          "predicted_voxels": 92145,
+          "dice": 0.8862679113613443,
+          "iou": 0.7957640085998179,
+          "predicted_ml": 92.145,
+          "reference_ml": 93.282
+        },
+        "2": {
+          "reference_voxels": 3815,
+          "predicted_voxels": 2017,
+          "dice": 0.30246913580246915,
+          "iou": 0.1781818181818182,
+          "predicted_ml": 2.017,
+          "reference_ml": 3.815
+        },
+        "3": {
+          "reference_voxels": 888,
+          "predicted_voxels": 867,
+          "dice": 0.7578347578347578,
+          "iou": 0.6100917431192661,
+          "predicted_ml": 0.867,
+          "reference_ml": 0.888
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 97985,
+          "predicted_voxels": 95029,
+          "dice": 0.9093640875791393,
+          "iou": 0.8337925399509757,
+          "predicted_ml": 95.029,
+          "reference_ml": 97.985
+        },
+        "tumour_core": {
+          "reference_voxels": 4703,
+          "predicted_voxels": 2884,
+          "dice": 0.4929484644787136,
+          "iou": 0.3270946300507259,
+          "predicted_ml": 2.884,
+          "reference_ml": 4.703
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 888,
+          "predicted_voxels": 867,
+          "dice": 0.7578347578347578,
+          "iou": 0.6100917431192661,
+          "predicted_ml": 0.867,
+          "reference_ml": 0.888
+        }
+      },
+      "macro_foreground_dice": 0.6488572683328572,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_279",
+      "patient_id": "BRATS_279",
+      "classes": {
+        "1": {
+          "reference_voxels": 129871,
+          "predicted_voxels": 122899,
+          "dice": 0.9013411401669502,
+          "iou": 0.8204012848027424,
+          "predicted_ml": 122.899,
+          "reference_ml": 129.871
+        },
+        "2": {
+          "reference_voxels": 21122,
+          "predicted_voxels": 19625,
+          "dice": 0.7685473777210592,
+          "iou": 0.6240982103710789,
+          "predicted_ml": 19.625,
+          "reference_ml": 21.122
+        },
+        "3": {
+          "reference_voxels": 36577,
+          "predicted_voxels": 42431,
+          "dice": 0.8791261644390441,
+          "iou": 0.7843221391630344,
+          "predicted_ml": 42.431,
+          "reference_ml": 36.577
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 187570,
+          "predicted_voxels": 184955,
+          "dice": 0.9433944030601973,
+          "iou": 0.8928538764062072,
+          "predicted_ml": 184.955,
+          "reference_ml": 187.57
+        },
+        "tumour_core": {
+          "reference_voxels": 57699,
+          "predicted_voxels": 62056,
+          "dice": 0.9419230929815039,
+          "iou": 0.890221766237866,
+          "predicted_ml": 62.056,
+          "reference_ml": 57.699
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 36577,
+          "predicted_voxels": 42431,
+          "dice": 0.8791261644390441,
+          "iou": 0.7843221391630344,
+          "predicted_ml": 42.431,
+          "reference_ml": 36.577
+        }
+      },
+      "macro_foreground_dice": 0.8496715607756845,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_282",
+      "patient_id": "BRATS_282",
+      "classes": {
+        "1": {
+          "reference_voxels": 35416,
+          "predicted_voxels": 33845,
+          "dice": 0.7889288344089748,
+          "iou": 0.6514306151645207,
+          "predicted_ml": 33.845,
+          "reference_ml": 35.416
+        },
+        "2": {
+          "reference_voxels": 26912,
+          "predicted_voxels": 26692,
+          "dice": 0.8812775166032386,
+          "iou": 0.7877534685165422,
+          "predicted_ml": 26.692,
+          "reference_ml": 26.912
+        },
+        "3": {
+          "reference_voxels": 18354,
+          "predicted_voxels": 14397,
+          "dice": 0.7483740954474672,
+          "iou": 0.5979215456674473,
+          "predicted_ml": 14.397,
+          "reference_ml": 18.354
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 80682,
+          "predicted_voxels": 74934,
+          "dice": 0.8969386181369525,
+          "iou": 0.8131357265196267,
+          "predicted_ml": 74.934,
+          "reference_ml": 80.682
+        },
+        "tumour_core": {
+          "reference_voxels": 45266,
+          "predicted_voxels": 41089,
+          "dice": 0.9011638005905854,
+          "iou": 0.8201074928865002,
+          "predicted_ml": 41.089,
+          "reference_ml": 45.266
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 18354,
+          "predicted_voxels": 14397,
+          "dice": 0.7483740954474672,
+          "iou": 0.5979215456674473,
+          "predicted_ml": 14.397,
+          "reference_ml": 18.354
+        }
+      },
+      "macro_foreground_dice": 0.806193482153227,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_299",
+      "patient_id": "BRATS_299",
+      "classes": {
+        "1": {
+          "reference_voxels": 7553,
+          "predicted_voxels": 8181,
+          "dice": 0.27914071437650945,
+          "iou": 0.16221007534347762,
+          "predicted_ml": 8.181,
+          "reference_ml": 7.553
+        },
+        "2": {
+          "reference_voxels": 3624,
+          "predicted_voxels": 1585,
+          "dice": 0.5444423113841428,
+          "iou": 0.3740437879187549,
+          "predicted_ml": 1.585,
+          "reference_ml": 3.624
+        },
+        "3": {
+          "reference_voxels": 10786,
+          "predicted_voxels": 7667,
+          "dice": 0.6817319677017287,
+          "iou": 0.5171421524294993,
+          "predicted_ml": 7.667,
+          "reference_ml": 10.786
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 21963,
+          "predicted_voxels": 17433,
+          "dice": 0.5963041933191187,
+          "iou": 0.42481012658227846,
+          "predicted_ml": 17.433,
+          "reference_ml": 21.963
+        },
+        "tumour_core": {
+          "reference_voxels": 14410,
+          "predicted_voxels": 9252,
+          "dice": 0.7738145549826726,
+          "iou": 0.631074653615496,
+          "predicted_ml": 9.252,
+          "reference_ml": 14.41
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 10786,
+          "predicted_voxels": 7667,
+          "dice": 0.6817319677017287,
+          "iou": 0.5171421524294993,
+          "predicted_ml": 7.667,
+          "reference_ml": 10.786
+        }
+      },
+      "macro_foreground_dice": 0.5017716644874604,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_310",
+      "patient_id": "BRATS_310",
+      "classes": {
+        "1": {
+          "reference_voxels": 86107,
+          "predicted_voxels": 106398,
+          "dice": 0.8133399132490066,
+          "iou": 0.6854026037699507,
+          "predicted_ml": 106.398,
+          "reference_ml": 86.107
+        },
+        "2": {
+          "reference_voxels": 28051,
+          "predicted_voxels": 1587,
+          "dice": 0.08887239354882245,
+          "iou": 0.04650259524734296,
+          "predicted_ml": 1.587,
+          "reference_ml": 28.051
+        },
+        "3": {
+          "reference_voxels": 13031,
+          "predicted_voxels": 27698,
+          "dice": 0.6333570674458003,
+          "iou": 0.463440048866372,
+          "predicted_ml": 27.698,
+          "reference_ml": 13.031
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 127189,
+          "predicted_voxels": 135683,
+          "dice": 0.9063498584862595,
+          "iou": 0.828738390900553,
+          "predicted_ml": 135.683,
+          "reference_ml": 127.189
+        },
+        "tumour_core": {
+          "reference_voxels": 41082,
+          "predicted_voxels": 29285,
+          "dice": 0.8115451845325223,
+          "iou": 0.6828574161764003,
+          "predicted_ml": 29.285,
+          "reference_ml": 41.082
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 13031,
+          "predicted_voxels": 27698,
+          "dice": 0.6333570674458003,
+          "iou": 0.463440048866372,
+          "predicted_ml": 27.698,
+          "reference_ml": 13.031
+        }
+      },
+      "macro_foreground_dice": 0.5118564580812098,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_318",
+      "patient_id": "BRATS_318",
+      "classes": {
+        "1": {
+          "reference_voxels": 67155,
+          "predicted_voxels": 66512,
+          "dice": 0.8396537664494602,
+          "iou": 0.7236234687298517,
+          "predicted_ml": 66.512,
+          "reference_ml": 67.155
+        },
+        "2": {
+          "reference_voxels": 5200,
+          "predicted_voxels": 6104,
+          "dice": 0.6679051663128096,
+          "iou": 0.5013946075175986,
+          "predicted_ml": 6.104,
+          "reference_ml": 5.2
+        },
+        "3": {
+          "reference_voxels": 23272,
+          "predicted_voxels": 15170,
+          "dice": 0.758961552468654,
+          "iou": 0.6115536178418713,
+          "predicted_ml": 15.17,
+          "reference_ml": 23.272
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 95627,
+          "predicted_voxels": 87786,
+          "dice": 0.8743982160479356,
+          "iou": 0.7768273189634294,
+          "predicted_ml": 87.786,
+          "reference_ml": 95.627
+        },
+        "tumour_core": {
+          "reference_voxels": 28472,
+          "predicted_voxels": 21274,
+          "dice": 0.8312226108631849,
+          "iou": 0.7111898455505486,
+          "predicted_ml": 21.274,
+          "reference_ml": 28.472
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 23272,
+          "predicted_voxels": 15170,
+          "dice": 0.758961552468654,
+          "iou": 0.6115536178418713,
+          "predicted_ml": 15.17,
+          "reference_ml": 23.272
+        }
+      },
+      "macro_foreground_dice": 0.7555068284103079,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_327",
+      "patient_id": "BRATS_327",
+      "classes": {
+        "1": {
+          "reference_voxels": 98301,
+          "predicted_voxels": 98045,
+          "dice": 0.9316818269789046,
+          "iou": 0.8721014492753624,
+          "predicted_ml": 98.045,
+          "reference_ml": 98.301
+        },
+        "2": {
+          "reference_voxels": 8346,
+          "predicted_voxels": 6137,
+          "dice": 0.7164261548021819,
+          "iou": 0.5581495427649273,
+          "predicted_ml": 6.137,
+          "reference_ml": 8.346
+        },
+        "3": {
+          "reference_voxels": 16009,
+          "predicted_voxels": 16746,
+          "dice": 0.8957411082277514,
+          "iou": 0.8111694774675146,
+          "predicted_ml": 16.746,
+          "reference_ml": 16.009
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 122656,
+          "predicted_voxels": 120928,
+          "dice": 0.952074027850762,
+          "iou": 0.9085317600231922,
+          "predicted_ml": 120.928,
+          "reference_ml": 122.656
+        },
+        "tumour_core": {
+          "reference_voxels": 24355,
+          "predicted_voxels": 22883,
+          "dice": 0.9516067572716881,
+          "iou": 0.9076811243033681,
+          "predicted_ml": 22.883,
+          "reference_ml": 24.355
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 16009,
+          "predicted_voxels": 16746,
+          "dice": 0.8957411082277514,
+          "iou": 0.8111694774675146,
+          "predicted_ml": 16.746,
+          "reference_ml": 16.009
+        }
+      },
+      "macro_foreground_dice": 0.8479496966696126,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_331",
+      "patient_id": "BRATS_331",
+      "classes": {
+        "1": {
+          "reference_voxels": 164048,
+          "predicted_voxels": 118765,
+          "dice": 0.821369597578612,
+          "iou": 0.6968847875391502,
+          "predicted_ml": 118.765,
+          "reference_ml": 164.048
+        },
+        "2": {
+          "reference_voxels": 9752,
+          "predicted_voxels": 9128,
+          "dice": 0.8194915254237288,
+          "iou": 0.6941852117731515,
+          "predicted_ml": 9.128,
+          "reference_ml": 9.752
+        },
+        "3": {
+          "reference_voxels": 15211,
+          "predicted_voxels": 15806,
+          "dice": 0.8250314343746977,
+          "iou": 0.7021731972341126,
+          "predicted_ml": 15.806,
+          "reference_ml": 15.211
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 189011,
+          "predicted_voxels": 143699,
+          "dice": 0.8546782483243666,
+          "iou": 0.7462341888416523,
+          "predicted_ml": 143.699,
+          "reference_ml": 189.011
+        },
+        "tumour_core": {
+          "reference_voxels": 24963,
+          "predicted_voxels": 24934,
+          "dice": 0.9362486722648656,
+          "iou": 0.8801386638531972,
+          "predicted_ml": 24.934,
+          "reference_ml": 24.963
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 15211,
+          "predicted_voxels": 15806,
+          "dice": 0.8250314343746977,
+          "iou": 0.7021731972341126,
+          "predicted_ml": 15.806,
+          "reference_ml": 15.211
+        }
+      },
+      "macro_foreground_dice": 0.8219641857923462,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_335",
+      "patient_id": "BRATS_335",
+      "classes": {
+        "1": {
+          "reference_voxels": 67089,
+          "predicted_voxels": 70089,
+          "dice": 0.9093732231115776,
+          "iou": 0.8338079005414076,
+          "predicted_ml": 70.089,
+          "reference_ml": 67.089
+        },
+        "2": {
+          "reference_voxels": 19169,
+          "predicted_voxels": 13945,
+          "dice": 0.7815425499788609,
+          "iou": 0.6414196490532368,
+          "predicted_ml": 13.945,
+          "reference_ml": 19.169
+        },
+        "3": {
+          "reference_voxels": 15158,
+          "predicted_voxels": 19596,
+          "dice": 0.7629049893537434,
+          "iou": 0.6166907010280505,
+          "predicted_ml": 19.596,
+          "reference_ml": 15.158
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 101416,
+          "predicted_voxels": 103630,
+          "dice": 0.9399159213054632,
+          "iou": 0.8866428052225279,
+          "predicted_ml": 103.63,
+          "reference_ml": 101.416
+        },
+        "tumour_core": {
+          "reference_voxels": 34327,
+          "predicted_voxels": 33541,
+          "dice": 0.8901102139447162,
+          "iou": 0.8019807237872714,
+          "predicted_ml": 33.541,
+          "reference_ml": 34.327
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 15158,
+          "predicted_voxels": 19596,
+          "dice": 0.7629049893537434,
+          "iou": 0.6166907010280505,
+          "predicted_ml": 19.596,
+          "reference_ml": 15.158
+        }
+      },
+      "macro_foreground_dice": 0.8179402541480606,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_339",
+      "patient_id": "BRATS_339",
+      "classes": {
+        "1": {
+          "reference_voxels": 40539,
+          "predicted_voxels": 43860,
+          "dice": 0.8362184386070926,
+          "iou": 0.7185355622976523,
+          "predicted_ml": 43.86,
+          "reference_ml": 40.539
+        },
+        "2": {
+          "reference_voxels": 16558,
+          "predicted_voxels": 14346,
+          "dice": 0.8033911467771162,
+          "iou": 0.6713899405083829,
+          "predicted_ml": 14.346,
+          "reference_ml": 16.558
+        },
+        "3": {
+          "reference_voxels": 40108,
+          "predicted_voxels": 43875,
+          "dice": 0.8783444268482907,
+          "iou": 0.7830785562632696,
+          "predicted_ml": 43.875,
+          "reference_ml": 40.108
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 97205,
+          "predicted_voxels": 102081,
+          "dice": 0.9376273295665526,
+          "iou": 0.8825785486217386,
+          "predicted_ml": 102.081,
+          "reference_ml": 97.205
+        },
+        "tumour_core": {
+          "reference_voxels": 56666,
+          "predicted_voxels": 58221,
+          "dice": 0.9534934326773264,
+          "iou": 0.9111203526574067,
+          "predicted_ml": 58.221,
+          "reference_ml": 56.666
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 40108,
+          "predicted_voxels": 43875,
+          "dice": 0.8783444268482907,
+          "iou": 0.7830785562632696,
+          "predicted_ml": 43.875,
+          "reference_ml": 40.108
+        }
+      },
+      "macro_foreground_dice": 0.8393180040774998,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_357",
+      "patient_id": "BRATS_357",
+      "classes": {
+        "1": {
+          "reference_voxels": 10390,
+          "predicted_voxels": 12440,
+          "dice": 0.8327639071397285,
+          "iou": 0.7134494145902132,
+          "predicted_ml": 12.44,
+          "reference_ml": 10.39
+        },
+        "2": {
+          "reference_voxels": 782,
+          "predicted_voxels": 771,
+          "dice": 0.5421764327108821,
+          "iou": 0.37190812720848054,
+          "predicted_ml": 0.771,
+          "reference_ml": 0.782
+        },
+        "3": {
+          "reference_voxels": 2287,
+          "predicted_voxels": 2106,
+          "dice": 0.7621215570225358,
+          "iou": 0.6156675248253034,
+          "predicted_ml": 2.106,
+          "reference_ml": 2.287
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 13459,
+          "predicted_voxels": 15317,
+          "dice": 0.8812899638587712,
+          "iou": 0.7877733598409543,
+          "predicted_ml": 15.317,
+          "reference_ml": 13.459
+        },
+        "tumour_core": {
+          "reference_voxels": 3069,
+          "predicted_voxels": 2877,
+          "dice": 0.8634376051126808,
+          "iou": 0.7596922166321397,
+          "predicted_ml": 2.877,
+          "reference_ml": 3.069
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 2287,
+          "predicted_voxels": 2106,
+          "dice": 0.7621215570225358,
+          "iou": 0.6156675248253034,
+          "predicted_ml": 2.106,
+          "reference_ml": 2.287
+        }
+      },
+      "macro_foreground_dice": 0.7123539656243821,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_361",
+      "patient_id": "BRATS_361",
+      "classes": {
+        "1": {
+          "reference_voxels": 85940,
+          "predicted_voxels": 80069,
+          "dice": 0.9087579589058424,
+          "iou": 0.8327739627724171,
+          "predicted_ml": 80.069,
+          "reference_ml": 85.94
+        },
+        "2": {
+          "reference_voxels": 13856,
+          "predicted_voxels": 9977,
+          "dice": 0.7665002307724583,
+          "iou": 0.6214028165181305,
+          "predicted_ml": 9.977,
+          "reference_ml": 13.856
+        },
+        "3": {
+          "reference_voxels": 30709,
+          "predicted_voxels": 36718,
+          "dice": 0.8956352796357542,
+          "iou": 0.810995917490331,
+          "predicted_ml": 36.718,
+          "reference_ml": 30.709
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 130505,
+          "predicted_voxels": 126764,
+          "dice": 0.9463868557813029,
+          "iou": 0.8982299252569523,
+          "predicted_ml": 126.764,
+          "reference_ml": 130.505
+        },
+        "tumour_core": {
+          "reference_voxels": 44565,
+          "predicted_voxels": 46695,
+          "dice": 0.9579443348674118,
+          "iou": 0.9192832656838209,
+          "predicted_ml": 46.695,
+          "reference_ml": 44.565
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 30709,
+          "predicted_voxels": 36718,
+          "dice": 0.8956352796357542,
+          "iou": 0.810995917490331,
+          "predicted_ml": 36.718,
+          "reference_ml": 30.709
+        }
+      },
+      "macro_foreground_dice": 0.8569644897713516,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_364",
+      "patient_id": "BRATS_364",
+      "classes": {
+        "1": {
+          "reference_voxels": 22544,
+          "predicted_voxels": 20573,
+          "dice": 0.6621982048843843,
+          "iou": 0.4949897715058424,
+          "predicted_ml": 20.573,
+          "reference_ml": 22.544
+        },
+        "2": {
+          "reference_voxels": 22543,
+          "predicted_voxels": 15043,
+          "dice": 0.7211195657957751,
+          "iou": 0.563867853873679,
+          "predicted_ml": 15.043,
+          "reference_ml": 22.543
+        },
+        "3": {
+          "reference_voxels": 12743,
+          "predicted_voxels": 14608,
+          "dice": 0.6913092757120398,
+          "iou": 0.528244957255406,
+          "predicted_ml": 14.608,
+          "reference_ml": 12.743
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 57830,
+          "predicted_voxels": 50224,
+          "dice": 0.8935532233883059,
+          "iou": 0.8075880758807588,
+          "predicted_ml": 50.224,
+          "reference_ml": 57.83
+        },
+        "tumour_core": {
+          "reference_voxels": 35286,
+          "predicted_voxels": 29651,
+          "dice": 0.8564608774658515,
+          "iou": 0.7489563414042931,
+          "predicted_ml": 29.651,
+          "reference_ml": 35.286
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 12743,
+          "predicted_voxels": 14608,
+          "dice": 0.6913092757120398,
+          "iou": 0.528244957255406,
+          "predicted_ml": 14.608,
+          "reference_ml": 12.743
+        }
+      },
+      "macro_foreground_dice": 0.6915423487973996,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_370",
+      "patient_id": "BRATS_370",
+      "classes": {
+        "1": {
+          "reference_voxels": 23177,
+          "predicted_voxels": 26358,
+          "dice": 0.8513172504289896,
+          "iou": 0.7411247803163444,
+          "predicted_ml": 26.358,
+          "reference_ml": 23.177
+        },
+        "2": {
+          "reference_voxels": 8432,
+          "predicted_voxels": 3985,
+          "dice": 0.5105903197229604,
+          "iou": 0.3428138855845139,
+          "predicted_ml": 3.985,
+          "reference_ml": 8.432
+        },
+        "3": {
+          "reference_voxels": 10595,
+          "predicted_voxels": 9388,
+          "dice": 0.7280188159935945,
+          "iou": 0.5723503029349281,
+          "predicted_ml": 9.388,
+          "reference_ml": 10.595
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 42204,
+          "predicted_voxels": 39731,
+          "dice": 0.8882162689937145,
+          "iou": 0.7989110149954991,
+          "predicted_ml": 39.731,
+          "reference_ml": 42.204
+        },
+        "tumour_core": {
+          "reference_voxels": 19027,
+          "predicted_voxels": 13373,
+          "dice": 0.7874691358024691,
+          "iou": 0.6494425495087308,
+          "predicted_ml": 13.373,
+          "reference_ml": 19.027
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 10595,
+          "predicted_voxels": 9388,
+          "dice": 0.7280188159935945,
+          "iou": 0.5723503029349281,
+          "predicted_ml": 9.388,
+          "reference_ml": 10.595
+        }
+      },
+      "macro_foreground_dice": 0.6966421287151815,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_386",
+      "patient_id": "BRATS_386",
+      "classes": {
+        "1": {
+          "reference_voxels": 49555,
+          "predicted_voxels": 53124,
+          "dice": 0.8797709366082646,
+          "iou": 0.7853491445263597,
+          "predicted_ml": 53.124,
+          "reference_ml": 49.555
+        },
+        "2": {
+          "reference_voxels": 11782,
+          "predicted_voxels": 11794,
+          "dice": 0.8837801153715643,
+          "iou": 0.7917616659066727,
+          "predicted_ml": 11.794,
+          "reference_ml": 11.782
+        },
+        "3": {
+          "reference_voxels": 18881,
+          "predicted_voxels": 18974,
+          "dice": 0.9032888654074759,
+          "iou": 0.8236342614895462,
+          "predicted_ml": 18.974,
+          "reference_ml": 18.881
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 80218,
+          "predicted_voxels": 83892,
+          "dice": 0.9225641338126866,
+          "iou": 0.8562589781583323,
+          "predicted_ml": 83.892,
+          "reference_ml": 80.218
+        },
+        "tumour_core": {
+          "reference_voxels": 30663,
+          "predicted_voxels": 30768,
+          "dice": 0.9659618108121307,
+          "iou": 0.9341645414187211,
+          "predicted_ml": 30.768,
+          "reference_ml": 30.663
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 18881,
+          "predicted_voxels": 18974,
+          "dice": 0.9032888654074759,
+          "iou": 0.8236342614895462,
+          "predicted_ml": 18.974,
+          "reference_ml": 18.881
+        }
+      },
+      "macro_foreground_dice": 0.8889466391291015,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_387",
+      "patient_id": "BRATS_387",
+      "classes": {
+        "1": {
+          "reference_voxels": 47101,
+          "predicted_voxels": 52756,
+          "dice": 0.7727450253863024,
+          "iou": 0.6296532027743778,
+          "predicted_ml": 52.756,
+          "reference_ml": 47.101
+        },
+        "2": {
+          "reference_voxels": 15951,
+          "predicted_voxels": 19376,
+          "dice": 0.6480029439239109,
+          "iou": 0.47929316192789245,
+          "predicted_ml": 19.376,
+          "reference_ml": 15.951
+        },
+        "3": {
+          "reference_voxels": 87753,
+          "predicted_voxels": 82062,
+          "dice": 0.9248888496304802,
+          "iou": 0.8602727720874185,
+          "predicted_ml": 82.062,
+          "reference_ml": 87.753
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 150805,
+          "predicted_voxels": 154194,
+          "dice": 0.9409211177741567,
+          "iou": 0.8884334619123393,
+          "predicted_ml": 154.194,
+          "reference_ml": 150.805
+        },
+        "tumour_core": {
+          "reference_voxels": 103704,
+          "predicted_voxels": 101438,
+          "dice": 0.9307601563794835,
+          "iou": 0.870487722593528,
+          "predicted_ml": 101.438,
+          "reference_ml": 103.704
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 87753,
+          "predicted_voxels": 82062,
+          "dice": 0.9248888496304802,
+          "iou": 0.8602727720874185,
+          "predicted_ml": 82.062,
+          "reference_ml": 87.753
+        }
+      },
+      "macro_foreground_dice": 0.7818789396468979,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_388",
+      "patient_id": "BRATS_388",
+      "classes": {
+        "1": {
+          "reference_voxels": 76402,
+          "predicted_voxels": 75327,
+          "dice": 0.9322146722116404,
+          "iou": 0.8730356635846285,
+          "predicted_ml": 75.327,
+          "reference_ml": 76.402
+        },
+        "2": {
+          "reference_voxels": 4749,
+          "predicted_voxels": 8573,
+          "dice": 0.5494670469899414,
+          "iou": 0.3788035603394742,
+          "predicted_ml": 8.573,
+          "reference_ml": 4.749
+        },
+        "3": {
+          "reference_voxels": 29059,
+          "predicted_voxels": 29664,
+          "dice": 0.9214788072816443,
+          "iou": 0.8543910064104588,
+          "predicted_ml": 29.664,
+          "reference_ml": 29.059
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 110210,
+          "predicted_voxels": 113564,
+          "dice": 0.9644909596289113,
+          "iou": 0.9314172276885897,
+          "predicted_ml": 113.564,
+          "reference_ml": 110.21
+        },
+        "tumour_core": {
+          "reference_voxels": 33808,
+          "predicted_voxels": 38237,
+          "dice": 0.9103199389270594,
+          "iou": 0.8354011158382799,
+          "predicted_ml": 38.237,
+          "reference_ml": 33.808
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 29059,
+          "predicted_voxels": 29664,
+          "dice": 0.9214788072816443,
+          "iou": 0.8543910064104588,
+          "predicted_ml": 29.664,
+          "reference_ml": 29.059
+        }
+      },
+      "macro_foreground_dice": 0.8010535088277421,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_398",
+      "patient_id": "BRATS_398",
+      "classes": {
+        "1": {
+          "reference_voxels": 131242,
+          "predicted_voxels": 108002,
+          "dice": 0.832280015381786,
+          "iou": 0.7127393778859576,
+          "predicted_ml": 108.002,
+          "reference_ml": 131.242
+        },
+        "2": {
+          "reference_voxels": 31605,
+          "predicted_voxels": 18438,
+          "dice": 0.652279040025578,
+          "iou": 0.48398671490421685,
+          "predicted_ml": 18.438,
+          "reference_ml": 31.605
+        },
+        "3": {
+          "reference_voxels": 5899,
+          "predicted_voxels": 9827,
+          "dice": 0.6198651914027725,
+          "iou": 0.4491338002211574,
+          "predicted_ml": 9.827,
+          "reference_ml": 5.899
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 168746,
+          "predicted_voxels": 136267,
+          "dice": 0.8923554078022904,
+          "iou": 0.8056333358986046,
+          "predicted_ml": 136.267,
+          "reference_ml": 168.746
+        },
+        "tumour_core": {
+          "reference_voxels": 37504,
+          "predicted_voxels": 28265,
+          "dice": 0.7912846477823898,
+          "iou": 0.6546492905303412,
+          "predicted_ml": 28.265,
+          "reference_ml": 37.504
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 5899,
+          "predicted_voxels": 9827,
+          "dice": 0.6198651914027725,
+          "iou": 0.4491338002211574,
+          "predicted_ml": 9.827,
+          "reference_ml": 5.899
+        }
+      },
+      "macro_foreground_dice": 0.7014747489367122,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_409",
+      "patient_id": "BRATS_409",
+      "classes": {
+        "1": {
+          "reference_voxels": 126649,
+          "predicted_voxels": 128345,
+          "dice": 0.9350416088221684,
+          "iou": 0.8780076447757017,
+          "predicted_ml": 128.345,
+          "reference_ml": 126.649
+        },
+        "2": {
+          "reference_voxels": 2506,
+          "predicted_voxels": 10132,
+          "dice": 0.3546447222661814,
+          "iou": 0.21554294508031163,
+          "predicted_ml": 10.132,
+          "reference_ml": 2.506
+        },
+        "3": {
+          "reference_voxels": 30477,
+          "predicted_voxels": 30502,
+          "dice": 0.9414716541760279,
+          "iou": 0.8894156286794324,
+          "predicted_ml": 30.502,
+          "reference_ml": 30.477
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 159632,
+          "predicted_voxels": 168979,
+          "dice": 0.9637291508805244,
+          "iou": 0.9299973570610519,
+          "predicted_ml": 168.979,
+          "reference_ml": 159.632
+        },
+        "tumour_core": {
+          "reference_voxels": 32983,
+          "predicted_voxels": 40634,
+          "dice": 0.8931360962821088,
+          "iou": 0.8069068774237887,
+          "predicted_ml": 40.634,
+          "reference_ml": 32.983
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 30477,
+          "predicted_voxels": 30502,
+          "dice": 0.9414716541760279,
+          "iou": 0.8894156286794324,
+          "predicted_ml": 30.502,
+          "reference_ml": 30.477
+        }
+      },
+      "macro_foreground_dice": 0.7437193284214593,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_410",
+      "patient_id": "BRATS_410",
+      "classes": {
+        "1": {
+          "reference_voxels": 84003,
+          "predicted_voxels": 76643,
+          "dice": 0.890429889321863,
+          "iou": 0.8024998877967775,
+          "predicted_ml": 76.643,
+          "reference_ml": 84.003
+        },
+        "2": {
+          "reference_voxels": 25394,
+          "predicted_voxels": 22129,
+          "dice": 0.8352587168318498,
+          "iou": 0.7171195259430554,
+          "predicted_ml": 22.129,
+          "reference_ml": 25.394
+        },
+        "3": {
+          "reference_voxels": 45111,
+          "predicted_voxels": 47484,
+          "dice": 0.8514930611804093,
+          "iou": 0.7413913076185282,
+          "predicted_ml": 47.484,
+          "reference_ml": 45.111
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 154508,
+          "predicted_voxels": 146256,
+          "dice": 0.9677554494553869,
+          "iou": 0.9375253654231436,
+          "predicted_ml": 146.256,
+          "reference_ml": 154.508
+        },
+        "tumour_core": {
+          "reference_voxels": 70505,
+          "predicted_voxels": 69613,
+          "dice": 0.9299019397936026,
+          "iou": 0.8689875950380153,
+          "predicted_ml": 69.613,
+          "reference_ml": 70.505
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 45111,
+          "predicted_voxels": 47484,
+          "dice": 0.8514930611804093,
+          "iou": 0.7413913076185282,
+          "predicted_ml": 47.484,
+          "reference_ml": 45.111
+        }
+      },
+      "macro_foreground_dice": 0.8590605557780407,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_416",
+      "patient_id": "BRATS_416",
+      "classes": {
+        "1": {
+          "reference_voxels": 59124,
+          "predicted_voxels": 59596,
+          "dice": 0.8578167115902965,
+          "iou": 0.7510324483775811,
+          "predicted_ml": 59.596,
+          "reference_ml": 59.124
+        },
+        "2": {
+          "reference_voxels": 42876,
+          "predicted_voxels": 32587,
+          "dice": 0.8097478234366511,
+          "iou": 0.6803161879314183,
+          "predicted_ml": 32.587,
+          "reference_ml": 42.876
+        },
+        "3": {
+          "reference_voxels": 3852,
+          "predicted_voxels": 7018,
+          "dice": 0.6925482980680773,
+          "iou": 0.5296932169997185,
+          "predicted_ml": 7.018,
+          "reference_ml": 3.852
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 105852,
+          "predicted_voxels": 99201,
+          "dice": 0.9575183001467913,
+          "iou": 0.9184989053348552,
+          "predicted_ml": 99.201,
+          "reference_ml": 105.852
+        },
+        "tumour_core": {
+          "reference_voxels": 46728,
+          "predicted_voxels": 39605,
+          "dice": 0.8706056780142009,
+          "iou": 0.770860682638661,
+          "predicted_ml": 39.605,
+          "reference_ml": 46.728
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 3852,
+          "predicted_voxels": 7018,
+          "dice": 0.6925482980680773,
+          "iou": 0.5296932169997185,
+          "predicted_ml": 7.018,
+          "reference_ml": 3.852
+        }
+      },
+      "macro_foreground_dice": 0.7867042776983416,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_419",
+      "patient_id": "BRATS_419",
+      "classes": {
+        "1": {
+          "reference_voxels": 66878,
+          "predicted_voxels": 71581,
+          "dice": 0.9407405802439711,
+          "iou": 0.8881116020291278,
+          "predicted_ml": 71.581,
+          "reference_ml": 66.878
+        },
+        "2": {
+          "reference_voxels": 3277,
+          "predicted_voxels": 4294,
+          "dice": 0.6987187954035134,
+          "iou": 0.5369468128298822,
+          "predicted_ml": 4.294,
+          "reference_ml": 3.277
+        },
+        "3": {
+          "reference_voxels": 25236,
+          "predicted_voxels": 23663,
+          "dice": 0.9279944375140596,
+          "iou": 0.8656619610835559,
+          "predicted_ml": 23.663,
+          "reference_ml": 25.236
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 95391,
+          "predicted_voxels": 99538,
+          "dice": 0.9688450666652987,
+          "iou": 0.9395727405697456,
+          "predicted_ml": 99.538,
+          "reference_ml": 95.391
+        },
+        "tumour_core": {
+          "reference_voxels": 28513,
+          "predicted_voxels": 27957,
+          "dice": 0.9421285638392066,
+          "iou": 0.890588904884663,
+          "predicted_ml": 27.957,
+          "reference_ml": 28.513
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 25236,
+          "predicted_voxels": 23663,
+          "dice": 0.9279944375140596,
+          "iou": 0.8656619610835559,
+          "predicted_ml": 23.663,
+          "reference_ml": 25.236
+        }
+      },
+      "macro_foreground_dice": 0.8558179377205147,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_425",
+      "patient_id": "BRATS_425",
+      "classes": {
+        "1": {
+          "reference_voxels": 21263,
+          "predicted_voxels": 15360,
+          "dice": 0.6462059361603364,
+          "iou": 0.4773295683743445,
+          "predicted_ml": 15.36,
+          "reference_ml": 21.263
+        },
+        "2": {
+          "reference_voxels": 21996,
+          "predicted_voxels": 21289,
+          "dice": 0.8661199029686959,
+          "iou": 0.7638549307253464,
+          "predicted_ml": 21.289,
+          "reference_ml": 21.996
+        },
+        "3": {
+          "reference_voxels": 17097,
+          "predicted_voxels": 17004,
+          "dice": 0.7934078179525527,
+          "iou": 0.6575608807660526,
+          "predicted_ml": 17.004,
+          "reference_ml": 17.097
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 60356,
+          "predicted_voxels": 53653,
+          "dice": 0.9332245699900885,
+          "iou": 0.8748088339280722,
+          "predicted_ml": 53.653,
+          "reference_ml": 60.356
+        },
+        "tumour_core": {
+          "reference_voxels": 39093,
+          "predicted_voxels": 38293,
+          "dice": 0.9067790039542036,
+          "iou": 0.8294562647754137,
+          "predicted_ml": 38.293,
+          "reference_ml": 39.093
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 17097,
+          "predicted_voxels": 17004,
+          "dice": 0.7934078179525527,
+          "iou": 0.6575608807660526,
+          "predicted_ml": 17.004,
+          "reference_ml": 17.097
+        }
+      },
+      "macro_foreground_dice": 0.7685778856938615,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_428",
+      "patient_id": "BRATS_428",
+      "classes": {
+        "1": {
+          "reference_voxels": 21432,
+          "predicted_voxels": 32529,
+          "dice": 0.6251922684902059,
+          "iou": 0.454748874450705,
+          "predicted_ml": 32.529,
+          "reference_ml": 21.432
+        },
+        "2": {
+          "reference_voxels": 22932,
+          "predicted_voxels": 8313,
+          "dice": 0.41971515442470797,
+          "iou": 0.2655946208684381,
+          "predicted_ml": 8.313,
+          "reference_ml": 22.932
+        },
+        "3": {
+          "reference_voxels": 26417,
+          "predicted_voxels": 20720,
+          "dice": 0.8451959182807561,
+          "iou": 0.7318955064849175,
+          "predicted_ml": 20.72,
+          "reference_ml": 26.417
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 70781,
+          "predicted_voxels": 61562,
+          "dice": 0.9198824267244962,
+          "iou": 0.8516502735298644,
+          "predicted_ml": 61.562,
+          "reference_ml": 70.781
+        },
+        "tumour_core": {
+          "reference_voxels": 49349,
+          "predicted_voxels": 29033,
+          "dice": 0.7385624250465668,
+          "iou": 0.5854926472075571,
+          "predicted_ml": 29.033,
+          "reference_ml": 49.349
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 26417,
+          "predicted_voxels": 20720,
+          "dice": 0.8451959182807561,
+          "iou": 0.7318955064849175,
+          "predicted_ml": 20.72,
+          "reference_ml": 26.417
+        }
+      },
+      "macro_foreground_dice": 0.6300344470652234,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_438",
+      "patient_id": "BRATS_438",
+      "classes": {
+        "1": {
+          "reference_voxels": 9757,
+          "predicted_voxels": 7293,
+          "dice": 0.6323753665689149,
+          "iou": 0.4623895702890471,
+          "predicted_ml": 7.293,
+          "reference_ml": 9.757
+        },
+        "2": {
+          "reference_voxels": 460,
+          "predicted_voxels": 370,
+          "dice": 0.28433734939759037,
+          "iou": 0.16573033707865167,
+          "predicted_ml": 0.37,
+          "reference_ml": 0.46
+        },
+        "3": {
+          "reference_voxels": 8858,
+          "predicted_voxels": 8234,
+          "dice": 0.9182073484671192,
+          "iou": 0.8487831260140617,
+          "predicted_ml": 8.234,
+          "reference_ml": 8.858
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 19075,
+          "predicted_voxels": 15897,
+          "dice": 0.8280910442639826,
+          "iou": 0.7066172164747219,
+          "predicted_ml": 15.897,
+          "reference_ml": 19.075
+        },
+        "tumour_core": {
+          "reference_voxels": 9318,
+          "predicted_voxels": 8604,
+          "dice": 0.9394040843655842,
+          "iou": 0.8857323232323232,
+          "predicted_ml": 8.604,
+          "reference_ml": 9.318
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 8858,
+          "predicted_voxels": 8234,
+          "dice": 0.9182073484671192,
+          "iou": 0.8487831260140617,
+          "predicted_ml": 8.234,
+          "reference_ml": 8.858
+        }
+      },
+      "macro_foreground_dice": 0.6116400214778749,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_441",
+      "patient_id": "BRATS_441",
+      "classes": {
+        "1": {
+          "reference_voxels": 133610,
+          "predicted_voxels": 129952,
+          "dice": 0.9378362586412305,
+          "iou": 0.8829488544219243,
+          "predicted_ml": 129.952,
+          "reference_ml": 133.61
+        },
+        "2": {
+          "reference_voxels": 5985,
+          "predicted_voxels": 6042,
+          "dice": 0.7867298578199052,
+          "iou": 0.6484375,
+          "predicted_ml": 6.042,
+          "reference_ml": 5.985
+        },
+        "3": {
+          "reference_voxels": 14523,
+          "predicted_voxels": 12128,
+          "dice": 0.797868747889385,
+          "iou": 0.6637118421874024,
+          "predicted_ml": 12.128,
+          "reference_ml": 14.523
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 154118,
+          "predicted_voxels": 148122,
+          "dice": 0.9385587612493382,
+          "iou": 0.884230541441975,
+          "predicted_ml": 148.122,
+          "reference_ml": 154.118
+        },
+        "tumour_core": {
+          "reference_voxels": 20508,
+          "predicted_voxels": 18170,
+          "dice": 0.8603340400227519,
+          "iou": 0.7549001814882033,
+          "predicted_ml": 18.17,
+          "reference_ml": 20.508
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 14523,
+          "predicted_voxels": 12128,
+          "dice": 0.797868747889385,
+          "iou": 0.6637118421874024,
+          "predicted_ml": 12.128,
+          "reference_ml": 14.523
+        }
+      },
+      "macro_foreground_dice": 0.8408116214501735,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_443",
+      "patient_id": "BRATS_443",
+      "classes": {
+        "1": {
+          "reference_voxels": 10105,
+          "predicted_voxels": 29353,
+          "dice": 0.3864362106543667,
+          "iou": 0.2394923666520073,
+          "predicted_ml": 29.353,
+          "reference_ml": 10.105
+        },
+        "2": {
+          "reference_voxels": 3066,
+          "predicted_voxels": 2640,
+          "dice": 0.7385208552400981,
+          "iou": 0.585440400111142,
+          "predicted_ml": 2.64,
+          "reference_ml": 3.066
+        },
+        "3": {
+          "reference_voxels": 8813,
+          "predicted_voxels": 8227,
+          "dice": 0.9334507042253521,
+          "iou": 0.875206338725652,
+          "predicted_ml": 8.227,
+          "reference_ml": 8.813
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 21984,
+          "predicted_voxels": 40220,
+          "dice": 0.6273873062825541,
+          "iou": 0.45707526176477475,
+          "predicted_ml": 40.22,
+          "reference_ml": 21.984
+        },
+        "tumour_core": {
+          "reference_voxels": 11879,
+          "predicted_voxels": 10867,
+          "dice": 0.9257012221929131,
+          "iou": 0.8616794892781142,
+          "predicted_ml": 10.867,
+          "reference_ml": 11.879
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 8813,
+          "predicted_voxels": 8227,
+          "dice": 0.9334507042253521,
+          "iou": 0.875206338725652,
+          "predicted_ml": 8.227,
+          "reference_ml": 8.813
+        }
+      },
+      "macro_foreground_dice": 0.6861359233732722,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_448",
+      "patient_id": "BRATS_448",
+      "classes": {
+        "1": {
+          "reference_voxels": 156055,
+          "predicted_voxels": 159282,
+          "dice": 0.9311815613137691,
+          "iou": 0.8712252030928264,
+          "predicted_ml": 159.282,
+          "reference_ml": 156.055
+        },
+        "2": {
+          "reference_voxels": 23009,
+          "predicted_voxels": 25838,
+          "dice": 0.7177922902122955,
+          "iou": 0.559809681951718,
+          "predicted_ml": 25.838,
+          "reference_ml": 23.009
+        },
+        "3": {
+          "reference_voxels": 48062,
+          "predicted_voxels": 34902,
+          "dice": 0.7918856371438214,
+          "iou": 0.6554724134490671,
+          "predicted_ml": 34.902,
+          "reference_ml": 48.062
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 227126,
+          "predicted_voxels": 220022,
+          "dice": 0.9537423850716094,
+          "iou": 0.9115750953333676,
+          "predicted_ml": 220.022,
+          "reference_ml": 227.126
+        },
+        "tumour_core": {
+          "reference_voxels": 71071,
+          "predicted_voxels": 60740,
+          "dice": 0.8886056550667243,
+          "iou": 0.7995412781410842,
+          "predicted_ml": 60.74,
+          "reference_ml": 71.071
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 48062,
+          "predicted_voxels": 34902,
+          "dice": 0.7918856371438214,
+          "iou": 0.6554724134490671,
+          "predicted_ml": 34.902,
+          "reference_ml": 48.062
+        }
+      },
+      "macro_foreground_dice": 0.8136198295566287,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_451",
+      "patient_id": "BRATS_451",
+      "classes": {
+        "1": {
+          "reference_voxels": 129318,
+          "predicted_voxels": 119965,
+          "dice": 0.9447014036255982,
+          "iou": 0.8951981997050192,
+          "predicted_ml": 119.965,
+          "reference_ml": 129.318
+        },
+        "2": {
+          "reference_voxels": 7195,
+          "predicted_voxels": 11142,
+          "dice": 0.7313082837977859,
+          "iou": 0.5764270976616231,
+          "predicted_ml": 11.142,
+          "reference_ml": 7.195
+        },
+        "3": {
+          "reference_voxels": 49748,
+          "predicted_voxels": 46526,
+          "dice": 0.9503708166275422,
+          "iou": 0.9054348256343269,
+          "predicted_ml": 46.526,
+          "reference_ml": 49.748
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 186261,
+          "predicted_voxels": 177633,
+          "dice": 0.9657702517766162,
+          "iou": 0.9338062973296134,
+          "predicted_ml": 177.633,
+          "reference_ml": 186.261
+        },
+        "tumour_core": {
+          "reference_voxels": 56943,
+          "predicted_voxels": 57668,
+          "dice": 0.9614958424584028,
+          "iou": 0.9258468880225836,
+          "predicted_ml": 57.668,
+          "reference_ml": 56.943
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 49748,
+          "predicted_voxels": 46526,
+          "dice": 0.9503708166275422,
+          "iou": 0.9054348256343269,
+          "predicted_ml": 46.526,
+          "reference_ml": 49.748
+        }
+      },
+      "macro_foreground_dice": 0.8754601680169755,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_463",
+      "patient_id": "BRATS_463",
+      "classes": {
+        "1": {
+          "reference_voxels": 65653,
+          "predicted_voxels": 59881,
+          "dice": 0.913840075198751,
+          "iou": 0.8413494682801613,
+          "predicted_ml": 59.881,
+          "reference_ml": 65.653
+        },
+        "2": {
+          "reference_voxels": 7137,
+          "predicted_voxels": 10048,
+          "dice": 0.7967413441955193,
+          "iou": 0.6621530128639134,
+          "predicted_ml": 10.048,
+          "reference_ml": 7.137
+        },
+        "3": {
+          "reference_voxels": 34538,
+          "predicted_voxels": 31085,
+          "dice": 0.9305274065495329,
+          "iou": 0.8700806474594626,
+          "predicted_ml": 31.085,
+          "reference_ml": 34.538
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 107328,
+          "predicted_voxels": 101014,
+          "dice": 0.9583089343483311,
+          "iou": 0.9199550288442044,
+          "predicted_ml": 101.014,
+          "reference_ml": 107.328
+        },
+        "tumour_core": {
+          "reference_voxels": 41675,
+          "predicted_voxels": 41133,
+          "dice": 0.9608733455704763,
+          "iou": 0.9246931944960952,
+          "predicted_ml": 41.133,
+          "reference_ml": 41.675
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 34538,
+          "predicted_voxels": 31085,
+          "dice": 0.9305274065495329,
+          "iou": 0.8700806474594626,
+          "predicted_ml": 31.085,
+          "reference_ml": 34.538
+        }
+      },
+      "macro_foreground_dice": 0.8803696086479343,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_466",
+      "patient_id": "BRATS_466",
+      "classes": {
+        "1": {
+          "reference_voxels": 14046,
+          "predicted_voxels": 12970,
+          "dice": 0.8789606159312999,
+          "iou": 0.7840586409562174,
+          "predicted_ml": 12.97,
+          "reference_ml": 14.046
+        },
+        "2": {
+          "reference_voxels": 60,
+          "predicted_voxels": 1109,
+          "dice": 0.0427715996578272,
+          "iou": 0.021853146853146852,
+          "predicted_ml": 1.109,
+          "reference_ml": 0.06
+        },
+        "3": {
+          "reference_voxels": 2642,
+          "predicted_voxels": 2560,
+          "dice": 0.9161860822760477,
+          "iou": 0.8453352252571834,
+          "predicted_ml": 2.56,
+          "reference_ml": 2.642
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 16748,
+          "predicted_voxels": 16639,
+          "dice": 0.9324587414263037,
+          "iou": 0.8734638909152124,
+          "predicted_ml": 16.639,
+          "reference_ml": 16.748
+        },
+        "tumour_core": {
+          "reference_voxels": 2702,
+          "predicted_voxels": 3669,
+          "dice": 0.8114895620781667,
+          "iou": 0.6827786582144744,
+          "predicted_ml": 3.669,
+          "reference_ml": 2.702
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 2642,
+          "predicted_voxels": 2560,
+          "dice": 0.9161860822760477,
+          "iou": 0.8453352252571834,
+          "predicted_ml": 2.56,
+          "reference_ml": 2.642
+        }
+      },
+      "macro_foreground_dice": 0.6126394326217249,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_469",
+      "patient_id": "BRATS_469",
+      "classes": {
+        "1": {
+          "reference_voxels": 68609,
+          "predicted_voxels": 60877,
+          "dice": 0.8780717606536614,
+          "iou": 0.7826452083648829,
+          "predicted_ml": 60.877,
+          "reference_ml": 68.609
+        },
+        "2": {
+          "reference_voxels": 6401,
+          "predicted_voxels": 15970,
+          "dice": 0.5355147288900809,
+          "iou": 0.3656675416641231,
+          "predicted_ml": 15.97,
+          "reference_ml": 6.401
+        },
+        "3": {
+          "reference_voxels": 22125,
+          "predicted_voxels": 20136,
+          "dice": 0.9435176640401316,
+          "iou": 0.8930747177925104,
+          "predicted_ml": 20.136,
+          "reference_ml": 22.125
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 97135,
+          "predicted_voxels": 96983,
+          "dice": 0.9596431036792055,
+          "iou": 0.9224172080494375,
+          "predicted_ml": 96.983,
+          "reference_ml": 97.135
+        },
+        "tumour_core": {
+          "reference_voxels": 28526,
+          "predicted_voxels": 36106,
+          "dice": 0.8440091595494492,
+          "iou": 0.7301175147897315,
+          "predicted_ml": 36.106,
+          "reference_ml": 28.526
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 22125,
+          "predicted_voxels": 20136,
+          "dice": 0.9435176640401316,
+          "iou": 0.8930747177925104,
+          "predicted_ml": 20.136,
+          "reference_ml": 22.125
+        }
+      },
+      "macro_foreground_dice": 0.785701384527958,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_475",
+      "patient_id": "BRATS_475",
+      "classes": {
+        "1": {
+          "reference_voxels": 83517,
+          "predicted_voxels": 78565,
+          "dice": 0.8858479041472834,
+          "iou": 0.7950870509015195,
+          "predicted_ml": 78.565,
+          "reference_ml": 83.517
+        },
+        "2": {
+          "reference_voxels": 52012,
+          "predicted_voxels": 53123,
+          "dice": 0.9514053359965758,
+          "iou": 0.9073146837923153,
+          "predicted_ml": 53.123,
+          "reference_ml": 52.012
+        },
+        "3": {
+          "reference_voxels": 65092,
+          "predicted_voxels": 58222,
+          "dice": 0.9025901357510097,
+          "iou": 0.8224731389385632,
+          "predicted_ml": 58.222,
+          "reference_ml": 65.092
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 200621,
+          "predicted_voxels": 189910,
+          "dice": 0.9584283962092638,
+          "iou": 0.9201752358850052,
+          "predicted_ml": 189.91,
+          "reference_ml": 200.621
+        },
+        "tumour_core": {
+          "reference_voxels": 117104,
+          "predicted_voxels": 111345,
+          "dice": 0.9572202110755573,
+          "iou": 0.9179504831627642,
+          "predicted_ml": 111.345,
+          "reference_ml": 117.104
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 65092,
+          "predicted_voxels": 58222,
+          "dice": 0.9025901357510097,
+          "iou": 0.8224731389385632,
+          "predicted_ml": 58.222,
+          "reference_ml": 65.092
+        }
+      },
+      "macro_foreground_dice": 0.9132811252982896,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "case_id": "BRATS_483",
+      "patient_id": "BRATS_483",
+      "classes": {
+        "1": {
+          "reference_voxels": 20156,
+          "predicted_voxels": 17870,
+          "dice": 0.7543785830747384,
+          "iou": 0.6056242874635814,
+          "predicted_ml": 17.87,
+          "reference_ml": 20.156
+        },
+        "2": {
+          "reference_voxels": 24733,
+          "predicted_voxels": 24517,
+          "dice": 0.9476548223350254,
+          "iou": 0.9005170950065602,
+          "predicted_ml": 24.517,
+          "reference_ml": 24.733
+        },
+        "3": {
+          "reference_voxels": 19458,
+          "predicted_voxels": 22291,
+          "dice": 0.8774341900404801,
+          "iou": 0.781632740152776,
+          "predicted_ml": 22.291,
+          "reference_ml": 19.458
+        }
+      },
+      "regions": {
+        "whole_tumour": {
+          "reference_voxels": 64347,
+          "predicted_voxels": 64678,
+          "dice": 0.9427630304204612,
+          "iou": 0.8917234806832344,
+          "predicted_ml": 64.678,
+          "reference_ml": 64.347
+        },
+        "tumour_core": {
+          "reference_voxels": 44191,
+          "predicted_voxels": 46808,
+          "dice": 0.9570434839943296,
+          "iou": 0.9176254899481603,
+          "predicted_ml": 46.808,
+          "reference_ml": 44.191
+        },
+        "enhancing_tumour": {
+          "reference_voxels": 19458,
+          "predicted_voxels": 22291,
+          "dice": 0.8774341900404801,
+          "iou": 0.781632740152776,
+          "predicted_ml": 22.291,
+          "reference_ml": 19.458
+        }
+      },
+      "macro_foreground_dice": 0.859822531816748,
+      "voxel_spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "task_id": "msd-brain-tumour-segmentation",
+  "dataset_license": "CC BY-SA 4.0 (Medical Segmentation Decathlon Task01, BraTS 2016/2017)",
+  "limitations": [
+    "Internal held-out test on Medical Segmentation Decathlon cases; no external or clinical validation.",
+    "Gliomas only (BraTS): metastases, meningiomas, abscesses, stroke and other lesions are out of scope.",
+    "Input must be skull-stripped FLAIR, T1, post-contrast T1 and T2, co-registered on a 1 mm grid like the SRI24 atlas, stacked in that order in one 4-D NIfTI.",
+    "BraTS 2016 and 2017 cases are combined; a subject present in both releases cannot be excluded from the case numbers, so split leakage is possible.",
+    "Label 2 combines necrosis and non-enhancing tumour (MSD convention); volumes are research estimates, not RANO measurements.",
+    "Research-only output; not clinically validated and not for diagnosis or treatment decisions.",
+    "Evaluation and serving use float16 autocast on CUDA with cuDNN autotuning; a rerun of training can differ slightly."
+  ],
+  "citation": "Antonelli M, Reinke A, Bakas S, et al. The Medical Segmentation Decathlon. Nat Commun 13:4128 (2022); Menze BH et al. IEEE TMI 34:1993 (2015).",
+  "input_envelope": "docs/validation/models/brain_mri_glioma_segresnet_input_envelope.json"
+}

@@ -1,0 +1,458 @@
+{
+  "schema_version": 1,
+  "planned_at": "2026-11-09T11:37:19+00:00",
+  "source": "https://zenodo.org/records/10519652",
+  "release": "3.0",
+  "destination": "C:\\MedTwin_Datasets\\MedMNIST",
+  "derived_destination": "D:\\project\\_derived\\datasets\\medmnist",
+  "reserve_bytes": 64424509440,
+  "purpose": "Free lightweight 2D/3D classification benchmarks; reuse existing seven subsets.",
+  "limitations": [
+    "Not intended for clinical use; 28-pixel images or 28-cubed volumes.",
+    "Organ labels identify anatomy, not every disease in each organ.",
+    "No segmentation masks, scanner geometry or universal patient IDs.",
+    "Publisher splits preserved; patient-independent external validation is not established.",
+    "Related source datasets may overlap existing cohorts; not independent external evidence.",
+    "DermaMNIST is CC BY-NC 4.0; remaining subsets are CC BY 4.0; retain source citations."
+  ],
+  "artifacts": [
+    {
+      "dataset": "pathmnist",
+      "relative_path": "pathmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/pathmnist.npz?download=1",
+      "bytes": 205615438,
+      "hash_algorithm": "md5",
+      "hash": "a8b06965200029087d5bd730944a56c1",
+      "license": "CC BY 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "adipose",
+        "1": "background",
+        "2": "debris",
+        "3": "lymphocytes",
+        "4": "mucus",
+        "5": "smooth muscle",
+        "6": "normal colon mucosa",
+        "7": "cancer-associated stroma",
+        "8": "colorectal adenocarcinoma epithelium"
+      },
+      "split_counts": {
+        "train": 89996,
+        "val": 10004,
+        "test": 7180
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "chestmnist",
+      "relative_path": "chestmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/chestmnist.npz?download=1",
+      "bytes": 82802576,
+      "hash_algorithm": "md5",
+      "hash": "02c8a6516a18b556561a56cbdd36c4a8",
+      "license": "CC BY 4.0",
+      "task": "multi-label, binary-class",
+      "labels": {
+        "0": "atelectasis",
+        "1": "cardiomegaly",
+        "2": "effusion",
+        "3": "infiltration",
+        "4": "mass",
+        "5": "nodule",
+        "6": "pneumonia",
+        "7": "pneumothorax",
+        "8": "consolidation",
+        "9": "edema",
+        "10": "emphysema",
+        "11": "fibrosis",
+        "12": "pleural",
+        "13": "hernia"
+      },
+      "split_counts": {
+        "train": 78468,
+        "val": 11219,
+        "test": 22433
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "dermamnist",
+      "relative_path": "dermamnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/dermamnist.npz?download=1",
+      "bytes": 19725078,
+      "hash_algorithm": "md5",
+      "hash": "0744692d530f8e62ec473284d019b0c7",
+      "license": "CC BY-NC 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "actinic keratoses and intraepithelial carcinoma",
+        "1": "basal cell carcinoma",
+        "2": "benign keratosis-like lesions",
+        "3": "dermatofibroma",
+        "4": "melanoma",
+        "5": "melanocytic nevi",
+        "6": "vascular lesions"
+      },
+      "split_counts": {
+        "train": 7007,
+        "val": 1003,
+        "test": 2005
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "octmnist",
+      "relative_path": "octmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/octmnist.npz?download=1",
+      "bytes": 54938180,
+      "hash_algorithm": "md5",
+      "hash": "c68d92d5b585d8d81f7112f81e2d0842",
+      "license": "CC BY 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "choroidal neovascularization",
+        "1": "diabetic macular edema",
+        "2": "drusen",
+        "3": "normal"
+      },
+      "split_counts": {
+        "train": 97477,
+        "val": 10832,
+        "test": 1000
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "pneumoniamnist",
+      "relative_path": "pneumoniamnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/pneumoniamnist.npz?download=1",
+      "bytes": 4170669,
+      "hash_algorithm": "md5",
+      "hash": "28209eda62fecd6e6a2d98b1501bb15f",
+      "license": "CC BY 4.0",
+      "task": "binary-class",
+      "labels": {
+        "0": "normal",
+        "1": "pneumonia"
+      },
+      "split_counts": {
+        "train": 4708,
+        "val": 524,
+        "test": 624
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "retinamnist",
+      "relative_path": "retinamnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/retinamnist.npz?download=1",
+      "bytes": 3291041,
+      "hash_algorithm": "md5",
+      "hash": "bd4c0672f1bba3e3a89f0e4e876791e4",
+      "license": "CC BY 4.0",
+      "task": "ordinal-regression",
+      "labels": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3",
+        "4": "4"
+      },
+      "split_counts": {
+        "train": 1080,
+        "val": 120,
+        "test": 400
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "breastmnist",
+      "relative_path": "breastmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/breastmnist.npz?download=1",
+      "bytes": 559580,
+      "hash_algorithm": "md5",
+      "hash": "750601b1f35ba3300ea97c75c52ff8f6",
+      "license": "CC BY 4.0",
+      "task": "binary-class",
+      "labels": {
+        "0": "malignant",
+        "1": "normal, benign"
+      },
+      "split_counts": {
+        "train": 546,
+        "val": 78,
+        "test": 156
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "bloodmnist",
+      "relative_path": "bloodmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/bloodmnist.npz?download=1",
+      "bytes": 35461855,
+      "hash_algorithm": "md5",
+      "hash": "7053d0359d879ad8a5505303e11de1dc",
+      "license": "CC BY 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "basophil",
+        "1": "eosinophil",
+        "2": "erythroblast",
+        "3": "immature granulocytes(myelocytes, metamyelocytes and promyelocytes)",
+        "4": "lymphocyte",
+        "5": "monocyte",
+        "6": "neutrophil",
+        "7": "platelet"
+      },
+      "split_counts": {
+        "train": 11959,
+        "val": 1712,
+        "test": 3421
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "tissuemnist",
+      "relative_path": "tissuemnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/tissuemnist.npz?download=1",
+      "bytes": 124962739,
+      "hash_algorithm": "md5",
+      "hash": "ebe78ee8b05294063de985d821c1c34b",
+      "license": "CC BY 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "Collecting Duct, Connecting Tubule",
+        "1": "Distal Convoluted Tubule",
+        "2": "Glomerular endothelial cells",
+        "3": "Interstitial endothelial cells",
+        "4": "Leukocytes",
+        "5": "Podocytes",
+        "6": "Proximal Tubule Segments",
+        "7": "Thick Ascending Limb"
+      },
+      "split_counts": {
+        "train": 165466,
+        "val": 23640,
+        "test": 47280
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "organamnist",
+      "relative_path": "organamnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/organamnist.npz?download=1",
+      "bytes": 38247708,
+      "hash_algorithm": "md5",
+      "hash": "68e3f8846a6bd62f0c9bf841c0d9eacc",
+      "license": "CC BY 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "bladder",
+        "1": "femur-left",
+        "2": "femur-right",
+        "3": "heart",
+        "4": "kidney-left",
+        "5": "kidney-right",
+        "6": "liver",
+        "7": "lung-left",
+        "8": "lung-right",
+        "9": "pancreas",
+        "10": "spleen"
+      },
+      "split_counts": {
+        "train": 34561,
+        "val": 6491,
+        "test": 17778
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "organcmnist",
+      "relative_path": "organcmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/organcmnist.npz?download=1",
+      "bytes": 15526411,
+      "hash_algorithm": "md5",
+      "hash": "b9ceb9546e10131b32923c5bbeaea2b1",
+      "license": "CC BY 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "bladder",
+        "1": "femur-left",
+        "2": "femur-right",
+        "3": "heart",
+        "4": "kidney-left",
+        "5": "kidney-right",
+        "6": "liver",
+        "7": "lung-left",
+        "8": "lung-right",
+        "9": "pancreas",
+        "10": "spleen"
+      },
+      "split_counts": {
+        "train": 12975,
+        "val": 2392,
+        "test": 8216
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "organsmnist",
+      "relative_path": "organsmnist.npz",
+      "url": "https://zenodo.org/records/10519652/files/organsmnist.npz?download=1",
+      "bytes": 16528359,
+      "hash_algorithm": "md5",
+      "hash": "9ab87b696fb54e2a387ebe992d6ed5f1",
+      "license": "CC BY 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "bladder",
+        "1": "femur-left",
+        "2": "femur-right",
+        "3": "heart",
+        "4": "kidney-left",
+        "5": "kidney-right",
+        "6": "liver",
+        "7": "lung-left",
+        "8": "lung-right",
+        "9": "pancreas",
+        "10": "spleen"
+      },
+      "split_counts": {
+        "train": 13932,
+        "val": 2452,
+        "test": 8827
+      },
+      "dimensions": 2
+    },
+    {
+      "dataset": "organmnist3d",
+      "relative_path": "organmnist3d.npz",
+      "url": "https://zenodo.org/records/10519652/files/organmnist3d.npz?download=1",
+      "bytes": 32657349,
+      "hash_algorithm": "md5",
+      "hash": "a0c5a1ff56af4f155c46d46fbb45a2fe",
+      "license": "CC BY 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "liver",
+        "1": "kidney-right",
+        "2": "kidney-left",
+        "3": "femur-right",
+        "4": "femur-left",
+        "5": "bladder",
+        "6": "heart",
+        "7": "lung-right",
+        "8": "lung-left",
+        "9": "spleen",
+        "10": "pancreas"
+      },
+      "split_counts": {
+        "train": 971,
+        "val": 161,
+        "test": 610
+      },
+      "dimensions": 3
+    },
+    {
+      "dataset": "nodulemnist3d",
+      "relative_path": "nodulemnist3d.npz",
+      "url": "https://zenodo.org/records/10519652/files/nodulemnist3d.npz?download=1",
+      "bytes": 29299364,
+      "hash_algorithm": "md5",
+      "hash": "8755a7e9e05a4d9ce80a24c3e7a256f3",
+      "license": "CC BY 4.0",
+      "task": "binary-class",
+      "labels": {
+        "0": "benign",
+        "1": "malignant"
+      },
+      "split_counts": {
+        "train": 1158,
+        "val": 165,
+        "test": 310
+      },
+      "dimensions": 3
+    },
+    {
+      "dataset": "adrenalmnist3d",
+      "relative_path": "adrenalmnist3d.npz",
+      "url": "https://zenodo.org/records/10519652/files/adrenalmnist3d.npz?download=1",
+      "bytes": 276833,
+      "hash_algorithm": "md5",
+      "hash": "bbd3c5a5576322bc4cdfea780653b1ce",
+      "license": "CC BY 4.0",
+      "task": "binary-class",
+      "labels": {
+        "0": "normal",
+        "1": "hyperplasia"
+      },
+      "split_counts": {
+        "train": 1188,
+        "val": 98,
+        "test": 298
+      },
+      "dimensions": 3
+    },
+    {
+      "dataset": "fracturemnist3d",
+      "relative_path": "fracturemnist3d.npz",
+      "url": "https://zenodo.org/records/10519652/files/fracturemnist3d.npz?download=1",
+      "bytes": 3278419,
+      "hash_algorithm": "md5",
+      "hash": "6aa7b0143a6b42da40027a9dda61302f",
+      "license": "CC BY 4.0",
+      "task": "multi-class",
+      "labels": {
+        "0": "buckle rib fracture",
+        "1": "nondisplaced rib fracture",
+        "2": "displaced rib fracture"
+      },
+      "split_counts": {
+        "train": 1027,
+        "val": 103,
+        "test": 240
+      },
+      "dimensions": 3
+    },
+    {
+      "dataset": "vesselmnist3d",
+      "relative_path": "vesselmnist3d.npz",
+      "url": "https://zenodo.org/records/10519652/files/vesselmnist3d.npz?download=1",
+      "bytes": 398349,
+      "hash_algorithm": "md5",
+      "hash": "b41fd4f7e7e2feedddb201585ecafa1b",
+      "license": "CC BY 4.0",
+      "task": "binary-class",
+      "labels": {
+        "0": "vessel",
+        "1": "aneurysm"
+      },
+      "split_counts": {
+        "train": 1335,
+        "val": 191,
+        "test": 382
+      },
+      "dimensions": 3
+    },
+    {
+      "dataset": "synapsemnist3d",
+      "relative_path": "synapsemnist3d.npz",
+      "url": "https://zenodo.org/records/10519652/files/synapsemnist3d.npz?download=1",
+      "bytes": 38034583,
+      "hash_algorithm": "md5",
+      "hash": "1235b78a3cd6280881dd7850a78eadb6",
+      "license": "CC BY 4.0",
+      "task": "binary-class",
+      "labels": {
+        "0": "inhibitory synapse",
+        "1": "excitatory synapse"
+      },
+      "split_counts": {
+        "train": 1230,
+        "val": 177,
+        "test": 352
+      },
+      "dimensions": 3
+    }
+  ]
+}

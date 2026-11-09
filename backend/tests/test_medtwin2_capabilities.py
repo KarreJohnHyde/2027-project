@@ -12,7 +12,7 @@ import pytest
 from sqlalchemy import create_engine, inspect, text
 
 from app.config import ANATOMY_MANIFEST_PATH
-from app.models.entities import User, UserRole
+from app.models.entities import User, UserRole, VerificationStatus
 from app.services.auth import get_password_hash
 from app.services.clinical_calculators import ckd_epi_2021
 from app.services.evaluation_metrics import (
@@ -297,8 +297,8 @@ def test_model_registry_uses_the_medtwin2_state_vocabulary(client, test_users):
     models = client.get("/api/v1/models", headers=get_auth_headers(test_users["clinician_a"])).json()["models"]
     states = {model["model_id"]: model["registry_state"] for model in models}
     assert set(states.values()) <= set(REGISTRY_STATES)
-    assert states["mura_study_baseline"] == "CHECKPOINT_MISSING"
-    assert states["medcat_adapter"] == "DEPENDENCY_MISSING"
+    assert states["brain_imaging_adapter"] == "CHECKPOINT_MISSING"
+    assert states["medcat_adapter"] == "CHECKPOINT_MISSING"
     assert not any(model["activation"]["eligible"] for model in models)
 
 
@@ -563,7 +563,8 @@ def test_dicom_upload_metadata_render_and_identifier_warning(client, test_users)
     assert metadata["body_part_systems"] == ["lungs", "heart"]
     assert metadata["deidentification_warnings"] == ["PatientName is present and non-empty"]
     assert "PatientName" not in json.dumps(metadata.get("technical_tags", {}))
-    assert metadata["inference"]["status"] == "MODEL_NOT_VALIDATED"
+    assert metadata["inference"]["status"] == "NOT_RUN"
+    assert metadata["inference"]["detections"] == metadata["inference"]["segmentations"] == []
     rendered = client.get(f"/api/v1/uploads/{upload.json()['id']}/imaging/render", headers=headers)
     assert rendered.status_code == 200 and rendered.content.startswith(b"\x89PNG")
     info = json.loads(rendered.headers["X-MedTwin-Render"])
@@ -664,6 +665,7 @@ def test_fhir_observations_import_with_codes_ranges_and_dates(client, test_users
 
 # ------------------------------------------------------- access and safety
 
+@pytest.mark.private_workspace
 def test_case_membership_viewer_reads_but_cannot_write(client, test_users, db_session):
     owner = get_auth_headers(test_users["clinician_a"])
     viewer = get_auth_headers(test_users["clinician_b"])
@@ -743,4 +745,17 @@ def test_registration_review_records_the_reviewed_transform(client, test_users):
     body = review.json()
     assert body["transform"]["status"] == "UNREGISTERED_BBOX_SCALED"
     assert body["decision"] == "NEEDS_LANDMARKS"
+    assert body["reviewer_standing"] == {"role": "clinician", "verified_professional": True}
     assert client.post("/api/v1/anatomy/registration-reviews", json={"layer_id": "skeleton", "decision": "REJECTED"}, headers=headers).status_code == 404
+
+
+@pytest.mark.skipif(not ANATOMY_MANIFEST_PATH.exists(), reason="anatomy manifest not generated in this checkout")
+def test_any_account_may_review_a_layer_and_the_review_says_who(client, db_session):
+    public = User(username="public_layer_reviewer", email="public-layer@test.medtwin", hashed_password="unused", role=UserRole.PUBLIC,
+                  verification_status=VerificationStatus.UNVERIFIED, is_active=True)
+    db_session.add(public)
+    db_session.commit()
+    review = client.post("/api/v1/anatomy/registration-reviews", json={"layer_id": "skeleton-projectkaizen-comparison", "decision": "NEEDS_LANDMARKS"},
+                         headers=get_auth_headers(public))
+    assert review.status_code == 201, review.text
+    assert review.json()["reviewer_standing"] == {"role": "public", "verified_professional": False}

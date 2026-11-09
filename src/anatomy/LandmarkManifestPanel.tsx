@@ -4,8 +4,13 @@ import { useSelectedCase, useWorkspace } from "../state/workspace";
 import { useAsync } from "../lib/useAsync";
 import { errorMessage, formatNumber } from "../lib/format";
 import { Button, Disclosure, ErrorBlock, Field, KeyValue, SelectInput, Spinner, StatusBadge, TextArea, TextInput } from "../components/ui";
-import { landmarkApi, type LandmarkManifest, type RegistrationGateResult } from "./landmarkApi";
+import { landmarkApi, type AccountStanding, type LandmarkManifest, type RegistrationGateResult } from "./landmarkApi";
 import { canDecideLandmarks, canManageLandmarks, parseLandmarkPairs, validateLandmarkPartition, type LandmarkPair } from "./landmarkValidation";
+
+function standing(account: AccountStanding | null | undefined): string {
+  if (!account) return "";
+  return account.verified_professional ? " (verified clinician)" : " (not a verified clinician)";
+}
 
 function CoordinateTable({ title, pairs }: { title: string; pairs: LandmarkPair[] }) {
   return <div className="max-h-52 overflow-auto rounded border border-line" tabIndex={0} aria-label={title}>
@@ -56,7 +61,7 @@ function ManifestReview({ manifest, canManage, onChanged }: { manifest: Landmark
         { label: "Declared source → target coordinate frames", value: manifest.coordinate_frame },
         { label: "Requested anatomical region", value: manifest.requested_region },
         { label: "Predeclared mean held-out TRE limit", value: `${manifest.threshold_mm} mm` },
-        { label: "Proposer / independent reviewer", value: `User #${manifest.created_by_id} / ${manifest.decided_by_id ? `user #${manifest.decided_by_id}` : "not reviewed"}` },
+        { label: "Proposer / independent reviewer", value: `User #${manifest.created_by_id}${standing(manifest.proposer_standing)} / ${manifest.decided_by_id ? `user #${manifest.decided_by_id}${standing(manifest.decider_standing)}` : "not reviewed"}` },
         { label: "Created / decided", value: `${manifest.created_at} / ${manifest.decided_at ?? "pending"}` },
       ]} />
       {coordinatesAvailable ? <>
@@ -68,7 +73,7 @@ function ManifestReview({ manifest, canManage, onChanged }: { manifest: Landmark
         <label className="flex gap-2 text-xs"><input type="checkbox" checked={reviewed} onChange={event => setReviewed(event.target.checked)} />I independently inspected every coordinate pair against the source evidence, the frame/units, target region, held-out partition and predeclared threshold.</label>
         <Field label="Independent review rationale" htmlFor={`landmark-comment-${manifest.id}`}><TextArea id={`landmark-comment-${manifest.id}`} value={comment} maxLength={2000} rows={2} onChange={event => setComment(event.target.value)} /></Field>
         <div className="flex flex-wrap gap-2"><Button size="sm" disabled={!reviewed || comment.trim().length < 3 || busy} onClick={() => void decide("APPROVED")}>Approve manifest</Button><Button size="sm" variant="danger" disabled={!reviewed || comment.trim().length < 3 || busy} onClick={() => void decide("REJECTED")}>Reject manifest</Button></div>
-      </> : <p className="text-xs text-ink-3">Requires a different verified clinician or administrator with case edit access. The proposer cannot approve or reject their own manifest.</p>)}
+      </> : <p className="text-xs text-ink-3">Requires a different account with case edit access. The proposer cannot approve or reject their own manifest.</p>)}
       {manifest.status === "APPROVED" && canManage && <>
         <label className="flex gap-2 text-xs"><input type="checkbox" checked={applyConfirmed} onChange={event => setApplyConfirmed(event.target.checked)} />Evaluate and replace this finding’s mapping using this approved manifest. A failed gate returns the finding to L1.</label>
         <Button size="sm" disabled={!applyConfirmed || busy} onClick={() => void evaluate()}>Evaluate and apply reviewed gate</Button>
@@ -116,7 +121,7 @@ function FindingManifests({ finding, canManage }: { finding: Finding; canManage:
   }
 
   return <div className="space-y-3">
-    <p className="text-xs text-ink-2">Finding #{finding.id}: {finding.label}. Current level: {finding.representation_level}; {finding.mapping_status}.</p>
+    <p className="text-xs text-ink-2 [overflow-wrap:anywhere]">Finding #{finding.id}: {finding.label}. Current level: {finding.representation_level}; {finding.mapping_status}.</p>
     {manifests.loading && <Spinner label="Loading landmark manifests" />}
     {manifests.error && <ErrorBlock message={manifests.error} onRetry={manifests.reload} />}
     {!manifests.loading && !manifests.error && manifests.data?.length === 0 && <p className="text-xs text-ink-3">No landmark manifest has been submitted for this finding.</p>}
@@ -133,7 +138,7 @@ function FindingManifests({ finding, canManage }: { finding: Finding; canManage:
         <label className="flex gap-2 text-xs"><input type="checkbox" checked={attested} onChange={event => setAttested(event.target.checked)} />These measurements belong to this case/finding, use the declared millimetre frames, and the held-out points and threshold were selected independently before fitting.</label>
         <Button type="submit" size="sm" variant="primary" loading={busy} disabled={!attested}>Submit for independent review</Button>
       </form>
-    </Disclosure> : <p className="text-xs text-ink-3">Read-only: proposing, deciding and applying landmark manifests requires a verified clinician/administrator and case edit access.</p>}
+    </Disclosure> : <p className="text-xs text-ink-3">Read-only: proposing, deciding and applying landmark manifests requires case edit access.</p>}
     {error && <ErrorBlock message={error} />}
     {notice && <p role="status" className="text-xs text-ink-2">{notice}</p>}
   </div>;

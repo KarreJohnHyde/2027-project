@@ -11,7 +11,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-CLASSIFIER_VERSION = "page-type-rules-v1"
+CLASSIFIER_VERSION = "page-type-rules-v3"
 
 LABORATORY_REPORT = "LABORATORY_REPORT"
 IMAGING_REPORT = "IMAGING_REPORT"
@@ -21,6 +21,8 @@ DISCHARGE_SUMMARY = "DISCHARGE_SUMMARY"
 CONSULTATION_NOTE = "CONSULTATION_NOTE"
 PRESCRIPTION = "PRESCRIPTION"
 BILLING = "BILLING"
+# An order for a test (radiology requisition, lab request): it names investigations, it reports none.
+REQUEST_FORM = "REQUEST_FORM"
 UNCLASSIFIED = "UNCLASSIFIED"
 
 
@@ -44,23 +46,37 @@ CUES: dict[str, list[re.Pattern]] = {
         # Findings wording that imaging reports print and laboratory pages do not.
         r"parenchyma\w*", r"fatty\s+liver|hepatomegaly|splenomegaly", r"hydronephrosis|calculus|calculi",
         r"effusion|consolidation|opacit\w*|nodules?", r"hemidiaphragm|diaphragm\w*",
+        # MRI and echocardiography wording (hyphenated "ECHO-CARDIOGRAPHY" included).
+        r"hyperintens\w*|hypointens\w*", r"diffusion\s*weighted|dwi|flair|t[12]\s*w|t[12]\s*(?:weighted|fse|se)", r"sequences?",
+        r"echo[\s-]*cardiograph\w*", r"lvef|ejection\s+fraction", r"regurgitation", r"wall\s+motion",
     ),
     PROCEDURE_REPORT: _cues(
         r"colonoscop\w*|endoscop\w*|gastroscop\w*|sigmoidoscop\w*|bronchoscop\w*|ercp|egd", r"scope\s+(?:was\s+)?(?:introduced|passed|advanced|inserted)",
         r"mucosa\w*", r"ca?ecum|terminal\s+ileum|rectum|sigmoid\s+colon|duodenum|antrum|oesophag\w*|esophag\w*",
         r"procedure\s+(?:done|performed|note|report)", r"sedation", r"biops(?:y|ies)\s+(?:taken|obtained)",
+        # OCR often glues these words, hence \s*.
+        r"pre\s*-?\s*medication", r"examined\s*up\s*to", r"instrument", r"bbps|boston\s*bowel", r"scope\s*could\s*not",
+    ),
+    REQUEST_FORM: _cues(
+        r"requisition", r"request\s+screened", r"type\s+of\s+(?:radiological\s+)?investigations?", r"area\s+of\s+interest",
+        r"clinical\s+information", r"drug\s+allergy", r"pregnancy\s*:?\s*yes\s*/\s*no", r"previous\s+surgery",
     ),
     PATHOLOGY_REPORT: _cues(
         r"histopatholog\w*", r"cytolog\w*", r"biopsy", r"gross\s+(?:description|examination)", r"microscop\w*\s+(?:description|examination)",
         r"fnac", r"nature\s+of\s+specimen", r"received\s+in\s+formalin", r"sections?\s+(?:show|studied)", r"pathologist",
+        # Microscopy wording a histopathology report prints and an endoscopy report does not.
+        r"granulomas?", r"crypt\w*", r"dysplasia", r"lamina\s+propria", r"ihc|immunohistochem\w*", r"cassettes?",
     ),
     DISCHARGE_SUMMARY: _cues(
         r"discharge\s+summary", r"date\s+of\s+(?:admission|discharge)", r"course\s+in\s+(?:the\s+)?hospital", r"condition\s+(?:at|on)\s+discharge",
         r"advice\s+on\s+discharge|discharge\s+advice", r"final\s+diagnosis", r"admitted\s+(?:with|for|on)",
     ),
+    # Headings are matched with \s* because OCR glues them ("InvestigationsAdvised", "PreExistingIllness").
     CONSULTATION_NOTE: _cues(
-        r"chief\s+complaints?|c/o", r"history\s+of\s+present\s+illness|hopi", r"on\s+examination|o/e", r"provisional\s+diagnosis",
-        r"vitals?", r"follow[\s-]*up", r"review\s+after",
+        r"chief\s*complaints?|c/o|complaints?\s*:", r"history\s*of\s*present\s*illness|hopi|brief\s*history", r"on\s*examination|o/e|examination\s*:",
+        # "Illness" is often read as "lllness".
+        r"provisional\s*diagnosis", r"vitals?", r"follow[\s-]*up", r"review\s*after", r"pre[\s-]*existing\s*[il1|]+ness", r"investigations?\s*advised",
+        r"advice\s*:?", r"medical\s*report", r"bp\s*[:\-]?\s*\d{2,3}\s*/\s*\d{2,3}\s*(?:mm\s*hg)?",
     ),
     PRESCRIPTION: _cues(
         r"rx", r"tab\.?", r"cap\.?", r"syp\.?|syrup", r"inj\.?", r"(?:1|0)\s*-\s*(?:1|0)\s*-\s*(?:1|0)", r"od|bd|tds|qid|hs|sos",
@@ -82,7 +98,7 @@ IMAGING_MODALITIES = (
     ("CT", re.compile(r"(?<![A-Za-z])(?:c\.?e\.?c\.?t|n\.?c\.?c\.?t|hrct|computed\s+tomography|ct)(?![A-Za-z])", re.IGNORECASE)),
     ("MRI", re.compile(r"(?<![A-Za-z])(?:mri|magnetic\s+resonance)(?![A-Za-z])", re.IGNORECASE)),
     ("RADIOGRAPH", re.compile(r"(?<![A-Za-z])(?:x-?\s*ray|radiograph\w*|cxr|skiagram)(?![A-Za-z])", re.IGNORECASE)),
-    ("ECHOCARDIOGRAPHY", re.compile(r"(?<![A-Za-z])(?:echocardiograph\w*|2d\s*echo)(?![A-Za-z])", re.IGNORECASE)),
+    ("ECHOCARDIOGRAPHY", re.compile(r"(?<![A-Za-z])(?:echo[\s-]*cardiograph\w*|2d\s*echo)(?![A-Za-z])", re.IGNORECASE)),
     ("MAMMOGRAPHY", re.compile(r"(?<![A-Za-z])mammogra\w*", re.IGNORECASE)),
 )
 # A type needs this many distinct cues, and must lead the next type by this margin.
@@ -112,9 +128,13 @@ def classify_page(text: str) -> dict[str, Any]:
         best, best_cues = UNCLASSIFIED, []
     modality = None
     if best == IMAGING_REPORT:
-        counts = [(len(pattern.findall(text)), name) for name, pattern in IMAGING_MODALITIES]
-        top = max(counts)
-        modality = top[1] if top[0] else None
+        counts = {name: len(pattern.findall(text)) for name, pattern in IMAGING_MODALITIES}
+        if counts["ECHOCARDIOGRAPHY"]:
+            # Ultrasound of the heart: its Doppler wording does not make a named echo report general ultrasound.
+            modality = "ECHOCARDIOGRAPHY"
+        else:
+            top = max((count, name) for name, count in counts.items())
+            modality = top[1] if top[0] else None
     return {
         "document_type": best,
         "imaging_modality": modality,

@@ -27,7 +27,7 @@ from datetime import date
 import math
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from app.services.document_parser import parse_clinical_document_pages, parse_clinical_document_with_pages  # noqa: F401
 from app.services.ocr_text import normalise, to_normalised, to_source
@@ -644,6 +644,19 @@ def _assess(
     }
 
 
+def _preceding_site(text: str, previous: Optional[tuple[int, int, list[dict], Optional[str]]], sentence_start: int,
+                    section: Optional[str]) -> Optional[dict]:
+    """The one site named by the sentence just before, when it is on the same line and in the same section
+    ("Bony cranium is unremarkable. No fractures noted."), with offsets relative to the current sentence."""
+    if previous is None:
+        return None
+    previous_start, previous_end, previous_sites, previous_section = previous
+    if previous_section != section or len(previous_sites) != 1 or "\n" in text[previous_end:sentence_start]:
+        return None
+    shift = previous_start - sentence_start
+    return {**previous_sites[0], "start": previous_sites[0]["start"] + shift, "end": previous_sites[0]["end"] + shift}
+
+
 def extract_clinical_statements(report_text: str, page_starts: Optional[list[int]] = None) -> List[Dict[str, Any]]:
     """Extract source-linked statements with assertion, certainty and context.
 
@@ -656,16 +669,20 @@ def extract_clinical_statements(report_text: str, page_starts: Optional[list[int
     sections = _sections(report_text)
     page_floors = [to_normalised(index, start) for start in (page_starts or [0])]
     statements: List[Dict[str, Any]] = []
+    previous: Optional[tuple[int, int, list[dict], Optional[str]]] = None
     for sentence_start, sentence_end in split_sentences(report_text):
         source_start, source_end = to_source(index, sentence_start, sentence_end)
         if any(start <= source_start and source_end <= end for start, end, _ in excluded) or any(
             source_start < end and start < source_end and reason == "BILLING_DOCUMENT" for start, end, reason in excluded
         ):
+            previous = None
             continue
         sentence = report_text[sentence_start:sentence_end]
         floor = max((start for start in page_floors if start <= sentence_start), default=0)
         section = _section_at(sections, sentence_start, floor)
         sites = find_sites(sentence)
+        preceding_site = None if sites else _preceding_site(report_text, previous, sentence_start, section)
+        previous = (sentence_start, sentence_end, sites, section)
         matches = _entity_matches(sentence)
         procedure_spans = tuple((start, end) for start, end, term, _ in matches if term.category == "PROCEDURE")
         entity_spans = tuple(sorted((start, end) for start, end, _, _ in matches))
@@ -685,6 +702,11 @@ def extract_clinical_statements(report_text: str, page_starts: Optional[list[int
             system = term.system or (site["system"] if site else None)
             if site and term.system and site["system"] != term.system:
                 site = None if term.system != "brain" or site["system"] != "nervous" else site
+            if site is None and preceding_site and term.category == "FINDING" and term.system and preceding_site["system"] == term.system:
+                # A finding with no site of its own takes the same-system site of the sentence just before it on
+                # the same line; the cue marks the site as read from context, for review.
+                site = preceding_site
+                context["cues"].append({"type": "SITE_FROM_PRECEDING_SENTENCE", "text": "", "start": site["start"], "end": site["end"]})
             if term.category == "PROCEDURE" and context["temporality"] == "CURRENT" and any(cue["type"] == "POSTOPERATIVE_CONTEXT" for cue in context["cues"]):
                 context["temporality"] = "HISTORICAL"
             if fragment and context["certainty"] == "CERTAIN":
@@ -722,6 +744,116 @@ def extract_clinical_statements(report_text: str, page_starts: Optional[list[int
                 "entity_end": entity_source[1],
             })
     return statements
+
+
+# ---------------------------------------------------------------------------
+# Qualitative laboratory results (urinalysis rows)
+# ---------------------------------------------------------------------------
+
+URINE_HEADING = re.compile(r"^\s*(?:(?:complete|routine)\s+)?(?:urine|urinalysis)\b|\burine\s+(?:routine|analysis|examination|r/?e|r\s*&\s*m)\b|\bexamination\s+of\s+urine\b", re.IGNORECASE)
+# A heading of another panel ends the urine section.
+OTHER_PANEL = re.compile(r"^\s*(?:complete\s+blood\s+count|ha?emogram|cbc\b|liver\s+function|renal\s+function|kidney\s+function|lipid\s+profile|"
+                         r"thyroid|serology|bio\s*chemistry|ha?ematology|stool|culture|blood\s+sugar|glucose\s+(?:fasting|random)|electrolytes|"
+                         # other specimens examined with the same row names (protein, glucose, cells)
+                         r"csf\b|cerebro\s*spinal|semen|sputum|pleural|ascitic|peritoneal|synovial|pericardial|body\s+fluid|"
+                         r"impression|findings|conclusion|end\s+of\s+report)\b", re.IGNORECASE)
+# A row whose "result" is a heading word belongs to a heading line, not to a urinalysis result.
+HEADING_RESULT = re.compile(r"(?:routine|analysis|examination|r\s*/?\s*e\b|r\s*&\s*m\b|test|parameter|result)", re.IGNORECASE)
+URINE_ROWS: tuple[tuple[str, str, str], ...] = (
+    (r"colou?r", "Urine colour", "DESCRIPTIVE"),
+    (r"appearance|clarity|turbidity|transparency", "Urine appearance", "DESCRIPTIVE"),
+    (r"urobilinogen", "Urine urobilinogen", "DESCRIPTIVE"),
+    (r"(?:urine\s+)?(?:protein|albumin)", "Urine protein", "PRESENCE"),
+    (r"(?:urine\s+)?(?:glucose|sugar)", "Urine glucose", "PRESENCE"),
+    (r"ketones?(?:\s+bodies)?|acetone", "Urine ketones", "PRESENCE"),
+    (r"bile\s+(?:salts?|pigments?)|bilirubin", "Urine bile pigment / bilirubin", "PRESENCE"),
+    (r"nitrites?", "Urine nitrite", "PRESENCE"),
+    (r"leu[ck]ocyte\s+esterase", "Urine leukocyte esterase", "PRESENCE"),
+    (r"(?:occult\s+)?blood|ha?emoglobin", "Urine blood", "PRESENCE"),
+    (r"pus\s+cells?|w\.?b\.?c\.?s?|leu[ck]ocytes", "Urine pus cells", "MICROSCOPY"),
+    (r"r\.?b\.?c\.?s?|red\s+(?:blood\s+)?cells", "Urine red cells", "MICROSCOPY"),
+    (r"epithelial\s+cells?", "Urine epithelial cells", "MICROSCOPY"),
+    (r"casts?", "Urine casts", "MICROSCOPY"),
+    (r"crystals?", "Urine crystals", "MICROSCOPY"),
+    (r"bacteria", "Urine bacteria", "MICROSCOPY"),
+    (r"yeast(?:\s+cells)?|fungal\s+elements|budding\s+yeast", "Urine yeast", "MICROSCOPY"),
+)
+URINE_ROW_PATTERNS = [(re.compile(rf"^(?P<indent>[ \t]*)(?P<label>{pattern})\b[ \t]*[:.\-]?[ \t]*(?P<result>\S[^\n]*?)[ \t]*$", re.IGNORECASE | re.MULTILINE), label, kind)
+                      for pattern, label, kind in URINE_ROWS]
+NEGATIVE_RESULT = re.compile(r"(?:nil|absent|negative|neg\.?|not\s+(?:seen|detected|present|found)|none(?:\s+seen)?|-ve)\b", re.IGNORECASE)
+POSITIVE_RESULT = re.compile(r"(?:present|positive|pos\.?|\+{1,4}|trace|[1-4]\s*\+|seen|detected|few|occasional|plenty|many|numerous|moderate|"
+                             r"\d+(?:\.\d+)?\s*[-–]\s*\d+(?:\.\d+)?|\d+(?:\.\d+)?)", re.IGNORECASE)
+
+
+def _urine_sections(text: str, page_floors: Optional[list[int]] = None) -> list[tuple[int, int]]:
+    """[start, end) ranges from a urine heading line to the next other-panel heading, the next page or 60 lines."""
+    sections = [(start, min([end] + [floor for floor in (page_floors or []) if floor > start])) for start, end in _urine_spans(text)]
+    return [(start, end) for start, end in sections if end > start]
+
+
+def _urine_spans(text: str) -> list[tuple[int, int]]:
+    sections, position = [], 0
+    lines = text.splitlines(keepends=True)
+    offsets = []
+    for line in lines:
+        offsets.append(position)
+        position += len(line)
+    index = 0
+    while index < len(lines):
+        if URINE_HEADING.search(lines[index]):
+            start, end = offsets[index], len(text)
+            for following in range(index + 1, min(len(lines), index + 61)):
+                if OTHER_PANEL.search(lines[following]) and not URINE_HEADING.search(lines[following]):
+                    end = offsets[following]
+                    break
+            else:
+                end = offsets[min(len(lines) - 1, index + 60)] + len(lines[min(len(lines) - 1, index + 60)])
+            sections.append((start, end))
+            index = next((i for i, offset in enumerate(offsets) if offset >= end), len(lines))
+        else:
+            index += 1
+    return sections
+
+
+def extract_qualitative_results(report_text: str, page_starts: Optional[list[int]] = None) -> List[Dict[str, Any]]:
+    """Urinalysis rows printed as words or grades ("Protein  Nil", "Pus cells  2-3 /hpf") inside a urine section.
+
+    "Nil", "Absent", "Negative" make the row's statement NEGATED; any other printed result is AFFIRMED with the
+    result quoted in a RESULT cue. Numeric results with units remain measurements; nothing is graded or inferred."""
+    source_text = report_text
+    text, index = normalise(source_text)
+    statements: List[Dict[str, Any]] = []
+    taken: list[tuple[int, int]] = []
+    floors = [to_normalised(index, start) for start in (page_starts or [])]
+    for low, high in _urine_sections(text, floors):
+        for pattern, label, kind in URINE_ROW_PATTERNS:
+            for match in pattern.finditer(text, low, high):
+                if any(match.start("label") < end and start < match.end() for start, end in taken):
+                    continue
+                result = match.group("result").strip()
+                if HEADING_RESULT.match(result):
+                    continue
+                negative = NEGATIVE_RESULT.match(result)
+                if kind != "DESCRIPTIVE" and not negative and not POSITIVE_RESULT.match(result):
+                    continue
+                if kind != "DESCRIPTIVE" and not negative and re.match(r"\d+(?:\.\d+)?\s*(?:mg|g|mmol|µmol|umol)\b", result, re.IGNORECASE):
+                    continue  # a numeric result with a unit is a measurement, not a qualitative row
+                taken.append((match.start("label"), match.end()))
+                result_start = match.start("result")
+                cue_start, cue_end = to_source(index, result_start, result_start + len(result))
+                label_start, label_end = to_source(index, match.start("label"), match.end("label"))
+                span_start, span_end = to_source(index, match.start("label"), match.end())
+                statements.append({
+                    "entity": label, "entity_text": source_text[label_start:label_end], "category": "LAB_QUALITATIVE",
+                    "negation": "NEGATED" if negative and kind != "DESCRIPTIVE" else "AFFIRMED", "certainty": "CERTAIN",
+                    "temporality": "CURRENT", "experiencer": "PATIENT", "comparison": None,
+                    "cues": [{"type": "RESULT", "text": source_text[cue_start:cue_end], "start": cue_start, "end": cue_end}],
+                    "section": "URINALYSIS", "anatomical_site": None, "laterality": None, "anatomy_system": "kidneys",
+                    "atlas_structure_id": None, "atlas_structure_name": None,
+                    "source_span": source_text[span_start:span_end][:256], "source_span_start": span_start, "source_span_end": span_end,
+                    "entity_start": label_start, "entity_end": label_end,
+                })
+    return sorted(statements, key=lambda item: item["source_span_start"])
 
 
 # ---------------------------------------------------------------------------
@@ -1214,6 +1346,9 @@ LESION_SIZE_PREFIX = re.compile(rf"{DIMS}\s+(?:[a-z-]+\s+){{0,3}}?(?P<label>{LES
 PRIOR_VALUE_GAP = re.compile(r"\b(?:from|previously|prior|was|were|increas\w*|decreas\w*|grown|shrunk|compared|then)\b", re.IGNORECASE)
 LESION_NAMES = {"lesion": "lesion_size", "nodule": "nodule_size", "mass": "mass_size", "opacity": "opacity_size", "cyst": "cyst_size",
                 "tumor": "mass_size", "tumour": "mass_size", "polyp": "polyp_size", "collection": "collection_size", "calculus": "calculus_size", "stone": "calculus_size"}
+# ECG machines print QT and QTc as one pair: "QT/QTc 380/412 ms" (synthetic).
+QT_QTC = re.compile(r"\bqt\s*/\s*qtc[bf]?\s*(?:interval)?\s*[:=]?\s*(?P<qt>\d{3})\s*/\s*(?P<qtc>\d{3})\s*(?P<unit>ms(?:ec)?|milliseconds?)\b", re.IGNORECASE)
+
 KIDNEY_LENGTH = re.compile(
     r"\b(?P<side>right|left)\s+kidney\b[^.;\n]{0,30}?\b(?:measures?|measuring|length(?:\s+of)?|is)\s*(?P<value>\d+(?:\.\d+)?)\s*(?P<unit>cm|mm)\b",
     re.IGNORECASE,
@@ -1394,6 +1529,16 @@ def extract_numeric_measurements(report_text: str, page_starts: Optional[list[in
             ))
         claimed.append((match.start(), match.end()))
 
+    for match in QT_QTC.finditer(report_text):
+        if not free(match.start(), match.end()):
+            continue
+        for name, label, group, code in (("qt_interval", "QT interval (ECG)", "qt", "8634-8"), ("qtc_interval", "QTc interval (ECG)", "qtc", "8636-3")):
+            measurements.append(_measurement(
+                name, label, float(match.group(group)), "ms", match.group(group), match.group("unit"), match.start(), match.end(), report_text,
+                canonical_code=code, code_system=LOINC, code_mapping_status=LOINC_MAPPING_STATUS, anatomy_system="heart", association="PHYSIOLOGICAL_SIGNAL",
+            ))
+        claimed.append((match.start(), match.end()))
+
     lesion_matches = [(match, True) for match in LESION_SIZE_PREFIX.finditer(report_text)]
     lesion_matches += [(match, False) for match in LESION_SIZE.finditer(report_text) if not PRIOR_VALUE_GAP.search(match.group("gap"))]
     for match, _prefix in sorted(lesion_matches, key=lambda item: item[0].start()):
@@ -1497,14 +1642,16 @@ MONTHS = {name: index for index, names in enumerate(
      ("jul", "july"), ("aug", "august"), ("sep", "sept", "september"), ("oct", "october"), ("nov", "november"), ("dec", "december")),
     start=1) for name in names}
 DATE_RE = re.compile(
-    r"(?P<label>collection\s*date|date\s*(?:of\s*)?collection|collected(?:\s*on)?|sample\s*(?:collection\s*)?date|specimen\s*(?:collection\s*)?date|"
+    # Laboratory systems abbreviate the label ("BLOOD COLLECTION DT. :23/02/2026 08:15:00", synthetic).
+    r"(?P<label>(?:blood\s*|sample\s*|specimen\s*)?collection\s*(?:date|dt\b\.?)|date\s*(?:of\s*)?collection|collected(?:\s*on)?|"
+    r"sample\s*(?:collection\s*)?date|specimen\s*(?:collection\s*)?date|"
     r"sampling\s*date|report(?:ed)?\s*date|date\s*(?:of\s*)?report|date\s*reported|reported(?:\s*on)?|report\s*(?:out|generated|released)\s*on|"
     r"study\s*date|exam(?:ination)?\s*date|"
     r"date\s*of\s*(?:exam(?:ination)?|study|service|procedure)|\bdate\b)\s*[:\-]?\s*"
     # Month names also come hyphenated ("29-Aug-2024") or glued by OCR ("August29th2024", "AUG292024").
     r"(?P<date>\d{4}-\d{2}-\d{2}|\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}|\d{1,2}(?:st|nd|rd|th)?[ \t-]*[A-Za-z]{3,9}\.?[ \t-]*\d{4}"
     # OCR reads a superscript ordinal as one letter ("AUG27T2026").
-    r"|[A-Za-z]{3,9}\.?[ \t]*\d{1,2}(?:st|nd|rd|th|[th])?,?[ \t]*\d{4})",
+    r"|[A-Za-z]{3,9}\.?[ \t]*[O0]?\d{1,2}(?:st|nd|rd|th|[th])?,?[ \t]*\d{4})",
     re.IGNORECASE,
 )
 AGE_RE = re.compile(
@@ -1528,6 +1675,14 @@ SEX_RE = re.compile(
 
 def _parse_date(raw: str) -> tuple[Optional[str], str]:
     text = raw.strip().lower().replace(",", "")
+    # A zero read as O is accepted only in the day of an explicit named-month date.
+    # Keep the raw span and flag the candidate for review; never alter report text.
+    ocr_day = re.fullmatch(r"([a-z]{3,9})\.?\s*o([1-9])(?:st|nd|rd|th|[th])?\s*(\d{4})", text)
+    if ocr_day and ocr_day.group(1) in MONTHS:
+        try:
+            return date(int(ocr_day.group(3)), MONTHS[ocr_day.group(1)], int(ocr_day.group(2))).isoformat(), "OCR_DAY_ZERO_REQUIRES_REVIEW"
+        except ValueError:
+            return None, "INVALID_CALENDAR_DATE"
     if re.search(r"[a-z]", text):
         text = re.sub(r"(?<=\d)(?:st|nd|rd|th|[th])(?=[\s\d]|$)", "", text)
         text = re.sub(r"(?<=[a-z.])[ \t-]*(?=\d)|(?<=\d)[ \t-]*(?=[a-z])", " ", text)
@@ -1641,14 +1796,52 @@ def prepare_report_document(report_path: Path) -> tuple[str, list[int], list[dic
             line_cursor += len(sanitized_line) + 1
         sanitized_pages.append("\n".join(safe_text_lines))
         meta["lines"] = safe_lines
-    for meta, kind in zip(page_meta, classify_pages(sanitized_pages)):
+    for page_index, (meta, kind) in enumerate(zip(page_meta, classify_pages(sanitized_pages))):
         meta["document_type"] = kind
+        # A long, tilted report heading can lose its small date during full-page
+        # recognition. Re-read the upper-right header only when no usable date
+        # was read. Keep the first extraction and append the source-linked reread.
+        if meta.get("method") == "OCR" and kind.get("document_type") == "IMAGING_REPORT" and not any(
+            a["value_text"] and "date" in a["name"] for a in extract_documented_attributes(sanitized_pages[page_index])
+        ):
+            _append_header_dates(report_path, page_index, sanitized_pages, meta)
     starts = []
     cursor = 0
     for page in sanitized_pages:
         starts.append(cursor)
         cursor += len(page) + 1
     return "\n".join(sanitized_pages), starts, page_meta
+
+
+def _append_header_dates(report_path: Path, page_index: int, pages: list[str], meta: dict) -> None:
+    from app.services import ocr
+    from PIL import Image, ImageOps
+
+    try:
+        if report_path.suffix.lower() == ".pdf":
+            image = ocr.render_pdf_page(report_path.read_bytes(), page_index)
+        else:
+            with Image.open(report_path) as opened:
+                image = ImageOps.exif_transpose(opened).convert("RGB")
+        width, height = image.size
+        x, y = round(width * .48), round(height * .12)
+        reread = ocr.ocr_image(image.crop((x, y, round(width * .96), round(height * .30))))
+        for line in reread.lines:
+            # Retain only a complete explicitly labelled date, never surrounding identifiers.
+            for attribute in extract_documented_attributes(line["text"]):
+                if "date" not in attribute["name"] or not attribute["value_text"]:
+                    continue
+                span = deidentify_with_counts(attribute["source_span"])[0]
+                start = len(pages[page_index]) + 1
+                pages[page_index] += "\n" + span
+                box = line["box"]
+                meta.setdefault("lines", []).append({"text_start": start, "text_end": start + len(span),
+                    "bbox_xyxy": [box[0] + x, box[1] + y, box[2] + x, box[3] + y],
+                    "confidence": line.get("confidence"), "identifiers_masked": False, "reading_pass": "HEADER_DATE_REREAD"})
+        meta["header_date_reread"] = "COMPLETED_REQUIRES_REVIEW"
+    except Exception as exc:
+        # A failed secondary reading must never lose the primary extraction.
+        meta["header_date_reread"] = f"UNAVAILABLE_{type(exc).__name__}"
 
 
 def privacy_screen(page_meta: list[dict]) -> dict[str, Any]:
@@ -1683,6 +1876,30 @@ def summarise_statements(statements: List[Dict[str, Any]]) -> str:
     return f"{len(statements)} source-linked statements ({affirmed} affirmed, {negated} negated, {qualified} qualified)"
 
 
+# Twenty letters without a space that the OCR normaliser could not split into words (ocr_text.RELAXED_MIN_RUN).
+UNREADABLE_OCR_RUN = re.compile(r"[A-Za-z]{20,}")
+
+
+def statements_to_source(statements: List[Dict[str, Any]], source_text: str, index: Optional[list[int]]) -> List[Dict[str, Any]]:
+    """Map statements computed on OCR-normalised text back to ``source_text``: offsets via the normalisation
+    map, and every quoted span (sentence, entity surface, cue) re-read from the source. ``entity`` keeps the
+    model's reading of the normalised words."""
+    if index is None:
+        return statements
+    for statement in statements:
+        for start_key, end_key, text_key, limit in (("source_span_start", "source_span_end", "source_span", 256),
+                                                    ("entity_start", "entity_end", "entity_text", 128)):
+            if isinstance(statement.get(start_key), int) and isinstance(statement.get(end_key), int):
+                start, end = to_source(index, statement[start_key], statement[end_key])
+                statement[start_key], statement[end_key] = start, end
+                statement[text_key] = source_text[start:end][:limit]
+        for cue in statement.get("cues") or []:
+            if isinstance(cue.get("start"), int) and isinstance(cue.get("end"), int):
+                cue["start"], cue["end"] = to_source(index, cue["start"], cue["end"])
+                cue["text"] = source_text[cue["start"]:cue["end"]]
+    return statements
+
+
 def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]:
     """Read, de-identify, and extract structured evidence from a clinical report."""
     from app.services import derived_text
@@ -1698,7 +1915,7 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
     from app.services.fhir_import import fhir_measurements
     from app.services.hl7_import import hl7_measurements
 
-    statements = extract_clinical_statements(sanitized_text, page_starts)
+    statements = extract_clinical_statements(sanitized_text, page_starts) + extract_qualitative_results(sanitized_text, page_starts)
     excluded_segments = nonclinical_ranges(sanitized_text, page_starts)
     structured = fhir_measurements(report_path, sanitized_text)
     if structured is None:
@@ -1733,17 +1950,68 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
                 item["source_image_height"] = meta.get("image_height")
     assign_documented_dates(attributes, page_starts, len(sanitized_text), measurements)
 
-    from app.services import scispacy_adapter
+    from concurrent.futures import ThreadPoolExecutor
 
-    model_statements: List[Dict[str, Any]] = []
-    secondary: Dict[str, Any] = {"status": "DISABLED"}
-    if scispacy_adapter.mode() == "wsl":
+    from app.services import clinical_nlp_adapter, radgraph_adapter, scispacy_adapter
+
+    # The NER models read the OCR-normalised text, as the rules do: on glued OCR runs they otherwise
+    # return the runs themselves ("basalgangliaarenormal") as entities. Offsets come back to the source.
+    normalised_text, normalised_index = normalise(sanitized_text)
+    normalised_page_starts = [to_normalised(normalised_index, start) for start in page_starts]
+
+    def scispacy_pass() -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+        if not scispacy_adapter.enabled():
+            return [], {"status": "DISABLED"}
         try:
-            model_statements, model_meta = scispacy_adapter.model_statements(sanitized_text)
-            secondary = {"status": "COMPLETED", "models": model_meta, "statement_count": len(model_statements),
-                         "validation_status": "PUBLISHER_REPORTED_ONLY_NOT_EVALUATED_ON_CLINICAL_CORPUS"}
+            found, model_meta = scispacy_adapter.model_statements(normalised_text)
         except scispacy_adapter.ScispacyUnavailable as exc:
-            secondary = {"status": "UNAVAILABLE", "reason": str(exc)}
+            return [], {"status": "UNAVAILABLE", "reason": str(exc)}
+        found = statements_to_source(found, sanitized_text, normalised_index)
+        return found, {"status": "COMPLETED", "models": model_meta, "statement_count": len(found), "input_text": "OCR_NORMALISED",
+                       "validation_status": "PUBLISHER_REPORTED_ONLY_NOT_EVALUATED_ON_CLINICAL_CORPUS"}
+
+    def clinical_pass() -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+        if not clinical_nlp_adapter.enabled():
+            return [], {"status": "DISABLED"}
+        try:
+            return clinical_nlp_adapter.analyse(sanitized_text, statements)
+        except clinical_nlp_adapter.ClinicalNlpUnavailable as exc:
+            return [], {"status": "UNAVAILABLE", "reason": str(exc)}
+
+    def radgraph_pass() -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+        if not radgraph_adapter.enabled():
+            return [], {"status": "DISABLED"}
+        try:
+            found, meta = radgraph_adapter.observation_statements(normalised_text, normalised_page_starts, page_meta)
+        except radgraph_adapter.RadGraphUnavailable as exc:
+            return [], {"status": "UNAVAILABLE", "reason": str(exc)}
+        return statements_to_source(found, sanitized_text, normalised_index), {**meta, "input_text": "OCR_NORMALISED"}
+
+    def isolated(secondary_pass) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+        """A secondary tool never costs the rule extraction: any other failure becomes UNAVAILABLE, typed only
+        (exception messages can quote report text)."""
+        try:
+            return secondary_pass()
+        except Exception as exc:  # third-party stacks raise many types
+            return [], {"status": "UNAVAILABLE", "reason": f"{type(exc).__name__} in {secondary_pass.__name__}"}
+
+    # The WSL tools are separate processes and RadGraph runs on the GPU; side by side they add roughly the
+    # time of the slowest one per report. Each pass reads the rule statements and creates its own lists.
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        scispacy_job, clinical_job, radgraph_job = (pool.submit(isolated, scispacy_pass), pool.submit(isolated, clinical_pass),
+                                                    pool.submit(isolated, radgraph_pass))
+        model_statements, secondary = scispacy_job.result()
+        concept_statements, clinical = clinical_job.result()
+        observation_statements, radgraph = radgraph_job.result()
+
+    # A model entity containing a run the normaliser could not split into words is garbled OCR, not a term.
+    model_outputs = model_statements + concept_statements + observation_statements
+    readable = [item for item in model_outputs if not UNREADABLE_OCR_RUN.search(item.get("entity") or "")]
+    unreadable_count = len(model_outputs) - len(readable)
+    all_statements = statements + readable
+    for statement in all_statements:
+        offset = statement.get("source_span_start")
+        statement["source_page"] = page_for_offset(page_starts, offset) if offset is not None else None
 
     return {
         "modality": "REPORT",
@@ -1752,7 +2020,7 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
         "raw_confidence": None,
         "calibrated_confidence": None,
         "calibration_status": "NOT_APPLICABLE_RULE_ENGINE",
-        "statements": statements + model_statements,
+        "statements": all_statements,
         "measurements": measurements,
         "attributes": attributes,
         "representation_level": "L1",
@@ -1760,7 +2028,7 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
         "mapping_status": "L1_GENERIC: Text reports provide symbolic assertions, not 3D spatial coordinates.",
         "model_name": "Rule-Based Clinical Text Baseline",
         "model_version": EXTRACTOR_VERSION,
-        "preprocessing_version": "document-parser-v2+deidentification-v3+page-type-rules-v1+context-rules-v2",
+        "preprocessing_version": "document-parser-v2+deidentification-v3+page-type-rules-v3+context-rules-v2",
         "evidence_status": "PENDING_HUMAN_REVIEW",
         "is_demo": False,
         "provenance": {
@@ -1772,6 +2040,9 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
             },
             "ocr_normalisation": "glued-word segmentation and line-wrap rejoining; spans quote the source text",
             "secondary_model_ner": secondary,
+            "secondary_clinical_nlp": clinical,
+            "secondary_radgraph": radgraph,
+            "secondary_entities_excluded": {"UNREADABLE_OCR_RUN": unreadable_count},
             "measurement_count": len(measurements),
             "attribute_count": len(attributes),
             "page_count": len(page_starts),

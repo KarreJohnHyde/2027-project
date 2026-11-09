@@ -41,6 +41,7 @@ from ml_training.common import ROOT, sha256_file
 SCHEMA_VERSION = "1.0.0"
 BUILDER_VERSION = "volumetric-manifest-v1"
 DEFAULT_REGISTRY = ROOT / "dataset_registry" / "tasks.json"
+RELEASE_CONTEXT = ROOT / "dataset_registry" / "release_context.json"
 ACDC_LABELS = {
     0: "background",
     1: "right_ventricular_cavity",
@@ -114,6 +115,7 @@ def registry_license_evidence(registry_path: Path, dataset_id: str) -> dict[str,
         "source_status": license_block.get("status"),
         "license_name": license_block.get("name"),
         "license_source": license_block.get("source"),
+        "commercial_development_review": license_block.get("commercial_development_review"),
         "reason": license_block.get("authorization_reason")
         or ("Explicit registry authorization is recorded." if authorization == "VERIFIED" else "Explicit training authorization is not recorded."),
     }
@@ -147,8 +149,36 @@ def enforce_training_license(
             f"license.authorization_status is {evidence['authorization_status']}, not VERIFIED. "
             "Source availability, a citation request, or an inferred public-use status is not authorization."
         )
+    try:
+        purpose = json.loads(RELEASE_CONTEXT.read_text(encoding="utf-8"))["training_purpose"]
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise LicenseAuthorizationError("A readable, declared training purpose is required") from exc
+    if purpose not in {"research", "commercial_development"}:
+        raise LicenseAuthorizationError("Training purpose is not declared")
+    terms = str(evidence.get("license_name") or "").upper()
+    if purpose == "commercial_development" and any(term in terms for term in ("BY-NC", "BY NC", "NON-COMMERCIAL", "NONCOMMERCIAL", "RESEARCH ONLY", "RESEARCH-ONLY", "RESEARCH AND EDUCATIONAL")):
+        raise LicenseAuthorizationError(
+            "Commercial development is blocked by the dataset's non-commercial/research-only terms. "
+            "Use a permitted source or obtain and review separate written permission; a research runtime profile does not change the commercial purpose."
+        )
+    if purpose == "commercial_development":
+        review = evidence.get("commercial_development_review")
+        if (not isinstance(review, dict)
+                or review.get("status") != "REVIEWED_FOR_DECLARED_COMMERCIAL_DEVELOPMENT"
+                or not all(review.get(field) for field in ("reviewer", "reviewed_at", "declared_use"))
+                or not isinstance(review.get("evidence_files"), list) or not review["evidence_files"]):
+            raise LicenseAuthorizationError("Commercial-development dataset rights require a separate, evidence-bound review; research authorization is insufficient")
+        for record in review["evidence_files"]:
+            try:
+                source = Path(record["path"])
+                source = source if source.is_absolute() else ROOT / source
+                if sha256_file(source) != record["sha256"]:
+                    raise ValueError("Rights evidence changed")
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                raise LicenseAuthorizationError("Commercial-development rights evidence is missing, invalid or changed") from exc
     return {
         "authorized": True,
+        "training_purpose": purpose,
         **evidence,
         "registry_path": str(registry_path.resolve()),
         "registry_sha256": sha256_file(registry_path),
@@ -368,9 +398,10 @@ def _inspect_case(case: dict[str, Any], dataset_root: Path, label_ids: set[int])
     mask_path = _inside_root(dataset_root / case["mask_path"], dataset_root)
     image = nib.load(str(image_path))
     mask = nib.load(str(mask_path))
-    if len(image.shape) != 3 or len(mask.shape) != 3:
-        raise ManifestValidationError(f"{case['case_id']}: image and mask must both be 3-D.")
-    if tuple(image.shape) != tuple(mask.shape):
+    # Multi-sequence images (co-registered MRI sequences) stack channels along a fourth axis.
+    if len(image.shape) not in (3, 4) or len(mask.shape) != 3:
+        raise ManifestValidationError(f"{case['case_id']}: the image must be 3-D (or 4-D with channels last) and the mask 3-D.")
+    if tuple(image.shape[:3]) != tuple(mask.shape):
         raise ManifestValidationError(
             f"{case['case_id']}: image shape {image.shape} differs from mask shape {mask.shape}."
         )
@@ -381,9 +412,14 @@ def _inspect_case(case: dict[str, Any], dataset_root: Path, label_ids: set[int])
     mask_data = np.asanyarray(mask.dataobj)
     if not np.isfinite(image_data).all():
         raise ManifestValidationError(f"{case['case_id']}: image contains non-finite voxels.")
-    if not np.isfinite(mask_data).all() or not np.allclose(mask_data, np.rint(mask_data), atol=1e-6):
-        raise ManifestValidationError(f"{case['case_id']}: mask labels must be finite integers.")
-    values, counts = np.unique(np.rint(mask_data).astype(np.int64), return_counts=True)
+    if np.issubdtype(mask_data.dtype, np.integer):
+        # Native integer labels are already finite/integral. Avoid expanding a
+        # large uint8 mask into an unnecessary full-volume int64 allocation.
+        values, counts = np.unique(mask_data, return_counts=True)
+    else:
+        if not np.isfinite(mask_data).all() or not np.allclose(mask_data, np.rint(mask_data), atol=1e-6):
+            raise ManifestValidationError(f"{case['case_id']}: mask labels must be finite integers.")
+        values, counts = np.unique(np.rint(mask_data).astype(np.int64), return_counts=True)
     observed = {int(value) for value in values}
     unexpected = observed - label_ids
     if unexpected:
@@ -391,8 +427,10 @@ def _inspect_case(case: dict[str, Any], dataset_root: Path, label_ids: set[int])
     voxel_sizes = nib.affines.voxel_sizes(image.affine)
     if not np.isfinite(voxel_sizes).all() or np.any(voxel_sizes <= 0):
         raise ManifestValidationError(f"{case['case_id']}: affine has invalid voxel sizes.")
+    channels = {"channels": int(image.shape[3])} if len(image.shape) == 4 else {}
     return {
         **case,
+        **channels,
         "shape": [int(item) for item in image.shape],
         "affine": np.asarray(image.affine, dtype=float).round(8).tolist(),
         "orientation": list(nib.aff2axcodes(image.affine)),

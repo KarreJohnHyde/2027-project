@@ -29,6 +29,11 @@ os.environ["DEV_SEED_ENABLED"] = "false"
 os.environ["DATABASE_URL"] = f"sqlite:///{TEST_DATABASE_PATH.as_posix()}"
 os.environ["UPLOAD_DIR"] = str(TEST_UPLOAD_DIR)
 os.environ["MEDTWIN_STORAGE_ENCRYPTION"] = "off"
+# The WSL NLP tools default to "auto"; tests opt in explicitly (MEDTWIN_TEST_WSL=1) instead of
+# depending on whether this computer has the WSL environments.
+os.environ["MEDTWIN_SCISPACY"] = "off"
+os.environ["MEDTWIN_CLINICAL_NLP"] = "off"
+os.environ["MEDTWIN_RADGRAPH"] = "off"
 os.environ.pop("MEDTWIN_STORAGE_KEY_FILE", None)
 os.environ.pop("MEDTWIN_STORAGE_KEYS", None)
 
@@ -60,6 +65,19 @@ def setup_test_db():
     Base.metadata.drop_all(bind=test_engine)
     test_engine.dispose()
     _test_runtime.cleanup()
+
+
+def pytest_configure(config):
+    config.addinivalue_line("markers", "private_workspace: run with per-account case privacy (MEDTWIN_SHARED_WORKSPACE=false)")
+
+
+@pytest.fixture(autouse=True)
+def _workspace_mode(request, monkeypatch):
+    """The default is one shared space; tests marked private_workspace check the per-account privacy mode."""
+    from app import config as app_config
+
+    if request.node.get_closest_marker("private_workspace"):
+        monkeypatch.setattr(app_config, "SHARED_WORKSPACE", False)
 
 
 @pytest.fixture

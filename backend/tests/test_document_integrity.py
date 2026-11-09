@@ -81,6 +81,14 @@ def test_ocr_glued_month_name_dates_parse(raw, iso):
     assert _parse_date(raw)[0] == iso
 
 
+@pytest.mark.parametrize("label", ["BLOOD COLLECTION DT :", "BLOOD COLLECTION DT. :", "Sample Collection Date:", "Collected On :"])
+def test_abbreviated_collection_labels_give_the_sampling_date(label):
+    """A reprint's result-entry date must not replace the collection date (it splits duplicate results)."""
+    text = f"{label}23/02/2026 08:15:00\nRESULT ENTERED DT. :24/02/2026 07:00:00\nReported Date : 24/02/2026 09:30:00"
+    sampling = [item for item in extract_documented_attributes(text) if item["name"] == "sampling_date"]
+    assert [item["value_text"] for item in sampling] == ["2026-02-23"]
+
+
 def _packet(*pages: str):
     text = "\n".join(pages)
     starts, cursor = [], 0

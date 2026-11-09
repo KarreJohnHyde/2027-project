@@ -3,9 +3,10 @@ import { expect, test } from "@playwright/test";
 
 test("landmark UI submits explicit measured pairs and refuses self-approval", async ({ page }) => {
   await page.goto("/");
+  await page.getByText("Have a username and password from before?").click();
   await page.fill("#login-username", process.env.MEDTWIN_E2E_USERNAME);
   await page.fill("#login-password", process.env.MEDTWIN_E2E_PASSWORD);
-  await page.click("button[type=submit]");
+  await page.getByRole("button", { name: "Open my existing workspace" }).click();
   await page.waitForFunction(() => Boolean(localStorage.getItem("medtwin_token")));
   const token = await page.evaluate(() => localStorage.getItem("medtwin_token"));
   const headers = { Authorization: `Bearer ${token}` };

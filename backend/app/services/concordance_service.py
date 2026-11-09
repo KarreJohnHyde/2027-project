@@ -18,8 +18,10 @@ def evaluate_report_concordance(case_id: int, db: Session) -> Dict[str, Any]:
     Compares narrative report statements against image and ECG model findings for a case.
     """
     # 1. Fetch statements from clinical reports for this case
+    from app.services.report_runs import current_statements
+
     report_statements = db.query(ClinicalReportStatement).filter(
-        ClinicalReportStatement.case_id == case_id
+        ClinicalReportStatement.case_id == case_id, current_statements(db, [case_id])
     ).all()
 
     # 2. Fetch image and ECG findings

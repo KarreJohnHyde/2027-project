@@ -26,14 +26,16 @@ from torchvision.models.detection import FasterRCNN_ResNet50_FPN_V2_Weights, fas
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.transforms import functional as F
 
-from ml_training.common import MODEL_CARDS, REPORTS, ROOT, Run, checkpoint_ref, cross_split_component_summary, device, read_samples, register_model, relative, seed_worker, set_seed
+from ml_training.common import (MODEL_CARDS, REPORTS, ROOT, Run, checkpoint_ref, cross_split_component_summary, device, load_resume, read_samples,
+                                register_model, relative, save_resume, seed_worker, set_seed)
 
 sys.path.insert(0, str(ROOT / "backend"))
 from app.services.evaluation_metrics import evaluate_detection  # noqa: E402  (same evaluator as the Validation Center)
 
 
-def load_targets(rows: list[dict], label_format: str, category: str | None) -> list[dict]:
-    """Per image: path, width, height and boxes [x1, y1, x2, y2] in pixels."""
+def load_targets(rows: list[dict], label_format: str, category: str | None, yolo_classes: set[int] | None = None) -> list[dict]:
+    """Per image: path, width, height and boxes [x1, y1, x2, y2] in pixels. ``yolo_classes`` keeps only those YOLO class
+    ids (merged into the one detected class); None keeps every class."""
     annotations_by_file: dict[str, dict] = {}
     items = []
     for row in rows:
@@ -55,9 +57,15 @@ def load_targets(rows: list[dict], label_format: str, category: str | None) -> l
             if row["label_file"]:
                 for line in Path(row["label_file"]).read_text(encoding="utf-8").splitlines():
                     parts = line.split()
+                    if len(parts) < 5 or (yolo_classes is not None and int(float(parts[0])) not in yolo_classes):
+                        continue
                     if len(parts) == 5:
                         _, cx, cy, w, h = map(float, parts)
                         boxes.append([(cx - w / 2) * width, (cy - h / 2) * height, (cx + w / 2) * width, (cy + h / 2) * height])
+                    elif len(parts) >= 7 and len(parts) % 2 == 1:
+                        # YOLO segmentation export: a polygon of normalised x, y points; its bounding box is the target.
+                        xs, ys = [float(v) for v in parts[1::2]], [float(v) for v in parts[2::2]]
+                        boxes.append([min(xs) * width, min(ys) * height, max(xs) * width, max(ys) * height])
         boxes = [[max(0.0, x1), max(0.0, y1), min(float(width), x2), min(float(height), y2)] for x1, y1, x2, y2 in boxes]
         boxes = [box for box in boxes if box[2] - box[0] >= 1 and box[3] - box[1] >= 1]
         items.append({**row, "width": width, "height": height, "boxes": boxes})
@@ -165,6 +173,8 @@ def main() -> int:
     parser.add_argument("--modality", required=True)
     parser.add_argument("--anatomy", required=True)
     parser.add_argument("--category", default=None, help="COCO category name to detect (default: all).")
+    parser.add_argument("--yolo-classes", default=None, help="Comma-separated YOLO class ids to keep, merged into one class (default: all).")
+    parser.add_argument("--class-name", default=None, help="Name of the detected class (default: --category or 'target').")
     parser.add_argument("--allow-flip", action="store_true", help="Horizontal flips (off for anatomy where laterality matters).")
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--batch-size", type=int, default=4)
@@ -173,6 +183,8 @@ def main() -> int:
     parser.add_argument("--max-size", type=int, default=1024)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--seed", type=int, default=20261024)
+    parser.add_argument("--resume-file", type=Path, default=None,
+                        help="Training state written after every epoch; an existing file for the same settings is resumed.")
     args = parser.parse_args()
 
     tasks = json.loads((ROOT / "dataset_registry" / "tasks.json").read_text(encoding="utf-8"))
@@ -182,7 +194,9 @@ def main() -> int:
     prep = task["preparation"]
     rows = read_samples(Path(prep["sample_manifest"]))
     label_format = "COCO" if dataset["labels"] == "COCO" else "YOLO"
-    splits = {split: load_targets([row for row in rows if row["split"] == split], label_format, args.category) for split in ("train", "val", "test")}
+    yolo_classes = {int(value) for value in args.yolo_classes.split(",")} if args.yolo_classes else None
+    class_name = args.class_name or args.category or "target"
+    splits = {split: load_targets([row for row in rows if row["split"] == split], label_format, args.category, yolo_classes) for split in ("train", "val", "test")}
     set_seed(args.seed)
     dev = device()
     run = Run(args.model_id, args.task_id, {**vars(args), "dataset_version": prep["dataset_version"],
@@ -190,14 +204,26 @@ def main() -> int:
     model = fasterrcnn_resnet50_fpn_v2(weights=FasterRCNN_ResNet50_FPN_V2_Weights.COCO_V1, min_size=args.min_size, max_size=args.max_size)
     model.roi_heads.box_predictor = FastRCNNPredictor(model.roi_heads.box_predictor.cls_score.in_features, 2)
     model.to(dev)
+    identity = {key: getattr(args, key) for key in ("task_id", "model_id", "yolo_classes", "category", "allow_flip", "epochs", "batch_size", "lr",
+                                                    "min_size", "max_size", "seed")} | {"dataset_version": prep["dataset_version"]}
+    resumed = load_resume(args.resume_file, identity)
+    start_epoch = 1 if resumed is None else int(resumed["epoch"]) + 1
+    # A resumed run draws a fresh data order for the remaining epochs (recorded below).
     loader = DataLoader(DetectionSet(splits["train"], train=True, allow_flip=args.allow_flip), batch_size=args.batch_size, shuffle=True,
-                        num_workers=args.workers, collate_fn=collate, worker_init_fn=seed_worker, generator=torch.Generator().manual_seed(args.seed),
-                        persistent_workers=args.workers > 0)
+                        num_workers=args.workers, collate_fn=collate, worker_init_fn=seed_worker,
+                        generator=torch.Generator().manual_seed(args.seed + start_epoch - 1), persistent_workers=args.workers > 0)
     parameters = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.SGD(parameters, lr=args.lr, momentum=0.9, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, max_lr=args.lr, total_steps=args.epochs * len(loader), pct_start=0.1)
     best_state, best_ap50, best_epoch = None, -1.0, -1
-    for epoch in range(1, args.epochs + 1):
+    if resumed is not None:
+        model.load_state_dict(resumed["model"])
+        optimizer.load_state_dict(resumed["optimizer"])
+        scheduler.load_state_dict(resumed["scheduler"])
+        best_state, best_ap50, best_epoch = resumed["best_state"], float(resumed["best_ap50"]), int(resumed["best_epoch"])
+        run._step = int(resumed["step"])
+        run.log(resumed_from_epoch=int(resumed["epoch"]), resume_file=str(args.resume_file), best_epoch_so_far=best_epoch)
+    for epoch in range(start_epoch, args.epochs + 1):
         model.train()
         running = 0.0
         for images, targets in loader:
@@ -211,12 +237,19 @@ def main() -> int:
             optimizer.step()
             scheduler.step()
             running += loss.item()
+            step = getattr(run, "_step", 0) + 1
+            run._step = step
+            if step % 200 == 0:
+                run.log(epoch=epoch, step=step, running_loss=round(running / max(1, step - (epoch - 1) * len(loader)), 4))
         val = score(splits["val"], predict(model, splits["val"], dev))
         ap50 = val["metrics"].get("ap_50") or 0.0
         run.log(epoch=epoch, train_loss=round(running / len(loader), 4), val_ap50=round(ap50, 4), val_map=round(val["metrics"].get("map_50_95") or 0.0, 4),
                 gpu_peak_mib=int(torch.cuda.max_memory_allocated() / 2**20) if dev.type == "cuda" else None)
         if ap50 > best_ap50:
             best_state, best_ap50, best_epoch = copy.deepcopy({k: v.cpu() for k, v in model.state_dict().items()}), ap50, epoch
+        save_resume(args.resume_file, identity, {"epoch": epoch, "model": model.state_dict(), "optimizer": optimizer.state_dict(),
+                                                 "scheduler": scheduler.state_dict(), "best_state": best_state, "best_ap50": best_ap50,
+                                                 "best_epoch": best_epoch, "step": run._step})
     model.load_state_dict(best_state)
     val_predictions = predict(model, splits["val"], dev)
     candidates = [operating_point(splits["val"], val_predictions, threshold) for threshold in np.round(np.arange(0.05, 0.96, 0.05), 2)]
@@ -225,14 +258,14 @@ def main() -> int:
     # Test split, read once with the frozen checkpoint and the validation-chosen threshold.
     test_predictions = predict(model, splits["test"], dev)
     full = score(splits["test"], test_predictions)
-    component_leakage = cross_split_component_summary(items)
+    component_leakage = cross_split_component_summary(rows)
     crossing_groups = component_leakage.pop("group_ids")
     clean_index = [i for i, item in enumerate(splits["test"]) if str(item.get("group_id", "")).strip() not in crossing_groups]
     clean_items = [splits["test"][i] for i in clean_index]
     filtered = score(clean_items, [test_predictions[i] for i in clean_index])
     operating = operating_point(splits["test"], test_predictions, chosen["threshold"])
     checkpoint_path, checkpoint_sha = run.save_checkpoint({
-        "kind": "object_detector", "arch": "fasterrcnn_resnet50_fpn_v2", "state_dict": best_state, "classes": [args.category or "target"],
+        "kind": "object_detector", "arch": "fasterrcnn_resnet50_fpn_v2", "state_dict": best_state, "classes": [class_name],
         "min_size": args.min_size, "max_size": args.max_size, "score_threshold": float(chosen["threshold"]), "task_id": args.task_id,
         "dataset_version": prep["dataset_version"], "preprocessing": "RGB tensor in [0,1]; model-internal resize; boxes returned in source pixels",
     })
@@ -245,11 +278,13 @@ def main() -> int:
             **component_leakage,
         },
         "selection": {"criterion": "validation AP50 (COCOeval)", "best_epoch": best_epoch, "val_ap50": best_ap50},
+        "resumed_from_epoch": None if resumed is None else int(resumed["epoch"]),
         "operating_point": {"chosen_on": "validation", "criterion": "maximum F1 at IoU 0.5", "validation": chosen, "test": operating},
         "test": {"n_images": len(splits["test"]), "reference_boxes": sum(len(item["boxes"]) for item in splits["test"]), "metrics": full["metrics"]},
         "test_without_cross_split_duplicates": {"n_images": len(clean_items), "metrics": filtered["metrics"]},
         "evaluation_protocol": full.get("evaluation_protocol"), "checkpoint": {"path": checkpoint_ref(checkpoint_path), "sha256": checkpoint_sha},
-        "held_out_predictions": checkpoint_ref(predictions_path), "training_seconds": run.elapsed_seconds, "config": vars(args),
+        "held_out_predictions": checkpoint_ref(predictions_path), "training_seconds": run.elapsed_seconds,
+        "config": {**vars(args), "resume_file": None if args.resume_file is None else str(args.resume_file)},
         "reporting_context": {"dataset": dataset["title"], "dataset_version": prep["dataset_version"][:16], "split": "test", "checkpoint": f"sha256:{checkpoint_sha}"},
         "limitations": [
             "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
@@ -281,11 +316,13 @@ def main() -> int:
         "model_id": args.model_id, "display_name": args.display_name, "domain": "medical_imaging", "task": "object_detection",
         "anatomy": args.anatomy, "framework": "torchvision fasterrcnn_resnet50_fpn_v2", "adapter": "app.services.model_inference",
         "source_repository": "medtwin/training", "dependency_environment": ".venv", "weights_path": checkpoint_ref(checkpoint_path),
-        "device": "cuda_or_cpu", "supported_inputs": ["image/png", "image/jpeg"], "supported_modalities": [args.modality], "supported_classes": [args.category or "target"],
+        "device": "cuda_or_cpu", "supported_inputs": ["image/png", "image/jpeg"], "supported_modalities": [args.modality], "supported_classes": [class_name],
         "status": "READY_UNVALIDATED", "validated": False, "research_inference": True, "limitations": report["limitations"],
         "artifact_bundle": {
             "dataset_version": prep["dataset_version"], "dataset_license": dataset["license"]["name"], "split_manifest_path": relative(Path(prep["sample_manifest"])),
-            "task_definition": task["target"], "label_definition": {"source": label_format, "category": args.category or "all"},
+            "task_definition": task["target"], "label_definition": {"source": label_format, "category": args.category or "all",
+                                 **({"yolo_classes_kept": sorted(yolo_classes), "merged_into": class_name} if yolo_classes else {}),
+                                 "yolo_polygons": "converted to their bounding boxes"},
             "preprocessing_version": "rgb-to-tensor-model-resize-v1", "checkpoint_path": checkpoint_ref(checkpoint_path), "checkpoint_sha256": checkpoint_sha,
             "calibration": None, "decision_thresholds": {"display_score_threshold": chosen["threshold"], "chosen_on": "validation max F1 at IoU 0.5"},
             "abstention_thresholds": None, "held_out_predictions_path": checkpoint_ref(predictions_path), "evaluation_report_path": relative(report_path),

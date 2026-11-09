@@ -1,5 +1,6 @@
 """Clinician review appends a decision without overwriting extracted evidence."""
 
+import pytest
 from tests.conftest import get_auth_headers
 
 
@@ -35,6 +36,7 @@ def _create_report_evidence(client, headers, suffix: str):
     return case_id, finding_detail, measurements
 
 
+@pytest.mark.private_workspace
 def test_clinician_can_reject_finding_while_original_output_is_preserved(client, test_users):
     owner_headers = get_auth_headers(test_users["clinician_a"])
     other_headers = get_auth_headers(test_users["clinician_b"])
@@ -103,6 +105,7 @@ def test_clinician_can_reject_finding_while_original_output_is_preserved(client,
     assert event["details"]["measurement_correction_count"] == 0
 
 
+@pytest.mark.private_workspace
 def test_modified_review_stores_typed_proposal_without_changing_source_evidence(client, test_users):
     owner_headers = get_auth_headers(test_users["clinician_a"])
     other_headers = get_auth_headers(test_users["clinician_b"])

@@ -25,6 +25,12 @@ from app.services.auth import get_current_user, require_role
 router = APIRouter(prefix="/system", tags=["System & Telemetry"])
 
 
+@router.get("/research-jobs")
+def get_research_jobs(current_user: User = Depends(require_role(UserRole.ADMIN, UserRole.RESEARCHER, UserRole.CLINICIAN))):
+    from app.services.research_job_progress import snapshots
+    return snapshots()
+
+
 def temporary_storage() -> bool:
     """Whether data written now is lost when this instance stops (serverless temp directory)."""
     return TEMPORARY_DATABASE or (TEMPORARY_UPLOAD_DIR and not object_store.configured())
