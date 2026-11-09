@@ -184,7 +184,7 @@ def rsna_held_out_paths(n: int) -> list[Path]:
     try:
         model = model_inference.get_model(RSNA)
         model_inference.ood_reference(model)
-    except Exception:
+    except model_inference.InferenceNotPermitted:
         pytest.skip("RSNA checkpoint or applicability reference not available")
     root = Path(__file__).resolve().parents[2]
     manifest = root / model["artifact_bundle"]["ood_sample_manifest_path"]
@@ -201,8 +201,8 @@ def rsna_held_out_paths(n: int) -> list[Path]:
 def test_rsna_serving_path_accepts_its_own_held_out_slices_and_explains_a_colour_cast(tmp_path):
     """The threshold is not changed: held-out slices pass through the exact serving path, and the same slice
     with a 3-8 % colour cast (as a photograph adds) is refused with colour named as the cause."""
-    model = model_inference.get_model(RSNA)
     paths = rsna_held_out_paths(10)
+    model = model_inference.get_model(RSNA)
     for path in paths:
         assert model_inference.check_distribution(model, path)["status"] == "PASSED"
     grey = np.asarray(Image.open(paths[0]).convert("L"), dtype=np.float32)

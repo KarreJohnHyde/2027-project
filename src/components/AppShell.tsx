@@ -116,8 +116,9 @@ function NoticeBar() {
 export function AppShell({ children, fullBleed = false }: { children: ReactNode; fullBleed?: boolean }) {
   const [mobileNav, setMobileNav] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
-  // Every account has the case controls; a self-registered account works on its own cases.
-  const workspace = true;
+  const { path } = useLocation();
+  // Private references are independent of the currently selected shared case.
+  const workspace = path !== "/private-references";
   const cases = useWorkspace((state) => state.cases);
   const caseId = useWorkspace((state) => state.caseId);
   const selectCase = useWorkspace((state) => state.selectCase);
@@ -138,6 +139,7 @@ export function AppShell({ children, fullBleed = false }: { children: ReactNode;
       <div className="lg:pl-60 print:pl-0">
         <header className="sticky top-0 z-20 flex h-14 items-center gap-2 border-b border-line bg-[color-mix(in_srgb,var(--mt-page)_88%,transparent)] px-3 backdrop-blur-md print:hidden sm:px-5">
           <IconButton label="Open navigation" icon={Menu} className="lg:hidden" onClick={() => setMobileNav(true)} />
+          {!workspace && <span className="text-sm font-medium text-ink-2">Private reference library</span>}
           {workspace && (
             <>
               <div className="w-48 min-w-0 sm:w-64">
@@ -154,7 +156,7 @@ export function AppShell({ children, fullBleed = false }: { children: ReactNode;
               <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${health?.status === "HEALTHY" ? "bg-good" : "bg-ink-3"}`} />
               API {health?.status?.toLowerCase() ?? "checking"}
             </span>
-            <IconButton label="Refresh evidence" icon={RefreshCw} className={loadingEvidence ? "[&_svg]:animate-spin" : ""} onClick={() => void loadShell()} />
+            {workspace && <IconButton label="Refresh evidence" icon={RefreshCw} className={loadingEvidence ? "[&_svg]:animate-spin" : ""} onClick={() => void loadShell()} />}
             <IconButton label={`Theme: ${theme} (click to change)`} icon={ThemeIcon} onClick={() => setTheme(THEME_ORDER[(THEME_ORDER.indexOf(theme) + 1) % THEME_ORDER.length])} />
             {workspace && (
               <Button size="sm" variant="primary" icon={Upload} disabled={!caseId} onClick={() => navigate("/upload")}>

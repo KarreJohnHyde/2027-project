@@ -37,6 +37,8 @@ export default function OverviewPage() {
         {selected && <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-ink-3"><Fingerprint aria-hidden size={13} /> Case #{selected.id} · created {formatDate(selected.created_at)} · {selected.examinations.length} examination(s)</p>}
       </PageHeader>
 
+      <div className="mb-4 rounded-xl border border-line bg-surface p-4"><Link to="/private-references" className="inline-flex items-center gap-2 text-sm font-semibold text-accent-text">Open private reference cases <ArrowRight size={15} /></Link><p className="mt-1 text-xs leading-5 text-ink-2">Saved case reports, original page previews and source-linked explanations for your account.</p></div>
+
       {selected && (
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
           <Metric label="Uploads" value={formatCount(evidence.uploads.length)} note="Content-addressed, SHA-256" />

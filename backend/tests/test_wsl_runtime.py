@@ -1,6 +1,6 @@
 """WSL tool plumbing: shell quoting of configured paths, report text kept out of errors, malformed replies."""
 
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 import pytest
 
@@ -12,6 +12,22 @@ def test_paths_are_quoted_and_home_still_expands():
     assert script.startswith('"$HOME"/')
     assert "'.medtwin/venv nlp/bin/python; rm -rf x'" in script, "metacharacters stay inside one quoted word"
     assert script.endswith("'/mnt/d/project/backend/nlp_worker/w'\"'\"'s.py'")
+
+
+@pytest.mark.parametrize("path,expected", [
+    (PureWindowsPath("D:/project/worker.py"), "/mnt/d/project/worker.py"),
+    (PureWindowsPath("C:/worker folder/read's.py"), "/mnt/c/worker folder/read's.py"),
+    (PureWindowsPath("D:/"), "/mnt/d/"),
+    (PurePosixPath("/home/test/worker.py"), "/home/test/worker.py"),
+])
+def test_worker_path_conversion_is_independent_of_the_host_os(path, expected):
+    assert wsl_runtime.wsl_path(path) == expected
+
+
+@pytest.mark.parametrize("path", [PureWindowsPath("D:worker.py"), PureWindowsPath("//server/share/worker.py"), Path("worker.py")])
+def test_ambiguous_worker_locations_are_refused(path):
+    with pytest.raises(ValueError):
+        wsl_runtime.wsl_path(path)
 
 
 def test_failure_summary_keeps_only_the_exception_type():

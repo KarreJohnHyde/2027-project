@@ -16,6 +16,7 @@ const page = (loader: () => Promise<{ default: ComponentType }>) => lazy(loader)
 const ROUTES: Record<string, Route> = {
   "/": { component: page(() => import("./pages/OverviewPage")), title: "Overview Dashboard" },
   "/cases": { component: page(() => import("./pages/CaseWorkspacePage")), needsCase: true, title: "Case Workspace" },
+  "/private-references": { component: page(() => import("./pages/PrivateReferencesPage")), title: "Private reference cases" },
   "/upload": { component: page(() => import("./pages/UploadCenterPage")), needsCase: true, title: "Upload Center" },
   "/documents": { component: page(() => import("./pages/DocumentIntelligencePage")), needsCase: true, title: "Document Intelligence" },
   "/documents/verify": { component: page(() => import("./pages/DocumentVerificationPage")), needsCase: true, title: "Document Verification" },

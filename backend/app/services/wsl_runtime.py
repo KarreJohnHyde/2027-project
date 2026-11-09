@@ -14,7 +14,7 @@ import re
 import shlex
 import subprocess
 from functools import lru_cache
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 
 def distro() -> str:
@@ -22,8 +22,17 @@ def distro() -> str:
 
 
 def wsl_path(path: Path) -> str:
-    drive, rest = path.drive.rstrip(":").lower(), path.as_posix().split(":", 1)[-1]
-    return f"/mnt/{drive}{rest}"
+    # Interpret Windows drives explicitly: Path('D:/...').drive is empty when
+    # this module is imported on a Linux runner.
+    windows = PureWindowsPath(path)
+    if re.fullmatch(r"[A-Za-z]:", windows.drive) and windows.root:
+        rest = "/".join(windows.parts[1:])
+        return f"/mnt/{windows.drive[0].lower()}/{rest}"
+    if windows.drive:
+        raise ValueError("WSL workers require an absolute drive path or a Linux path; UNC and drive-relative paths are unsupported.")
+    if path.is_absolute():
+        return path.as_posix()
+    raise ValueError("WSL worker paths must be absolute.")
 
 
 def _shell_path(value: str) -> str:

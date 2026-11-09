@@ -19,6 +19,8 @@ export type {
   OrderStatus,
 } from '../types/medtwin';
 
+import type { ReferenceReport, ReferenceSummary } from '../types/privateReferences';
+
 const TOKEN_STORAGE_KEY = 'medtwin_token';
 const configuredOrigin = (import.meta.env.VITE_MEDTWIN_API_URL as string | undefined)
   ?.trim()
@@ -2174,6 +2176,14 @@ class ApiClient {
 
   getMe(): Promise<User> {
     return this.request<User>('/auth/me');
+  }
+
+  getPrivateReferences(): Promise<ReferenceSummary[]> {
+    return this.request<ReferenceSummary[]>('/private-references', { cache: 'no-store' });
+  }
+
+  getPrivateReference(id: string): Promise<ReferenceReport> {
+    return this.request<ReferenceReport>(`/private-references/${encodeURIComponent(id)}`, { cache: 'no-store' });
   }
 
   getSystemHealth(): Promise<SystemHealth> {

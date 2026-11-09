@@ -52,6 +52,8 @@ export default defineConfig({
         ENVIRONMENT: "development",
         DATABASE_URL: `sqlite:///${path.join(state, "e2e.db").replaceAll("\\", "/")}`,
         UPLOAD_DIR: path.join(state, "uploads"),
+        MEDTWIN_PRIVATE_REFERENCE_DIR: path.join(state, "private-references"),
+        MEDTWIN_PRIVATE_REFERENCE_KEY_FILE: path.join(state, "private-reference.key"),
         SECRET_KEY: randomBytes(32).toString("base64url"),
         MEDTWIN_STORAGE_ENCRYPTION: "required",
         MEDTWIN_STORAGE_KEYS: randomBytes(32).toString("base64"),

@@ -3,3 +3,7 @@
 
 httpx==0.28.1
 pytest==9.1.1
+# tifffile resolves its JPEG encoder even when the synthetic WSI fixture supplies
+# pre-encoded Pillow tiles. Declare this test-only dependency instead of relying
+# on a workstation's optional packages; the application reader uses Pillow.
+imagecodecs==2026.10.10
