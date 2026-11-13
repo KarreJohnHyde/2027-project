@@ -115,7 +115,7 @@ function Viewer({ upload }: { upload: UploadedFile }) {
             <span>Possible residual identifiers despite the de-identification attestation: {data.deidentification_warnings.join("; ")}. Values are never displayed; review and re-export the file.</span>
           </div>
         )}
-        {film && data.input_assessment && <FilmPanelPreview key={uploadId} uploadId={uploadId} assessment={data.input_assessment} />}
+        {film && data.input_assessment && <FilmPanelPreview key={`film-${uploadId}`} uploadId={uploadId} assessment={data.input_assessment} />}
         {film ? <Disclosure summary="Original film montage — source pixels"><p className="mb-2 text-xs text-ink-3">Candidate panels are viewing crops. Original image, labels and source marks are preserved.</p>{renderError ? <ErrorBlock message={renderError} /> : image ? <PanZoomImage src={image.url} alt={data.filename} /> : <LoadingBlock label="Rendering" />}</Disclosure> : renderError ? <ErrorBlock message={renderError} /> : image ? <PanZoomImage src={image.url} alt={`${data.filename} ${info ? `slice ${info.slice_index + 1}` : ""}`} overlay={raster || dicom || axialSlice !== null ? overlay : null} /> : <LoadingBlock label="Rendering" />}
         {data.container === "WSI" && data.wsi && <div className="mt-4"><WsiPanel uploadId={uploadId} slide={data.wsi} /></div>}
         {!raster && data.container !== "WSI" && (
@@ -147,14 +147,15 @@ function Viewer({ upload }: { upload: UploadedFile }) {
             </form>
           </div>
         )}
-        {!film && data.input_assessment && <FilmPanelPreview key={uploadId} uploadId={uploadId} assessment={data.input_assessment} />}
+        {!film && data.input_assessment && <FilmPanelPreview key={`film-${uploadId}`} uploadId={uploadId} assessment={data.input_assessment} />}
         <p className="mt-3 text-xs leading-5 text-ink-2">{data.inference.reason}</p>
       </Card>
       <div className="space-y-4">
         <Card title="Research models" eyebrow="Research only · overlay in source pixels">
-          <ResearchModelPanel key={uploadId} uploadId={uploadId} input={researchInput} assessment={data.input_assessment} axialSlice={axialSlice} onOverlay={setOverlay} imageUrl={raster || dicom ? image?.url ?? null : null} sliceImageUrl={axialSlice !== null ? image?.url ?? null : null} exifOrientation={data.exif_orientation ?? 1}
+          {/* Sibling keys must differ; each panel still resets when the upload changes. */}
+          <ResearchModelPanel key={`research-${uploadId}`} uploadId={uploadId} input={researchInput} assessment={data.input_assessment} axialSlice={axialSlice} onOverlay={setOverlay} imageUrl={raster || dicom ? image?.url ?? null : null} sliceImageUrl={axialSlice !== null ? image?.url ?? null : null} exifOrientation={data.exif_orientation ?? 1}
             dicomFrames={dicom ? sliceCount : null} displayedFrame={dicom ? info?.slice_index ?? 0 : null} />
-          {(raster || (dicom && sliceCount === 1)) && <MultimodelPanel key={uploadId} uploadId={uploadId} assessment={data.input_assessment} />}
+          {(raster || (dicom && sliceCount === 1)) && <MultimodelPanel key={`multimodel-${uploadId}`} uploadId={uploadId} assessment={data.input_assessment} />}
         </Card>
         <Card title="Spatial metadata">
           <KeyValue items={[

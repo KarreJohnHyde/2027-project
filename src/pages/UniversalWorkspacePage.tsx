@@ -16,6 +16,7 @@ const CompletionResearch = lazy(() => import("../components/CompletionResearchPa
 const WordReview = lazy(() => import("../components/UprightWordReview"));
 const TrustEvidence = lazy(() => import("../components/TrustEvidencePanel"));
 const StructureBrowser = lazy(() => import("../components/UniversalStructureBrowser"));
+const ResearchReadiness = lazy(() => import("../components/ResearchReadinessPanel"));
 type System = { id: string; label: string; synonyms: string[]; organs: string[]; atlas_system: string | null; condition_count: number };
 type Concept = { id: string; label: string; kind: string; synonyms: string[]; evidence_types: string[]; capability_state: string; model_ids: string[] };
 type Capability = { model_id: string; label: string; task: string; capability_state: string; research_gate: { allowed: boolean; blockers: string[] }; limitations: string[] };
@@ -188,6 +189,7 @@ export default function UniversalWorkspacePage() {
   return <>
     <PageHeader eyebrow="MedTwin Universal · research workspace" title="Case Command Center" description="Connect original evidence, anatomy, history and model provenance. Explore every body system; run only supported research workflows." actions={<Link to="/upload" className="inline-flex items-center gap-1 rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white">Add case evidence <ArrowUpRight size={14} /></Link>} />
     <div className="mb-4 flex flex-wrap gap-2"><Badge tone="accent"><Network size={12} /> Evidence linked</Badge><Badge><ShieldCheck size={12} /> Clinical activation disabled</Badge><Badge>Catalogue ≠ diagnosis</Badge><Link to="/arena" className="ml-auto text-xs text-accent-text">Open Model Arena →</Link></div>
+    <div className="mb-4"><Suspense fallback={<LoadingBlock label="Loading measured research readiness" />}><ResearchReadiness /></Suspense></div>
     {terminology.data && <div className="mb-4 rounded-xl border border-line bg-surface p-3 text-xs text-ink-2"><strong>Official classification reference: ICD-10-CM {terminology.data.version}</strong><span className="ml-2">{terminology.data.available ? `${terminology.data.entry_count.toLocaleString()} source entries indexed` : terminology.data.state}</span><p className="mt-1 leading-5 text-ink-3">{terminology.data.notice}</p></div>}
     <div className="grid grid-cols-1 items-start gap-4 xl:grid-cols-[15rem_minmax(0,1fr)]">
       <aside className="min-w-0 space-y-3">

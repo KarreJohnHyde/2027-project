@@ -4,8 +4,14 @@ import { expect, test } from "@playwright/test";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 test.use({ viewport: { width: 1536, height: 1024 }, launchOptions: { args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"] } });
+
+// The public CT control: an explicit MEDTWIN_E2E_NATIVE_CT_FILE, or the held-out RSNA slice that
+// scripts/prepare_e2e_ct_control.py writes to the git-ignored .cache folder. Without either the test skips.
+const PREPARED_CT_CONTROL = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../.cache/e2e-controls/public-ct-control.png");
+const NATIVE_CT_FILE = process.env.MEDTWIN_E2E_NATIVE_CT_FILE || (existsSync(PREPARED_CT_CONTROL) ? PREPARED_CT_CONTROL : "");
 
 async function post(page, endpoint, token, data, multipart) {
   const response = await page.request.post(`/api/v1${endpoint}`, { headers: token ? { Authorization: `Bearer ${token}` } : {}, ...(multipart ? { multipart } : { data }) });
@@ -175,10 +181,10 @@ test("synthetic reviewed history supports real comparison and baseline output", 
 });
 
 test("public digital CT control shows real checkpoint output separately", async ({ page }, testInfo) => {
-  test.skip(!process.env.MEDTWIN_E2E_NATIVE_CT_FILE, "Requires an explicitly selected local public-dataset control image.");
+  test.skip(!NATIVE_CT_FILE, "Requires a local public-dataset control image (run scripts/prepare_e2e_ct_control.py).");
   const folder = artifacts(testInfo);
   const { token, caseId } = await session(page, "PUBLIC-DATASET-CT-RESEARCH-CONTROL");
-  const image = await upload(page, token, caseId, "public-digital-ct-control.png", readFileSync(process.env.MEDTWIN_E2E_NATIVE_CT_FILE), "image/png");
+  const image = await upload(page, token, caseId, "public-digital-ct-control.png", readFileSync(NATIVE_CT_FILE), "image/png");
   const run = await post(page, `/uploads/${image.id}/research-inference`, token, { model_id: "brain_ct_rsna_ich_classifier", declared_input_type: "HEAD_CT" });
   expect(run.status).toBe("COMPLETED");
   expect(run.research_output.type).toBe("multilabel_classification");

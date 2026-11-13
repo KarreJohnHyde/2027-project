@@ -76,6 +76,7 @@ from app.routers import (
     temporal_comparison,
     matched_model_explorer,
     universal_structures,
+    research_readiness,
 )
 from app.request_context import REQUEST_ID_HEADER, get_request_id
 from app.security import RequestIdMiddleware, SecurityHeadersMiddleware
@@ -238,6 +239,7 @@ for router in (
     temporal_comparison.router,
     matched_model_explorer.router,
     universal_structures.router,
+    research_readiness.router,
 ):
     app.include_router(router, prefix=API_PREFIX)
 

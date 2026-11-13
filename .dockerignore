@@ -42,6 +42,9 @@ public/models/
 !model_registry/
 !model_registry/**
 !docs/
+!docs/universal/
+!docs/universal/evidence/
+!docs/universal/evidence/*.json
 !docs/research/
 !docs/research/traceability.json
 !docs/validation/

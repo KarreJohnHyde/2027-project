@@ -43,7 +43,8 @@ export default function MultimodalPage() {
   return (
     <>
       <PageHeader eyebrow="Multimodal Intelligence" title="Modality inventory, fusion and concordance" description="Source-linked report synthesis remains available when imaging models abstain. Learned prediction fusion requires validated paired data and compatible models." />
-      <EvidenceSynthesisPanel key={selected.id} caseId={selected.id} />
+      {/* Sibling keys must differ; each panel still resets when the case changes. */}
+      <EvidenceSynthesisPanel key={`synthesis-${selected.id}`} caseId={selected.id} />
       <div className="grid gap-3 sm:grid-cols-3">
         {MODALITIES.map((modality) => <Metric key={modality} label={`${humanize(modality)} evidence`} value={counts[modality]} note="Case-bound uploads" />)}
       </div>
@@ -86,7 +87,7 @@ export default function MultimodalPage() {
           </p>
         </Card>
       </div>
-      <ExaminationEvidenceLinker key={selected.id} />
+      <ExaminationEvidenceLinker key={`linker-${selected.id}`} />
       <Card title="Report–model concordance" eyebrow="Disagreement flags for review" className="mt-4" padded={false}>
         {concordance.data ? (
           concordance.data.items.length === 0 ? (

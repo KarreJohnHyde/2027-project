@@ -95,7 +95,7 @@ jobs:
           ENVIRONMENT: test
           SECRET_KEY: ci-only-secret-key-not-for-deployment
           DEV_SEED_ENABLED: "false"
-        run: python -m pytest backend/tests -q
+        run: python -m pytest backend/tests scripts/tests/test_independent_reports.py -q
 
   browser:
     name: Browser regression

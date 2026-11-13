@@ -41,6 +41,7 @@ COPY docs/validation/ ./project/docs/validation/
 COPY docs/anatomy/derivatives.json ./project/docs/anatomy/derivatives.json
 COPY public/anatomy/manifest.json ./project/public/anatomy/manifest.json
 COPY public/anatomy/atlas-index.json ./project/public/anatomy/atlas-index.json
+COPY docs/universal/evidence/ ./project/docs/universal/evidence/
 COPY benchmarks/results/ ./project/benchmarks/results/
 
 RUN addgroup --system medtwin \
