@@ -2,18 +2,24 @@ import { useMemo, useRef, useState, type DragEvent } from "react";
 import { CheckCircle2, FileUp, Plus, Trash2, XCircle } from "lucide-react";
 import { CreateExaminationDialog } from "../components/CaseDialogs";
 import { Badge, Button, Card, Field, PageHeader, SelectInput, StatusBadge, Table } from "../components/ui";
-import { api, type UploadedFile } from "../services/api";
+import { api, type Case, type UploadedFile } from "../services/api";
 import { errorMessage, formatBytes, formatDate, humanize } from "../lib/format";
 import { Link } from "../lib/router";
 import { useAsync } from "../lib/useAsync";
 import { useSelectedCase, useWorkspace } from "../state/workspace";
 
-type Row = { id: string; file: File; status: "QUEUED" | "UPLOADING" | "STORED" | "PROCESSING" | "COMPLETED" | "ERROR"; progress: number; upload?: UploadedFile; jobStatus?: string; message?: string };
+type Row = { id: string; file: File; status: "QUEUED" | "INCOMPATIBLE" | "UPLOADING" | "STORED" | "PROCESSING" | "COMPLETED" | "ERROR"; progress: number; upload?: UploadedFile; jobStatus?: string; message?: string };
 
 const ACCEPT = ".txt,.md,.csv,.json,.hl7,.pdf,.docx,.xlsx,.dcm,.nii,.gz,.nrrd,.mha,.png,.jpg,.jpeg,.bmp,.hea,.dat,.edf,.bdf";
+const INTAKE_FORMATS = { COMBINED: ACCEPT, DOCUMENT_ONLY: ".txt,.md,.csv,.json,.hl7,.pdf,.docx,.xlsx,.png,.jpg,.jpeg,.bmp", SCAN_ONLY: ".dcm,.nii,.nii.gz,.nrrd,.mha,.png,.jpg,.jpeg,.bmp" };
+type IntakeMode = keyof typeof INTAKE_FORMATS;
 
 export default function UploadCenterPage() {
   const selected = useSelectedCase()!;
+  return <UploadWorkspace key={selected.id} selected={selected} />;
+}
+
+function UploadWorkspace({ selected }: { selected: Case }) {
   const loadEvidence = useWorkspace((state) => state.loadEvidence);
   const modalities = useAsync(() => api.getModalities(), []);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -24,11 +30,15 @@ export default function UploadCenterPage() {
   const [process, setProcess] = useState(true);
   const [busy, setBusy] = useState(false);
   const [examDialog, setExamDialog] = useState(false);
+  const [intakeMode, setIntakeMode] = useState<IntakeMode>("COMBINED");
   const examinations = useMemo(() => [...selected.examinations].sort((left, right) => left.exam_date.localeCompare(right.exam_date)), [selected.examinations]);
 
   function addFiles(list: FileList | null) {
     if (!list) return;
-    const next = [...list].map((file, index) => ({ id: `${Date.now()}-${index}-${file.name}`, file, status: "QUEUED" as const, progress: 0 }));
+    const next = [...list].map((file, index): Row => {
+      const compatible = INTAKE_FORMATS[intakeMode].split(",").some((ext) => file.name.toLowerCase().endsWith(ext));
+      return { id: `${Date.now()}-${index}-${file.name}`, file, status: compatible ? "QUEUED" : "INCOMPATIBLE", progress: 0, ...(!compatible ? { message: `Unsupported file format for ${humanize(intakeMode)} intake. Select the appropriate mode; the server still verifies actual content.` } : {}) };
+    });
     setRows((current) => [...current, ...next]);
     setSameCase(false);
   }
@@ -46,7 +56,7 @@ export default function UploadCenterPage() {
           deidentified: true,
           isAssociated: true,
           ...(examinationId !== "" ? { examinationId } : {}),
-          associationNotes: "Uploaded through the MedTwin upload center with case-match confirmation",
+          associationNotes: `Intake mode ${intakeMode}; uploaded through MedTwin with explicit case-match confirmation. Mode is declared context, not model eligibility.`,
         }, (progress) => update(row.id, { progress }));
         update(row.id, { status: process ? "PROCESSING" : "STORED", upload, progress: 1 });
         if (process) {
@@ -79,11 +89,16 @@ export default function UploadCenterPage() {
       <PageHeader eyebrow="Upload center" title={`Add evidence to ${selected.pseudonymous_id}`} description="Files are validated by extension, MIME type and content signature, hashed with SHA-256 and bound to this case. Processing runs the transparent extractors and OCR for scanned pages; clinical imaging inference abstains without a validated model, and research-only image models are run separately from Medical Imaging." />
       <div className="grid gap-4 xl:grid-cols-[1.5fr_1fr]">
         <Card title="Files">
+          <Field label="Intake mode" hint="Choose a batch type before adding files. PNG/JPEG can be report scans or medical images; actual content and model contracts are checked independently.">
+            <SelectInput aria-label="Intake mode" value={intakeMode} disabled={busy || rows.length > 0} onChange={(event) => setIntakeMode(event.target.value as IntakeMode)}>
+              <option value="COMBINED">Combined documents, scans and signals</option><option value="DOCUMENT_ONLY">Document-only</option><option value="SCAN_ONLY">Scan-only</option>
+            </SelectInput>
+          </Field>
           <div onDragOver={(event) => event.preventDefault()} onDrop={onDrop} className="flex flex-col items-center justify-center rounded-lg border border-dashed border-line-strong bg-surface-2 px-4 py-8 text-center">
             <FileUp aria-hidden size={22} className="text-ink-3" />
             <p className="mt-2 text-sm font-medium text-ink">Drop de-identified files here</p>
             <p className="mt-1 text-xs text-ink-3">Reports up to 25 MB; images and volumes up to 512 MB. DICOM series are uploaded file by file.</p>
-            <input ref={inputRef} type="file" multiple hidden accept={ACCEPT} data-testid="upload-file" onChange={(event) => { addFiles(event.target.files); event.target.value = ""; }} />
+            <input ref={inputRef} type="file" multiple hidden accept={INTAKE_FORMATS[intakeMode]} data-testid="upload-file" onChange={(event) => { addFiles(event.target.files); event.target.value = ""; }} />
             <Button className="mt-3" icon={Plus} onClick={() => inputRef.current?.click()}>Choose files</Button>
           </div>
           {rows.length > 0 && (
@@ -103,7 +118,7 @@ export default function UploadCenterPage() {
                       {row.message && <span className="block break-words">{row.message}</span>}
                       {row.upload?.modality === "IMAGE" && <Link to={`/imaging?upload=${row.upload.id}`} className="text-[11px] text-accent-text hover:underline">Review metadata</Link>}
                     </td>
-                    <td>{row.status === "QUEUED" && <button type="button" aria-label={`Remove ${row.file.name}`} onClick={() => setRows((current) => current.filter((item) => item.id !== row.id))} className="rounded p-1 text-ink-3 hover:text-ink"><Trash2 size={14} /></button>}</td>
+                    <td>{["QUEUED", "INCOMPATIBLE"].includes(row.status) && <button type="button" aria-label={`Remove ${row.file.name}`} onClick={() => setRows((current) => current.filter((item) => item.id !== row.id))} className="rounded p-1 text-ink-3 hover:text-ink"><Trash2 size={14} /></button>}</td>
                   </tr>
                 ))}
               </Table>

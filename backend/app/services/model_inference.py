@@ -130,7 +130,7 @@ def _checkpoint_hash(path: Path) -> str:
     return _cached_hash(str(path), stat.st_size, stat.st_mtime_ns)
 
 
-@lru_cache(maxsize=16)
+@lru_cache(maxsize=128)
 def _cached_hash(path: str, size: int, mtime_ns: int) -> str:
     return _sha256(Path(path))
 
@@ -701,6 +701,21 @@ def check_input(model: dict, file_record: UploadedFile, declared_input_type: str
         raise InferenceNotPermitted(f"{model['display_name']} was trained only on: {supported}.")
     if not upload_store.available(Path(file_record.file_path)) or (companion is not None and not upload_store.available(Path(companion.file_path))):
         raise InferenceNotPermitted("Stored file missing from disk store.")
+    if suffix == ".dcm":
+        # Direct model selection must enforce the same tag contradictions as automatic
+        # routing. Lazy imports avoid a module-import cycle; metadata reads no pixels.
+        from app.services.model_router import metadata_conflicts
+        from app.services.imaging_readers import read_metadata
+        try:
+            with upload_store.materialize(Path(file_record.file_path)) as plain:
+                metadata = read_metadata(plain)
+        except (OSError, ValueError) as exc:
+            raise InferenceNotPermitted("INPUT_METADATA_UNREADABLE: the DICOM technical metadata cannot be read.") from exc
+        contradiction = metadata_conflicts(declared_input_type, metadata)
+        if contradiction:
+            # Preserve the existing direct-inference modality refusal code.
+            prefix = "DICOM_MODALITY_MISMATCH: " if contradiction == "DICOM_MODALITY_CONTRADICTS_DECLARATION" else ""
+            raise InferenceNotPermitted(f"{prefix}{contradiction}: source tags conflict with the declared model input.")
     return companion
 
 

@@ -68,6 +68,10 @@ export default defineConfig({
         DEV_SEED_CASE_ENABLED: "true",
         CORS_ORIGINS: `["http://127.0.0.1:${frontendPort}"]`,
         RATE_LIMIT_LOGIN_PER_MINUTE: "60",
+        // Every browser test runs from 127.0.0.1; each full page load restores the session once.
+        RATE_LIMIT_SESSION_PER_MINUTE: "2000",
+        RATE_LIMIT_ENTRY_PER_MINUTE: "60",
+        RATE_LIMIT_GUEST_PER_MINUTE: "20",
       },
     },
     {

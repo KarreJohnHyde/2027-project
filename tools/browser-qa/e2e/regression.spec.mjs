@@ -38,17 +38,25 @@ function edf() {
   return Buffer.concat([Buffer.from(header, "ascii"), data]);
 }
 
+async function openAccount(page, username, password) {
+  await page.goto("/account");
+  await page.fill("#account-identifier", username);
+  await page.fill("#account-secret", password);
+  await page.getByRole("button", { name: "Open account" }).click();
+}
+
 async function signIn(page) {
-  await page.goto("/");
-  await page.getByText("Have a username and password from before?").click();
-  await page.fill("#login-username", process.env.MEDTWIN_E2E_USERNAME);
-  await page.fill("#login-password", process.env.MEDTWIN_E2E_PASSWORD);
-  await page.getByRole("button", { name: "Open my existing workspace" }).click();
-  await page.waitForFunction(() => Boolean(localStorage.getItem("medtwin_token")), null, { timeout: 30_000 });
-  const token = await page.evaluate(() => localStorage.getItem("medtwin_token"));
-  const cases = await (await page.request.get("/api/v1/cases", { headers: { Authorization: `Bearer ${token}` } })).json();
+  // The browser is signed in by its HttpOnly session cookie, which scripts cannot read; the test's API calls use a
+  // bearer token from the API login (no web client header).
+  await openAccount(page, process.env.MEDTWIN_E2E_USERNAME, process.env.MEDTWIN_E2E_PASSWORD);
+  await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible({ timeout: 30_000 });
+  const login = await page.request.post("/api/v1/auth/login", { data: { username: process.env.MEDTWIN_E2E_USERNAME, password: process.env.MEDTWIN_E2E_PASSWORD } });
+  expect(login.status(), await login.text()).toBe(200);
+  const token = (await login.json()).access_token;
+  const listed = await page.request.get("/api/v1/cases", { headers: { Authorization: `Bearer ${token}` } });
+  const cases = await listed.json();
   const caseId = cases[0]?.id ?? cases.items?.[0]?.id;
-  expect(caseId, "the seeded case exists").toBeTruthy();
+  expect(caseId, `the seeded case exists (HTTP ${listed.status()}: ${JSON.stringify(cases).slice(0, 200)})`).toBeTruthy();
   await page.evaluate((id) => localStorage.setItem("medtwin.selectedCase", String(id)), caseId);
   return { token, caseId };
 }
@@ -134,11 +142,7 @@ test("a patient account sees only the results its clinician has reviewed", async
   const findingId = measurements.find((item) => item.name === "potassium").finding_id;
 
   const patient = await browser.newPage();
-  await patient.goto("/");
-  await patient.getByText("Have a username and password from before?").click();
-  await patient.fill("#login-username", username);
-  await patient.fill("#login-password", password);
-  await patient.getByRole("button", { name: "Open my existing workspace" }).click();
+  await openAccount(patient, username, password);
   // Every account has every page (2026-10-30); the personal record stays at /portal.
   await expect(patient.getByRole("link", { name: "Document Intelligence", exact: true })).toBeVisible({ timeout: 30_000 });
   await patient.goto("/portal");

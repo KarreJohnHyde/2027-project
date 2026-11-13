@@ -1,0 +1,49 @@
+{
+  "schema_version": "medtwin-review-workflows-v1",
+  "frozen_at": "2026-11-13T08:14:50.164017+00:00",
+  "usage": "ISOLATED_NONCOMMERCIAL_RESEARCH_DEMONSTRATION_ONLY; commercial/clinical gates unchanged",
+  "A": {
+    "task": "Source-linked report extraction, review, descriptive longitudinal comparison and export",
+    "demonstrated_formats": [
+      "PDF embedded text",
+      "PDF rendered scan"
+    ],
+    "extractor_version": "rules-v2.1.1",
+    "anatomy": "Only explicitly reported associations; no image diagnosis",
+    "preprocessing": "Page-local decoding/OCR; de-identification; conservative offset-preserving normalization; registered unit mappings",
+    "reference_scope": "Known fictional fixture values; independently human-annotated real pages = 0",
+    "refusals": [
+      "unreadable values remain absent/uncertain",
+      "ambiguous or missing units",
+      "unestablished method/specimen comparability",
+      "insufficient forecast history"
+    ],
+    "clinical_validation": false
+  },
+  "B": {
+    "task": "2-D colorectal-polyp segmentation",
+    "model_id": "gi_kvasir_seg_polyp_segmenter",
+    "supported_input": "Native endoscopy RGB PNG/JPEG/BMP within registered quality/OOD contract; demonstrated one publisher JPEG",
+    "anatomy": "GI endoscopy; not other modalities, document/film photographs or a general disease detector",
+    "checkpoint": "artifacts/training/gi_kvasir_seg_polyp_segmenter-20261025T080312Z/model.pt",
+    "checkpoint_sha256": "a5a2c88dc5af67a8993210ca8a3d40ea79b9cd5e0a7cd5f422c1356828115c36",
+    "preprocessing_version": "rgb-resize352-standardise-v1",
+    "preprocessing": "RGB, 352x352 bilinear resize, per-channel standardization; nearest-neighbor source-grid label mapping",
+    "historical_evaluation": "docs/validation/models/gi_kvasir_seg_polyp_segmenter.json",
+    "refusals": [
+      "ineligible/tampered checkpoint or missing applicability reference",
+      "wrong declared modality or contradicting metadata",
+      "printed document",
+      "out-of-distribution input",
+      "withdrawn/unassociated upload"
+    ],
+    "limitations": [
+      "research-only internal evaluation",
+      "patient independence unavailable in this source",
+      "known valid-input refusals",
+      "historical mask differs by one pixel in bounded parity control",
+      "no patient-to-atlas registration"
+    ],
+    "clinical_validation": false
+  }
+}

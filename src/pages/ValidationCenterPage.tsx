@@ -4,9 +4,10 @@ import { CalibrationChart, ChartFrame, ConfusionMatrix, CurveChart } from "../co
 import { Badge, Button, Card, Disclosure, ErrorBlock, Field, KeyValue, LoadingBlock, Metric, PageHeader, Segmented, SelectInput, StatusBadge, Table, TextInput, Unavailable } from "../components/ui";
 import { api, type EvaluationResult, type EvaluationSplit, type EvaluationTask } from "../services/api";
 import { datasetName, licenceLabel, publicText, taskName } from "../lib/displayNames";
-import { Link } from "../lib/router";
+import { Link, useLocation } from "../lib/router";
 import { errorMessage, formatCount, formatDate, formatNumber, humanize } from "../lib/format";
 import { useAsync } from "../lib/useAsync";
+import { normalizeTrainedReport } from "../lib/trainedReport";
 
 /** A run identifier names its model; the UI shows only the run's UTC time. */
 function runLabel(runId: unknown): string {
@@ -611,7 +612,7 @@ type Report = Record<string, unknown>;
 
 function ciText(interval: unknown): string {
   const ci = interval as { status?: string; low?: number; high?: number } | undefined;
-  return ci?.status === "COMPUTED" ? `95% CI ${formatNumber(ci.low, 3)}–${formatNumber(ci.high, 3)}` : "CI not computed";
+  return ci?.status === "COMPUTED" ? `95% CI ${formatNumber(ci.low, 3)}–${formatNumber(ci.high, 3)}` : ci ? "CI not computed" : "CI not recorded";
 }
 
 function numbers(source: unknown, keys: string[]): Array<{ label: string; value: string }> {
@@ -628,10 +629,10 @@ function MultilabelReport({ report }: { report: Report }) {
     <>
       <div className="grid gap-3 sm:grid-cols-3">
         <Metric label="Macro AUROC" value={formatNumber(metrics.macro_auroc, 3)} note={`${ciText(intervals.macro_auroc)} · n ${formatCount(report.test_n as number)}`} />
-        <Metric label="Macro AUPRC" value={formatNumber(metrics.macro_auprc, 3)} note="Mean over classes; prevalence-dependent" />
-        <Metric label="Macro F1 at validation thresholds" value={formatNumber(metrics.macro_f1_at_validation_thresholds, 3)} note={ciText(intervals.macro_f1_at_validation_thresholds)} />
+        {typeof metrics.macro_auprc === "number" && <Metric label="Macro AUPRC" value={formatNumber(metrics.macro_auprc, 3)} note="Mean over classes; prevalence-dependent" />}
+        {typeof metrics.macro_f1_at_validation_thresholds === "number" && <Metric label="Macro F1 at validation thresholds" value={formatNumber(metrics.macro_f1_at_validation_thresholds, 3)} note={ciText(intervals.macro_f1_at_validation_thresholds)} />}
       </div>
-      <Card title="Per class (test)" eyebrow="Thresholds chosen on the validation fold" padded={false}>
+      {perClass.length > 0 ? <Card title="Per class (test)" eyebrow="Held-out measured values; — means not reported" padded={false}>
         <Table headers={["Class", "Positives", "Prevalence", "AUROC", "AUPRC", "Threshold", "Sensitivity", "Specificity", "PPV", "F1", "ECE raw → Platt"]} dense>
           {perClass.map((row) => (
             <tr key={String(row.class)}>
@@ -649,7 +650,7 @@ function MultilabelReport({ report }: { report: Report }) {
             </tr>
           ))}
         </Table>
-      </Card>
+      </Card> : <p className="text-xs text-ink-3">Per-class results are not recorded in this report. No values have been inferred from aggregate scores.</p>}
       {typeof integrity.files_verified === "number" && (
         <p className="text-[11px] leading-4 text-ink-3">Integrity: {formatCount(integrity.files_verified as number)} files verified against {String(integrity.against)}; {formatCount((integrity.leads_checksum_and_first_sample_verified as number) ?? 0)} leads checked against their header checksum and first sample.</p>
       )}
@@ -704,28 +705,31 @@ function VolumetricReport({ report }: { report: Report }) {
   const metrics = (report.metrics ?? {}) as Record<string, unknown>;
   const structures = (metrics.per_structure ?? {}) as Record<string, Record<string, number | null | Record<string, unknown>>>;
   const indices = (report.clinical_indices ?? {}) as Record<string, Record<string, unknown>>;
+  const cardiac = CARDIAC_INDICES.some(([key]) => indices[key]);
+  const lesion = (metrics.lesion_detection ?? {}) as Record<string, unknown>;
   return (
     <>
       <div className="grid gap-3 sm:grid-cols-3">
         <Metric label="Mean case macro Dice" value={formatNumber(metrics.mean_case_macro_dice as number, 3)} note={`${ciText(metrics.mean_case_macro_dice_95ci)} · ${formatCount(report.test_patients as number)} patients, ${formatCount(report.test_n as number)} volumes`} />
-        <Metric label="LV ejection fraction, mean absolute error" value={`${formatNumber(indices.lv_ef_percent?.mean_absolute_error as number, 1)} points`} note={ciText(indices.lv_ef_percent?.mean_absolute_error_95ci)} />
-        <Metric label="LV ejection fraction, bias" value={`${formatNumber(indices.lv_ef_percent?.bias as number, 1)} points`} note="Predicted minus reference-mask value" />
+        {cardiac && <Metric label="LV ejection fraction, mean absolute error" value={`${formatNumber(indices.lv_ef_percent?.mean_absolute_error as number, 1)} points`} note={ciText(indices.lv_ef_percent?.mean_absolute_error_95ci)} />}
+        {cardiac && <Metric label="LV ejection fraction, bias" value={`${formatNumber(indices.lv_ef_percent?.bias as number, 1)} points`} note="Predicted minus reference-mask value" />}
       </div>
-      <Card title="Structures (test volumes, end-diastole and end-systole)" padded={false}>
-        <Table headers={["Structure", "Dice", "Dice ED", "Dice ES", "HD95 (mm)", "ASSD (mm)"]} dense>
+      <Card title={cardiac ? "Structures (test volumes, end-diastole and end-systole)" : "Structures (test volumes)"} padded={false}>
+        <Table headers={cardiac ? ["Structure", "Dice", "Dice ED", "Dice ES", "HD95 (mm)", "ASSD (mm)"] : ["Structure", "Dice", "IoU", "Scored cases"]} dense>
           {Object.entries(structures).map(([name, row]) => (
             <tr key={name}>
               <td className="text-ink">{humanize(name)}</td>
               <td className="tabular">{formatNumber(row.mean_dice as number, 3)}<span className="block text-[11px] text-ink-3">{ciText(row.mean_dice_95ci)}</span></td>
-              <td className="tabular">{formatNumber(row.mean_dice_ed as number, 3)}</td>
+              {cardiac ? <><td className="tabular">{formatNumber(row.mean_dice_ed as number, 3)}</td>
               <td className="tabular">{formatNumber(row.mean_dice_es as number, 3)}</td>
               <td className="tabular">{formatNumber(row.mean_hd95_mm as number, 1)}</td>
-              <td className="tabular">{formatNumber(row.mean_assd_mm as number, 2)}</td>
+              <td className="tabular">{formatNumber(row.mean_assd_mm as number, 2)}</td></>
+                : <><td className="tabular">{formatNumber(row.mean_iou as number, 3)}</td><td className="tabular">{typeof row.scored_cases === "number" ? formatCount(row.scored_cases) : "—"}</td></>}
             </tr>
           ))}
         </Table>
       </Card>
-      <Card title="Cardiac indices from the segmentations (test patients)" eyebrow="Compared with the same indices from the reference masks" padded={false}>
+      {cardiac && <Card title="Cardiac indices from the segmentations (test patients)" eyebrow="Compared with the same indices from the reference masks" padded={false}>
         <Table headers={["Index", "Reference mean", "Predicted mean", "Bias", "95% limits of agreement", "Mean absolute error", "Pearson r"]} dense>
           {CARDIAC_INDICES.filter(([key]) => indices[key]).map(([key, label, unit]) => {
             const row = indices[key];
@@ -743,7 +747,8 @@ function VolumetricReport({ report }: { report: Report }) {
             );
           })}
         </Table>
-      </Card>
+      </Card>}
+      {Object.keys(lesion).length > 0 && <Card title="Lesion detection (test volumes)"><KeyValue columns={3} items={numbers(lesion, ["lesion_sensitivity", "lesion_f1", "false_positive_components_per_case"])} /><p className="mt-2 text-xs text-ink-3">{String(lesion.definition ?? "")}</p></Card>}
       {typeof report.spacing_note === "string" && <p className="text-[11px] leading-4 text-ink-3">{report.spacing_note}</p>}
     </>
   );
@@ -752,7 +757,8 @@ function VolumetricReport({ report }: { report: Report }) {
 function TrainedModelReport({ modelId }: { modelId: string }) {
   const evaluation = useAsync(() => api.getResearchModelEvaluation(modelId), [modelId]);
   if (!evaluation.data) return evaluation.error ? <ErrorBlock message={evaluation.error} /> : <LoadingBlock label="Reading evaluation report" />;
-  const report = evaluation.data.report;
+  const normalized = normalizeTrainedReport(evaluation.data.report, evaluation.data.task);
+  const report = normalized.report;
   const license = (report.dataset_license ?? {}) as Record<string, unknown>;
   const checkpoint = (report.checkpoint ?? {}) as Record<string, unknown>;
   const test = (report.test ?? {}) as Report;
@@ -769,18 +775,19 @@ function TrainedModelReport({ modelId }: { modelId: string }) {
       </div>
       <Card title="Provenance">
         <KeyValue columns={2} items={[
-          { label: "Dataset", value: `${datasetName(String(report.dataset_id ?? ""))} (version ${String(report.dataset_version).slice(0, 16)}…)` },
+          { label: "Dataset", value: `${report.dataset_id || report.dataset ? datasetName(String(report.dataset_id ?? report.dataset)) : "Not recorded"} (${typeof report.dataset_version === "string" && report.dataset_version ? `version ${report.dataset_version.slice(0, 16)}…` : "version not recorded"})` },
           { label: "Licence", value: <>{licenceLabel(license)} · <Link to="/attribution" className="text-accent-text hover:underline">Data sources and licences</Link></> },
-          { label: "Split", value: publicText(String(report.split_method)) },
-          { label: "Split counts", value: Object.entries((report.split_counts ?? {}) as Record<string, number>).map(([split, count]) => `${split} ${formatCount(count)}`).join(" · ") },
+          { label: "Split", value: typeof report.split_method === "string" && report.split_method ? publicText(report.split_method) : "Not recorded" },
+          { label: "Split counts", value: Object.entries((report.split_counts ?? {}) as Record<string, number>).map(([split, count]) => `${split} ${formatCount(count)}`).join(" · ") || "Not recorded" },
           { label: "Checkpoint SHA-256", value: String(checkpoint.sha256 ?? "—"), mono: true },
           { label: "Training time", value: typeof report.training_seconds === "number" ? `${formatNumber((report.training_seconds as number) / 60, 1)} min` : "—" },
         ]} />
       </Card>
-      {report.task_type === "multilabel_classification" && <MultilabelReport report={report} />}
-      {report.task_type === "survival" && <SurvivalReport report={report} />}
-      {report.task_type === "volumetric_segmentation" && <VolumetricReport report={report} />}
-      {report.metrics !== undefined && report.task_type !== "multilabel_classification" && report.task_type !== "survival" && report.task_type !== "volumetric_segmentation" && (
+      {normalized.kind === "unsupported" && <Unavailable code="REPORT_METRICS_UNAVAILABLE" reason="This saved report does not contain supported task-specific metrics. Provenance is retained; no classification or segmentation scores have been inferred." />}
+      {normalized.kind === "multilabel" && <MultilabelReport report={report} />}
+      {normalized.kind === "survival" && <SurvivalReport report={report} />}
+      {normalized.kind === "volume" && <VolumetricReport report={report} />}
+      {normalized.kind === "classification" && (
         <>
           <div className="grid gap-3 sm:grid-cols-3">
             {(["accuracy", "macro_f1", "balanced_accuracy"] as const).map((key) => (
@@ -820,8 +827,9 @@ function TrainedModelReport({ modelId }: { modelId: string }) {
 }
 
 function TrainedModelsTab() {
+  const { search } = useLocation();
   const listing = useAsync(() => api.getResearchModels(), []);
-  const [modelId, setModelId] = useState("");
+  const [modelId, setModelId] = useState(() => search.get("model") ?? "");
   if (!listing.data) return listing.error ? <ErrorBlock message={listing.error} /> : <LoadingBlock />;
   const models = listing.data.models;
   if (models.length === 0) return <Unavailable code="NO_TRAINED_MODEL" reason="No model trained in this workspace is registered." />;
@@ -859,7 +867,8 @@ function TestEvidenceTab() {
 }
 
 export default function ValidationCenterPage() {
-  const [tab, setTab] = useState<"evaluate" | "runs" | "trained" | "traceability" | "tests">("evaluate");
+  const { search } = useLocation();
+  const [tab, setTab] = useState<"evaluate" | "runs" | "trained" | "traceability" | "tests">(() => search.has("model") ? "trained" : "evaluate");
   const [result, setResult] = useState<EvaluationResult | null>(null);
   return (
     <>

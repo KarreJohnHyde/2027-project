@@ -22,18 +22,22 @@ from app.services.terminology import ANALYTES_BY_NAME
 VERSION = "chronological-baselines-v1"
 
 
-def evaluate(case_id: int, db: Session, metric: str, unit: str, horizon_days: int, method: str) -> dict:
+def evaluate(case_id: int, db: Session, metric: str, unit: str, horizon_days: int, method: str, persist: bool = True) -> dict:
+    from app.services.report_runs import superseded_report_run_ids
     if method not in {"persistence", "linear"} or not 1 <= horizon_days <= 3650:
         raise ValueError("Unsupported baseline or horizon.")
     measurements = db.query(MedicalMeasurement).filter(MedicalMeasurement.case_id == case_id).all()
     reviews = _latest_reviews(db, {m.finding_id for m in measurements})
     overrides = approved_measurement_overrides(db, case_id)
+    superseded_runs = superseded_report_run_ids(db, [case_id])
     points = {}
     contexts = set()
     ambiguity = False
     context_missing = False
     lesion_identity_required = False
     for measurement in measurements:
+        if measurement.finding and measurement.finding.inference_run_id in superseded_runs:
+            continue
         upload = measurement.source_file
         review = reviews.get(measurement.finding_id)
         if not eligible_upload(upload, case_id) or not review or review.review_status != "CONFIRMED" or not review.original_output_preserved:
@@ -146,9 +150,10 @@ def evaluate(case_id: int, db: Session, metric: str, unit: str, horizon_days: in
                             eligibility_status=EvidenceStatus.COMPLETED if predicted is not None else EvidenceStatus.NOT_ELIGIBLE,
                             ineligibility_reason=reason,
                             notice="RESEARCH PROTOTYPE. Local backtest only; not a validated medical prognosis.")
-    db.add(record)
-    db.commit()
-    db.refresh(record)
+    if persist:
+        db.add(record)
+        db.commit()
+        db.refresh(record)
     return {key: getattr(record, key) for key in ("id", "case_id", "target_metric", "unit", "horizon_days", "observations_count",
             "predicted_value", "baseline_persistence", "baseline_linear", "mae_estimate", "rmse_estimate", "eligibility_status",
             "ineligibility_reason", "notice", "baseline_analysis")} | {"chronological_series": series}

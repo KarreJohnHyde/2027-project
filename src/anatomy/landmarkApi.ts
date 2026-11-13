@@ -1,4 +1,4 @@
-import { api, ApiError, API_V1_BASE } from "../services/api";
+import { api, ApiError, API_CREDENTIALS, API_V1_BASE } from "../services/api";
 import type { LandmarkPair } from "./landmarkValidation";
 
 export type AccountStanding = { role: string | null; verified_professional: boolean };
@@ -47,20 +47,23 @@ export type RegistrationGateResult = {
   explanatory_reason: string;
 };
 
-// Keep this feature's transport separate from the shared API client. Authentication
-// remains the same bearer token; no private URLs, credentials or identifiers persist.
+// Keep this feature's transport separate from the shared API client. Authentication is the same
+// browser session cookie (plus the client header); no private URLs, credentials or identifiers persist.
 async function request<T>(endpoint: string, body?: unknown): Promise<T> {
-  const token = api.getToken();
-  if (!token) throw new ApiError(401, "Sign in to review case landmark evidence.");
-  const response = await fetch(`${API_V1_BASE}${endpoint}`, {
-    method: body === undefined ? "GET" : "POST",
-    headers: { Authorization: `Bearer ${token}`, ...(body === undefined ? {} : { "Content-Type": "application/json" }) },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_V1_BASE}${endpoint}`, {
+      method: body === undefined ? "GET" : "POST",
+      credentials: API_CREDENTIALS,
+      headers: { ...api.authHeaders(), ...(body === undefined ? {} : { "Content-Type": "application/json" }) },
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    });
+  } catch {
+    throw new ApiError(0, "The MedTwin server could not be reached. Try again.");
+  }
   let data: unknown;
   try { data = await response.json(); } catch { data = null; }
   if (!response.ok) {
-    if (response.status === 401) api.setToken(null);
     const detail = data && typeof data === "object" && "detail" in data ? data.detail : undefined;
     const message = typeof detail === "string" ? detail
       : Array.isArray(detail) ? detail.map(item => typeof item?.msg === "string" ? item.msg : "Invalid request").join("; ")

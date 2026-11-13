@@ -33,6 +33,7 @@ export const NAV_SECTIONS: Array<{ label: string; items: NavItem[] }> = [
   {
     label: "Case evidence",
     items: [
+      { path: "/universal", label: "Case Command Center", icon: BrainCircuit, summary: "Whole-body catalogue, linked evidence, spatial imaging and a restricted copilot." },
       { path: "/", label: "Overview Dashboard", icon: Activity, summary: "Case, capability and system status at a glance." },
       { path: "/cases", label: "Case Workspace", icon: FolderKanban, summary: "Examinations, uploads, processing history and sharing.", needsCase: true },
       { path: "/private-references", label: "Private reference cases", icon: FileText, summary: "Your private source records, saved case reports and review limits." },
@@ -56,6 +57,7 @@ export const NAV_SECTIONS: Array<{ label: string; items: NavItem[] }> = [
   {
     label: "Research",
     items: [
+      { path: "/arena", label: "Model Arena", icon: GitCompareArrows, summary: "Compare saved research evaluations after matched-cohort checks." },
       { path: "/research/analytics", label: "Research Analytics", icon: BarChart3, summary: "Charts of real workspace data with provenance." },
       { path: "/models", label: "Model Registry", icon: Layers3, summary: "Model states and activation gates." },
       { path: "/datasets", label: "Dataset Registry", icon: Database, summary: "Audited datasets, integrity and readiness." },

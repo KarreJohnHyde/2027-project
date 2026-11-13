@@ -1,0 +1,91 @@
+{
+  "schema_version": "medtwin.public-expansion-evidence.v1",
+  "generated_at": "2026-11-13T11:31:49.270508+00:00",
+  "scope": "BOUNDED_RESEARCH_ENGINEERING_NOT_CLINICAL_VALIDATION",
+  "usage_profile": "commercial",
+  "clinical_activation": false,
+  "backend": {
+    "passed": 1109,
+    "skipped": 5,
+    "log_sha256": "274178816db66735d91dc39a9c1e1d22b2b140f28d8445f85e4118b03feaf572"
+  },
+  "frontend": {
+    "typecheck_lint_check_build": "PASSED",
+    "production_build": "PASSED",
+    "log_sha256": "0996b58c9087937e938186512cd8bcf5b35dd5564ce558e4305cf88836bdfc8c"
+  },
+  "proofs": [
+    {
+      "name": "control-room/proof.json",
+      "checks_passed": 10,
+      "artifact_sha256": "57b16ae55da9bf8f8ab770d05a30339be50dcce009f8f6b75753c8856c7d4199"
+    },
+    {
+      "name": "catalogue/browser-proof.json",
+      "checks_passed": 13,
+      "artifact_sha256": "60581526a05d79972ea0a7cd7f43e65740f7039d9cb2a80c2f819d738ad6c57e"
+    },
+    {
+      "name": "research/ui-proof.json",
+      "checks_passed": 5,
+      "artifact_sha256": "56069a9ede39a68b45264c74e8e51eafa4e88a19f76c5590e55a68171f5147e8"
+    },
+    {
+      "name": "research/api-proof.json",
+      "checks_passed": 2,
+      "artifact_sha256": "6da2509651fd367e3b85bf0374f38d9315e71ba0c134c708723aab3b061259d5"
+    },
+    {
+      "name": "imaging/browser/proof.json",
+      "checks_passed": 15,
+      "artifact_sha256": "f1fec3dd79d5afde99f7698d8c650185306af8e60c460e4eac976e6909a16beb"
+    },
+    {
+      "name": "operations/proof.json",
+      "checks_passed": 9,
+      "artifact_sha256": "a1b08bbec5a8e2aad54d8f9456673156849a5a9c68dae63973a1e23577ca4e83"
+    },
+    {
+      "name": "container-acceptance/proof.json",
+      "checks_passed": 7,
+      "artifact_sha256": "6a58523b8d9e4411e01aaf18f89bd565189f92785043cf97cc05426306661ee3"
+    }
+  ],
+  "source_hierarchy": {
+    "families": 25,
+    "nodes": 4907,
+    "semantics": "Source parents/context/model labels distinct; no guessed laterality or code crosswalk"
+  },
+  "matched_records": {
+    "records": 2163,
+    "patients": 1881,
+    "new_inference": false,
+    "patient_identifiers_returned": false,
+    "superiority_demonstrated": false
+  },
+  "temporal_control": {
+    "source_kind": "ORIGINAL_PROGRAMMATIC_SYNTHETIC_CONTROL",
+    "expected_mean_change": 0.21875,
+    "measured_mean_change": 0.21875,
+    "clinical_progression_claim": false
+  },
+  "registry_sha256_preserved": "b56979e0591788b1d588fa11c590e0378a1f98db1114612df702f816aa5b65b7",
+  "excluded_from_publication": [
+    "Original local Git objects/history",
+    "Patient uploads/databases",
+    "Credentials and encryption keys",
+    "Downloaded datasets and new weights",
+    "New binary anatomy assets",
+    "Third-party input screenshots and individual research record rows"
+  ],
+  "open_scientific_prerequisites": [
+    "Independent human-reviewed full real-report references",
+    "Commercial rights/review prerequisites for six original weak-model families",
+    "Known leakage groups and unknown patient identities",
+    "Exact historical one-pixel Kvasir parity",
+    "Independent patient/atlas registration",
+    "Broad paired multimodal and longitudinal clinical outcomes",
+    "Genuine ICD-11 configuration and separate crosswalk permission",
+    "Off-host recovery and clinical/regulatory release"
+  ]
+}

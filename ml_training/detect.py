@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -28,6 +29,7 @@ from torchvision.transforms import functional as F
 
 from ml_training.common import (MODEL_CARDS, REPORTS, ROOT, Run, checkpoint_ref, cross_split_component_summary, device, load_resume, read_samples,
                                 register_model, relative, save_resume, seed_worker, set_seed)
+from ml_training.volumetric_manifest import enforce_training_license
 
 sys.path.insert(0, str(ROOT / "backend"))
 from app.services.evaluation_metrics import evaluate_detection  # noqa: E402  (same evaluator as the Validation Center)
@@ -165,7 +167,25 @@ def operating_point(items: list[dict], predictions: list[list[dict]], threshold:
     return {"threshold": threshold, "tp": tp, "fp": fp, "fn": fn, "precision": precision, "recall": recall, "f1": f1}
 
 
-def main() -> int:
+def development_rows(rows: list[dict], *, enabled: bool, seed: int, max_train: int = 0, max_val: int = 0) -> list[dict]:
+    """Exclude test rows before images/annotations load; cap development only."""
+    if not enabled:
+        if max_train or max_val:
+            raise ValueError("Sample caps require --development-only")
+        return rows
+    selected = []
+    for split, maximum in (("train", max_train), ("val", max_val)):
+        members = [row for row in rows if row["split"] == split]
+        members.sort(key=lambda row: hashlib.sha256(f"{seed}:{row['entry']}".encode()).hexdigest())
+        selected.extend(members[:maximum] if maximum else members)
+    train_groups = {str(row["group_id"]) for row in selected if row["split"] == "train" and row.get("group_id") is not None}
+    val_groups = {str(row["group_id"]) for row in selected if row["split"] == "val" and row.get("group_id") is not None}
+    if train_groups & val_groups:
+        raise ValueError("Development train/validation group leakage; curate the manifest before training")
+    return selected
+
+
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--task-id", required=True)
     parser.add_argument("--model-id", required=True)
@@ -185,27 +205,39 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=20261024)
     parser.add_argument("--resume-file", type=Path, default=None,
                         help="Training state written after every epoch; an existing file for the same settings is resumed.")
-    args = parser.parse_args()
+    parser.add_argument("--development-only", action="store_true", help="Never load test images/labels or publish a registry/model-card result")
+    parser.add_argument("--max-train-samples", type=int, default=0, help="Development-only deterministic cap; 0 uses all train rows")
+    parser.add_argument("--max-val-samples", type=int, default=0, help="Development-only deterministic cap; 0 uses all validation rows")
+    args = parser.parse_args(argv)
+    if min(args.epochs, args.batch_size, args.min_size, args.max_size) <= 0 or min(args.max_train_samples, args.max_val_samples) < 0:
+        parser.error("Epochs, batch size and image sizes must be positive; caps nonnegative")
 
     tasks = json.loads((ROOT / "dataset_registry" / "tasks.json").read_text(encoding="utf-8"))
     dataset, task = next((d, t) for d in tasks["datasets"] for t in d["tasks"] if t["task_id"] == args.task_id)
     if not task["training_eligible"]:
         raise SystemExit(f"{args.task_id} is not training-eligible: {task['flags']}")
+    rights = enforce_training_license({"dataset_id": dataset["id"]}, ROOT / "dataset_registry/tasks.json")
     prep = task["preparation"]
-    rows = read_samples(Path(prep["sample_manifest"]))
+    rows = development_rows(read_samples(Path(prep["sample_manifest"])), enabled=args.development_only, seed=args.seed,
+                            max_train=args.max_train_samples, max_val=args.max_val_samples)
     label_format = "COCO" if dataset["labels"] == "COCO" else "YOLO"
     yolo_classes = {int(value) for value in args.yolo_classes.split(",")} if args.yolo_classes else None
     class_name = args.class_name or args.category or "target"
-    splits = {split: load_targets([row for row in rows if row["split"] == split], label_format, args.category, yolo_classes) for split in ("train", "val", "test")}
+    splits = {split: load_targets([row for row in rows if row["split"] == split], label_format, args.category, yolo_classes)
+              for split in (("train", "val") if args.development_only else ("train", "val", "test"))}
+    if not splits["train"] or not splits["val"]:
+        raise ValueError("Nonempty train and validation partitions are required")
     set_seed(args.seed)
     dev = device()
     run = Run(args.model_id, args.task_id, {**vars(args), "dataset_version": prep["dataset_version"],
-                                            "boxes_per_split": {split: sum(len(item["boxes"]) for item in items) for split, items in splits.items()}})
+                                            "rights": rights, "boxes_per_split": {split: sum(len(item["boxes"]) for item in items) for split, items in splits.items()}})
     model = fasterrcnn_resnet50_fpn_v2(weights=FasterRCNN_ResNet50_FPN_V2_Weights.COCO_V1, min_size=args.min_size, max_size=args.max_size)
     model.roi_heads.box_predictor = FastRCNNPredictor(model.roi_heads.box_predictor.cls_score.in_features, 2)
     model.to(dev)
     identity = {key: getattr(args, key) for key in ("task_id", "model_id", "yolo_classes", "category", "allow_flip", "epochs", "batch_size", "lr",
                                                     "min_size", "max_size", "seed")} | {"dataset_version": prep["dataset_version"]}
+    if args.development_only:
+        identity.update(development_only=True, max_train_samples=args.max_train_samples, max_val_samples=args.max_val_samples)
     resumed = load_resume(args.resume_file, identity)
     start_epoch = 1 if resumed is None else int(resumed["epoch"]) + 1
     # A resumed run draws a fresh data order for the remaining epochs (recorded below).
@@ -254,6 +286,23 @@ def main() -> int:
     val_predictions = predict(model, splits["val"], dev)
     candidates = [operating_point(splits["val"], val_predictions, threshold) for threshold in np.round(np.arange(0.05, 0.96, 0.05), 2)]
     chosen = max(candidates, key=lambda item: item["f1"] or 0.0)
+
+    if args.development_only:
+        checkpoint_path, checkpoint_sha = run.save_checkpoint({
+            "kind": "object_detector", "arch": "fasterrcnn_resnet50_fpn_v2", "state_dict": best_state, "classes": [class_name],
+            "min_size": args.min_size, "max_size": args.max_size, "score_threshold": float(chosen["threshold"]),
+            "task_id": args.task_id, "dataset_version": prep["dataset_version"], "development_only": True,
+            "preprocessing": "RGB tensor in [0,1]; model-internal resize; boxes returned in source pixels"})
+        run.write_json("development.json", {
+            "execution_status": "DEVELOPMENT_COMPLETE_TEST_NOT_EVALUATED", "model_id": args.model_id,
+            "dataset_version": prep["dataset_version"], "split_counts_used": {key: len(value) for key, value in splits.items()},
+            "selection": {"criterion": "validation AP50", "best_epoch": best_epoch, "val_ap50": best_ap50},
+            "validation": score(splits["val"], val_predictions), "validation_operating_point": chosen,
+            "checkpoint": {"path": checkpoint_ref(checkpoint_path), "sha256": checkpoint_sha},
+            "held_out_test": {"status": "NOT_EVALUATED"}, "model_registry_mutation": False,
+            "notice": "Development subset/validation measurements only; not a held-out accuracy or improvement claim."})
+        run.log(event="development_done", test_evaluated=False, registry_mutation=False, checkpoint_sha256=checkpoint_sha)
+        return 0
 
     # Test split, read once with the frozen checkpoint and the validation-chosen threshold.
     test_predictions = predict(model, splits["test"], dev)

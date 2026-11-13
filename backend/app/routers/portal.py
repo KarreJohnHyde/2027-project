@@ -14,6 +14,7 @@ Research-model output and anything not yet reviewed are never shown.
 from __future__ import annotations
 
 from pathlib import Path
+from types import SimpleNamespace
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
@@ -21,6 +22,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session
 
+from app import config as app_config
 from app.config import RATE_LIMIT_UPLOAD_PER_MINUTE, UPLOAD_DIR
 from app.database import get_db
 from app.models.entities import Case, CaseMembership, Finding, HumanReview, MedicalMeasurement, UploadedFile, User
@@ -45,10 +47,21 @@ PRIVATE_RECORD_NOTICE = (
 )
 
 
-def _membership(case_id: int, user: User, db: Session) -> CaseMembership:
+def _open_workspace_cases(db: Session, user: User) -> list[Case]:
+    """In open-workspace mode every workspace case is the record of whoever opens this installation (demo cases stay
+    with their guests). Empty in every other mode."""
+    if not app_config.OPEN_WORKSPACE or user.is_guest:
+        return []
+    guests = db.query(User.id).filter(User.is_guest.is_(True))
+    return db.query(Case).filter((Case.created_by_id.is_(None)) | (Case.created_by_id.notin_(guests))).order_by(Case.id).all()
+
+
+def _membership(case_id: int, user: User, db: Session):
     membership = db.query(CaseMembership).filter(
         CaseMembership.case_id == case_id, CaseMembership.user_id == user.id, CaseMembership.role.in_(PORTAL_ROLES),
     ).first()
+    if membership is None and any(case.id == case_id for case in _open_workspace_cases(db, user)):
+        return SimpleNamespace(role="WORKSPACE")
     if membership is None:  # the same answer whether or not the case exists
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No record is shared with you under this id.")
     return membership
@@ -111,7 +124,11 @@ def _documents(db: Session, case_id: int) -> list[dict]:
 def list_portal_cases(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     rows = (db.query(CaseMembership, Case).join(Case, Case.id == CaseMembership.case_id)
             .filter(CaseMembership.user_id == current_user.id, CaseMembership.role.in_(PORTAL_ROLES)).all())
-    return [{"case_id": case.id, "record": case.pseudonymous_id, "relationship": membership.role} for membership, case in rows]
+    listed = [{"case_id": case.id, "record": case.pseudonymous_id, "relationship": membership.role} for membership, case in rows]
+    seen = {item["case_id"] for item in listed}
+    listed += [{"case_id": case.id, "record": case.pseudonymous_id, "relationship": "WORKSPACE"}
+               for case in _open_workspace_cases(db, current_user) if case.id not in seen]
+    return listed
 
 
 @router.post("/cases", status_code=status.HTTP_201_CREATED)

@@ -21,10 +21,17 @@ export type {
 
 import type { ReferenceReport, ReferenceSummary } from '../types/privateReferences';
 
-const TOKEN_STORAGE_KEY = 'medtwin_token';
+/** Where earlier versions kept a sign-in key in localStorage; read once to move the browser to a cookie session, then removed. */
+const LEGACY_TOKEN_KEY = 'medtwin_token';
+const LEGACY_VISITOR_KEY = 'medtwin.visitor';
+/** Sent on every request from this app. The server requires it before a cookie-authenticated write (a CSRF guard). */
+export const CLIENT_HEADER = 'X-MedTwin-Client';
+const CLIENT_NAME = 'web';
 const configuredOrigin = (import.meta.env.VITE_MEDTWIN_API_URL as string | undefined)
   ?.trim()
   .replace(/\/+$/, '');
+/** The session cookie travels with same-origin requests; a separately hosted API needs it sent explicitly. */
+export const API_CREDENTIALS: RequestCredentials = configuredOrigin ? 'include' : 'same-origin';
 
 /**
  * VITE_MEDTWIN_API_URL is an optional origin, for example
@@ -112,24 +119,30 @@ export interface User {
   created_at: string;
 }
 
+/** A value from ENTRY_ROLE_GROUPS (src/data/entryRoles.ts): a clinical role, specialty or department. Grants nothing. */
+export type EntryRole = string;
+export type EntryGender = 'female' | 'male' | 'other' | 'prefer_not_to_say';
+
+/** The entry page. The role is self-described and grants no privileges. */
 export interface VisitorEntry {
   name: string;
-  age: number;
-  gender: 'female' | 'male' | 'other' | 'prefer_not_to_say';
-  role: 'patient' | 'caregiver' | 'doctor' | 'nurse' | 'lab_expert' | 'radiologist' | 'surgeon' | 'researcher' | 'student' | 'other';
+  age?: number | null;
+  gender?: EntryGender | null;
+  role: EntryRole;
 }
 
-export interface VisitorSession extends AuthenticatedSession {
-  expires_at: string;
-}
+export type BrowserSessionKind = 'VISITOR' | 'GUEST' | 'ACCOUNT';
 
-export interface AuthenticatedSession extends AuthToken {
+/** A signed-in browser. The session itself is an HttpOnly cookie the page cannot read; this is the profile only. */
+export interface BrowserSession {
   user: User;
+  session: { kind: BrowserSessionKind; expires_at: string; rotated?: boolean };
+  /** This installation runs as an open workspace: no sign-in, every browser opens the shared workspace. */
+  open_workspace?: boolean;
 }
 
-export interface GuestSession extends AuthenticatedSession {
+export interface GuestSession extends BrowserSession {
   case_id: number;
-  expires_at: string;
 }
 
 export interface RegisterUserInput {
@@ -1968,8 +1981,58 @@ export class ApiError extends Error {
   }
 }
 
+const UNAVAILABLE_STATUSES = new Set([0, 502, 503, 504]);
+
+/** The server could not be reached or is not answering (no network, proxy without a backend, gateway timeout). */
+export function isServerUnavailable(error: unknown): boolean {
+  return error instanceof ApiError && UNAVAILABLE_STATUSES.has(error.status);
+}
+
+const UNREACHABLE_MESSAGE = 'The MedTwin server could not be reached. Check the connection, or start the server, then try again.';
+
 function resourcePath(id: ResourceId): string {
   return encodeURIComponent(String(id));
+}
+
+function readLegacyToken(): string | null {
+  try {
+    const direct = window.localStorage.getItem(LEGACY_TOKEN_KEY);
+    if (direct) return direct;
+    const visitor = JSON.parse(window.localStorage.getItem(LEGACY_VISITOR_KEY) ?? 'null') as { token?: unknown } | null;
+    return visitor && typeof visitor.token === 'string' ? visitor.token : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearLegacyKeys(): void {
+  try {
+    window.localStorage.removeItem(LEGACY_TOKEN_KEY);
+    window.localStorage.removeItem(LEGACY_VISITOR_KEY);
+  } catch {
+    // Storage may be blocked; there is then nothing stored to remove.
+  }
+}
+
+const RETRY_DELAYS_MS = [500, 1500];
+
+/** Retry a call that is safe to repeat (a read, or a write carrying an Idempotency-Key) while the server is unavailable. */
+async function withRetry<T>(call: () => Promise<T>): Promise<T> {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      return await call();
+    } catch (error) {
+      if (!isServerUnavailable(error) || attempt >= RETRY_DELAYS_MS.length) throw error;
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAYS_MS[attempt]));
+    }
+  }
+}
+
+/** A fresh key for one press of "Enter MedTwin" or "Try Demo"; retries of that press reuse it. */
+export function newIdempotencyKey(prefix: string): string {
+  // getRandomValues, unlike randomUUID, also exists on plain-http pages such as a LAN address.
+  const random = Array.from(crypto.getRandomValues(new Uint8Array(16)), (byte: number) => byte.toString(16).padStart(2, '0')).join('');
+  return `${prefix}-${random}`;
 }
 
 function formatValidationDetail(detail: unknown): string | null {
@@ -2016,21 +2079,34 @@ function rejectsRegistrationProfileFields(error: unknown): error is ApiError {
 }
 
 class ApiClient {
-  private token: string | null =
-    typeof window === 'undefined' ? null : window.localStorage.getItem(TOKEN_STORAGE_KEY);
+  /**
+   * A bearer token held in memory only, for a caller that sets one explicitly. The web app itself signs in with the
+   * HttpOnly session cookie, which scripts on the page cannot read, so nothing secret is kept in browser storage.
+   */
+  private token: string | null = null;
 
   setToken(token: string | null): void {
     this.token = token;
-    if (typeof window === 'undefined') return;
-    if (token) {
-      window.localStorage.setItem(TOKEN_STORAGE_KEY, token);
-    } else {
-      window.localStorage.removeItem(TOKEN_STORAGE_KEY);
-    }
   }
 
   getToken(): string | null {
     return this.token;
+  }
+
+  /** Headers every request from this app carries: the client marker and, if one was set, the in-memory bearer token. */
+  authHeaders(): Record<string, string> {
+    return { [CLIENT_HEADER]: CLIENT_NAME, ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}) };
+  }
+
+  /** fetch with the session cookie, the client header and network failures reported as "server unavailable". */
+  private async send(url: string, options: RequestInit, headers: Headers): Promise<Response> {
+    headers.set(CLIENT_HEADER, CLIENT_NAME);
+    try {
+      return await fetch(url, { ...options, headers, credentials: API_CREDENTIALS });
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') throw error;
+      throw new ApiError(0, UNREACHABLE_MESSAGE);
+    }
   }
 
   private async request<T>(
@@ -2044,7 +2120,7 @@ class ApiClient {
       headers.set('Content-Type', 'application/json');
     }
 
-    const response = await fetch(`${API_V1_BASE}${endpoint}`, { ...options, headers });
+    const response = await this.send(`${API_V1_BASE}${endpoint}`, options, headers);
     const rawBody = response.status === 204 ? '' : await response.text();
     let body: unknown;
     if (rawBody) {
@@ -2064,8 +2140,12 @@ class ApiClient {
       // A 413 without the API's JSON detail came from the hosting platform or proxy (Vercel
       // accepts at most 4.5 MB per request), whose error page is not a useful message.
       const rejectedBeforeApi = response.status === 413 && !(body && typeof body === 'object');
+      // Likewise a 502/503/504 page from a proxy or gateway: the server is not answering.
+      const gatewayPage = UNAVAILABLE_STATUSES.has(response.status) && typeof detail !== 'string';
       const message = rejectedBeforeApi
         ? 'The file is larger than this server accepts, so it was rejected before reaching MedTwin (HTTP 413).'
+        : gatewayPage
+          ? `The MedTwin server is not answering (HTTP ${response.status}). Try again in a moment.`
         : typeof detail === 'string'
           ? detail
           : (formatValidationDetail(detail) ??
@@ -2081,7 +2161,7 @@ class ApiClient {
     const headers = new Headers();
     if (this.token) headers.set('Authorization', `Bearer ${this.token}`);
     if (body !== undefined) headers.set('Content-Type', 'application/json');
-    const response = await fetch(`${API_V1_BASE}${endpoint}`, body === undefined ? { headers } : { method: 'POST', headers, body: JSON.stringify(body) });
+    const response = await this.send(`${API_V1_BASE}${endpoint}`, body === undefined ? {} : { method: 'POST', body: JSON.stringify(body) }, headers);
     if (!response.ok) {
       let message = `Request failed (${response.status} ${response.statusText})`;
       try {
@@ -2096,57 +2176,64 @@ class ApiClient {
     return { blob: await response.blob(), headers: response.headers };
   }
 
-  /** Authenticate against the flat token response, then hydrate the user via /auth/me. */
-  async login(username: string, password: string): Promise<AuthenticatedSession> {
-    const token = await this.request<AuthToken>(
-      '/auth/login',
-      { method: 'POST', body: JSON.stringify({ username, password }) },
+  /**
+   * This browser's sign-in, restored from its HttpOnly session cookie: null when there is none (the entry page is
+   * shown). Throws an unavailable ApiError (see isServerUnavailable) when the server cannot be reached.
+   */
+  async restoreSession(): Promise<BrowserSession | null> {
+    try {
+      return await withRetry(() => this.request<BrowserSession>('/auth/session', { cache: 'no-store' }, false));
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) return null;
+      throw error;
+    }
+  }
+
+  /**
+   * A browser that kept a sign-in key from an earlier version moves to a cookie session once: the server checks that
+   * key exactly as any bearer request, then the stored key is removed. Null when there is no key or it is no longer
+   * valid; an unavailable server keeps the key for the next visit.
+   */
+  async claimLegacySession(): Promise<BrowserSession | null> {
+    const legacy = typeof window === 'undefined' ? null : readLegacyToken();
+    if (!legacy) return null;
+    try {
+      const claimed = await this.request<BrowserSession>('/auth/session/claim', { method: 'POST', headers: { Authorization: `Bearer ${legacy}` } }, false);
+      clearLegacyKeys();
+      return claimed;
+    } catch (error) {
+      if (!isServerUnavailable(error)) clearLegacyKeys();
+      if (error instanceof ApiError && [400, 401, 403].includes(error.status)) return null;
+      throw error;
+    }
+  }
+
+  /** A one-time sign-in link (issued on the server's machine) opens a registered account in this browser. */
+  redeemSignInLink(code: string): Promise<BrowserSession> {
+    return this.request<BrowserSession>('/auth/link', { method: 'POST', body: JSON.stringify({ code }) }, false);
+  }
+
+  /** An existing password account (the separate account page, not the entry page) signs this browser in by cookie. */
+  login(username: string, password: string): Promise<BrowserSession> {
+    return this.request<BrowserSession>('/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) }, false);
+  }
+
+  /**
+   * The entry page: a name and a self-described role (age and gender optional) make a new visitor profile, remembered
+   * by this browser's session cookie. Retries of one submission share its idempotency key, so a network retry
+   * never makes a second profile.
+   */
+  enterWorkspace(entry: VisitorEntry, idempotencyKey: string): Promise<BrowserSession> {
+    return withRetry(() => this.request<BrowserSession>(
+      '/auth/enter',
+      { method: 'POST', body: JSON.stringify(entry), headers: { 'Idempotency-Key': idempotencyKey } },
       false,
-    );
-    this.setToken(token.access_token);
-    try {
-      const user = await this.getMe();
-      return { ...token, user };
-    } catch (error) {
-      this.setToken(null);
-      throw error;
-    }
+    ));
   }
 
-  /** The entry page: name, age, gender and role open a private workspace without a password. */
-  async enterWorkspace(entry: VisitorEntry): Promise<VisitorSession> {
-    const session = await this.request<Omit<VisitorSession, 'user'>>('/auth/enter', { method: 'POST', body: JSON.stringify(entry) }, false);
-    this.setToken(session.access_token);
-    try {
-      return { ...session, user: await this.getMe() };
-    } catch (error) {
-      this.setToken(null);
-      throw error;
-    }
-  }
-
-  /** Continue a workspace from the key this browser kept; null when the key has expired or the account is gone. */
-  async resumeWorkspace(token: string): Promise<User | null> {
-    this.setToken(token);
-    try {
-      return await this.getMe();
-    } catch {
-      this.setToken(null);
-      return null;
-    }
-  }
-
-  /** Try the demo: a temporary guest account with one synthetic case, signed in at once. */
-  async startGuestDemo(): Promise<GuestSession> {
-    const session = await this.request<Omit<GuestSession, 'user'>>('/auth/guest', { method: 'POST' }, false);
-    this.setToken(session.access_token);
-    try {
-      const user = await this.getMe();
-      return { ...session, user };
-    } catch (error) {
-      this.setToken(null);
-      throw error;
-    }
+  /** Try Demo: a temporary guest account with one fictional sample case, isolated from every other account. */
+  startGuestDemo(idempotencyKey: string): Promise<GuestSession> {
+    return withRetry(() => this.request<GuestSession>('/auth/guest', { method: 'POST', headers: { 'Idempotency-Key': idempotencyKey } }, false));
   }
 
   async register(input: RegisterUserInput): Promise<RegisterUserResult> {
@@ -2170,8 +2257,16 @@ class ApiClient {
     }
   }
 
-  logout(): void {
+  /** Sign this browser out: the server revokes the session and clears its cookie. False when the server could not be reached. */
+  async logout(): Promise<boolean> {
     this.setToken(null);
+    if (typeof window !== 'undefined') clearLegacyKeys();
+    try {
+      await this.request<void>('/auth/logout', { method: 'POST' }, false);
+      return true;
+    } catch (error) {
+      return !isServerUnavailable(error);
+    }
   }
 
   getMe(): Promise<User> {
@@ -2345,11 +2440,12 @@ class ApiClient {
     return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.open('POST', `${API_V1_BASE}${endpoint}`);
-      if (this.token) request.setRequestHeader('Authorization', `Bearer ${this.token}`);
+      request.withCredentials = API_CREDENTIALS === 'include';
+      for (const [name, value] of Object.entries(this.authHeaders())) request.setRequestHeader(name, value);
       request.upload.onprogress = (event) => {
         if (event.lengthComputable) onProgress(event.loaded / event.total);
       };
-      request.onerror = () => reject(new ApiError(0, 'Network error during upload.'));
+      request.onerror = () => reject(new ApiError(0, 'The upload stopped: the MedTwin server could not be reached. Try again.'));
       request.onload = () => {
         let body: unknown = null;
         try {
@@ -2391,6 +2487,10 @@ class ApiClient {
     if (!('queued_job' in response)) return response;
     const runId = await this.waitForJob(response.queued_job, onQueued);
     return this.getAnalysisJob(runId);
+  }
+
+  getCaseQueuedJobs(caseId: ResourceId): Promise<QueuedJob[]> {
+    return this.request<QueuedJob[]>(`/cases/${resourcePath(caseId)}/jobs`, { cache: 'no-store' });
   }
 
   getQueuedJob(jobId: ResourceId): Promise<QueuedJob> {

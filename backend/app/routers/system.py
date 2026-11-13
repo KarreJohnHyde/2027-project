@@ -8,10 +8,16 @@ import psutil
 from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 
+_torch_import_error = None
 try:
     import torch
-except ImportError:  # slim installs (Vercel) omit the ML stack; research models then report it missing
+except (ImportError, OSError) as exc:
+    # Optional telemetry must not take document review, history and exports down
+    # when a native ML dependency is absent or refused by host application control.
+    # Inference still loads the real stack and fails closed; this is not a repair
+    # or permission to execute a blocked binary.
     torch = None
+    _torch_import_error = type(exc).__name__
 
 from app.config import ANATOMY_MANIFEST_PATH, PROJECT_NAME, TEMPORARY_DATABASE, TEMPORARY_UPLOAD_DIR, UPLOAD_DIR, VERSION, RESEARCH_ONLY_NOTICE
 from app.database import encryption_status as database_encryption_status, engine, get_db
@@ -101,6 +107,13 @@ def get_readiness(db: Session = Depends(get_db)):
     except Exception as exc:
         checks["model_registry"] = {"ready": False, "error": str(exc)}
     checks["anatomy_manifest"] = {"ready": ANATOMY_MANIFEST_PATH.exists(), "optional": True}
+    checks["ml_runtime"] = {
+        "ready": torch is not None,
+        "optional": True,
+        "status": "IMPORT_AVAILABLE_NOT_MODEL_VERIFIED" if torch is not None else "UNAVAILABLE",
+        "error_type": _torch_import_error,
+        "scope": "API_PROCESS_IMPORT_ONLY",
+    }
     checks["database_encryption"] = database_encryption_status()
     try:
         checks["storage_encryption"] = upload_store.readiness()

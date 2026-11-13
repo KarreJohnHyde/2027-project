@@ -151,10 +151,38 @@ RATE_LIMIT_UPLOAD_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_UPLOAD_PER_MINUTE"
 RATE_LIMIT_GUEST_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_GUEST_PER_MINUTE", "5"))
 # Private case boundaries by default. Shared installations must opt in explicitly.
 SHARED_WORKSPACE: bool = os.getenv("MEDTWIN_SHARED_WORKSPACE", "false").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def open_workspace_refusal(account: str, environment: str, vercel: bool) -> str | None:
+    """Why MEDTWIN_OPEN_WORKSPACE_ACCOUNT may not be used here, or None. Open mode removes sign-in for every record,
+    so it is for a workstation its owner controls, never a public or production deployment."""
+    if not account:
+        return None
+    if vercel or environment == "production":
+        return ("MEDTWIN_OPEN_WORKSPACE_ACCOUNT removes sign-in for every record and is refused on public or production "
+                "deployments. Use it only on a workstation you control.")
+    return None
+
+
+# Open workspace (a workstation the owner controls): no sign-in screens. Every browser opens the workspace as this
+# registered account (a username or numeric id, never an administrator), and every case is shared.
+OPEN_WORKSPACE_ACCOUNT: str = os.getenv("MEDTWIN_OPEN_WORKSPACE_ACCOUNT", "").strip()
+_open_refusal = open_workspace_refusal(OPEN_WORKSPACE_ACCOUNT, ENVIRONMENT, os.getenv("VERCEL") == "1")
+if _open_refusal:
+    raise RuntimeError(_open_refusal)
+OPEN_WORKSPACE: bool = bool(OPEN_WORKSPACE_ACCOUNT)
+if OPEN_WORKSPACE:
+    SHARED_WORKSPACE = True
 # Each entry-page submission creates an account.
 RATE_LIMIT_ENTRY_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_ENTRY_PER_MINUTE", "10"))
 # An entry-page account has no password: its token is its only key, so it lasts longer than a sign-in.
 VISITOR_SESSION_DAYS: int = int(os.getenv("VISITOR_SESSION_DAYS", "90"))
+# Browser-session cookies are Secure on HTTPS automatically; set this to force Secure behind a TLS proxy that does
+# not send X-Forwarded-Proto.
+COOKIE_SECURE: bool = os.getenv("MEDTWIN_COOKIE_SECURE", "false").strip().lower() in {"1", "true", "yes", "on"}
+# Every full page load restores the session once, and a classroom can share one address; session tokens are 256-bit
+# random values, so this limit is about load, not guessing.
+RATE_LIMIT_SESSION_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_SESSION_PER_MINUTE", "300"))
 RATE_LIMIT_ENABLED: bool = os.getenv("RATE_LIMIT_ENABLED", "true").strip().lower() in {"1", "true", "yes", "on"}
 
 # Anatomy manifests produced by tools/asset-pipeline.

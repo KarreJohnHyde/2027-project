@@ -42,7 +42,7 @@ test("public teaching cases work without an account or backend and export only f
 
 test("entry page links to public examples while private reports remain behind sign-in", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Explore public case examples" }).click();
+  await page.getByRole("link", { name: /Fictional teaching cases/ }).click();
   await expect(page.getByRole("heading", { name: "Three cases. A clearer view of the evidence." })).toBeVisible();
   await page.goto("/private-references");
   await expect(page.getByRole("heading", { name: "Welcome to MedTwin" })).toBeVisible();

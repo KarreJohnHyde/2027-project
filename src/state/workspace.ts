@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   ApiError,
   api,
+  isServerUnavailable,
   type AnalysisJob,
   type Case,
   type CapabilityRecord,
@@ -53,8 +54,19 @@ const EMPTY_EVIDENCE: CaseEvidence = { uploads: [], jobs: [], findings: [], stat
 
 type Notice = { tone: "success" | "error" | "info"; text: string } | null;
 
+/**
+ * Why the entry page could not tell whether this browser is already signed in. While set, the entry page checks for
+ * an existing session again before making a new profile, so a server outage never splits one person into two.
+ */
+export type SessionCheck = { unavailable: boolean; message: string } | null;
+
+let bootstrapping: Promise<void> | null = null;
+
 type WorkspaceState = {
   booting: boolean;
+  sessionCheck: SessionCheck;
+  /** An open-workspace installation: there is no sign-in or sign-out, and every case is shared. */
+  openWorkspace: boolean;
   user: User | null;
   cases: Case[];
   caseId: number | null;
@@ -69,7 +81,7 @@ type WorkspaceState = {
   notice: Notice;
   bootstrap: () => Promise<void>;
   signedIn: (user: User) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   loadShell: () => Promise<void>;
   selectCase: (id: number | null) => void;
   loadEvidence: () => Promise<void>;
@@ -80,6 +92,8 @@ type WorkspaceState = {
 
 export const useWorkspace = create<WorkspaceState>((set, get) => ({
   booting: true,
+  sessionCheck: null,
+  openWorkspace: false,
   user: null,
   cases: [],
   caseId: null,
@@ -93,29 +107,39 @@ export const useWorkspace = create<WorkspaceState>((set, get) => ({
   datasetTaskAudit: null,
   notice: null,
 
-  bootstrap: async () => {
-    if (!api.getToken()) {
-      set({ booting: false });
-      return;
-    }
-    try {
-      const user = await api.getMe();
-      set({ user, booting: false });
-      await get().loadShell();
-    } catch {
-      api.logout();
-      set({ user: null, booting: false });
-    }
+  // A returning browser goes straight to its workspace: the HttpOnly session cookie (or, once, a sign-in key an
+  // earlier version stored) identifies it. Nothing is matched by name, age, gender, address or device.
+  bootstrap: () => {
+    // The first check shows the "Restoring session" screen (booting starts true); a retry from the entry page keeps
+    // the page and its typed details in place until the answer arrives.
+    bootstrapping ??= (async () => {
+      try {
+        const restored = (await api.restoreSession()) ?? (await api.claimLegacySession());
+        set({ user: restored?.user ?? null, booting: false, sessionCheck: null, openWorkspace: restored?.open_workspace === true });
+        if (restored) await get().loadShell();
+      } catch (error) {
+        set({ user: null, booting: false, sessionCheck: { unavailable: isServerUnavailable(error), message: errorMessage(error) } });
+      } finally {
+        bootstrapping = null;
+      }
+    })();
+    return bootstrapping;
   },
 
   signedIn: async (user) => {
-    set({ user });
+    set({ user, sessionCheck: null });
     await get().loadShell();
   },
 
-  logout: () => {
-    api.logout();
-    set({ user: null, cases: [], caseId: null, evidence: EMPTY_EVIDENCE, datasetTaskAudit: null, notice: null });
+  logout: async () => {
+    const confirmed = await api.logout();
+    set({
+      user: null, cases: [], caseId: null, evidence: EMPTY_EVIDENCE, datasetTaskAudit: null, notice: null,
+      sessionCheck: confirmed ? null : {
+        unavailable: true,
+        message: "Signed out on this screen, but the server could not be reached to end the session. Sign out again once it is back.",
+      },
+    });
   },
 
   loadShell: async () => {
@@ -143,7 +167,7 @@ export const useWorkspace = create<WorkspaceState>((set, get) => ({
       };
       await Promise.all([get().loadEvidence(), loadMetadata()]);
     } catch (error) {
-      if (error instanceof ApiError && error.status === 401) get().logout();
+      if (error instanceof ApiError && error.status === 401) void get().logout();
       else set({ notice: { tone: "error", text: errorMessage(error) } });
     }
   },

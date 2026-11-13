@@ -39,8 +39,12 @@ function renderReport({ reviewedState = 'CORRECTION_APPLIED_TO_EFFECTIVE_VIEW', 
   const snapshot = { caseId: snapshotCase, evidenceVersion: snapshotRevision, source: evidence, reviewed,
     view: reportEvidence.buildReportEvidence(7, evidence.statements, evidence.measurements, reviewed, evidence.uploads),
     trends: { series: [] }, anatomy: { systems: {}, spatial_registration: { status: 'NOT_VALIDATED' } },
-    egfr: { equation: { display: 'synthetic equation' }, results: [], status: 'NO_CREATININE_DOCUMENTED' }, prognosis: [], generatedAt: '2026-10-29T03:00:00Z' };
+    egfr: { equation: { display: 'synthetic equation' }, results: [], status: 'NO_CREATININE_DOCUMENTED' }, prognosis: [], forecasts: [], generatedAt: '2026-10-29T03:00:00Z' };
   const stubs = {
+    // These tests isolate the report's correction/export guards. The synthesis
+    // panel has its own asynchronous API state and is exercised by browser QA;
+    // do not give it this report snapshot or load its Vite-only router in Node.
+    [path.join(root, 'src/components/EvidenceSynthesisPanel.tsx')]: { __esModule: true, default: () => null },
     [path.join(root, 'src/services/api.ts')]: { api: {} },
     [path.join(root, 'src/state/workspace.ts')]: { useWorkspace: selector => selector(state), useSelectedCase: () => selected },
     [path.join(root, 'src/lib/useAsync.ts')]: { useAsync: () => ({ data: failed ? null : snapshot, loading, error: failed ? 'Synthetic unavailable response' : null }) },

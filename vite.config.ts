@@ -70,6 +70,7 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: backendUrl,
           changeOrigin: true,
+          configure: explainUnreachableBackend(backendUrl),
         },
         '/ws': {
           target: backendUrl,
@@ -86,6 +87,7 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: backendUrl,
           changeOrigin: true,
+          configure: explainUnreachableBackend(backendUrl),
         },
         '/ws': {
           target: backendUrl,
@@ -96,6 +98,24 @@ export default defineConfig(({ mode }) => {
     },
   }
 })
+
+/**
+ * `npm run dev` (and a hosted preview) starts only this frontend server. When the FastAPI backend is not running the
+ * proxy used to answer an empty 502, which the entry page could only show as "Request failed (502 Bad Gateway)".
+ * Answer a JSON 503 with a code the client recognises and a message saying what to start instead.
+ */
+function explainUnreachableBackend(target: string) {
+  return (proxy: { on: (event: 'error', listener: (error: Error, req: unknown, res: unknown) => void) => void }) => {
+    proxy.on('error', (error, _req, res) => {
+      const response = res as { headersSent?: boolean; writableEnded?: boolean; writeHead?: (status: number, headers: Record<string, string>) => { end: (body: string) => void } }
+      if (!response?.writeHead || response.headersSent || response.writableEnded) return
+      response.writeHead(503, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }).end(JSON.stringify({
+        code: 'BACKEND_UNREACHABLE',
+        detail: `The MedTwin server is not reachable (${(error as Error & { code?: string }).code ?? error.name} at ${target}). Start the full stack with "npm run dev:full", or start the backend, then try again.`,
+      }))
+    })
+  }
+}
 
 // Check builds avoid copying the large anatomy library. Serve the existing
 // public directory in local previews so browser tests exercise the real assets.

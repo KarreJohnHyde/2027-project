@@ -33,7 +33,16 @@ def _blank_pdf() -> bytes:
     return stream.getvalue()
 
 
-def test_blank_scanned_page_is_rejected_after_ocr_finds_no_text():
+def test_blank_scanned_page_is_rejected_after_ocr_finds_no_text(monkeypatch):
+    from app.services import ocr
+
+    # Exercise this branch deterministically even on a host whose optional
+    # native OCR library is unavailable. The separate test below covers that
+    # unavailable branch; real OCR is exercised by test_ocr and QA workflows.
+    monkeypatch.setattr(ocr, "ocr_available", lambda: True)
+    monkeypatch.setattr(ocr, "ocr_pdf_pages", lambda content, pages: [
+        ocr.OcrPage("", "synthetic-empty-control", 0, None, 300, 300) for _ in pages
+    ])
     with pytest.raises(ValueError, match="no readable text"):
         extract_text_from_pdf(_blank_pdf())
 

@@ -1,0 +1,32 @@
+# Universal evidence and deterministic research assistant
+
+Canonical authenticated FastAPI routes, mounted under `/api/v1` by the integration owner:
+
+| Route | Contract |
+| --- | --- |
+| `GET /cases/{id}/evidence-graph` | `EvidenceGraph`, schema version `medtwin.evidence-graph.v1` |
+| `POST /cases/{id}/copilot/query` | strict `CopilotQuery` → `CopilotResponse` |
+
+Machine-readable schemas: `intelligence.schemas.json`. Schemas are generated from `backend/app/schemas/universal_intelligence.py`. Unknown request fields, unknown tools, non-integer IDs, query strings longer than 1,000 characters, nonpositive IDs, and limits outside 1–20 are rejected with 422. Case access is checked independently for both routes through canonical `verify_case_access(..., access="read")`. Every supplied source, finding, examination and model reference must belong to the selected case, including for administrators. Canonical private/shared workspace and guest rules remain in force.
+
+## Graph semantics
+
+The graph is computed from persisted rows, with no migration or snapshot table. Node IDs use stable `kind:record_id` values (anatomy nodes use the existing atlas system ID). Edges reference retained nodes only. `data_version` is SHA-256 over the canonical sorted bounded projection; an identical persisted projection has an identical version. It is a snapshot identifier, not a promise to hash every row omitted by truncation. `limits` advertises 256 rows per table, 1,600 total nodes, 3,200 edges and 40 conflicts. `truncated` explicitly warns about omitted data; the graph does not imply complete case coverage when set.
+
+Examinations, sources, model runs, findings, statements, numeric measurements, anatomy associations and reviewer events are linked. Source offsets/pages and available measurement page-pixel bounding boxes remain exact stored provenance. Private storage paths and reviewer comments are excluded. Case chronology edges do not establish spatial registration, paired-examination compatibility or a clinical change. Anatomy links use the existing ten-system registry and say `LEXICAL_SCHEMATIC_ONLY` / `patient_registered:false`.
+
+Withdrawn, superseded and unassociated uploads remain historical nodes; `details.active_evidence:false` excludes their claims from assistant summaries and contradiction checks. Earlier successful report analyses remain history through the canonical `superseded_report_run_ids` rule. Rejected/failed/abstained findings are inactive. The canonical immutable-original / approved-correction overlay is reused; proposed or rejected corrections are not silently applied. A removed effective record remains as history. Duplicate upload hashes and measurement occurrences have explicit duplicate edges and never establish independent confirmation.
+
+Polarity and laterality discrepancies are possible conflicts only for current, certain, patient statements in the same examination context. Unlinked sources are not assigned a fabricated shared examination. Different examinations and historical mentions are not direct contradictions. Incompatible measurement units are flagged only within the same documented analyte/date/examination/specimen/method context and without a registered conversion. Existing recorded report/model discordance is shown only when retained current evidence shares an examination. No conflict resolves either source or produces a diagnosis. Differing dates alone are history, not proof of an inconsistent collection date; automated resolution and undemonstrated date/sample identity matching are intentionally absent.
+
+## Assistant semantics
+
+The assistant is explicitly `LOCAL_DETERMINISTIC_RESEARCH_ASSISTANT`, not an LLM. Typed tools retrieve selected case evidence, persisted source excerpts, examinations, run provenance, lexical anatomy links, canonical biomarker observations, pinned held-out evaluation, allowlisted view navigation, or an unsaved draft report. There is no arbitrary tool dispatch, shell/interpreter, external service, raw file reader, write, model execution, export, correction approval or clinical action. Uploaded text is quoted data and has no effect on the selected tool, authorization or destination. User instructions to diagnose, prescribe, override controls, execute programs or alter records receive `REFUSED`; absent evidence returns `INSUFFICIENT_EVIDENCE` with a reason.
+
+Every case-specific evidence assertion is accompanied by retained graph-node citations and available upload ID, page and exact source span. `get_evaluation` reads `held_out_evaluation` captured in the authorized finding's persisted provenance; current global registry metrics are never substituted for a historical case run. `get_biomarker_history` reuses canonical `build_series` for dated, uncensored, registered-unit-compatible, deduplicated extracted observations. It reports observations with documented units; it does not attach full-case trend statistics to a filtered subset, create a forecast or replace excluded manual observations with invented citations.
+
+Navigation actions contain only relative hardcoded destinations (`/documents/verify`, `/imaging`, `/anatomy-studio`, `/history`, `/universal`) plus encoded selected-case/source/finding/examination/page parameters. Document verification uses its canonical `upload` query parameter (for example `/documents/verify?case=4&upload=12&page=1`); imaging uses `source`. Query text cannot supply a destination. The UI remains responsible for honoring authorized page selection and highlighting. `draft_report` returns `DRAFT FOR HUMAN REVIEW`, citations and retained review statuses; it creates no stored report. `never_writes:true` applies to every response. Standard HTTP access logging can log route and status without retaining the POST body; no raw sensitive prompt or document is persisted by these services.
+
+## Verification scope
+
+Synthetic/de-identified fixtures test retrieval and provenance invariants, authorization, argument rejection, injection resistance, refusal, history preservation, duplicate handling, independent correction decisions, bounds, navigation and no writes. Retrieval correctness is distinct from diagnostic accuracy. These tests do not validate clinical NLP extraction performance, patient-specific atlas registration, learned fusion, lesion change, independent external validation or general free-form language reasoning. Existing canonical workflows remain responsible for their respective eligibility and evaluation gates.

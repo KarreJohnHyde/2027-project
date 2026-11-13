@@ -1,0 +1,132 @@
+{
+  "model_id": "bone_fracture_detector",
+  "run_id": "bone_fracture_detector-20261110T020213Z",
+  "task_id": "bone-fracture-detection",
+  "dataset": "Bone fracture detection v4 (Roboflow)",
+  "dataset_id": "bone-fracture-roboflow-v4",
+  "dataset_version": "7ea36477f94704c930bb256fd327adf3ee2bb01af916a176bd7e37a6bcc6f028",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "CC BY 4.0",
+    "source": "in-archive README.dataset.txt and data.yaml (Roboflow Universe veda/bone-fracture-detection-daoon v4)",
+    "verified_on": "2026-10-25",
+    "citation": "Roboflow Universe project bone-fracture-detection-daoon (workspace veda), version 4."
+  },
+  "split_method": "publisher splits kept",
+  "split_counts": {
+    "test": 169,
+    "train": 3631,
+    "val": 348
+  },
+  "leakage_check": {
+    "near_duplicate_groups_crossing_splits": 0,
+    "images_in_crossing_groups": 0,
+    "test_images_with_cross_split_duplicate": 0,
+    "confirmation": "dHash candidates confirmed by 64x64 normalised pixel correlation >= 0.95",
+    "near_duplicate_components_crossing_splits": 0,
+    "images_in_crossing_components": 0,
+    "test_images_in_crossing_components": 0,
+    "exclusion_rule": "exclude every test image in a transitive near-duplicate component that spans publisher splits"
+  },
+  "selection": {
+    "criterion": "validation AP50 (COCOeval)",
+    "best_epoch": 10,
+    "val_ap50": 0.21682163622828368
+  },
+  "resumed_from_epoch": 10,
+  "operating_point": {
+    "chosen_on": "validation",
+    "criterion": "maximum F1 at IoU 0.5",
+    "validation": {
+      "threshold": 0.55,
+      "tp": 46,
+      "fp": 67,
+      "fn": 122,
+      "precision": 0.40707964601769914,
+      "recall": 0.27380952380952384,
+      "f1": 0.3274021352313167
+    },
+    "test": {
+      "threshold": 0.55,
+      "tp": 18,
+      "fp": 27,
+      "fn": 63,
+      "precision": 0.4,
+      "recall": 0.2222222222222222,
+      "f1": 0.2857142857142857
+    }
+  },
+  "test": {
+    "n_images": 169,
+    "reference_boxes": 81,
+    "metrics": {
+      "map_50_95": 0.046507828654429734,
+      "ap_50": 0.15528408055832604,
+      "ap_75": 0.014476342247807918,
+      "ap_small": 0.0037011891665357003,
+      "ap_medium": 0.0524586541820376,
+      "ap_large": 0.12013201320132011,
+      "ar_1": 0.09382716049382715,
+      "ar_10": 0.12345679012345678,
+      "ar_100": 0.12345679012345678,
+      "ar_small": 0.05,
+      "ar_medium": 0.12686567164179105,
+      "ar_large": 0.15
+    }
+  },
+  "test_without_cross_split_duplicates": {
+    "n_images": 169,
+    "metrics": {
+      "map_50_95": 0.046507828654429734,
+      "ap_50": 0.15528408055832604,
+      "ap_75": 0.014476342247807918,
+      "ap_small": 0.0037011891665357003,
+      "ap_medium": 0.0524586541820376,
+      "ap_large": 0.12013201320132011,
+      "ar_1": 0.09382716049382715,
+      "ar_10": 0.12345679012345678,
+      "ar_100": 0.12345679012345678,
+      "ar_small": 0.05,
+      "ar_medium": 0.12686567164179105,
+      "ar_large": 0.15
+    }
+  },
+  "evaluation_protocol": "pycocotools COCOeval bbox: IoU 0.50:0.05:0.95, 101-point interpolated precision, area ranges all/small/medium/large, max 1/10/100 detections. -1 (undefined) is reported as null.",
+  "checkpoint": {
+    "path": "artifacts/training/bone_fracture_detector-20261110T020213Z/model.pt",
+    "sha256": "902e43ba2d7f0cf38dc2f56def3c2fa4dfef85bb5dccc8e4d61c01b20c213ff1"
+  },
+  "held_out_predictions": "artifacts/training/bone_fracture_detector-20261110T020213Z/predictions_test.json",
+  "training_seconds": 1502.7,
+  "config": {
+    "task_id": "bone-fracture-detection",
+    "model_id": "bone_fracture_detector",
+    "display_name": "Upper-limb radiograph fracture detector (Roboflow v4, research)",
+    "modality": "XRAY",
+    "anatomy": "skeletal",
+    "category": null,
+    "yolo_classes": "0,1,2,3,5,6",
+    "class_name": "fracture",
+    "allow_flip": true,
+    "epochs": 12,
+    "batch_size": 2,
+    "lr": 0.005,
+    "min_size": 512,
+    "max_size": 512,
+    "workers": 2,
+    "seed": 20261024,
+    "resume_file": "D:\\project\\artifacts\\training\\resume\\bone_fracture_detector.pt"
+  },
+  "reporting_context": {
+    "dataset": "Bone fracture detection v4 (Roboflow)",
+    "dataset_version": "7ea36477f94704c9",
+    "split": "test",
+    "checkpoint": "sha256:902e43ba2d7f0cf38dc2f56def3c2fa4dfef85bb5dccc8e4d61c01b20c213ff1"
+  },
+  "limitations": [
+    "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+    "Internal test split from the same source; no external validation.",
+    "Detection scores are not probabilities and are not calibrated.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

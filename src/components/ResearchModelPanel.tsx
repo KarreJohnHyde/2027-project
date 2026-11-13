@@ -91,7 +91,7 @@ export interface ReferenceState {
   comparison: ReferenceComparison;
 }
 
-function OverlayLayer({ output, showBelow, highlight, mode = "prediction", reference = null, opacity = 1 }: { output: ResearchOutput; showBelow: boolean; highlight: number | null; mode?: LayerMode; reference?: ReferenceState | null; opacity?: number }) {
+export function OverlayLayer({ output, showBelow, highlight, mode = "prediction", reference = null, opacity = 1 }: { output: ResearchOutput; showBelow: boolean; highlight: number | null; mode?: LayerMode; reference?: ReferenceState | null; opacity?: number }) {
   const masks = useMemo(() => {
     if (output.type !== "segmentation") return [];
     if (mode === "reference" && reference) return [{ rle: reference.reference.rle, rgba: LAYER_RGBA.reference }];

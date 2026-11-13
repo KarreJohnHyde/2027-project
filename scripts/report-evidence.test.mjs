@@ -180,13 +180,13 @@ test('removed trend points and stale removal exclusions fail closed', () => {
   assert.throws(() => assertReportTrendConsistency(f.build(), trend()), /changed while loading/);
 });
 
-test('report UI uses reviewed data, schema v3, and a case/revision export guard', () => {
+test('report UI uses reviewed data, schema v4, and a case/revision export guard', () => {
   const source = readFileSync(new URL('../src/pages/ReportsPage.tsx', import.meta.url), 'utf8');
   assert.match(source, /api\.getEffectiveEvidence\(selected\.id\)/);
   assert.match(source, /report\.data\?\.caseId === selected\.id/);
   assert.match(source, /report\.data\.evidenceVersion === evidenceVersion/);
   assert.match(source, /disabled=\{!snapshot\}/);
-  assert.match(source, /medtwin-evidence-export-3\.0\.0/);
+  assert.match(source, /medtwin-evidence-export-4\.0\.0/);
   assert.match(source, /reportEvidenceExport\(snapshot\.view\)/);
   assert.doesNotMatch(source, /distinctMeasurements\(evidence\.measurements\)/);
 });

@@ -150,7 +150,7 @@ export function Button({ variant = "secondary", size = "md", icon: Icon, loading
       type="button"
       {...props}
       disabled={props.disabled || loading}
-      className={`inline-flex shrink-0 items-center justify-center rounded-lg border font-medium transition disabled:cursor-not-allowed disabled:opacity-45 ${sizing} ${BUTTON_VARIANTS[variant]} ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center rounded-lg border font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-45 ${sizing} ${BUTTON_VARIANTS[variant]} ${className}`}
     >
       {loading ? <LoaderCircle aria-hidden className="animate-spin" size={size === "sm" ? 13 : 15} /> : Icon && <Icon aria-hidden size={size === "sm" ? 13 : 15} />}
       {children}

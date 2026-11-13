@@ -19,6 +19,7 @@ import argparse
 import csv
 import json
 import re
+import shutil
 import sys
 import xml.etree.ElementTree as ET
 import zipfile
@@ -214,12 +215,20 @@ def main() -> int:
         record = json.loads(record_path.read_text(encoding="utf-8")) if record_path.exists() else None
         # Outputs count only with this script's record of a complete conversion of this very series.
         if not (record and record.get("series_uid") == uid and (images / f"{patient}.nii.gz").exists() and (masks / f"{patient}.nii.gz").exists()):
+            # Extraction is a working copy of the kept zip: one made by this run is removed after the conversion, so
+            # 300 series do not leave a second ~30 GB copy on the disk.
+            folder = extract_root / f"{patient}__{uid}"
+            made_here = not folder.exists()
             try:
                 record = convert(zip_path, by_series[uid], extract_root, images, masks)
             except ConversionRefused as exc:
                 refused[patient] = str(exc)
                 print(json.dumps({"patient": patient, "refused": str(exc)}), flush=True)
                 continue
+            finally:
+                if made_here:
+                    for working in (folder, folder.with_name(folder.name + ".part")):
+                        shutil.rmtree(working, ignore_errors=True)
             record_path.write_text(json.dumps(record) + "\n", encoding="utf-8")
             summary.append(record)
             print(json.dumps(record), flush=True)

@@ -42,7 +42,7 @@ from app.services.terminology import (
     normalise_unit,
 )
 
-EXTRACTOR_VERSION = "rules-v2.0.0"
+EXTRACTOR_VERSION = "rules-v2.1.1"
 
 # De-identification patterns (PHI sanitisation applied before extraction).
 # Identifier patterns require a digit in the identifier so ordinary prose
@@ -1232,6 +1232,16 @@ ROW_METHOD_RE = re.compile(
 NAME_SPECIMEN_RE = re.compile(r"\b(?P<value>se[rn]um|p[il]asma|urine|urinary)\b", re.IGNORECASE)
 # Beyond the row's own lines, at most this many lines below a result belong to it.
 ROW_BLOCK_LINES = 3
+# Only explicit known panel-heading lines reset result-level context. A result
+# labelled "Glucose" or "Serum Creatinine" must never become a panel boundary.
+LAB_PANEL_RE = re.compile(
+    r"^[ \t]*(?:ha?ematology|ha?emogram|complete\s*blood\s*count|cbc|bio\s*chemistry|clinical\s*chemistry|chemistry|"
+    r"(?:liver|renal|kidney|thyroid)\s*function(?:\s*tests?)?|lipid\s*profile|coagulation|serology|immunology|"
+    r"urine\s*(?:routine|analysis|examination)|urinalysis|electrolytes)"
+    r"(?:[ \t]+(?:panel|profile|tests?))?[ \t]*:?[ \t]*"
+    r"(?:(?:collected[ \t]*on|collection[ \t]*date|report[ \t]*date|reported[ \t]*on)[ \t]*[:=][^\n]*)?$",
+    re.IGNORECASE | re.MULTILINE,
+)
 
 
 def canonical_specimen(raw: str) -> str:
@@ -1259,9 +1269,12 @@ def _page_bounds(text_length: int, page_starts: Optional[list[int]]) -> list[tup
 def assign_measurement_context(report_text: str, page_starts: Optional[list[int]], measurements: List[Dict[str, Any]]) -> None:
     """Give each measurement the specimen, method and laboratory printed for it, never another
     page's. The specimen is the one in the test name, else a specimen line among the result's
-    own lines (before the next result), else the nearest specimen line above it on the same page.
-    A method is the result's own or one heading the page; a laboratory name one on the same page."""
+    own lines (before the next result or explicit panel heading), else the nearest specimen
+    line above it within that panel. A method is the result's own or one heading its panel;
+    a laboratory name may apply throughout the same page. Missing panel context is not
+    inherited from a different panel, even when both panels are on one page."""
     bounds = _page_bounds(len(report_text), page_starts)
+    panel_starts = [match.start() for match in LAB_PANEL_RE.finditer(report_text)]
     specimen_lines = [(match.start(), canonical_specimen(match.group("value"))) for match in ROW_SPECIMEN_RE.finditer(report_text)]
     method_lines = [(match.start(), match.group("value").strip()[:128]) for match in ROW_METHOD_RE.finditer(report_text)]
     laboratories = [(match.start(), match.group("value").strip()[:128]) for match in LAB_NAME_RE.finditer(report_text)]
@@ -1269,11 +1282,13 @@ def assign_measurement_context(report_text: str, page_starts: Optional[list[int]
     for index, item in enumerate(ordered):
         start = item["source_span_start"]
         page_start, page_end = next(((low, high) for low, high in bounds if low <= start <= high), (0, len(report_text)))
+        panel_start = max([page_start] + [offset for offset in panel_starts if page_start <= offset <= start])
+        panel_end = min([page_end] + [offset for offset in panel_starts if start < offset < page_end])
         line_start = report_text.rfind("\n", 0, start) + 1
         # A second result on the same line starts its own row.
         previous_end = ordered[index - 1]["source_span_end"] if index else 0
         row_start = max(line_start, previous_end) if previous_end <= start else line_start
-        block_end = min(page_end, ordered[index + 1]["source_span_start"] if index + 1 < len(ordered) else page_end)
+        block_end = min(panel_end, ordered[index + 1]["source_span_start"] if index + 1 < len(ordered) else panel_end)
         cursor = item["source_span_end"]
         for _ in range(ROW_BLOCK_LINES):
             newline = report_text.find("\n", cursor)
@@ -1285,13 +1300,13 @@ def assign_measurement_context(report_text: str, page_starts: Optional[list[int]
         in_block = lambda lines: next((value for offset, value in lines if line_start <= offset < block_end), None)  # noqa: E731
         if item.get("specimen") in (None, "", "NOT_DOCUMENTED"):
             named = NAME_SPECIMEN_RE.search(report_text, row_start, item["source_span_end"])
-            above = [value for offset, value in specimen_lines if page_start <= offset < line_start]
+            above = [value for offset, value in specimen_lines if panel_start <= offset < line_start]
             item["specimen"] = (canonical_specimen(named.group("value")) if named else None) or in_block(specimen_lines) or (above[-1] if above else "NOT_DOCUMENTED")
         if item.get("laboratory_method") in (None, "", "NOT_DOCUMENTED"):
-            # A method line above every result on the page heads the page; one between results
-            # belongs to the result above it.
-            first_on_page = next(other["source_span_start"] for other in ordered if other["source_span_start"] >= page_start)
-            heading = [value for offset, value in method_lines if page_start <= offset < first_on_page]
+            # A method line above every result in this panel heads the panel; one between
+            # results belongs to the result above it, not every subsequent result.
+            first_in_panel = next(other["source_span_start"] for other in ordered if panel_start <= other["source_span_start"] < panel_end)
+            heading = [value for offset, value in method_lines if panel_start <= offset < first_in_panel]
             item["laboratory_method"] = in_block(method_lines) or (heading[-1] if heading else "NOT_DOCUMENTED")
         if item.get("laboratory_name") in (None, "", "NOT_DOCUMENTED"):
             item["laboratory_name"] = next((value for offset, value in laboratories if page_start <= offset <= page_end), "NOT_DOCUMENTED")
@@ -1929,7 +1944,10 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
     ocr_pages = {meta["page"] for meta in page_meta if meta.get("method") == "OCR"}
     for item in measurements:
         page = page_for_offset(page_starts, item["source_span_start"])
-        item["source_page"] = page if multi_page else None
+        # A single PDF or OCR page still has a real page coordinate. Keeping
+        # its box but discarding page 1 made source verification ambiguous.
+        # Plain-text records retain the established unpaged representation.
+        item["source_page"] = page if multi_page or report_path.suffix.lower() == ".pdf" or page in ocr_pages else None
         if page in ocr_pages and item.get("extraction_method", "TRANSPARENT_RULE_BASELINE") == "TRANSPARENT_RULE_BASELINE":
             item["extraction_method"] = "OCR_RULE_BASELINE"
             meta = page_meta[page - 1]
@@ -2028,7 +2046,7 @@ def analyze_clinical_report(report_path: Path, file_hash: str) -> Dict[str, Any]
         "mapping_status": "L1_GENERIC: Text reports provide symbolic assertions, not 3D spatial coordinates.",
         "model_name": "Rule-Based Clinical Text Baseline",
         "model_version": EXTRACTOR_VERSION,
-        "preprocessing_version": "document-parser-v2+deidentification-v3+page-type-rules-v3+context-rules-v2",
+        "preprocessing_version": "document-parser-v2+deidentification-v3+page-type-rules-v3+context-rules-v2+ocr-normalisation-v2+lab-panel-context-v1",
         "evidence_status": "PENDING_HUMAN_REVIEW",
         "is_demo": False,
         "provenance": {

@@ -346,7 +346,7 @@ def get_ieee_validation_metrics(db: Session = Depends(get_db), current_user: Use
             "implementation_module": "backend/app/services/nlp_processor.py",
             "status": "RULE_BASELINE_UNIT_TESTED",
             "evaluation_type": "NOT_RUN",
-            "measured_metric": _not_run("Context rules (rules-v2.0.0) are unit-tested; no annotated entity, negation, and temporality corpus evaluation has been run."),
+            "measured_metric": _not_run("Context rules are unit-tested; no independent annotated entity, negation, and temporality corpus evaluation has been run."),
         },
         {
             "equation_id": "Eq. 8-10",

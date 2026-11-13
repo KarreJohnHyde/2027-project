@@ -2,14 +2,14 @@
 import { expect, test } from "@playwright/test";
 
 test("landmark UI submits explicit measured pairs and refuses self-approval", async ({ page }) => {
-  await page.goto("/");
-  await page.getByText("Have a username and password from before?").click();
-  await page.fill("#login-username", process.env.MEDTWIN_E2E_USERNAME);
-  await page.fill("#login-password", process.env.MEDTWIN_E2E_PASSWORD);
-  await page.getByRole("button", { name: "Open my existing workspace" }).click();
-  await page.waitForFunction(() => Boolean(localStorage.getItem("medtwin_token")));
-  const token = await page.evaluate(() => localStorage.getItem("medtwin_token"));
-  const headers = { Authorization: `Bearer ${token}` };
+  // The registered account signs this browser in by its HttpOnly cookie; the test's own API calls use a bearer token.
+  await page.goto("/account");
+  await page.fill("#account-identifier", process.env.MEDTWIN_E2E_USERNAME);
+  await page.fill("#account-secret", process.env.MEDTWIN_E2E_PASSWORD);
+  await page.getByRole("button", { name: "Open account" }).click();
+  await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible({ timeout: 30_000 });
+  const login = await page.request.post("/api/v1/auth/login", { data: { username: process.env.MEDTWIN_E2E_USERNAME, password: process.env.MEDTWIN_E2E_PASSWORD } });
+  const headers = { Authorization: `Bearer ${(await login.json()).access_token}` };
   const cases = await (await page.request.get("/api/v1/cases", { headers })).json();
   const caseId = cases[0].id;
   const upload = await page.request.post(`/api/v1/cases/${caseId}/uploads`, {

@@ -4,12 +4,13 @@ Phone photographs of printed reports often lose the spaces between words
 ("Nopleural effusion orpneumothorax", "suspiciouspulmonary masslesion"). Rules
 match whole words, so glued tokens hide negation cues and finding terms.
 
-``normalise`` inserts single spaces inside alphabetic runs only when the run is
-not itself a known word and splits completely into known words: medical terms
-taken from the terminology plus common English words (wordninja's frequency
-list). Nothing else changes. The returned offset map sends every normalised
-character back to the source, so evidence spans always quote the text exactly
-as it was read from the page.
+``normalise`` inserts spaces at conservative shorthand/digit boundaries and inside
+alphabetic runs that split into known words: medical terms taken from the
+terminology plus common English words (wordninja's frequency list). A catalogued
+lab unit glued to a complete printed reference range also gets a boundary. No
+non-space character is replaced. The returned offset map sends every normalised
+character back to the source, so evidence spans always quote the text exactly as
+it was read from the page.
 """
 
 from __future__ import annotations
@@ -56,7 +57,7 @@ hyperintense hypointense ischaemic ischemic diastolic systolic regurgitation veg
 invagination echocardiography laryngoscopy endoscopy colonoscopy anastomotic ileostomy cryptitis
 haemogram hemogram neutrophils lymphocytes eosinophils basophils monocytes platelet corpuscular
 hemorrhagic haemorrhagic contusion contusions perilesional edema oedema vasogenic suprasellar sylvian ganglia
-hemispheres cerebellar cranium midline
+hemispheres cerebellar cranium midline leucocyte leukocyte leucocytes leukocytes
 """.split()
 # A long glued run (a whole sentence read without spaces) may contain one short OCR slip ("parietalobe" for
 # "parietal lobe"). Such runs may then be split with one unknown piece of at most four letters; shorter runs
@@ -137,6 +138,45 @@ def _segment(token: str) -> Optional[list[str]]:
 SHORTHAND = re.compile(r"(?i)r/o|s/o|h/o|c/o|s/p")
 
 
+@lru_cache(maxsize=1)
+def _glued_lab_patterns() -> tuple[re.Pattern, ...]:
+    """Catalog-bound unit/reference boundaries, never generic digit splitting.
+
+    OCR can glue a table's unit to its printed interval ("Glucose112mg/dL70-100").
+    The numeric extractor correctly requires a unit boundary. Recover that boundary
+    only after a named analyte, a complete decimal result and its own allowed unit,
+    followed by a complete two-sided printed numeric interval. No values or units
+    are corrected, and no interval is supplied when the page lacks one.
+    """
+    from app.services.terminology import ANALYTES
+
+    number = r"\d+(?:\.\d+)?"
+    reference = rf"{number}[ \t]*(?:-|–|—|to)[ \t]*{number}(?:[ \t]*(?:HH|LL|H|L))?(?![A-Za-z0-9_.])"
+    patterns = []
+    for analyte in ANALYTES:
+        if analyte.units is None:
+            continue
+        # A terminal word boundary in an abbreviation (WBC, Urea) disappears when
+        # OCR glues the numeric cell. The full catalogued name/result/unit/range
+        # contract establishes its boundary; never split arbitrary alphanumerics.
+        aliases = analyte.aliases.replace(r"\b", "")
+        patterns.append(re.compile(
+            rf"(?<![A-Za-z0-9])(?P<label>(?:{aliases}))[ \t:=]*(?P<result>{number})[ \t]*(?P<unit>{analyte.units})(?={reference})",
+            re.IGNORECASE,
+        ))
+    return tuple(patterns)
+
+
+def _glued_lab_insertions(text: str) -> set[int]:
+    points = set()
+    for pattern in _glued_lab_patterns():
+        for match in pattern.finditer(text):
+            for position in (match.start("result"), match.start("unit"), match.end("unit")):
+                if position > 0 and not text[position - 1].isspace() and position < len(text) and not text[position].isspace():
+                    points.add(position)
+    return points
+
+
 def _shorthand_insertions(text: str) -> set[int]:
     points: set[int] = set()
     for match in SHORTHAND.finditer(text):
@@ -155,7 +195,7 @@ def normalise(text: str) -> tuple[str, Optional[list[int]]]:
     """Return (normalised text, offset map). The map is None when nothing changed;
     otherwise ``index[i]`` is the source offset of normalised character ``i`` and the
     final element is ``len(text)``. Inserted spaces map to the following character."""
-    insertions: set[int] = _shorthand_insertions(text) | {match.start() for pattern in (DIGIT_JOIN, CAPITAL_TAIL) for match in pattern.finditer(text)}
+    insertions: set[int] = _shorthand_insertions(text) | _glued_lab_insertions(text) | {match.start() for pattern in (DIGIT_JOIN, CAPITAL_TAIL) for match in pattern.finditer(text)}
     runs = []
     for match in ALPHA_RUN.finditer(text):
         # A run split by a shorthand insertion ("S/Ploopileostomy") is segmented after it.

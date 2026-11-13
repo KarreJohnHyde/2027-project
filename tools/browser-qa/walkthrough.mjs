@@ -55,13 +55,15 @@ if (process.argv.slice(2).includes("--help")) {
 }
 // Validation Center: text that only the report view for each registry task renders.
 const REPORT_MARKERS = {
-  image_classification: /^Confusion matrix \(test\)$/,
+  image_classification: /^Calibration and discrimination$/,
   object_detection: /^Detection on the test split \(n /,
   semantic_segmentation: /^Segmentation on the test split \(n /,
   multilabel_ecg_classification: /^Macro F1 at validation thresholds$/,
+  multilabel_image_classification: /^Per class \(test\)$/,
   survival_prediction: /^Brier score by horizon \(held out, IPCW\)$/,
-  volumetric_semantic_segmentation: /^Cardiac indices from the segmentations \(test patients\)$/,
+  volumetric_semantic_segmentation: /^Mean case macro Dice$/,
 };
+const REGISTERED_UPLOAD_INPUTS = new Set(["image_2d", "ecg_12lead", "volume_nifti", "echo_video", "head_ct_series"]);
 const DESKTOP_VIEWPORT = { width: 1440, height: 900 };
 const PHONE_VIEWPORT = { width: 390, height: 844 };
 
@@ -161,8 +163,15 @@ mkdirSync(outDir, { recursive: true });
 const stack = readJson(path.join(stateDir, "stack.json"));
 const credentials = readJson(stack.credentials_file);
 const base = stack.web_url;
-const result = { started_at: new Date().toISOString(), base_url: base, browser: null, sections: {}, console_errors: [], expected_client_errors: [], page_errors: [], failed_requests: [] };
+const result = { started_at: new Date().toISOString(), base_url: base, browser: null, sections: {}, console_errors: [], expected_client_errors: [], expected_session_probe_responses: [], page_errors: [], failed_requests: [] };
+process.on("uncaughtExceptionMonitor", (error) => {
+  result.execution_error = String(error).slice(0, 2000);
+  result.finished_at = new Date().toISOString();
+  result.assertions = { all_passed: false, incomplete: true };
+  writeFileSync(path.join(outDir, "walkthrough.json"), JSON.stringify(result, null, 2));
+});
 let expectedClientErrorWindow = false;
+let authenticatedBrowser = false;
 
 const browser = await chromium.launch({ channel: "msedge", headless: true, args: ["--use-angle=d3d11", "--enable-gpu-rasterization", "--ignore-gpu-blocklist"] });
 result.browser = `Microsoft Edge ${browser.version()} (playwright-core 1.63.0, headless)`;
@@ -170,16 +179,30 @@ const context = await browser.newContext({ viewport: DESKTOP_VIEWPORT, deviceSca
 const page = await context.newPage();
 page.on("console", (message) => {
   if (message.type() !== "error") return;
-  const entry = { url: page.url(), text: message.text().slice(0, 300) };
+  const entry = { url: page.url(), resource_url: message.location().url, text: message.text().slice(0, 300) };
   if (expectedClientErrorWindow && /422 \(Unprocessable Entity\)/.test(entry.text)) result.expected_client_errors.push(entry);
+  else if (!authenticatedBrowser && new URL(page.url()).pathname === "/account"
+    && /401 \(Unauthorized\)/.test(entry.text)
+    && entry.resource_url && new URL(entry.resource_url).pathname === "/api/v1/auth/session") {
+    // restoreSession explicitly treats this anonymous GET as no session. Other
+    // 401 resources and authenticated-session failures remain unexpected errors.
+    result.expected_client_errors.push({ ...entry, reason: "ANONYMOUS_INITIAL_SESSION_PROBE" });
+  }
   else result.console_errors.push(entry);
 });
 page.on("pageerror", (error) => result.page_errors.push({ url: page.url(), text: String(error).slice(0, 300) }));
-page.on("response", (response) => { if (response.status() >= 500) result.failed_requests.push({ url: response.url(), status: response.status() }); });
+page.on("response", (response) => {
+  if (response.status() >= 500) result.failed_requests.push({ url: response.url(), status: response.status() });
+  if (!authenticatedBrowser && new URL(page.url()).pathname === "/account" && response.status() === 401
+    && response.request().method() === "GET" && new URL(response.url()).pathname === "/api/v1/auth/session") {
+    result.expected_session_probe_responses.push({ url: response.url(), status: 401, method: "GET", reason: "ANONYMOUS_INITIAL_SESSION_PROBE" });
+  }
+});
 
 async function api(method, endpoint, body) {
   return page.evaluate(async ({ method, endpoint, body }) => {
-    const response = await fetch(`/api/v1${endpoint}`, { method, headers: { Authorization: `Bearer ${localStorage.getItem("medtwin_token")}`, ...(body ? { "Content-Type": "application/json" } : {}) }, body: body ? JSON.stringify(body) : undefined });
+    // The page's HttpOnly session cookie authenticates; cookie-authenticated writes need the web client header.
+    const response = await fetch(`/api/v1${endpoint}`, { method, headers: { "X-MedTwin-Client": "web", ...(body ? { "Content-Type": "application/json" } : {}) }, body: body ? JSON.stringify(body) : undefined });
     return { status: response.status, body: await response.json().catch(() => null) };
   }, { method, endpoint, body });
 }
@@ -190,14 +213,14 @@ async function shot(name, locator) {
   return file;
 }
 
-// Sign in through the real form. A fresh Vite server compiles dependencies on the first
-// browser request, so the first navigation gets a longer budget.
-await page.goto(`${base}/`, { timeout: 120000 });
-await page.getByText("Have a username and password from before?").click();
-await page.fill("#login-username", credentials.username);
-await page.fill("#login-password", credentials.password);
-await page.getByRole("button", { name: "Open my existing workspace" }).click();
-await page.waitForFunction(() => Boolean(localStorage.getItem("medtwin_token")), null, { timeout: 20000 });
+// Sign in through the real registered-account form. A fresh Vite server compiles dependencies on the
+// first browser request, so the first navigation gets a longer budget.
+await page.goto(`${base}/account`, { timeout: 120000 });
+await page.fill("#account-identifier", credentials.username);
+await page.fill("#account-secret", credentials.password);
+await page.getByRole("button", { name: "Open account" }).click();
+await page.getByRole("button", { name: "Sign out" }).waitFor({ timeout: 20000 });
+authenticatedBrowser = true;
 const cases = await api("GET", "/cases");
 const caseId = cases.body?.[0]?.id ?? cases.body?.items?.[0]?.id;
 await page.evaluate((id) => localStorage.setItem("medtwin.selectedCase", String(id)), caseId);
@@ -517,7 +540,7 @@ if (sections.includes("evidence")) {
     result.sections.evidence = { skipped: true, blocker: "Run the lifecycle section in the same invocation to create synthetic source evidence." };
   } else {
     await page.goto(`${base}/documents`, { waitUntil: "networkidle" });
-    await page.getByLabel("Report").selectOption(String(lifecycleState.upload.id));
+    await page.getByLabel("Report", { exact: true }).selectOption(String(lifecycleState.upload.id));
     const statementRow = page.locator("[data-testid=source-statement]").filter({ hasText: /Pleural effusion/i }).first();
     const sourceStatementVisible = await statementRow.waitFor({ state: "visible", timeout: 15000 }).then(() => true, () => false);
     const anatomyLink = statementRow.getByRole("link", { name: /lungs/i });
@@ -858,12 +881,25 @@ if (sections.includes("trained")) {
   for (const model of models) {
     const errorsBefore = result.page_errors.length + result.console_errors.length;
     await page.getByLabel("Trained model", { exact: true }).selectOption(model.model_id);
-    const marker = REPORT_MARKERS[model.task] ?? null;
-    const rendered = marker ? await page.getByText(marker).first().waitFor({ timeout: 20000 }).then(() => true, () => false) : false;
-    const evaluationOnly = (model.inference_input ?? "image_2d") !== "image_2d";
+    const reportResponse = await api("GET", `/research-models/${model.model_id}/evaluation`);
+    const reportArtifact = reportResponse.body?.report ?? {};
+    const marker = REPORT_MARKERS[model.task] ?? /^REPORT_METRICS_UNAVAILABLE$/;
+    const rendered = await page.getByText(marker).first().waitFor({ timeout: 20000 }).then(() => true, () => false);
+    const inputKind = model.inference_input ?? "image_2d";
+    const servingContractKnown = REGISTERED_UPLOAD_INPUTS.has(inputKind) || inputKind === "tabular_survival";
+    const evaluationOnly = inputKind === "tabular_survival";
     const exploratory = model.run_scope === "EXPLORATORY_ONLY";
+    const expectedCheckpoint = reportArtifact.checkpoint?.sha256 ?? reportArtifact.checkpoint_sha256;
+    const checkpointVisible = typeof expectedCheckpoint === "string"
+      && await page.getByText(expectedCheckpoint, { exact: true }).first().waitFor({ timeout: 20000 }).then(() => true, () => false);
+    const servingBadge = inputKind === "ecg_12lead" ? "Upload inference: digital WFDB/CSV records, from Multimodal"
+      : inputKind === "volume_nifti" ? "Upload inference: single NIfTI, NRRD or MetaImage volumes (or an assembled DICOM series) inside the spacing envelope, from Medical Imaging" : null;
     reports.push({
       model_id: model.model_id, task: model.task, marker: marker ? String(marker) : null, rendered,
+      report_view_expectation: REPORT_MARKERS[model.task] ? "MEASURED_TASK_METRICS" : "EXPLICIT_UNAVAILABLE",
+      evaluation_response_status: reportResponse.status, checkpoint_visible: checkpointVisible, expected_checkpoint_sha256: expectedCheckpoint ?? null,
+      inference_input: inputKind, serving_contract_known: servingContractKnown,
+      serving_badge_required: servingBadge, serving_badge_visible: servingBadge ? await page.getByText(servingBadge, { exact: true }).isVisible().catch(() => false) : null,
       provenance_visible: await page.getByText("Provenance", { exact: true }).first().isVisible().catch(() => false),
       alerts: await page.getByRole("alert").count(),
       evaluation_only: evaluationOnly,
@@ -874,6 +910,8 @@ if (sections.includes("trained")) {
     });
   }
   result.sections.trained = { passed: reports.filter((item) => item.rendered && item.provenance_visible && item.alerts === 0
+    && item.evaluation_response_status === 200 && item.checkpoint_visible && item.serving_contract_known
+    && (!item.serving_badge_required || item.serving_badge_visible)
     && item.evaluation_only_badge_visible === item.evaluation_only && item.exploratory_badge_visible === item.exploratory).length,
                               total: reports.length, reports };
 }
@@ -885,7 +923,7 @@ if (sections.includes("prognosis")) {
   // Kidneys: the synthetic report documents serum creatinine, so the scenario has observed evidence.
   const organSelected = await page.locator("select").filter({ has: page.locator("option", { hasText: "Renal conditions" }) }).first()
     .selectOption({ label: "Renal conditions" }).then(() => true, () => false);
-  await page.getByRole("button", { name: /Evaluate/ }).click();
+  await page.getByRole("button", { name: "Evaluate", exact: true }).click();
   await page.getByText(/Scenario A/).first().waitFor({ timeout: 20000 }).catch(() => undefined);
   await page.waitForTimeout(800);
   const scenarios = await page.getByText(/Scenario A|Scenario B/).count();
@@ -979,7 +1017,9 @@ if (sections.includes("prognosis")) {
   sectionAssertions.prognosis = Boolean(prognosis?.separate_route_without_3d_canvas
     && prognosis?.scenario_panels > 0 && prognosis?.abstention_markers > 0 && prognosis?.numeric_risk_statements === 0);
 }
-const cleanBrowser = result.console_errors.length === 0 && result.page_errors.length === 0 && result.failed_requests.length === 0;
+const expectedSessionProbesVerified = result.expected_client_errors.filter((entry) => entry.reason === "ANONYMOUS_INITIAL_SESSION_PROBE")
+  .every((entry) => result.expected_session_probe_responses.some((response) => response.url === entry.resource_url));
+const cleanBrowser = result.console_errors.length === 0 && result.page_errors.length === 0 && result.failed_requests.length === 0 && expectedSessionProbesVerified;
 const evaluatorRawTextAbsent = RAW_EVALUATOR_FIXTURE_TEXT.every((marker) => !JSON.stringify(result).includes(marker));
 result.assertions = {
   sections: sectionAssertions,

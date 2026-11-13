@@ -37,14 +37,35 @@ $StateDir = [System.IO.Path]::GetFullPath($StateDir)
 $Python = Join-Path $Root ".venv\Scripts\python.exe"
 $StateFile = Join-Path $StateDir "stack.json"
 
+function Get-OwnedProcess($State, [string]$Name) {
+    # A recorded PID is ours only while the very process this script started is alive. Windows reuses PIDs, so after
+    # a restart the same number can belong to an unrelated program, which must never be stopped or mistaken for us.
+    $processId = $State.pids.$Name
+    if (-not $processId) { return $null }
+    $process = Get-Process -Id $processId -ErrorAction SilentlyContinue
+    if (-not $process) { return $null }
+    try { $startTime = $process.StartTime } catch { return $null }
+    $recorded = $null
+    if ($State.PSObject.Properties.Name -contains "process_started" -and $State.process_started.$Name) {
+        $recorded = [datetime]$State.process_started.$Name
+    }
+    if ($recorded) {
+        if ([math]::Abs(($startTime - $recorded).TotalSeconds) -gt 2) { return $null }
+    } elseif ($process.ProcessName -ne "cmd" -or $startTime -gt ([datetime]$State.started_at).AddSeconds(5)) {
+        # Records written before process_started existed: our launcher is cmd.exe, started before the record.
+        return $null
+    }
+    return $process
+}
+
 function Stop-Stack {
     if (-not (Test-Path $StateFile)) { Write-Host "No stack state at $StateFile."; return }
     $state = Get-Content $StateFile -Raw | ConvertFrom-Json
     foreach ($name in "web", "worker", "backend") {
         $processId = $state.pids.$name
         if (-not $processId) { continue }
-        if (-not (Get-Process -Id $processId -ErrorAction SilentlyContinue)) {
-            Write-Host "Skipped stale $name PID $processId (already stopped)."
+        if (-not (Get-OwnedProcess $state $name)) {
+            Write-Host "Skipped $name PID $processId (no longer running, or the number now belongs to another program)."
             continue
         }
         # taskkill /T also ends child processes (npm -> node, uvicorn reloader).
@@ -104,7 +125,13 @@ function New-Secret([int]$Bytes = 24) {
 }
 
 if ($Stop) { Stop-Stack; exit 0 }
-if (Test-Path $StateFile) { throw "A stack is already recorded in $StateFile. Run with -Stop first." }
+if (Test-Path $StateFile) {
+    $previous = Get-Content $StateFile -Raw | ConvertFrom-Json
+    $alive = @("web", "worker", "backend" | Where-Object { Get-OwnedProcess $previous $_ })
+    if ($alive.Count -gt 0) { throw "A stack is already running ($($alive -join ', ')), recorded in $StateFile. Run with -Stop first." }
+    Write-Host "Discarding the stack record from $($previous.started_at): its processes have ended (for example after a restart)."
+    Remove-Item -LiteralPath $StateFile
+}
 if (-not (Test-Path $Python)) { throw "Python environment not found at $Python." }
 
 if ($Mode -eq "qa") {
@@ -158,6 +185,16 @@ if ($Mode -eq "qa") {
     $credentialFile = $null
     $environment = @{ ENVIRONMENT = "development"; MEDTWIN_PROJECT_ROOT = $Root; MEDTWIN_JOB_EXECUTION = "inline" }
     $NoWorker = $true
+    # Optional, untracked local settings for this workstation (.cache is ignored by git), for example
+    # {"open_workspace_account": "10"}: no sign-in, every browser opens the workspace as that registered account.
+    $localSettings = Join-Path $StateDir "settings.json"
+    if (Test-Path $localSettings) {
+        $settings = Get-Content $localSettings -Raw | ConvertFrom-Json
+        if ($settings.open_workspace_account) {
+            $environment.MEDTWIN_OPEN_WORKSPACE_ACCOUNT = [string]$settings.open_workspace_account
+            Write-Host "Open workspace: no sign-in; every browser opens as registered account $($settings.open_workspace_account) and every case is shared."
+        }
+    }
 }
 
 $reuseBackend = $false
@@ -238,8 +275,13 @@ try {
     foreach ($key in $saved.Keys) { [Environment]::SetEnvironmentVariable($key, $saved[$key]) }
 }
 
+$processStarted = @{}
+foreach ($name in @($pids.Keys)) {
+    $process = Get-Process -Id $pids[$name] -ErrorAction SilentlyContinue
+    if ($process) { $processStarted[$name] = $process.StartTime.ToString("o") }
+}
 $state = [ordered]@{
-    mode = $Mode; started_at = (Get-Date).ToString("o"); pids = $pids
+    mode = $Mode; started_at = (Get-Date).ToString("o"); pids = $pids; process_started = $processStarted
     backend_url = "http://127.0.0.1:$BackendPort"; web_url = "http://127.0.0.1:$WebPort"
     credentials_file = $credentialFile; logs = $logs; job_execution = $environment.MEDTWIN_JOB_EXECUTION
     reused_backend = $reuseBackend; reused_web = $reuseWeb

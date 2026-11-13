@@ -3,11 +3,9 @@ import {
   Users, 
   ShieldCheck, 
   Key, 
-  LogOut, 
-  RefreshCw, 
-  Copy, 
-  Check, 
-  UserCheck, 
+  LogOut,
+  RefreshCw,
+  UserCheck,
   FileText, 
   Search
 } from 'lucide-react';
@@ -29,7 +27,6 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
   const [auditLogs, setAuditLogs] = useState<ProvenanceEvent[]>([]);
   const [loadingLogs, setLoadingLogs] = useState<boolean>(false);
   const [searchLog, setSearchLog] = useState<string>('');
-  const [copiedToken, setCopiedToken] = useState<boolean>(false);
 
   const fetchAuditLogs = useCallback(async () => {
     setLoadingLogs(true);
@@ -57,14 +54,6 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
       isMounted = false;
     };
   }, []);
-
-  const handleCopyToken = () => {
-    const token = api.getToken();
-    if (!token) return;
-    void navigator.clipboard.writeText(token);
-    setCopiedToken(true);
-    setTimeout(() => setCopiedToken(false), 2000);
-  };
 
   const filteredLogs = auditLogs.filter((log) => {
     const q = searchLog.toLowerCase();
@@ -228,25 +217,16 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
                 </div>
               </div>
 
-              {/* Session Bearer Token */}
+              {/* Browser session: an HttpOnly cookie, deliberately unreadable by page scripts. */}
               <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold flex items-center gap-1">
-                    <Key size={11} className="text-amber-400" />
-                    Session Token (OAuth2 Bearer)
-                  </span>
-                  <button
-                    type="button"
-                    onClick={handleCopyToken}
-                    className="flex items-center gap-1 text-[10px] text-cyan-400 hover:text-cyan-300 transition-colors"
-                  >
-                    {copiedToken ? <Check size={11} /> : <Copy size={11} />}
-                    <span>{copiedToken ? 'Copied' : 'Copy Token'}</span>
-                  </button>
-                </div>
-                <div className="font-mono text-[10px] text-slate-400 truncate bg-slate-900/60 p-1.5 rounded border border-slate-850">
-                  {api.getToken() ?? 'No active bearer token'}
-                </div>
+                <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold flex items-center gap-1 mb-1">
+                  <Key size={11} className="text-amber-400" />
+                  Browser session
+                </span>
+                <p className="text-[10px] text-slate-400 leading-4">
+                  This browser is signed in by an HttpOnly session cookie that page scripts cannot read or copy.
+                  API clients obtain a bearer token from POST /api/v1/auth/login.
+                </p>
               </div>
             </div>
           </div>

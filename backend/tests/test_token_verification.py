@@ -24,5 +24,6 @@ def test_invalid_credentials_are_rejected_before_database_lookup(kind):
         key, algorithm = "", "none"
     token = jwt.encode(claims, key, algorithm=algorithm)
     with pytest.raises(HTTPException) as refused:
-        get_current_user(token=token, db=None)
+        # A bearer token is checked before the request or its session cookie is consulted.
+        get_current_user(request=None, token=token, db=None)
     assert refused.value.status_code == 401

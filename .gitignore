@@ -1,4 +1,5 @@
 # JavaScript build and dependency output
+/data/external/
 node_modules/
 dist/
 build/

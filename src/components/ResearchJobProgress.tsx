@@ -1,10 +1,22 @@
 import { useEffect } from "react";
-import { api } from "../services/api";
+import { api, type User } from "../services/api";
 import { formatBytes, humanize } from "../lib/format";
 import { useAsync } from "../lib/useAsync";
+import { useWorkspace } from "../state/workspace";
 import { Card, StatusBadge } from "./ui";
 
+/** The server shows workstation research jobs to verified administrators, clinicians and researchers only. */
+function mayViewResearchJobs(user: User | null): boolean {
+  return user !== null && ["admin", "clinician", "researcher"].includes(user.role) && user.verification_status === "VERIFIED";
+}
+
 export default function ResearchJobProgress() {
+  const permitted = useWorkspace((state) => mayViewResearchJobs(state.user));
+  // Other accounts do not ask for it at all (the request would only be refused).
+  return permitted ? <ResearchJobList /> : null;
+}
+
+function ResearchJobList() {
   const { data, error, reload } = useAsync(() => api.getResearchJobs(), []);
   useEffect(() => {
     if (error) return;

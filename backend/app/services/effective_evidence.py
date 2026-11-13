@@ -62,6 +62,7 @@ def correction_index(db: Session, case_id: int) -> tuple[dict[int, list[dict]], 
             "state": state,
             "decided_by_id": decision.decided_by_id if decision else None,
             "decided_at": decision.decided_at.isoformat() if decision else None,
+            "decision_id": decision.id if decision else None,
         }
         payload = review.correction_payload or {}
         for item in payload.get("measurement_corrections", []):
@@ -71,13 +72,18 @@ def correction_index(db: Session, case_id: int) -> tuple[dict[int, list[dict]], 
     return measurements, statements
 
 
+def decision_order(entry: dict) -> tuple[str, int, int]:
+    """Resolve coarse-clock ties by persisted decision order, then proposal id."""
+    return (entry.get("decided_at") or "", entry.get("decision_id") or 0, entry.get("review_id") or 0)
+
+
 def effective_record(original: dict[str, Any], entries: list[dict], fields: dict[str, str]) -> dict[str, Any]:
     """Original values, effective values after the latest approved correction, and the state."""
     approved = [entry for entry in entries if entry["state"] == "CORRECTION_APPROVED"]
     effective = {target: original.get(target) for target in fields.values()}
     applied: Optional[dict] = None
     if approved:
-        applied = max(approved, key=lambda entry: entry["decided_at"] or "")
+        applied = max(approved, key=decision_order)
         correction = applied["correction"]
         if correction["action"] == "REMOVE":
             state = "REMOVED_IN_EFFECTIVE_VIEW"
@@ -109,7 +115,7 @@ def approved_measurement_overrides(db: Session, case_id: int) -> dict[int, dict[
         approved = [entry for entry in entries if entry["state"] == "CORRECTION_APPROVED"]
         if not approved:
             continue
-        latest = max(approved, key=lambda entry: entry["decided_at"] or "")
+        latest = max(approved, key=decision_order)
         correction = latest["correction"]
         overrides[measurement_id] = {
             "removed": correction["action"] == "REMOVE",

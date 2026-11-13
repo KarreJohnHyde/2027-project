@@ -2927,6 +2927,72 @@
         "readiness": "FAILED_DECLARED_TARGET",
         "run_scope": "RESEARCH"
       }
+    },
+    {
+      "model_id": "bone_fracture_detector",
+      "display_name": "Upper-limb radiograph fracture detector (Roboflow v4, research)",
+      "domain": "medical_imaging",
+      "task": "object_detection",
+      "anatomy": "skeletal",
+      "framework": "torchvision fasterrcnn_resnet50_fpn_v2",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/bone_fracture_detector-20261110T020213Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "supported_modalities": [
+        "XRAY"
+      ],
+      "supported_classes": [
+        "fracture"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "limitations": [
+        "The registry found no identifiers in sampled metadata, but source patient IDs are unavailable; patient-level independence cannot be verified. The recorded split and near-duplicate audit are reported above.",
+        "Internal test split from the same source; no external validation.",
+        "Detection scores are not probabilities and are not calibrated.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "7ea36477f94704c930bb256fd327adf3ee2bb01af916a176bd7e37a6bcc6f028",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "_derived/datasets/bone-fracture-detection/samples.csv",
+        "task_definition": "fracture boxes: the six region-specific fracture classes merged into one 'fracture' class; the non-fracture 'humerus' class (index 4) excluded (owner decision, 2026-11-06)",
+        "label_definition": {
+          "source": "YOLO",
+          "category": "all",
+          "yolo_classes_kept": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "merged_into": "fracture",
+          "yolo_polygons": "converted to their bounding boxes"
+        },
+        "preprocessing_version": "rgb-to-tensor-model-resize-v1",
+        "checkpoint_path": "artifacts/training/bone_fracture_detector-20261110T020213Z/model.pt",
+        "checkpoint_sha256": "902e43ba2d7f0cf38dc2f56def3c2fa4dfef85bb5dccc8e4d61c01b20c213ff1",
+        "calibration": null,
+        "decision_thresholds": {
+          "display_score_threshold": 0.55,
+          "chosen_on": "validation max F1 at IoU 0.5"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/bone_fracture_detector-20261110T020213Z/predictions_test.json",
+        "evaluation_report_path": "docs/validation/models/bone_fracture_detector.json",
+        "model_card_path": "docs/models/bone_fracture_detector.md",
+        "ood_reference_path": "artifacts/training/bone_fracture_detector-20261110T020213Z/ood_reference.npz",
+        "ood_reference_sha256": "45b3fc427dd33febac590859c4c11035c75b06c68259c0bb71cb2e690e8414e8"
+      }
     }
   ]
 }

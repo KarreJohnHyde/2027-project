@@ -1,0 +1,555 @@
+{
+  "CopilotQuery": {
+    "additionalProperties": false,
+    "properties": {
+      "tool": {
+        "enum": [
+          "search_case",
+          "get_source",
+          "get_examination",
+          "get_model_provenance",
+          "get_anatomy",
+          "get_biomarker_history",
+          "get_evaluation",
+          "navigate_view",
+          "draft_report"
+        ],
+        "title": "Tool",
+        "type": "string"
+      },
+      "query": {
+        "default": "",
+        "maxLength": 1000,
+        "title": "Query",
+        "type": "string"
+      },
+      "source_id": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Source Id"
+      },
+      "finding_id": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Finding Id"
+      },
+      "exam_id": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Exam Id"
+      },
+      "model_id": {
+        "anyOf": [
+          {
+            "maxLength": 128,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Model Id"
+      },
+      "system_id": {
+        "anyOf": [
+          {
+            "maxLength": 64,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "System Id"
+      },
+      "limit": {
+        "default": 10,
+        "maximum": 20,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "tool"
+    ],
+    "title": "CopilotQuery",
+    "type": "object"
+  },
+  "CopilotResponse": {
+    "$defs": {
+      "Citation": {
+        "properties": {
+          "node_id": {
+            "title": "Node Id",
+            "type": "string"
+          },
+          "upload_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Upload Id"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "span": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Span"
+          }
+        },
+        "required": [
+          "node_id"
+        ],
+        "title": "Citation",
+        "type": "object"
+      },
+      "NavigateAction": {
+        "properties": {
+          "type": {
+            "const": "NAVIGATE",
+            "default": "NAVIGATE",
+            "title": "Type",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Id"
+          },
+          "finding_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Finding Id"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "NavigateAction",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "mode": {
+        "const": "LOCAL_DETERMINISTIC_RESEARCH_ASSISTANT",
+        "default": "LOCAL_DETERMINISTIC_RESEARCH_ASSISTANT",
+        "title": "Mode",
+        "type": "string"
+      },
+      "tool": {
+        "enum": [
+          "search_case",
+          "get_source",
+          "get_examination",
+          "get_model_provenance",
+          "get_anatomy",
+          "get_biomarker_history",
+          "get_evaluation",
+          "navigate_view",
+          "draft_report"
+        ],
+        "title": "Tool",
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "ANSWERED",
+          "INSUFFICIENT_EVIDENCE",
+          "REFUSED"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "answer": {
+        "title": "Answer",
+        "type": "string"
+      },
+      "citations": {
+        "items": {
+          "$ref": "#/$defs/Citation"
+        },
+        "title": "Citations",
+        "type": "array"
+      },
+      "actions": {
+        "items": {
+          "$ref": "#/$defs/NavigateAction"
+        },
+        "title": "Actions",
+        "type": "array"
+      },
+      "never_writes": {
+        "const": true,
+        "default": true,
+        "title": "Never Writes",
+        "type": "boolean"
+      },
+      "reason": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Reason"
+      }
+    },
+    "required": [
+      "tool",
+      "status",
+      "answer"
+    ],
+    "title": "CopilotResponse",
+    "type": "object"
+  },
+  "EvidenceGraph": {
+    "$defs": {
+      "EvidenceEdge": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          },
+          "relation": {
+            "title": "Relation",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "target",
+          "relation"
+        ],
+        "title": "EvidenceEdge",
+        "type": "object"
+      },
+      "EvidenceNode": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "case",
+              "examination",
+              "upload",
+              "finding",
+              "statement",
+              "measurement",
+              "anatomy",
+              "model_run",
+              "review"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "source_file_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source File Id"
+          },
+          "finding_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Finding Id"
+          },
+          "examination_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Examination Id"
+          },
+          "source_span": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Span"
+          },
+          "source_page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Page"
+          },
+          "source_start": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Start"
+          },
+          "source_end": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source End"
+          },
+          "source_bbox": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Bbox"
+          },
+          "assertion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Assertion"
+          },
+          "review_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Review Status"
+          },
+          "timestamp": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Timestamp"
+          },
+          "details": {
+            "additionalProperties": true,
+            "title": "Details",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "label"
+        ],
+        "title": "EvidenceNode",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "schema_version": {
+        "const": "medtwin.evidence-graph.v1",
+        "default": "medtwin.evidence-graph.v1",
+        "title": "Schema Version",
+        "type": "string"
+      },
+      "case_id": {
+        "title": "Case Id",
+        "type": "integer"
+      },
+      "data_version": {
+        "title": "Data Version",
+        "type": "string"
+      },
+      "nodes": {
+        "items": {
+          "$ref": "#/$defs/EvidenceNode"
+        },
+        "title": "Nodes",
+        "type": "array"
+      },
+      "edges": {
+        "items": {
+          "$ref": "#/$defs/EvidenceEdge"
+        },
+        "title": "Edges",
+        "type": "array"
+      },
+      "conflicts": {
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "title": "Conflicts",
+        "type": "array"
+      },
+      "missing_modalities": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Missing Modalities",
+        "type": "array"
+      },
+      "limits": {
+        "additionalProperties": {
+          "type": "integer"
+        },
+        "title": "Limits",
+        "type": "object"
+      },
+      "truncated": {
+        "title": "Truncated",
+        "type": "boolean"
+      },
+      "notice": {
+        "title": "Notice",
+        "type": "string"
+      }
+    },
+    "required": [
+      "case_id",
+      "data_version",
+      "nodes",
+      "edges",
+      "conflicts",
+      "missing_modalities",
+      "limits",
+      "truncated",
+      "notice"
+    ],
+    "title": "EvidenceGraph",
+    "type": "object"
+  }
+}

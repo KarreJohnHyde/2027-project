@@ -79,6 +79,13 @@
         "HARDCODED_SECRET"
       ],
       "reason": "Fictional test user signing in by email address (case-insensitive lookup)."
+    },
+    {
+      "key": "backend/tests/test_universal_geometry.py#a488bfde9bbfbabb1e88408fdc0a0509058f21c1d9610913671bd04d7620ed8a",
+      "categories": [
+        "PATIENT_NAME_FIELD"
+      ],
+      "reason": "Reviewed 2026-11-13: explicitly invented DICOM test name in disposable tmp_path fixture; asserts source identifiers are absent from spatial API response. No real patient data or credential."
     }
   ]
 }

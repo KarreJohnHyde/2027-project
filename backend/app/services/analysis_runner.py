@@ -115,8 +115,9 @@ def execute_upload_analysis(db: Session, file_record: UploadedFile, actor: Optio
         case_id=file_record.case_id, file_id=file_record.id, modality=file_record.modality, model_name="Pending",
         model_version="Pending", preprocessing_version="Pending", status=EvidenceStatus.PENDING_HUMAN_REVIEW, started_at=started_at,
     )
-    db.add(run)
-    db.flush()
+    # The run is written only once the adapter has returned. Inserting it first opened a write transaction that held
+    # SQLite's write lock through the whole analysis (tens of seconds with the WSL NLP tools), so every sign-in and
+    # upload elsewhere waited for it. The queued job already reports that the analysis is running.
     try:
         with upload_store.materialize(file_path) as plain:
             if file_record.modality == ModalityType.IMAGE:
@@ -142,6 +143,8 @@ def execute_upload_analysis(db: Session, file_record: UploadedFile, actor: Optio
         run.status = EvidenceStatus.COMPLETED if result_status == EvidenceStatus.PENDING_HUMAN_REVIEW else result_status
         run.error_message = result.get("failure_reason")
         run.completed_at = datetime.now(timezone.utc)
+        db.add(run)
+        db.flush()
         finding = Finding(
             inference_run_id=run.id, case_id=file_record.case_id, modality=file_record.modality, category=result["category"],
             label=result["label"], raw_confidence=result.get("raw_confidence"), calibrated_confidence=result.get("calibrated_confidence"),
@@ -170,6 +173,8 @@ def execute_upload_analysis(db: Session, file_record: UploadedFile, actor: Optio
         run.error_message = str(quality_error)
         run.execution_time_ms = round((time.perf_counter() - start_time) * 1000, 2)
         run.completed_at = datetime.now(timezone.utc)
+        db.add(run)
+        db.flush()
         finding = Finding(
             inference_run_id=run.id, case_id=file_record.case_id, modality=file_record.modality, category="Cardiac Rhythm",
             label="REJECTED: Poor Signal Quality", representation_level=RepresentationLevel.L1_GENERIC,

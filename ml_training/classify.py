@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -39,6 +40,7 @@ from ml_training.common import (
     seed_worker,
     set_seed,
 )
+from ml_training.volumetric_manifest import enforce_training_license
 
 sys.path.insert(0, str(ROOT / "backend"))
 from app.services.evaluation_metrics import _auroc  # noqa: E402  (shared with the Validation Center)
@@ -392,7 +394,25 @@ def train_candidate(
     return best_state, best_f1, best_epoch
 
 
-def main() -> int:
+def development_rows(rows: list[dict], *, enabled: bool, seed: int, max_train: int = 0, max_val: int = 0) -> list[dict]:
+    """Remove test examples before deriving classes, fitting or opening images."""
+    if not enabled:
+        if max_train or max_val:
+            raise ValueError("Sample caps require --development-only")
+        return rows
+    selected = []
+    for split, maximum in (("train", max_train), ("val", max_val)):
+        members = [row for row in rows if row["split"] == split]
+        members.sort(key=lambda row: hashlib.sha256(f"{seed}:{row['entry']}".encode()).hexdigest())
+        selected.extend(members[:maximum] if maximum else members)
+    train_groups = {str(row["group_id"]) for row in selected if row["split"] == "train" and row.get("group_id") is not None}
+    val_groups = {str(row["group_id"]) for row in selected if row["split"] == "val" and row.get("group_id") is not None}
+    if train_groups & val_groups:
+        raise ValueError("Development train/validation group leakage; curate the manifest before training")
+    return selected
+
+
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--task-id", required=True)
     parser.add_argument("--model-id", required=True)
@@ -418,16 +438,25 @@ def main() -> int:
     )
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--seed", type=int, default=20261024)
-    args = parser.parse_args()
+    parser.add_argument("--development-only", action="store_true", help="Never load test images or publish model/card/registry results")
+    parser.add_argument("--max-train-samples", type=int, default=0, help="Development-only deterministic cap; 0 uses all train rows")
+    parser.add_argument("--max-val-samples", type=int, default=0, help="Development-only deterministic cap; 0 uses all validation rows")
+    args = parser.parse_args(argv)
+    if min(args.epochs, args.batch_size, args.image_size) <= 0 or min(args.max_train_samples, args.max_val_samples) < 0:
+        parser.error("Epochs, batch size and image size must be positive; caps nonnegative")
 
     tasks = json.loads((ROOT / "dataset_registry" / "tasks.json").read_text(encoding="utf-8"))
     dataset, task = next((d, t) for d in tasks["datasets"] for t in d["tasks"] if t["task_id"] == args.task_id)
     if not task["training_eligible"]:
         raise SystemExit(f"{args.task_id} is not training-eligible: {task['flags']}")
+    rights = enforce_training_license({"dataset_id": dataset["id"]}, ROOT / "dataset_registry/tasks.json")
     prep = task["preparation"]
-    rows = read_samples(Path(prep["sample_manifest"]))
+    rows = development_rows(read_samples(Path(prep["sample_manifest"])), enabled=args.development_only, seed=args.seed,
+                            max_train=args.max_train_samples, max_val=args.max_val_samples)
     classes = sorted({row["label"] for row in rows})
     splits = {split: [row for row in rows if row["split"] == split] for split in SPLITS}
+    if len(splits["train"]) < args.batch_size or not splits["val"]:
+        raise ValueError("Training requires at least one complete batch and a nonempty validation partition")
     distribution = summarize_class_distribution(rows, classes)
     readiness = classification_readiness(task, prep, rows, classes)
     require_exploratory_opt_in(readiness, args.exploratory)
@@ -447,6 +476,7 @@ def main() -> int:
             "validation_readiness": readiness,
             "class_distribution": distribution,
             "class_imbalance": imbalance,
+            "rights": rights,
         },
     )
     train_tf, eval_tf = transforms_for(args.image_size)
@@ -466,6 +496,30 @@ def main() -> int:
     model.load_state_dict(candidates[selected]["state"])
     val_logits, val_targets = logits_for(model, loaders["val"], dev)
     temperature = fit_temperature(val_logits, val_targets)
+
+    if args.development_only:
+        checkpoint_path, checkpoint_sha = run.save_checkpoint({
+            "kind": "image_classifier", "arch": selected, "state_dict": candidates[selected]["state"], "classes": classes,
+            "image_size": args.image_size, "normalization": {"mean": MEAN, "std": STD}, "temperature": temperature,
+            "task_id": args.task_id, "dataset_version": prep["dataset_version"], "development_only": True,
+            "preprocessing": "RGB; resize to 1.14x then centre-crop; ImageNet normalisation"})
+        probability = softmax(val_logits, temperature)
+        run.write_json("development.json", {
+            "execution_status": "DEVELOPMENT_COMPLETE_TEST_NOT_EVALUATED", "model_id": args.model_id,
+            "dataset_version": prep["dataset_version"], "classes": classes,
+            "split_counts_used": {key: len(splits[key]) for key in ("train", "val")},
+            "selection": {"criterion": "validation macro F1", "selected": selected,
+                          "candidates": {name: {"val_macro_f1": value["val_macro_f1"], "best_epoch": value["best_epoch"]}
+                                         for name, value in candidates.items()}},
+            "validation": {"accuracy": float(np.mean(probability.argmax(1) == val_targets)),
+                           "macro_f1": macro_f1(val_targets, probability.argmax(1), len(classes))},
+            "calibration": {"method": "temperature_scaling", "fitted_on": "validation", "temperature": temperature,
+                            "evaluation_notice": "Same validation set; not an unbiased held-out calibration assessment."},
+            "checkpoint": {"path": checkpoint_ref(checkpoint_path), "sha256": checkpoint_sha},
+            "held_out_test": {"status": "NOT_EVALUATED"}, "model_registry_mutation": False,
+            "notice": "Development/validation measurements only; no held-out performance or improvement claim."})
+        run.log(event="development_done", test_evaluated=False, registry_mutation=False, checkpoint_sha256=checkpoint_sha)
+        return 0
 
     # The test split is read exactly once, with the frozen selected checkpoint.
     test_loader = DataLoader(ImageSet(splits["test"], classes, eval_tf), batch_size=args.batch_size * 2, num_workers=args.workers, pin_memory=True)

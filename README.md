@@ -1,4 +1,12 @@
+> **Whole-body expansion (2026-11-13):** The synchronized Twin Control Room now includes source-coordinate2D/3D, exact-finding provenance/refusal context, matched temporal image comparisons, a same-input model disagreement explorer and a source-backed anatomy hierarchy. Integrated backend:1,109 passed/5 skipped; frontend checks and focused browser/accessibility checks passed. See the [five-priority implementation and publication audit](docs/universal/EXPANSION_REPORT_2026-11-13.md) and [public source setup](docs/universal/PUBLIC_SOURCE_SETUP.md). Commercial-development rights gates remain enabled; zero clinical activations. Earlier dated counts below are historical.
+
+> **Completion audit (2026-11-13):** Commercial-use eligibility remains required. Official FY2027 terminology, explicit4D/RAS spatial processing, source-bound research diagnostics, chronological backtests, opt-in word OCR and actual encrypted container recovery now work within documented contracts. Current verification:1,072 backend passes/5 skips. See the [completion report and18 November agenda](docs/universal/COMPLETION_REPORT_2026-11-13.md) and [reproduction](docs/universal/COMPLETION_REPRODUCTION.md). Independent full-report validation, six original model-family rights prerequisites and clinical/publication blockers remain open. Earlier dated counts below are historical.
+
 # MedTwin 2.0
+
+> **MedTwin Universal (2026-11-13):** New **Case Command Center** (`/universal`) and **Model Arena** (`/arena`). The [Universal implementation packet](docs/universal/README.md) records all 25 body-system workspaces, source-linked graph/copilot, actual native MRI workflows, refusal boundaries and all 24 requirement statuses. Research catalogue coverage is separate from model support and clinical validation.
+
+> **Review implementation (2026-11-13):** The [executed implementation report](docs/review-2026-11-13/MEDTWIN_IMPLEMENTATION_STATUS_2026-11-13.md) and [demo/reproduction guide](docs/review-2026-11-13/MEDTWIN_DEMO_GUIDE_2026-11-13.md) record the current isolated document/imaging workflows, source-preserving OCR and input-contract fixes, dataset checks, measured checkpoint parity and remaining blockers. New real-model training remains permission-gated; original weights and clinical activation status are unchanged. Historical verification figures below are dated evidence, not the current test total.
 
 > **Priority execution (2026-11-09):** The target is commercial clinician decision support in India; release remains blocked. Python startup is repaired, Transformers/RadGraph are migrated, and hardened containers passed a full local encrypted recovery drill. All 131 MSD liver CT/mask cases have a checked 91/20/20 manifest. The RCC-AID candidate now has 142 paired scans from 101 patient groups, with curation and rights review pending; the kidney tumour model remains rejected. The [current work and verification report](docs/development/PRIORITY_EXECUTION_2026-11-09.md), [local startup repair](docs/development/LOCAL_STARTUP_REPAIR_2026-11-09.md) and [India release review](docs/deployment/INDIA_COMMERCIAL_RELEASE_REVIEW_2026-11-09.md) distinguish completed work from remaining clinical, rights, native-policy and off-host recovery blockers. Zero models are clinically activated or commercially cleared. Earlier verification counts below are historical.
 
@@ -80,6 +88,49 @@ npm run dev
 
 Infrastructure health is intentionally unversioned at `GET /health`. Application endpoints and interactive API documentation use `/api/v1` and `/docs`, respectively.
 
+`npm run dev` (and the Figma Make preview) runs only Vite. If nothing listens on `MEDTWIN_BACKEND_URL`, the `/api` proxy answers `503` with `{"code": "BACKEND_UNREACHABLE"}` and the entry page shows "Server unavailable" with a Retry button. Earlier versions showed this as "Request failed (502 Bad Gateway)". Start the backend, or use `npm run dev:full`.
+
+## Entering MedTwin
+
+The welcome page asks for a name and a self-described role (Researcher, Student, Clinician or Other); age and gender are optional. There is no username or password on this page. **Enter MedTwin** creates a new visitor profile, and the browser is then remembered:
+
+- The session is an opaque random value in an `HttpOnly`, `SameSite=Lax` cookie named `medtwin_session` (path `/api`). It is `Secure` over HTTPS; set `MEDTWIN_COOKIE_SECURE=true` behind a TLS proxy that does not send `X-Forwarded-Proto`. The database stores only its SHA-256 hash, in the additive `browser_sessions` table.
+- A returning browser goes straight to its workspace (`GET /api/v1/auth/session`). The session lasts `VISITOR_SESSION_DAYS` (90 by default) and is rotated after 12 hours of use. **Sign out** revokes it on the server.
+- People are never matched by name, age, gender, address or device, so two people with the same name are two visitors. The stated role grants no privileges: visitors are `public` accounts that see only their own cases.
+- Each press of Enter MedTwin or Try Demo sends an `Idempotency-Key`, and retries reuse it, so a network retry never creates a second profile.
+- Cookie-authenticated writes must carry `X-MedTwin-Client: web`. This is a CSRF guard; the web client sends it on every request.
+
+**Try Demo** opens a separate 24-hour guest workspace with one fictional sample case. It opens at once, and the three fictional documents are then analysed by the ordinary pipeline while the notice shows progress. The fictional teaching cases (Alex, Maya and Sam) at `/examples` work without the server.
+
+The role list covers research and education, clinical roles (doctor, nurse, clinical staff, surgeon and others), 48 medical specialties, 20 healthcare departments, and patients and families. Every role is self-described and grants nothing.
+
+Accounts registered with a password (administrators and verified professionals among them) sign in at `/account`, which is not part of the welcome page. If the password is not to hand, the operator of the machine that hosts the database can issue a one-time sign-in link (it works once, for 15 minutes, and is audited):
+
+```powershell
+.\.venv\Scripts\python.exe scripts\account_access.py list
+.\.venv\Scripts\python.exe scripts\account_access.py link --username <account>
+.\.venv\Scripts\python.exe scripts\account_access.py share --cases 7 8 9 --with <account>
+```
+
+`share` gives another registered account editor (or `--role VIEWER`) access to cases, as their creator would in the app.
+
+### Open workspace (a workstation you control)
+
+To remove sign-in altogether, name a registered account in `MEDTWIN_OPEN_WORKSPACE_ACCOUNT` (a username or numeric id). `npm run dev:full` reads it from the untracked file `.cache\dev-stack\settings.json`:
+
+```json
+{ "open_workspace_account": "10" }
+```
+
+Every browser then opens the workspace as that account, with no welcome form, sign-in or sign-out. Every case is shared, and "My record" lists every workspace case (with reviewed results only). The sidebar says the workspace is open. Rules:
+
+- The backend refuses to start with this setting on Vercel or with `ENVIRONMENT=production`, because it removes sign-in for every record.
+- An administrator account cannot be the open account.
+- Demo cases stay with their guests.
+- A browser deliberately signed in to another registered account at `/account` keeps that account.
+
+Uploads still require the de-identification confirmation, so documents with patient names, record numbers, phone numbers or addresses must be redacted before they are added. API clients that do not send `X-MedTwin-Client` keep receiving bearer tokens from `POST /api/v1/auth/login`, `/auth/enter` and `/auth/guest`. A browser that stored a bearer token under an earlier version moves to a cookie session once (`POST /api/v1/auth/session/claim`), and the stored token is then removed.
+
 ## Optional development seed
 
 There are no embedded or fallback credentials. Development seeding is opt-in, is rejected outside `development` or `test`, and requires an explicit username, password, and email. The password must contain at least 12 characters.
@@ -106,7 +157,7 @@ The frontend contract is rooted at `/api/v1`. Key routes are:
 
 | Resource | Routes |
 | --- | --- |
-| Authentication | `POST /api/v1/auth/login`, `GET /api/v1/auth/me` |
+| Authentication | `POST /api/v1/auth/enter`, `POST /api/v1/auth/guest`, `GET /api/v1/auth/session`, `POST /api/v1/auth/session/claim`, `POST /api/v1/auth/logout`, `POST /api/v1/auth/login`, `GET /api/v1/auth/me` |
 | Cases | `GET/POST /api/v1/cases`, `GET /api/v1/cases/{case_id}` |
 | Examinations | `/api/v1/cases/{case_id}/examinations` |
 | Uploads | `POST/GET /api/v1/cases/{case_id}/uploads`, `GET /api/v1/uploads/{upload_id}` |

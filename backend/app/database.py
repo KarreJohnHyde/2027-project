@@ -65,6 +65,12 @@ def build_engine(url: str, encryption: str = "off", key: Optional[str] = None) -
         # threads than pool_size are active (the API serves requests from a thread pool). A queue pool,
         # as for plain file SQLite, keeps each connection with one request; every new connection is keyed.
         options["poolclass"] = QueuePool
+    if url.startswith("sqlite:///") and not url.endswith(":memory:"):
+        # Every signed-in request holds a connection for its whole duration (the session check reads the database),
+        # and opening the workspace sends about fifteen requests at once, some slow (registries hash large files).
+        # SQLAlchemy's default of 5 + 10 let one browser exhaust the pool while an analysis ran, so a sign-in waited
+        # 30 s and failed. File SQLite connections are cheap: match the API's 40 worker threads instead.
+        options.update(pool_size=20, max_overflow=20)
     engine = create_engine(target, connect_args=connect_args, echo=False, pool_pre_ping=True, **options)
     if url.startswith("sqlite"):
         @event.listens_for(engine, "connect")

@@ -5,7 +5,7 @@ Includes strict case-level authorization checks to prevent cross-user data leaka
 
 from datetime import datetime, timedelta, timezone
 from typing import Optional
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 from jwt import InvalidTokenError
@@ -18,8 +18,8 @@ from app.database import get_db
 from app.models.entities import Case, CaseMembership, User, UserRole, VerificationStatus
 from app.schemas.entities import TokenData
 
-# OAuth2 scheme
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+# OAuth2 scheme. A missing bearer token is not an error by itself: the browser session cookie is tried next.
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False)
 
 PRIVILEGED_ROLES = frozenset({
     UserRole.ADMIN,
@@ -54,7 +54,27 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
+def get_current_user(request: Request, token: Optional[str] = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
+    """The signed-in account: a bearer token (API clients, existing integrations) or else the browser session cookie."""
+    if token:
+        return user_from_bearer(token, db)
+    from app.services import browser_sessions
+
+    raw = request.cookies.get(browser_sessions.COOKIE_NAME)
+    if raw:
+        user, session = browser_sessions.resolve(db, raw)
+        if user is not None:
+            if request.method not in browser_sessions.SAFE_METHODS and not browser_sessions.is_web_client(request):
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                                    detail=f"CLIENT_HEADER_REQUIRED: a request signed in by the browser cookie must send {browser_sessions.CLIENT_HEADER}.")
+            request.state.browser_session_id = session.id
+            return user
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="SESSION_EXPIRED: this browser's session has ended; enter again.",
+                            headers={"WWW-Authenticate": "Bearer"})
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated", headers={"WWW-Authenticate": "Bearer"})
+
+
+def user_from_bearer(token: str, db: Session) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

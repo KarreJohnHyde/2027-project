@@ -88,6 +88,27 @@ class User(Base):
     audit_events = relationship("AuditEvent", back_populates="user")
 
 
+class BrowserSession(Base):
+    """One browser's sign-in to one account, carried by an HttpOnly cookie.
+
+    Only a SHA-256 of the cookie value is stored, so a database copy cannot be replayed as a session. A rotated
+    session points at its replacement and stays usable for a short grace period (requests already in flight)."""
+    __tablename__ = "browser_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    token_hash = Column(String(64), unique=True, index=True, nullable=False)
+    kind = Column(String(16), nullable=False)  # VISITOR, GUEST or ACCOUNT
+    # SHA-256 of the client's Idempotency-Key for the request that created the account, so a retried entry
+    # reuses the same visitor instead of creating a second one.
+    entry_key_hash = Column(String(64), nullable=True, index=True)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
+    last_used_at = Column(DateTime, default=utc_now, nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    revoked_at = Column(DateTime, nullable=True)
+    replaced_by_id = Column(Integer, nullable=True)
+
+
 class Case(Base):
     __tablename__ = "cases"
 

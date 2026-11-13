@@ -80,6 +80,8 @@ def read_wfdb(header_bytes: bytes, signal_bytes: bytes) -> EcgRecord:
         raise EcgInputError("WFDB_HEADER_UNREADABLE", "the record line is malformed") from exc
     if signal_count < 1 or sample_count < 1 or len(lines) < 1 + signal_count:
         raise EcgInputError("WFDB_HEADER_INCOMPLETE", "the header declares no samples or lists fewer signal lines than signals")
+    if not np.isfinite(frequency) or frequency <= 0:
+        raise EcgInputError("INVALID_SAMPLING_RATE", "the WFDB sampling frequency must be finite and strictly positive")
 
     gains, baselines, factors, initials, checksums, leads, files = [], [], [], [], [], [], set()
     for line in lines[1:1 + signal_count]:
@@ -92,8 +94,8 @@ def read_wfdb(header_bytes: bytes, signal_bytes: bytes) -> EcgRecord:
         if gain_match is None:
             raise EcgInputError("WFDB_HEADER_UNREADABLE", "a signal gain field is malformed")
         gain = float(gain_match.group(1))
-        if gain == 0:
-            raise EcgInputError("UNCALIBRATED_SIGNAL", "a gain of 0 marks an uncalibrated signal")
+        if not np.isfinite(gain) or gain == 0:
+            raise EcgInputError("UNCALIBRATED_SIGNAL", "the ADC gain must be finite and nonzero")
         unit = (gain_match.group(3) or "mV").lower()  # WFDB: an omitted unit is millivolts
         if unit not in UNIT_TO_MV:
             raise EcgInputError("UNSUPPORTED_SIGNAL_UNIT", f"amplitude unit '{gain_match.group(3)}' is not a voltage")
@@ -125,7 +127,8 @@ def read_wfdb(header_bytes: bytes, signal_bytes: bytes) -> EcgRecord:
 
 
 def read_csv(content: bytes, amplitude_unit: str) -> EcgRecord:
-    if amplitude_unit.lower() not in UNIT_TO_MV:
+    unit = str(amplitude_unit or "").strip().lower()
+    if unit not in UNIT_TO_MV:
         raise EcgInputError("AMPLITUDE_UNIT_NOT_DECLARED", "declare the CSV amplitude unit (mV or uV)")
     try:
         rows = list(csv.reader(io.StringIO(content.decode("utf-8-sig"))))
@@ -135,6 +138,8 @@ def read_csv(content: bytes, amplitude_unit: str) -> EcgRecord:
     if len(rows) < 3:
         raise EcgInputError("CSV_TOO_SHORT", "a header row and samples are required")
     header = [cell.strip() for cell in rows[0]]
+    if any(len(row) != len(header) for row in rows[1:]):
+        raise EcgInputError("CSV_COLUMN_COUNT_MISMATCH", "every sample row must have exactly the columns declared by the header")
     time_columns = [index for index, name in enumerate(header) if name.lower() in TIME_COLUMNS]
     if len(time_columns) != 1:
         raise EcgInputError("SAMPLING_RATE_NOT_DOCUMENTED", "the CSV needs exactly one time column in seconds (for example 'time_s'); the sampling rate is never assumed")
@@ -143,20 +148,34 @@ def read_csv(content: bytes, amplitude_unit: str) -> EcgRecord:
         values = np.asarray([[float(row[index]) for index in time_columns + lead_columns] for row in rows[1:]], dtype=np.float64)
     except (ValueError, IndexError) as exc:
         raise EcgInputError("NON_NUMERIC_VALUES", "every sample row needs a numeric time and a numeric value for every lead") from exc
-    steps = np.diff(values[:, 0])
+    if not np.all(np.isfinite(values[:, 0])):
+        raise EcgInputError("NON_FINITE_TIMESTAMPS", "the time column contains NaN or infinite values")
+    if not np.all(np.isfinite(values[:, 1:])):
+        raise EcgInputError("NON_FINITE_SAMPLES", "the signal contains NaN or infinite values")
+    with np.errstate(over="ignore", invalid="ignore"):
+        steps = np.diff(values[:, 0])
+    if not np.all(np.isfinite(steps)):
+        raise EcgInputError("INVALID_TIMESTAMPS", "time differences must be finite")
     if np.any(steps <= 0):
         raise EcgInputError("TIME_NOT_INCREASING", "time stamps must increase strictly")
     step = float(np.median(steps))
     if float(np.max(np.abs(steps - step))) > 0.01 * step:
         raise EcgInputError("IRREGULAR_SAMPLING", "time stamps are not uniformly spaced")
     leads = [canonical_lead(header[index]) for index in lead_columns]
-    signal = (values[:, 1:] * UNIT_TO_MV[amplitude_unit.lower()]).astype(np.float32)
+    with np.errstate(over="ignore", invalid="ignore"):
+        signal = (values[:, 1:] * UNIT_TO_MV[unit]).astype(np.float32)
+    if not np.all(np.isfinite(signal)):
+        raise EcgInputError("NON_FINITE_SAMPLES", "the signal exceeds the finite physical-millivolt representation")
     return EcgRecord(signal, leads, 1.0 / step, "CSV", notes=[f"Amplitude unit declared by the requesting user: {amplitude_unit}."])
 
 
 def check_record(record: EcgRecord, contract: dict) -> EcgRecord:
     """Refuse anything outside the trained contract; return the record in contract lead order."""
     expected = contract["leads"]
+    if record.signal_mv.ndim != 2 or record.signal_mv.shape[1] != len(record.leads):
+        raise EcgInputError("SIGNAL_SHAPE_MISMATCH", "signal data must have one column per named lead")
+    if not np.isfinite(record.sampling_rate_hz) or record.sampling_rate_hz <= 0:
+        raise EcgInputError("INVALID_SAMPLING_RATE", "sampling frequency must be finite and strictly positive")
     duplicates = sorted({lead for lead in record.leads if record.leads.count(lead) > 1})
     if duplicates:
         raise EcgInputError("DUPLICATE_LEADS", ", ".join(duplicates))

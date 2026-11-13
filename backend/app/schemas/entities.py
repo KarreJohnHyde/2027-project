@@ -26,13 +26,32 @@ class Token(BaseModel):
 
 
 class VisitorEntry(BaseModel):
-    """The entry page: who is using MedTwin. Self-reported; nothing here grants or limits access."""
+    """The entry page: who is using MedTwin. Name and role are required; age and gender are optional. Self-reported;
+    nothing here grants or limits access, and nothing here identifies a returning person (the browser session does).
+    The role is one of the clinical roles, specialties and departments in app/schemas/entry_roles.py."""
     name: str = Field(..., min_length=1, max_length=80)
-    age: int = Field(..., ge=0, le=120)
-    gender: Literal["female", "male", "other", "prefer_not_to_say"]
-    role: Literal["patient", "caregiver", "doctor", "nurse", "lab_expert", "radiologist", "surgeon", "researcher", "student", "other"]
+    age: Optional[int] = Field(default=None, ge=0, le=120)
+    gender: Optional[Literal["female", "male", "other", "prefer_not_to_say"]] = None
+    role: str = Field(..., min_length=1, max_length=64)
 
     model_config = ConfigDict(extra="forbid")
+
+    @field_validator("role")
+    @classmethod
+    def _known_role(cls, value: str) -> str:
+        from app.schemas.entry_roles import ENTRY_ROLES, LEGACY_ENTRY_ROLES
+
+        if value not in ENTRY_ROLES and value not in LEGACY_ENTRY_ROLES:
+            raise ValueError("Choose a role from the list.")
+        return value
+
+    @field_validator("name")
+    @classmethod
+    def _name_has_text(cls, value: str) -> str:
+        value = " ".join(value.split())
+        if not value:
+            raise ValueError("Enter your name.")
+        return value
 
 
 class VisitorSession(Token):
@@ -43,6 +62,20 @@ class GuestSession(Token):
     """A temporary demo sign-in and the synthetic case created for it."""
     case_id: int
     expires_at: datetime
+
+
+class SignInLinkRedeem(BaseModel):
+    """A one-time sign-in link's code (from the part of the link after #link=)."""
+    code: str = Field(..., min_length=16, max_length=128)
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class BrowserSessionInfo(BaseModel):
+    """What the browser learns about its own session; the token itself stays in the HttpOnly cookie."""
+    kind: Literal["VISITOR", "GUEST", "ACCOUNT"]
+    expires_at: datetime
+    rotated: bool = False
 
 
 class TokenData(BaseModel):

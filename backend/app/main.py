@@ -67,6 +67,15 @@ from app.routers import (
     reviews,
     system,
     video,
+    universal_catalogue,
+    universal_imaging,
+    universal_intelligence,
+    universal_arena,
+    completion_research,
+    upright_word_ocr,
+    temporal_comparison,
+    matched_model_explorer,
+    universal_structures,
 )
 from app.request_context import REQUEST_ID_HEADER, get_request_id
 from app.security import RequestIdMiddleware, SecurityHeadersMiddleware
@@ -183,7 +192,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["X-MedTwin-Render", REQUEST_ID_HEADER],
+    expose_headers=["X-MedTwin-Render", "X-MedTwin-Page", "X-MedTwin-Comparison", REQUEST_ID_HEADER],
 )
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RequestIdMiddleware)
@@ -220,6 +229,15 @@ for router in (
     research.router,
     research_models.router,
     video.router,
+    universal_catalogue.router,
+    universal_imaging.router,
+    universal_intelligence.router,
+    universal_arena.router,
+    completion_research.router,
+    upright_word_ocr.router,
+    temporal_comparison.router,
+    matched_model_explorer.router,
+    universal_structures.router,
 ):
     app.include_router(router, prefix=API_PREFIX)
 

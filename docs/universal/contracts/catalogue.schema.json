@@ -1,0 +1,394 @@
+{
+  "$defs": {
+    "AnatomicalSystem": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "synonyms": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Synonyms",
+          "type": "array"
+        },
+        "organs": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "minItems": 1,
+          "title": "Organs",
+          "type": "array"
+        },
+        "atlas_system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Atlas System"
+        },
+        "evidence_types": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Evidence Types",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 15,
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "organs",
+        "evidence_types"
+      ],
+      "title": "AnatomicalSystem",
+      "type": "object"
+    },
+    "AnatomyLink": {
+      "additionalProperties": false,
+      "properties": {
+        "structure_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Structure Id",
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "SCHEMATIC_ASSOCIATION",
+            "REFERENCE_ATLAS_TERM"
+          ],
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "structure_id",
+        "relation"
+      ],
+      "title": "AnatomyLink",
+      "type": "object"
+    },
+    "CatalogueEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "organ",
+            "condition",
+            "structure",
+            "biomarker",
+            "investigation",
+            "classification"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "system_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 25,
+          "minItems": 1,
+          "title": "System Ids",
+          "type": "array"
+        },
+        "synonyms": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Synonyms",
+          "type": "array"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Id"
+        },
+        "laterality": {
+          "anyOf": [
+            {
+              "enum": [
+                "left",
+                "right",
+                "bilateral",
+                "midline"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Laterality"
+        },
+        "code_mappings": {
+          "items": {
+            "$ref": "#/$defs/CodeMapping"
+          },
+          "maxItems": 20,
+          "title": "Code Mappings",
+          "type": "array"
+        },
+        "evidence_types": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Evidence Types",
+          "type": "array"
+        },
+        "anatomy_links": {
+          "items": {
+            "$ref": "#/$defs/AnatomyLink"
+          },
+          "maxItems": 30,
+          "title": "Anatomy Links",
+          "type": "array"
+        },
+        "model_targets": {
+          "items": {
+            "$ref": "#/$defs/TargetLink"
+          },
+          "maxItems": 20,
+          "title": "Model Targets",
+          "type": "array"
+        },
+        "source": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "source_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Version",
+          "type": "string"
+        },
+        "licence": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Licence",
+          "type": "string"
+        },
+        "review_status": {
+          "default": "CURATED_RESEARCH_CATALOGUE",
+          "enum": [
+            "CURATED_RESEARCH_CATALOGUE",
+            "EXISTING_REFERENCE_TERMINOLOGY"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "maxLength": 2048,
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "kind",
+        "system_ids",
+        "source",
+        "source_version",
+        "licence"
+      ],
+      "title": "CatalogueEntry",
+      "type": "object"
+    },
+    "CodeMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "system": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "System",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "EXACT",
+            "BROADER",
+            "NARROWER",
+            "RELATED"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "review_status": {
+          "enum": [
+            "VERIFIED_SOURCE_MAPPING",
+            "CURATED_UNVERIFIED"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "source": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "system",
+        "version",
+        "code",
+        "relation",
+        "review_status",
+        "source"
+      ],
+      "title": "CodeMapping",
+      "type": "object"
+    },
+    "TargetLink": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Model Id",
+          "type": "string"
+        },
+        "target": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "model_id",
+        "target"
+      ],
+      "title": "TargetLink",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "medtwin.universal-catalogue.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "version": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    },
+    "source": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Source",
+      "type": "string"
+    },
+    "source_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Source Sha256",
+      "type": "string"
+    },
+    "notice": {
+      "maxLength": 2048,
+      "minLength": 1,
+      "title": "Notice",
+      "type": "string"
+    },
+    "systems": {
+      "items": {
+        "$ref": "#/$defs/AnatomicalSystem"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Systems",
+      "type": "array"
+    },
+    "entries": {
+      "items": {
+        "$ref": "#/$defs/CatalogueEntry"
+      },
+      "maxItems": 100000,
+      "minItems": 1,
+      "title": "Entries",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "version",
+    "source",
+    "source_sha256",
+    "notice",
+    "systems",
+    "entries"
+  ],
+  "title": "CatalogueBundle",
+  "type": "object"
+}

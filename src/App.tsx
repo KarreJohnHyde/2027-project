@@ -3,10 +3,14 @@ import { FolderOpen, LoaderCircle } from "lucide-react";
 import { AppShell } from "./components/AppShell";
 import { CreateCaseDialog } from "./components/CaseDialogs";
 import { Button, EmptyState, LoadingBlock } from "./components/ui";
-import { useLocation } from "./lib/router";
+import { navigate, useLocation } from "./lib/router";
 import "./lib/preferences";
 import { NAV_ITEMS } from "./navigation";
 import EntryPage from "./pages/EntryPage";
+import type { User } from "./services/api";
+
+const AccountAccessPage = lazy(() => import("./pages/AccountAccessPage"));
+const ACCOUNT_PATH = "/account";
 import { useSelectedCase, useWorkspace } from "./state/workspace";
 
 type Route = { component: ComponentType; needsCase?: boolean; fullBleed?: boolean; title: string };
@@ -14,6 +18,8 @@ type Route = { component: ComponentType; needsCase?: boolean; fullBleed?: boolea
 const page = (loader: () => Promise<{ default: ComponentType }>) => lazy(loader);
 
 const ROUTES: Record<string, Route> = {
+  "/universal": { component: page(() => import("./pages/UniversalWorkspacePage")), title: "Case Command Center" },
+  "/arena": { component: page(() => import("./pages/ModelArenaPage")), title: "Model Arena" },
   "/": { component: page(() => import("./pages/OverviewPage")), title: "Overview Dashboard" },
   "/cases": { component: page(() => import("./pages/CaseWorkspacePage")), needsCase: true, title: "Case Workspace" },
   "/private-references": { component: page(() => import("./pages/PrivateReferencesPage")), title: "Private reference cases" },
@@ -65,7 +71,16 @@ function App() {
   const { path } = useLocation();
   const route = ROUTES[path];
   const publicExamples = path === "/examples";
-  const title = route?.title ?? NAV_ITEMS.find((item) => item.path === path)?.label ?? "Not found";
+  const accountPage = path === ACCOUNT_PATH;
+  // A one-time sign-in link (/account#link=...) is opened even when this browser is already signed in as someone else,
+  // and the account page stays until it succeeds (or the person leaves), so a refused link's message stays readable.
+  const [linkPending, setLinkPending] = useState(() => typeof window !== "undefined" && /(^#|&)link=/.test(window.location.hash));
+  const signInLink = accountPage && linkPending;
+  const title = accountPage
+    ? "Registered account"
+    : !user && !publicExamples
+      ? "Welcome"
+      : route?.title ?? NAV_ITEMS.find((item) => item.path === path)?.label ?? "Not found";
 
   useEffect(() => {
     if (!publicExamples) void bootstrap();
@@ -74,6 +89,11 @@ function App() {
   useEffect(() => {
     document.title = `${title} · MedTwin 2.0`;
   }, [title]);
+
+  // A signed-in browser has no use for the account page.
+  useEffect(() => {
+    if (user && accountPage && !signInLink) navigate("/", { replace: true });
+  }, [user, accountPage, signInLink]);
 
   if (publicExamples && route) {
     const PublicPage = route.component;
@@ -86,7 +106,16 @@ function App() {
       </div>
     );
   }
-  if (!user) return <EntryPage onEnter={(next) => void signedIn(next)} />;
+  if (!user || signInLink) {
+    if (accountPage) {
+      const opened = (next: User) => {
+        setLinkPending(false);
+        void signedIn(next);
+      };
+      return <Suspense fallback={<LoadingBlock label="Loading" />}><AccountAccessPage onEnter={opened} /></Suspense>;
+    }
+    return <EntryPage onEnter={(next) => void signedIn(next)} />;
+  }
 
   // Every account has the whole workspace; each sees only its own cases and those shared with it.
   const Page = route?.component ?? NotFound;

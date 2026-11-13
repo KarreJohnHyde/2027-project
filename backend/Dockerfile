@@ -32,18 +32,23 @@ RUN python -m pip check && python -m pip uninstall -y pip
 
 COPY backend/app ./app
 COPY dataset_registry/datasets.json dataset_registry/tasks.json ./dataset_registry/
+COPY dataset_registry/datasets.json dataset_registry/tasks.json dataset_registry/release_context.json ./project/dataset_registry/
+COPY ml_training/*.py ./project/ml_training/
 COPY model_registry/ ./model_registry/
 # Generated evidence read by the research, traceability and anatomy endpoints.
 COPY docs/research/traceability.json ./project/docs/research/traceability.json
 COPY docs/validation/ ./project/docs/validation/
 COPY docs/anatomy/derivatives.json ./project/docs/anatomy/derivatives.json
 COPY public/anatomy/manifest.json ./project/public/anatomy/manifest.json
+COPY public/anatomy/atlas-index.json ./project/public/anatomy/atlas-index.json
 COPY benchmarks/results/ ./project/benchmarks/results/
 
 RUN addgroup --system medtwin \
     && adduser --system --ingroup medtwin medtwin \
     && mkdir -p /app/uploads /data/uploads \
     && chown -R medtwin:medtwin /app /data
+
+ENV PYTHONPATH=/app/project
 
 USER medtwin
 
