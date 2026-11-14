@@ -3,9 +3,10 @@
 The split and ECE tests use synthetic arrays generated here; the last test reads the committed evaluation reports."""
 
 import numpy as np
-import pandas as pd
 import pytest
 
+# The tabular trainer needs pandas and scikit-learn, which the CI backend environment does not install: skip there.
+pd = pytest.importorskip("pandas")
 tabular = pytest.importorskip("ml_training.tabular")
 
 from app.services import model_inference  # noqa: E402

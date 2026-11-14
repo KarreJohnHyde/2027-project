@@ -6,6 +6,10 @@ import json
 
 import pytest
 
+# Running a tabular model needs pandas, scikit-learn and joblib; the CI backend environment has none of them.
+for _module in ("pandas", "sklearn", "joblib"):
+    pytest.importorskip(_module)
+
 from app.models.entities import AuditEvent
 from app.services import model_inference
 from tests.conftest import get_auth_headers

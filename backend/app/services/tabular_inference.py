@@ -64,7 +64,11 @@ def _envelope(model: dict) -> dict:
 
 @lru_cache(maxsize=16)
 def _checkpoint(path: str, sha256: str) -> dict:
-    import joblib
+    try:
+        import joblib
+        import sklearn  # noqa: F401  (the checkpoint is a scikit-learn pipeline)
+    except ImportError as exc:
+        raise InferenceNotPermitted("TABULAR_RUNTIME_UNAVAILABLE: scikit-learn and joblib are not installed on this server.") from exc
 
     if _sha256(Path(path)) != sha256:
         raise InferenceNotPermitted("CHECKPOINT_HASH_MISMATCH: the checkpoint does not match its registered SHA-256; it was not loaded.")
