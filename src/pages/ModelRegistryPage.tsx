@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Badge, Card, ErrorBlock, KeyValue, Metric, PageHeader, Segmented, StatusBadge, Table } from "../components/ui";
-import { api, type ModelRegistryRecord } from "../services/api";
+import { api, type ExternalEvaluationSummary, type ModelRegistryRecord } from "../services/api";
 import { useAsync } from "../lib/useAsync";
 import { frameworkLabel, publicText, runtimeLabel } from "../lib/displayNames";
 import { formatNumber, humanize } from "../lib/format";
 import { useWorkspace } from "../state/workspace";
 import CapabilityCoverage from "../components/CapabilityCoverage";
 import ResearchJobProgress from "../components/ResearchJobProgress";
+import TabularModelForm from "../components/TabularModelForm";
 
 function declared(value: unknown): string {
   if (value === null || value === undefined || value === "" || (typeof value === "object" && Object.keys(value as object).length === 0)) return "Not declared";
@@ -21,12 +22,67 @@ function isRecorded(value: unknown): boolean {
 
 function externalEvaluationRecorded(model: ModelRegistryRecord): boolean {
   const bundle = model.artifact_bundle as Record<string, unknown>;
-  const extended = model as ModelRegistryRecord & { external_evaluation?: unknown; external_validation?: unknown };
+  const extended = model as ModelRegistryRecord & { external_validation?: unknown };
   return Boolean(
     bundle.external_evaluation_path
     || bundle.external_validation_report_path
-    || extended.external_evaluation
+    || (model.external_evaluation?.length ?? 0) > 0
     || extended.external_validation,
+  );
+}
+
+const COHORT_SCOPE: Record<string, string> = {
+  FULL_REFERENCED_COHORT: "the full referenced cohort",
+  FULL_REFERENCED_COHORT_EXCEPT_DOCUMENTED_SOURCE_DEFECTS: "the full referenced cohort, except scans whose public source copy is defective",
+  PILOT_SUBSET_NOT_FULL_COHORT: "a pilot subset, not the full cohort",
+};
+
+function share(value: number | null): string {
+  return value === null ? "Not computed" : `${(value * 100).toFixed(1)}%`;
+}
+
+function ExternalEvaluation({ result }: { result: ExternalEvaluationSummary }) {
+  return (
+    <div className="mt-3 rounded-lg border border-line p-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="text-xs font-medium text-ink">External evaluation on a public cohort</p>
+        <StatusBadge status="EXTERNALLY_EVALUATED" label="Research measurement" />
+        <StatusBadge status="NOT_CLINICALLY_VALIDATED" label="Not clinical validation" />
+      </div>
+      <p className="mt-1.5 text-[11px] leading-4 text-ink-2">
+        {publicText(result.dataset)}; {COHORT_SCOPE[result.scope ?? ""] ?? humanize(result.scope ?? "scope not stated")}.
+        {result.reference_standard && <> Reference standard: {result.reference_standard}.</>}
+        {" "}{result.scored ?? 0} scans scored; {result.refused ?? 0} refused by the input checks. Refused scans are reported separately and never counted as normal.
+        {result.excluded.length > 0 && <> Excluded: {result.excluded.map((item) => `${item.scan} (${item.reason ?? "reason not stated"})`).join("; ")}.</>}
+      </p>
+      <div className="mt-2 overflow-x-auto">
+        <table className="w-full border-collapse text-left text-xs tabular">
+          <thead>
+            <tr className="border-b border-line text-[11px] text-ink-3">
+              {["Finding", "Positive / negative", "AUROC (95% CI)", "Sensitivity", "Specificity"].map((header) => <th key={header} scope="col" className="px-1.5 py-1 font-medium">{header}</th>)}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-line text-ink-2 [&_td]:px-1.5 [&_td]:py-1 [&_td]:align-top">
+            {result.labels.map((label) => (
+              <tr key={label.label}>
+                <td className="font-medium text-ink">{label.label}</td>
+                <td className="whitespace-nowrap">{label.positives ?? "?"} / {label.negatives ?? "?"}</td>
+                <td>
+                  <span className="text-ink">{label.auroc === null ? "Not computed" : label.auroc.toFixed(3)}</span>
+                  {label.auroc_ci95 && <span className="block whitespace-nowrap text-[10px] text-ink-3">{label.auroc_ci95[0].toFixed(3)}–{label.auroc_ci95[1].toFixed(3)}</span>}
+                </td>
+                <td>{share(label.sensitivity)}</td>
+                <td>{share(label.specificity)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-1.5 text-[11px] leading-4 text-ink-3">
+        {result.threshold_policy ? `${result.threshold_policy}. ` : ""}
+        Measured the registered checkpoint (same SHA-256). Small positive counts give wide uncertainty. Report: <code>{result.report_path}</code>
+      </p>
+    </div>
   );
 }
 
@@ -81,6 +137,8 @@ function ModelCard({ model }: { model: ModelRegistryRecord }) {
           )}
         </div>
       )}
+      {model.external_evaluation?.map((result) => <ExternalEvaluation key={result.report_path} result={result} />)}
+      {model.task === "tabular_classification" && model.research_gate?.allowed && <TabularModelForm modelId={model.model_id} />}
       {(model.inference_route || model.local_evaluation) && (
         <div className="mt-3 rounded-lg border border-line p-3 text-[11px] leading-4 text-ink-2">
           {model.inference_route && <p>Runs through its own endpoint: <code>{model.inference_route}</code>.</p>}
@@ -111,12 +169,13 @@ function EvidenceMatrix({ models }: { models: ModelRegistryRecord[] }) {
         <p className="text-sm leading-6 text-ink-2">
           A registry entry, dataset citation, installed dependency, checkpoint, runnable research path, internal evaluation, external evaluation,
           and clinical activation are different claims. A green cell in one column never upgrades another column. “Not recorded” means this
-          registry response contains no evidence for that facet. External-report cells show references, not independently verified results.
+          registry response contains no evidence for that facet. An external-evaluation cell shows either a saved research result on a public cohort
+          the model never trained on, for the registered checkpoint only, or a reference to an outside report. Neither is clinical validation.
           The registry gate checks declared status and artifacts; passing it is not clinical approval.
         </p>
       </Card>
       <Card title="Model evidence facets" eyebrow="Current authenticated registry response" padded={false}>
-        <Table headers={["Model", "Registry state", "Dataset + licence", "Dependency", "Checkpoint hash", "Research gate", "Internal evaluation", "External report reference", "Registry artifact gate"]} dense>
+        <Table headers={["Model", "Registry state", "Dataset + licence", "Dependency", "Checkpoint hash", "Research gate", "Internal evaluation", "External evaluation", "Registry artifact gate"]} dense>
           {models.map((model) => {
             const bundle = model.artifact_bundle as Record<string, unknown>;
             const datasetRecorded = isRecorded(bundle.dataset_version) && isRecorded(bundle.dataset_license);
@@ -166,7 +225,11 @@ function EvidenceMatrix({ models }: { models: ModelRegistryRecord[] }) {
                     <span title={`${model.local_evaluation.headline} (${model.local_evaluation.dataset})`}><StatusBadge status="PARTIAL" label={`Local check: ${model.local_evaluation.scope}`} /></span>
                   ) : <Facet value={internalEvaluation} yes="Held-out report" no="Not recorded" yesStatus="INTERNALLY_EVALUATED" />}
                 </td>
-                <td><Facet value={externalEvaluationRecorded(model)} yes="Referenced" no="Not recorded" yesStatus="RECORDED" /></td>
+                <td>
+                  {model.external_evaluation?.length ? (
+                    <span title={model.external_evaluation.map((result) => publicText(result.dataset)).join("; ")}><StatusBadge status="EXTERNALLY_EVALUATED" label="Public-cohort result" /></span>
+                  ) : <Facet value={externalEvaluationRecorded(model)} yes="Referenced" no="Not recorded" yesStatus="RECORDED" />}
+                </td>
                 <td>
                   <Facet
                     value={model.activation.eligible}
@@ -223,7 +286,7 @@ export default function ModelRegistryPage() {
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <Metric label="Registry entries" value={registry.loading && models.length === 0 ? "Loading" : models.length} note="Includes frameworks and text processors" />
         <Metric label="Internal evaluation recorded" value={internalEvaluated} note="Not external or clinical validation" />
-        <Metric label="External report references" value={externalEvaluated} note="Metadata references, not independent verification" />
+        <Metric label="External evaluation recorded" value={externalEvaluated} note="Research results or references, not clinical validation" />
         <Metric label="Registry gate eligible" value={models.filter((model) => model.activation.eligible).length} note="Artifact/status checks, not clinical approval" />
       </div>
       {registry.error && <ErrorBlock message={registry.error} onRetry={registry.reload} />}

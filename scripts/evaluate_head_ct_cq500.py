@@ -121,14 +121,40 @@ def metrics(rows: list[dict], truth: dict, names: list[str], thresholds: dict[st
     return result
 
 
-def cohort_scope(truth, archives, limit):
+def source_defects(folder) -> dict:
+    """Scans whose public source archive is documented as defective by cq500_repair_zip.py records (*.zip.repaired.json)."""
+    if folder is None or not Path(folder).is_dir():
+        return {}
+    defects = {}
+    for record_path in Path(folder).glob("*.zip.repaired.json"):
+        record = json.loads(record_path.read_text(encoding="utf-8"))
+        defects[record_path.name[: -len(".zip.repaired.json")]] = {
+            "reason": record["source"]["problem"], "source_sha256": record["source"]["sha256"],
+            "entries_recovered": record["entries_recovered"], "local_headers_found": record["local_headers_found"],
+            "series": [{"description": item["description"], "slices": item["slices"],
+                        "missing_inside_range": len(item["missing_inside_range"])} for item in record["series"]],
+        }
+    return defects
+
+
+def cohort_scope(truth, archives, limit, defects=None):
     present = {path.stem for path in archives}
     missing = sorted(set(truth) - present)
-    if missing and not limit:
-        raise ValueError(f"Full external evaluation refused: {len(missing)} referenced CQ500 scan archives are missing")
+    documented = {scan: (defects or {})[scan] for scan in missing if scan in (defects or {})}
+    unexplained = [scan for scan in missing if scan not in documented]
+    if unexplained and not limit:
+        raise ValueError(f"Full external evaluation refused: {len(unexplained)} referenced CQ500 scan archives are missing "
+                         "without a documented source defect")
+    if limit:
+        scope = "PILOT_SUBSET_NOT_FULL_COHORT"
+    elif documented:
+        # Every other referenced scan is evaluated; the excluded ones are named with the evidence that their public
+        # source copy cannot be read completely, so the result is never mistaken for the complete cohort.
+        scope = "FULL_REFERENCED_COHORT_EXCEPT_DOCUMENTED_SOURCE_DEFECTS"
+    else:
+        scope = "FULL_REFERENCED_COHORT"
     return {"expected_reference_scans": len(truth), "present_archives": len(present),
-            "missing_reference_scans": missing,
-            "scope": "PILOT_SUBSET_NOT_FULL_COHORT" if limit else "FULL_REFERENCED_COHORT",
+            "missing_reference_scans": missing, "excluded_source_defects": documented, "scope": scope,
             "clinical_validation": False}
 
 
@@ -137,11 +163,14 @@ def main() -> int:
     parser.add_argument("--cq500", type=Path, required=True)
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--output", type=Path, help="Optional explicit result path, including for pilot subsets")
+    parser.add_argument("--source-defects", type=Path,
+                        help="Folder of cq500_repair_zip.py records (default: <cq500>/zips-partial). A referenced scan missing "
+                             "from zips/ is excluded only when a record documents that its public source copy is defective.")
     args = parser.parse_args()
     truth = reference(args.cq500 / "reads.csv")
     zips = sorted((args.cq500 / "zips").glob("CQ500-CT-*.zip"), key=lambda path: int(path.stem.rsplit("-", 1)[1]))
     try:
-        scope = cohort_scope(truth, zips, args.limit)
+        scope = cohort_scope(truth, zips, args.limit, source_defects(args.source_defects or args.cq500 / "zips-partial"))
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc
     if args.limit:

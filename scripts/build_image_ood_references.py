@@ -55,6 +55,9 @@ FAMILIES = {
     "cxr_tuberculosis_nlm_classifier": "Chest radiograph",
     "skin_padufes_image_classifier": "Clinical skin photograph",
     "skin_padufes_image_tabular_classifier": "Clinical skin photograph",
+    # CPU-trained models of 2026-11-14 (own families; they join other models' cross-domain checks only when those are rebuilt).
+    "blood_smear_malaria_cell_classifier": "Malaria thin-smear microscopy",
+    "ultrasound_fetal_plane_classifier": "Obstetric ultrasound",
 }
 # Models whose network reads 2-D images, whether the upload is one image or slices of a DICOM series.
 IMAGE_NETWORK_INPUTS = {"image_2d", "head_ct_series"}
@@ -64,7 +67,9 @@ FAMILY_SOURCE = {"GI endoscopy": "gi_kvasir_v2_classifier", "Coronary angiograph
                  "Musculoskeletal radiograph": "mura_study_baseline", "Head CT": "brain_ct_rsna_ich_classifier"}
 # Families whose source model may not be trained yet join the cross-domain check once registered.
 OPTIONAL_FAMILY_SOURCE = {"Chest radiograph": "cxr_tuberculosis_nlm_classifier",
-                          "Clinical skin photograph": "skin_padufes_image_classifier"}
+                          "Clinical skin photograph": "skin_padufes_image_classifier",
+                          "Malaria thin-smear microscopy": "blood_smear_malaria_cell_classifier",
+                          "Obstetric ultrasound": "ultrasound_fetal_plane_classifier"}
 
 
 def split_paths(model: dict, split: str) -> list[Path]:

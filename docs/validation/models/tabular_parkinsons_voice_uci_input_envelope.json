@@ -1,0 +1,191 @@
+{
+  "model_id": "tabular_parkinsons_voice_uci",
+  "target": "Parkinson's disease (vs healthy) from sustained-vowel voice measurements",
+  "source": "UCI dataset 174 (development part only, seed 20261024)",
+  "units": "as defined in the UCI dataset documentation for this table",
+  "development_rows": 145,
+  "fields": [
+    {
+      "name": "MDVP:Fo(Hz)",
+      "type": "number",
+      "min": 88.333,
+      "max": 260.105,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "MDVP:Fhi(Hz)",
+      "type": "number",
+      "min": 102.145,
+      "max": 588.518,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "MDVP:Flo(Hz)",
+      "type": "number",
+      "min": 65.476,
+      "max": 239.17,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "MDVP:Jitter(%)",
+      "type": "number",
+      "min": 0.00168,
+      "max": 0.01813,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "MDVP:Jitter(Abs)",
+      "type": "number",
+      "min": 7e-06,
+      "max": 0.00015,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "MDVP:RAP",
+      "type": "number",
+      "min": 0.00068,
+      "max": 0.01117,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "MDVP:PPQ",
+      "type": "number",
+      "min": 0.00092,
+      "max": 0.00718,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "Jitter:DDP",
+      "type": "number",
+      "min": 0.00204,
+      "max": 0.03351,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "MDVP:Shimmer",
+      "type": "number",
+      "min": 0.00954,
+      "max": 0.07959,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "MDVP:Shimmer(dB)",
+      "type": "number",
+      "min": 0.085,
+      "max": 0.772,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "Shimmer:APQ3",
+      "type": "number",
+      "min": 0.00455,
+      "max": 0.04421,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "Shimmer:APQ5",
+      "type": "number",
+      "min": 0.00576,
+      "max": 0.04962,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "MDVP:APQ",
+      "type": "number",
+      "min": 0.00719,
+      "max": 0.05767,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "Shimmer:DDA",
+      "type": "number",
+      "min": 0.01364,
+      "max": 0.13262,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "NHR",
+      "type": "number",
+      "min": 0.00065,
+      "max": 0.10748,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "HNR",
+      "type": "number",
+      "min": 11.744,
+      "max": 33.047,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "RPDE",
+      "type": "number",
+      "min": 0.25657,
+      "max": 0.685151,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "DFA",
+      "type": "number",
+      "min": 0.574282,
+      "max": 0.821364,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "spread1",
+      "type": "number",
+      "min": -7.964984,
+      "max": -2.929379,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "spread2",
+      "type": "number",
+      "min": 0.006274,
+      "max": 0.397749,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "D2",
+      "type": "number",
+      "min": 1.423287,
+      "max": 3.671155,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "PPE",
+      "type": "number",
+      "min": 0.044539,
+      "max": 0.377429,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    }
+  ],
+  "rules": [
+    "values outside the development range are refused",
+    "coded fields accept only their development codes",
+    "unknown categories are refused",
+    "blank values are imputed only for fields that were blank in development; more than half blank is refused"
+  ]
+}

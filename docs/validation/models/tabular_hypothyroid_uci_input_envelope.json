@@ -1,0 +1,191 @@
+{
+  "model_id": "tabular_hypothyroid_uci",
+  "target": "hypothyroidism (Garvan Institute referrals; the source's 'hypothyroid' class)",
+  "source": "UCI dataset 102 (development part only, seed 20261024)",
+  "units": "as defined in the UCI dataset documentation for this table",
+  "development_rows": 2259,
+  "fields": [
+    {
+      "name": "age",
+      "type": "number",
+      "min": 1.0,
+      "max": 97.0,
+      "development_missing_share": 0.1368,
+      "may_be_blank": true
+    },
+    {
+      "name": "sex",
+      "type": "category",
+      "categories": [
+        "F",
+        "M"
+      ],
+      "development_missing_share": 0.0199,
+      "may_be_blank": true
+    },
+    {
+      "name": "on_thyroxine",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "query_on_thyroxine",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "on_antithyroid_medication",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "thyroid_surgery",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "query_hypothyroid",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "query_hyperthyroid",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "pregnant",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "sick",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "tumor",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "lithium",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "goitre",
+      "type": "category",
+      "categories": [
+        "f",
+        "t"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "TSH",
+      "type": "number",
+      "min": 0.0,
+      "max": 530.0,
+      "development_missing_share": 0.1443,
+      "may_be_blank": true
+    },
+    {
+      "name": "T3",
+      "type": "number",
+      "min": 0.0,
+      "max": 10.2,
+      "development_missing_share": 0.2112,
+      "may_be_blank": true
+    },
+    {
+      "name": "TT4",
+      "type": "number",
+      "min": 2.0,
+      "max": 430.0,
+      "development_missing_share": 0.077,
+      "may_be_blank": true
+    },
+    {
+      "name": "T4U",
+      "type": "number",
+      "min": 0.28,
+      "max": 2.21,
+      "development_missing_share": 0.0766,
+      "may_be_blank": true
+    },
+    {
+      "name": "FTI",
+      "type": "number",
+      "min": 0.0,
+      "max": 741.0,
+      "development_missing_share": 0.0761,
+      "may_be_blank": true
+    },
+    {
+      "name": "TBG",
+      "type": "number",
+      "min": 0.0,
+      "max": 122.0,
+      "development_missing_share": 0.9208,
+      "may_be_blank": true
+    }
+  ],
+  "rules": [
+    "values outside the development range are refused",
+    "coded fields accept only their development codes",
+    "unknown categories are refused",
+    "blank values are imputed only for fields that were blank in development; more than half blank is refused"
+  ]
+}

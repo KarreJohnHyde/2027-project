@@ -205,11 +205,12 @@ function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFi
   const [phase, setPhase] = useState<number>(0);
   const [modelId, setModelId] = useState("");
   const listing = useAsync(() => api.getResearchModels(), []);
-  // Series reach the single-sequence volume models (cardiac segmenter, CT volume models) and the neighbouring-slice head CT models.
-  const seriesModels = (listing.data?.models ?? []).filter((item) => item.gate.allowed && (item.inference_input === "head_ct_series"
+  // Series reach the single-sequence volume models (cardiac segmenter, CT volume models) and the head CT models: neighbouring-slice
+  // models, and single-slice models registered to read a series slice by slice.
+  const seriesModels = (listing.data?.models ?? []).filter((item) => item.gate.allowed && (item.head_ct_series_mode
     || (item.inference_input === "volume_nifti" && ["MRI", "CT_ABDOMEN_VOLUME", "CT_CHEST_VOLUME"].some((type) => item.supported_modalities.includes(type)))));
   const model = seriesModels.find((item) => item.model_id === modelId) ?? seriesModels[0] ?? null;
-  const declaredInput: "MRI" | "CT_ABDOMEN_VOLUME" | "CT_CHEST_VOLUME" | "HEAD_CT_SERIES" = model?.inference_input === "head_ct_series" ? "HEAD_CT_SERIES"
+  const declaredInput: "MRI" | "CT_ABDOMEN_VOLUME" | "CT_CHEST_VOLUME" | "HEAD_CT_SERIES" = model?.head_ct_series_mode ? "HEAD_CT_SERIES"
     : model?.supported_modalities.includes("MRI") ? "MRI" : model?.supported_modalities.includes("CT_CHEST_VOLUME") ? "CT_CHEST_VOLUME" : "CT_ABDOMEN_VOLUME";
   const ordered = report?.status === "ASSEMBLED" ? report.ordered_upload_ids ?? null : null;
   const phaseChoice = report?.cardiac_phases && (report.issues.includes("CARDIAC_PHASE_REQUIRED") || report.phase !== undefined) ? report : null;
@@ -331,9 +332,9 @@ function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFi
           </Card>
         )}
         {ordered && (
-          <Card title="Research model on this series" eyebrow="Research only · cardiac short-axis cine MRI or abdominal CT">
+          <Card title="Research model on this series" eyebrow="Research only · head CT, cardiac short-axis cine MRI, chest or abdominal CT">
             {!model ? (
-              <p className="text-xs text-ink-2">No volumetric research model that takes a single-sequence series passes the gate on this server.</p>
+              <p className="text-xs text-ink-2">No research model that takes a single-sequence series passes the gate on this server.</p>
             ) : (
               <div className="space-y-3">
                 {seriesModels.length > 1 && (
@@ -348,7 +349,7 @@ function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFi
                   {declaredInput === "MRI"
                     ? `${model.display_name}. The development frames carry no patient orientation, so the server runs the model under all 16 axis conventions, keeps the one whose ventricle layout matches the development frames, and requires the right ventricle to lie anterior-right of the left ventricle in this series' patient coordinates. The slice normal must be oblique (short-axis stacks are double-oblique).`
                     : declaredInput === "HEAD_CT_SERIES"
-                      ? `${model.display_name}. Every slice is windowed as the training images were, stacked with its neighbours and checked against the model's applicability reference; slices outside it are not analysed, and a series with more than half of them outside is refused.`
+                      ? `${model.display_name}. Every slice is windowed as the training images were, ${model.head_ct_series_mode === "per_slice" ? "read on its own (this model never sees neighbouring slices)" : "stacked with its neighbours"} and checked against the model's applicability reference; slices outside it are not analysed, and a series with more than half of them outside is refused.`
                       : `${model.display_name}. The series is permuted and flipped into the development orientation from its DICOM geometry (exact, no resampling) and must hold Hounsfield units inside the development range.`}
                 </p>
                 <label className="flex items-start gap-2 text-xs text-ink-2">
@@ -361,7 +362,7 @@ function SeriesViewer({ caseId, uploads }: { caseId: number; uploads: UploadedFi
                         ? "This series is a thoracic CT volume."
                         : "This series is a contrast-enhanced abdominal CT volume."}
                 </label>
-                <Button size="sm" disabled={!attested || busy !== null} loading={busy !== null && busy !== "Assembling"} onClick={segment}>{busy && busy !== "Assembling" ? busy : "Run segmenter"}</Button>
+                <Button size="sm" disabled={!attested || busy !== null} loading={busy !== null && busy !== "Assembling"} onClick={segment}>{busy && busy !== "Assembling" ? busy : declaredInput === "HEAD_CT_SERIES" ? "Run model" : "Run segmenter"}</Button>
                 {run && <ResultView run={run} />}
               </div>
             )}
@@ -413,7 +414,7 @@ export default function MedicalImagingPage() {
       <PageHeader
         eyebrow="Medical Imaging"
         title="Imaging viewer and modality coverage"
-        description="CT, MRI, X-ray, ultrasound, PET, angiography, endoscopy and other containers are read and displayed with their spatial metadata; multi-file DICOM series are assembled by slice position. No clinically validated model is configured. Research-only models trained on public datasets can be run on PNG/JPEG/BMP uploads (after an applicability check against each model's training images), on NIfTI volumes (cardiac cine MRI frames, brain diffusion MRI for stroke lesions, multi-sequence brain MRI for gliomas), on assembled cardiac MRI series and frame by frame on GI endoscopy videos (MP4/AVI); their outputs are labelled as research and stay pending review."
+        description="CT, MRI, X-ray, ultrasound, PET, angiography, endoscopy and other containers are read and displayed with their spatial metadata; multi-file DICOM series are assembled by slice position. No clinically validated model is configured. Research-only models trained on public datasets can be run on PNG/JPEG/BMP uploads (after an applicability check against each model's training images), on NIfTI volumes (cardiac cine MRI frames, brain diffusion MRI for stroke lesions, multi-sequence brain MRI for gliomas), on assembled cardiac MRI series, slice by slice on assembled axial head CT series (intracranial haemorrhage) and frame by frame on GI endoscopy videos (MP4/AVI); their outputs are labelled as research and stay pending review."
         actions={<Segmented label="Imaging view" value={tab} onChange={setTab} options={[{ value: "viewer", label: "Viewer" }, { value: "series", label: "DICOM series" }, { value: "support", label: "Modality support" }]} />}
       />
       {tab === "support" ? <ModalitySupport /> : tab === "series" && selected ? (

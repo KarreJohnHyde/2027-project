@@ -1,0 +1,158 @@
+{
+  "model_id": "tabular_heart_disease_uci",
+  "target": "angiographic coronary disease (>50% narrowing; 'num' > 0)",
+  "source": "UCI dataset 45 (development part only, seed 20261024)",
+  "units": "as defined in the UCI dataset documentation for this table",
+  "development_rows": 656,
+  "fields": [
+    {
+      "name": "age",
+      "type": "number",
+      "min": 28.0,
+      "max": 77.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "sex",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "cp",
+      "type": "number",
+      "min": 1.0,
+      "max": 4.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false,
+      "allowed_values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0
+      ]
+    },
+    {
+      "name": "trestbps",
+      "type": "number",
+      "min": 0.0,
+      "max": 200.0,
+      "development_missing_share": 0.0671,
+      "may_be_blank": true
+    },
+    {
+      "name": "chol",
+      "type": "number",
+      "min": 0.0,
+      "max": 603.0,
+      "development_missing_share": 0.0335,
+      "may_be_blank": true
+    },
+    {
+      "name": "fbs",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1006,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "restecg",
+      "type": "number",
+      "min": 0.0,
+      "max": 2.0,
+      "development_missing_share": 0.003,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "thalach",
+      "type": "number",
+      "min": 60.0,
+      "max": 202.0,
+      "development_missing_share": 0.0625,
+      "may_be_blank": true
+    },
+    {
+      "name": "exang",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.0625,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "oldpeak",
+      "type": "number",
+      "min": -2.6,
+      "max": 5.6,
+      "development_missing_share": 0.0716,
+      "may_be_blank": true
+    },
+    {
+      "name": "slope",
+      "type": "number",
+      "min": 1.0,
+      "max": 3.0,
+      "development_missing_share": 0.3445,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0,
+        3.0
+      ]
+    },
+    {
+      "name": "ca",
+      "type": "number",
+      "min": 0.0,
+      "max": 3.0,
+      "development_missing_share": 0.6662,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0,
+        2.0,
+        3.0
+      ]
+    },
+    {
+      "name": "thal",
+      "type": "number",
+      "min": 3.0,
+      "max": 7.0,
+      "development_missing_share": 0.5427,
+      "may_be_blank": true,
+      "allowed_values": [
+        3.0,
+        6.0,
+        7.0
+      ]
+    }
+  ],
+  "rules": [
+    "values outside the development range are refused",
+    "coded fields accept only their development codes",
+    "unknown categories are refused",
+    "blank values are imputed only for fields that were blank in development; more than half blank is refused"
+  ]
+}

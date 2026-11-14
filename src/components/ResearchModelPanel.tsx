@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useMemo, useRef, useState, type ReactNode } 
 import { Check, FlaskConical, Upload, X } from "lucide-react";
 import { Badge, Button, Disclosure, ErrorBlock, KeyValue, LoadingBlock, Segmented, SelectInput, StatusBadge, Table, TextInput, Unavailable } from "./ui";
 import { api, type BoxComparison, type RunAgreement, type CocoRle, type FilmAssessment, type ReferenceAnnotation, type ReferenceComparison, type ResearchModel, type ResearchOutput, type ResearchRun } from "../services/api";
-import { licenceLabel } from "../lib/displayNames";
+import { licenceLabel, publicText } from "../lib/displayNames";
 import { errorMessage, formatDate, formatNumber, humanize } from "../lib/format";
 import { decodeCocoRle } from "../lib/rle";
 import { Link } from "../lib/router";
@@ -657,12 +657,36 @@ export function ResultView({ run, showBelow = false, setShowBelow = () => undefi
       {output.type === "series_slice_multilabel" && (
         <>
           <p className="text-sm text-ink">
-            {humanize(output.series_level.label)}: highest probability over {output.series_level.coverage} <span className="tabular font-semibold">{formatNumber(output.series_level.probability, 3)}</span> (slice {output.series_level.slice_index + 1}),{" "}
-            {output.series_level.at_or_above_threshold ? "at or above" : "below"} its threshold {formatNumber(output.series_level.threshold, 3)}.
+            {humanize(output.series_level.label)}: highest probability over {output.series_level.coverage} <span className="tabular font-semibold">{output.series_level.probability.toFixed(3)}</span> (slice {output.series_level.slice_index + 1}),{" "}
+            {output.series_level.at_or_above_threshold ? "at or above" : "below"} its threshold {output.series_level.threshold.toFixed(3)}.
           </p>
           {!output.series_level.complete_coverage && <p className="text-xs text-warning-text">Partial: slices outside the model's training images were not analysed, so a finding on them cannot appear here.</p>}
           <p className="text-[11px] leading-4 text-ink-3">{output.series_level.rule}</p>
           <p className="text-xs text-ink-2">{output.slices_analysed} slices analysed, {output.slices_refused} outside the model's training images (not analysed); slices with a label at or above threshold: {output.slices_with_positive_labels.length ? output.slices_with_positive_labels.map((index) => index + 1).join(", ") : "none"}.</p>
+          {output.label_maxima && output.label_maxima.length > 0 && (
+            <Table headers={["Label", "Highest over the series", "Threshold", "Slice", "At or above threshold"]} dense>
+              {output.label_maxima.map((item) => (
+                <tr key={item.label}>
+                  <td className="text-ink">{humanize(item.label)}</td>
+                  <td className="tabular text-ink">{item.probability.toFixed(3)}</td>
+                  <td className="tabular text-ink-3">{item.threshold.toFixed(3)}</td>
+                  <td className="tabular text-ink-3">{item.slice_index + 1}</td>
+                  <td>{item.at_or_above_threshold ? <StatusBadge status="REVIEW" label="Yes" /> : <span className="text-ink-3">No</span>}</td>
+                </tr>
+              ))}
+            </Table>
+          )}
+          {output.slice_input && <p className="text-[11px] leading-4 text-ink-3">Model input: {output.slice_input}.</p>}
+          {output.series_pipeline_external_evaluation && (
+            <p className="text-[11px] leading-4 text-ink-2">
+              This checkpoint, run through this same series pipeline, was evaluated externally on {publicText(output.series_pipeline_external_evaluation.dataset)}
+              {output.series_pipeline_external_evaluation.scored_scans !== null && ` (${output.series_pipeline_external_evaluation.scored_scans} scans scored)`}
+              {output.series_pipeline_external_evaluation.any_haemorrhage?.auroc != null && `: any-haemorrhage AUROC ${output.series_pipeline_external_evaluation.any_haemorrhage.auroc.toFixed(3)}`}
+              {output.series_pipeline_external_evaluation.any_haemorrhage?.sensitivity != null && `, sensitivity ${(output.series_pipeline_external_evaluation.any_haemorrhage.sensitivity * 100).toFixed(1)}%`}
+              {output.series_pipeline_external_evaluation.any_haemorrhage?.specificity != null && `, specificity ${(output.series_pipeline_external_evaluation.any_haemorrhage.specificity * 100).toFixed(1)}%`}
+              {" "}at the same thresholds. A research measurement, not clinical validation; this result still needs review.
+            </p>
+          )}
           <div className="max-h-64 overflow-auto">
             <Table headers={["Slice", "Applicability", "At or above threshold"]} dense>
               {output.slices.map((item) => (

@@ -1,0 +1,114 @@
+{
+  "model_id": "tabular_hypothyroid_uci",
+  "run_id": "tabular_hypothyroid_uci-20261114T091112Z",
+  "task_id": "hypothyroidism",
+  "task_type": "tabular_binary_classification",
+  "target": "hypothyroidism (Garvan Institute referrals; the source's 'hypothyroid' class)",
+  "dataset": "UCI 102",
+  "dataset_id": "uci-thyroid-hypothyroid",
+  "dataset_version": "f040f2ae73b4515ba31378d0539a814ed0da9aec4f5cc4d6af69605448905b1d",
+  "dataset_license": "CC BY 4.0",
+  "training_rights": {
+    "authorization_status": "VERIFIED",
+    "training_purpose": "research",
+    "license_name": "CC BY 4.0"
+  },
+  "split_method": "StratifiedGroupKFold 70/15/15 by outcome; one person's rows and every exact duplicate record stay in one part",
+  "duplicate_handling": {
+    "exact_duplicate_records": 77,
+    "rule": "identical records (all features and label) are grouped into one part"
+  },
+  "evaluation_status": "RE_EVALUATED_AFTER_TEST_EXPOSURE_NOT_INDEPENDENT_FINAL_TEST",
+  "split_counts": {
+    "train": 2259,
+    "val": 452,
+    "test": 452
+  },
+  "positives": {
+    "train": 107,
+    "val": 22,
+    "test": 22
+  },
+  "features": [
+    "age",
+    "sex",
+    "on_thyroxine",
+    "query_on_thyroxine",
+    "on_antithyroid_medication",
+    "thyroid_surgery",
+    "query_hypothyroid",
+    "query_hyperthyroid",
+    "pregnant",
+    "sick",
+    "tumor",
+    "lithium",
+    "goitre",
+    "TSH",
+    "T3",
+    "TT4",
+    "T4U",
+    "FTI",
+    "TBG"
+  ],
+  "model_selection": {
+    "validation_auroc": {
+      "logistic_C0.01": 0.9929175475687103,
+      "logistic_C0.1": 0.9941860465116279,
+      "logistic_C1.0": 0.9966173361522198,
+      "logistic_C10.0": 0.9970401691331925,
+      "gradient_boosting_depth3_lr0.05": 0.9983086680761099,
+      "gradient_boosting_depth3_lr0.1": 0.9983086680761099,
+      "gradient_boosting_depthNone_lr0.05": 0.9985200845665961,
+      "gradient_boosting_depthNone_lr0.1": 0.9979915433403805
+    },
+    "selected": "gradient_boosting_depthNone_lr0.05",
+    "rule": "highest validation AUROC; logistic regression on ties"
+  },
+  "test_n": 452,
+  "metrics": {
+    "auroc": 0.9689217758985201,
+    "auprc": 0.8577712244848206,
+    "sensitivity": 0.8181818181818182,
+    "specificity": 0.9906976744186047,
+    "brier": 0.01552474003740042,
+    "brier_prevalence_baseline": 0.046305254531873945,
+    "ece_10_bins": 0.017184985464212876,
+    "threshold": 0.7380964274075161,
+    "test_positive_share": 0.048672566371681415,
+    "brier_skill": 0.6647304891345742
+  },
+  "confidence_intervals_95": {
+    "auroc": {
+      "status": "COMPUTED",
+      "low": 0.913402339482947,
+      "high": 0.9986548684281032,
+      "resamples": 1000,
+      "unit": "person or duplicate-record group"
+    },
+    "auprc": {
+      "status": "COMPUTED",
+      "low": 0.7222192948814202,
+      "high": 0.9699859116373823,
+      "resamples": 1000,
+      "unit": "person or duplicate-record group"
+    }
+  },
+  "calibration": {
+    "method": "Platt scaling on the validation part",
+    "operating_threshold": "Youden's J on the validation part"
+  },
+  "checkpoint": {
+    "path": "artifacts/training/tabular_hypothyroid_uci-20261114T091112Z/model.joblib",
+    "sha256": "5a602f19366b5ebf08217ed35c3b4af43394cde5a5d35be1cbc74db4dcd215df"
+  },
+  "held_out_predictions": "artifacts/training/tabular_hypothyroid_uci-20261114T091112Z/predictions_test.csv",
+  "evaluated_at": "2026-11-14T09:11:41+00:00",
+  "limitations": [
+    "Population: Thyroid referrals to the Garvan Institute, Sydney (1980s). Results do not transfer to other populations without external evaluation.",
+    "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+    "Single public cohort; no external test set.",
+    "Re-evaluated after test exposure (2026-11-14 duplicate audit): this split's test part overlaps the first run's inspected test part, so it is not an independent final test.",
+    "Near-definitional task: the source label was assigned from these thyroid tests (FTI alone reaches development AUROC 0.984), so the high score reflects re-learning that rule, not independent diagnostic discovery.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

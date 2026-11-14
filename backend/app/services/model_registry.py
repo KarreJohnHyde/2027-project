@@ -218,12 +218,17 @@ def registry_state(model: dict[str, Any], gate: dict[str, Any]) -> str:
 
 
 def list_models() -> dict[str, Any]:
+    from app.services.external_evaluations import external_evaluations_for
     from app.services.model_inference import evaluation_summary, research_gate
 
     payload = deepcopy(_load_registry())
     for model in payload["models"]:
         model["activation"] = activation_gate(model)
         model["registry_state"] = registry_state(model, model["activation"])
+        external = external_evaluations_for(model)
+        if external:
+            # Research measurements on a public cohort the model never trained on; never clinical validation.
+            model["external_evaluation"] = external
         if model.get("research_inference"):
             # Research-only use is a separate, weaker gate than clinical activation.
             model["research_gate"] = research_gate(model)

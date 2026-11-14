@@ -22,11 +22,12 @@ NAMES = {  # display names for MSD label strings (dataset.json "labels")
 }
 
 
-def prepare(source: Path, output: Path) -> dict:
+def prepare(source: Path, output: Path, any_modality: bool = False) -> dict:
     meta = json.loads((source / "dataset.json").read_text(encoding="utf-8"))
     modality = {str(key): value for key, value in (meta.get("modality") or {}).items()}
-    if list(modality.values()) != ["CT"]:
-        raise SystemExit(f"{source.name}: dataset.json modality is {modality}, not single-channel CT")
+    if not modality or (not any_modality and list(modality.values()) != ["CT"]):
+        raise SystemExit(f"{source.name}: dataset.json modality is {modality}, not single-channel CT (use --any-modality for MRI tasks)")
+    channels = [modality[key] for key in sorted(modality, key=int)]
     labels = {int(key): NAMES.get(str(value).strip().lower(), re.sub(r"\W+", "_", str(value).strip().lower())) for key, value in meta["labels"].items()}
     expected = meta.get("training")
     if not isinstance(expected, list) or len(expected) != meta.get("numTraining"):
@@ -63,7 +64,7 @@ def prepare(source: Path, output: Path) -> dict:
         writer.writerows(rows)
     (output / "labels.json").write_text(json.dumps({str(key): value for key, value in sorted(labels.items())}, indent=2) + "\n", encoding="utf-8")
     summary = {"dataset": f"Medical Segmentation Decathlon {meta.get('name', source.name)}", "licence": meta.get("licence") or meta.get("license"),
-               "reference": meta.get("reference"), "release": meta.get("release"), "source": str(source), "channels": ["CT"],
+               "reference": meta.get("reference"), "release": meta.get("release"), "source": str(source), "channels": channels,
                "labels": labels, "cases": len(rows)}
     (output / "preparation.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"cases": len(rows), "labels": labels, "licence": summary["licence"], "output": str(output)}))
@@ -74,8 +75,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--any-modality", action="store_true", help="Accept MRI tasks (channels as dataset.json lists them)")
     args = parser.parse_args(argv)
-    prepare(args.source.resolve(), args.output.resolve())
+    prepare(args.source.resolve(), args.output.resolve(), args.any_modality)
     return 0
 
 

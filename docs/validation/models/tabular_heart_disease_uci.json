@@ -1,0 +1,107 @@
+{
+  "model_id": "tabular_heart_disease_uci",
+  "run_id": "tabular_heart_disease_uci-20261114T091040Z",
+  "task_id": "heart-disease",
+  "task_type": "tabular_binary_classification",
+  "target": "angiographic coronary disease (>50% narrowing; 'num' > 0)",
+  "dataset": "UCI 45",
+  "dataset_id": "uci-heart-disease",
+  "dataset_version": "1c1dfde5e192b797bb6e721f13036b3ec502f3abf0028696341c923b48ff6626",
+  "dataset_license": "CC BY 4.0",
+  "training_rights": {
+    "authorization_status": "VERIFIED",
+    "training_purpose": "research",
+    "license_name": "CC BY 4.0"
+  },
+  "split_method": "StratifiedGroupKFold 70/15/15 by outcome; one person's rows and every exact duplicate record stay in one part",
+  "duplicate_handling": {
+    "exact_duplicate_records": 2,
+    "rule": "identical records (all features and label) are grouped into one part"
+  },
+  "evaluation_status": "RE_EVALUATED_AFTER_TEST_EXPOSURE_NOT_INDEPENDENT_FINAL_TEST",
+  "split_counts": {
+    "train": 656,
+    "val": 132,
+    "test": 132
+  },
+  "positives": {
+    "train": 363,
+    "val": 73,
+    "test": 73
+  },
+  "features": [
+    "age",
+    "sex",
+    "cp",
+    "trestbps",
+    "chol",
+    "fbs",
+    "restecg",
+    "thalach",
+    "exang",
+    "oldpeak",
+    "slope",
+    "ca",
+    "thal"
+  ],
+  "model_selection": {
+    "validation_auroc": {
+      "logistic_C0.01": 0.9196656605525888,
+      "logistic_C0.1": 0.924773624332482,
+      "logistic_C1.0": 0.925470164847922,
+      "logistic_C10.0": 0.9261667053633619,
+      "gradient_boosting_depth3_lr0.05": 0.9110749941954956,
+      "gradient_boosting_depth3_lr0.1": 0.9129324355700021,
+      "gradient_boosting_depthNone_lr0.05": 0.9024843278384025,
+      "gradient_boosting_depthNone_lr0.1": 0.9029486881820292
+    },
+    "selected": "logistic_C10.0",
+    "rule": "highest validation AUROC; logistic regression on ties"
+  },
+  "test_n": 132,
+  "metrics": {
+    "auroc": 0.8272579521708846,
+    "auprc": 0.8462932022042121,
+    "sensitivity": 0.7808219178082192,
+    "specificity": 0.7457627118644068,
+    "brier": 0.17385284279017307,
+    "brier_prevalence_baseline": 0.24718789151929765,
+    "ece_10_bins": 0.10555670618966925,
+    "threshold": 0.47535667994741043,
+    "test_positive_share": 0.553030303030303,
+    "brier_skill": 0.29667735048987787
+  },
+  "confidence_intervals_95": {
+    "auroc": {
+      "status": "COMPUTED",
+      "low": 0.7483754167824396,
+      "high": 0.8912882749287871,
+      "resamples": 1000,
+      "unit": "person or duplicate-record group"
+    },
+    "auprc": {
+      "status": "COMPUTED",
+      "low": 0.7623643487682529,
+      "high": 0.92543430965262,
+      "resamples": 1000,
+      "unit": "person or duplicate-record group"
+    }
+  },
+  "calibration": {
+    "method": "Platt scaling on the validation part",
+    "operating_threshold": "Youden's J on the validation part"
+  },
+  "checkpoint": {
+    "path": "artifacts/training/tabular_heart_disease_uci-20261114T091040Z/model.joblib",
+    "sha256": "b459b2ecdcc10979ae27d62fcc841420af1c0fa092d924acc8991b965cff6e17"
+  },
+  "held_out_predictions": "artifacts/training/tabular_heart_disease_uci-20261114T091040Z/predictions_test.csv",
+  "evaluated_at": "2026-11-14T09:11:03+00:00",
+  "limitations": [
+    "Population: Patients referred for coronary angiography at Cleveland, Budapest, Zurich/Basel and Long Beach VA (1980s). Results do not transfer to other populations without external evaluation.",
+    "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+    "Small public cohort: confidence intervals are wide.",
+    "Re-evaluated after test exposure (2026-11-14 duplicate audit): this split's test part overlaps the first run's inspected test part, so it is not an independent final test.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

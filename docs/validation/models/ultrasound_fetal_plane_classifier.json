@@ -1,0 +1,457 @@
+{
+  "model_id": "ultrasound_fetal_plane_classifier",
+  "run_id": "ultrasound_fetal_plane_classifier-20261114T085532Z",
+  "task_id": "fetal-planes-classification",
+  "dataset": "FETAL_PLANES_DB: common maternal-fetal ultrasound planes",
+  "dataset_id": "fetal-planes-db",
+  "dataset_version": "a533cf8ea9436f096b94affa3d7cd22776f4f53688fe9366bd43f45c4d49047b",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "CC BY 4.0",
+    "source": "https://zenodo.org/api/records/3904280",
+    "verified_on": "2026-11-14",
+    "evidence": {
+      "page_sha256": "a1f0b2a3b3334a1f51930f6fc56bb00272282ad2bfe5f0496ed756def3fb6706",
+      "marker_found": true
+    },
+    "citation": "Burgos-Artizzu XP, Coronado-Gutierrez D, Valenzuela-Alcaraz B, et al. Evaluation of deep convolutional neural networks for automatic classification of common maternal fetal ultrasound planes. Scientific Reports 10:10200 (2020).",
+    "authorization_status": "VERIFIED",
+    "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+    "authorized_by": "project owner (chat instruction)",
+    "authorized_on": "2026-11-14",
+    "authorization_reason": "Owner approved the download and research training on 2026-11-14; CC BY 4.0 shown on the Zenodo record."
+  },
+  "split_method": "publisher patient split kept for test; 15% of the publisher's training patients for validation (seed 20261024, stratified by plane)",
+  "split_counts": {
+    "train": 5973,
+    "val": 1156,
+    "test": 5271
+  },
+  "test_n": 5271,
+  "test_groups": 896,
+  "group_unit": "patient",
+  "classes": [
+    "fetal_abdomen",
+    "fetal_brain",
+    "fetal_femur",
+    "fetal_thorax",
+    "maternal_cervix",
+    "other"
+  ],
+  "validation_readiness": {
+    "validation_ready": true,
+    "readiness": "READY_FOR_TRAINING",
+    "run_scope": "STANDARD_INTERNAL_EVALUATION",
+    "minimum_samples_per_class": 50,
+    "classes_below_minimum": [],
+    "source_flags": [
+      "TASK_SUPPORTED_BY_LABELS"
+    ],
+    "effective_flags": [
+      "TASK_SUPPORTED_BY_LABELS"
+    ]
+  },
+  "run_scope": "STANDARD_INTERNAL_EVALUATION",
+  "class_distribution": {
+    "per_split": {
+      "train": {
+        "fetal_abdomen": 295,
+        "fetal_brain": 1384,
+        "fetal_femur": 448,
+        "fetal_thorax": 888,
+        "maternal_cervix": 811,
+        "other": 2147
+      },
+      "val": {
+        "fetal_abdomen": 58,
+        "fetal_brain": 236,
+        "fetal_femur": 68,
+        "fetal_thorax": 170,
+        "maternal_cervix": 170,
+        "other": 454
+      },
+      "test": {
+        "fetal_abdomen": 358,
+        "fetal_brain": 1472,
+        "fetal_femur": 524,
+        "fetal_thorax": 660,
+        "maternal_cervix": 645,
+        "other": 1612
+      }
+    },
+    "total": {
+      "fetal_abdomen": 711,
+      "fetal_brain": 3092,
+      "fetal_femur": 1040,
+      "fetal_thorax": 1718,
+      "maternal_cervix": 1626,
+      "other": 4213
+    }
+  },
+  "class_imbalance": {
+    "strategy": "inverse_frequency",
+    "enabled": true,
+    "formula": "w_c = N_train / (K * n_train,c)",
+    "computed_from": "training split only",
+    "training_counts": {
+      "fetal_abdomen": 295,
+      "fetal_brain": 1384,
+      "fetal_femur": 448,
+      "fetal_thorax": 888,
+      "maternal_cervix": 811,
+      "other": 2147
+    },
+    "weights_by_class": {
+      "fetal_abdomen": 3.3745762711864407,
+      "fetal_brain": 0.7192919075144508,
+      "fetal_femur": 2.2220982142857144,
+      "fetal_thorax": 1.1210585585585586,
+      "maternal_cervix": 1.2274969173859434,
+      "other": 0.46367023754075454
+    },
+    "normalization": "equal aggregate training-loss contribution per observed class"
+  },
+  "selection": {
+    "criterion": "validation macro-F1",
+    "candidates": {
+      "resnet18": {
+        "val_macro_f1": 0.9158914804910004,
+        "best_epoch": 6
+      },
+      "efficientnet_b0": {
+        "val_macro_f1": 0.9198591136846747,
+        "best_epoch": 6
+      }
+    },
+    "selected": "efficientnet_b0"
+  },
+  "calibration": {
+    "method": "temperature_scaling",
+    "fitted_on": "validation split",
+    "temperature": 1.2758618593215942
+  },
+  "metrics": {
+    "accuracy": 0.9353063934737241,
+    "balanced_accuracy": 0.9554002570516454,
+    "macro_f1": 0.9314911071927652,
+    "macro_auroc_one_vs_rest": 0.9950614869594574,
+    "ece_uncalibrated": 0.031265784640892094,
+    "ece_temperature_scaled": 0.016384553092861725,
+    "brier_multiclass": 0.09967219462455688
+  },
+  "confidence_intervals_95": {
+    "accuracy": {
+      "status": "COMPUTED",
+      "low": 0.9287951501599406,
+      "high": 0.9417515515469288,
+      "resamples": 1000,
+      "unit": "patient"
+    },
+    "macro_f1": {
+      "status": "COMPUTED",
+      "low": 0.9241411895268155,
+      "high": 0.9380759212438693,
+      "resamples": 1000,
+      "unit": "patient"
+    },
+    "balanced_accuracy": {
+      "status": "COMPUTED",
+      "low": 0.9491148029718502,
+      "high": 0.961017254661578,
+      "resamples": 1000,
+      "unit": "patient"
+    }
+  },
+  "per_class": [
+    {
+      "class": "fetal_abdomen",
+      "support": 358,
+      "precision": 0.8613138686131386,
+      "recall": 0.9888268156424581,
+      "f1": 0.9206762028608583,
+      "auroc_one_vs_rest": 0.9973249435424805
+    },
+    {
+      "class": "fetal_brain",
+      "support": 1472,
+      "precision": 0.990443686006826,
+      "recall": 0.985733695652174,
+      "f1": 0.9880830779707184,
+      "auroc_one_vs_rest": 0.9988272190093994
+    },
+    {
+      "class": "fetal_femur",
+      "support": 524,
+      "precision": 0.7536656891495601,
+      "recall": 0.9809160305343512,
+      "f1": 0.8524046434494196,
+      "auroc_one_vs_rest": 0.9939875602722168
+    },
+    {
+      "class": "fetal_thorax",
+      "support": 660,
+      "precision": 0.9316493313521546,
+      "recall": 0.95,
+      "f1": 0.940735183795949,
+      "auroc_one_vs_rest": 0.9973604083061218
+    },
+    {
+      "class": "maternal_cervix",
+      "support": 645,
+      "precision": 0.993798449612403,
+      "recall": 0.993798449612403,
+      "f1": 0.993798449612403,
+      "auroc_one_vs_rest": 0.9998201727867126
+    },
+    {
+      "class": "other",
+      "support": 1612,
+      "precision": 0.9627240143369176,
+      "recall": 0.8331265508684863,
+      "f1": 0.8932490854672431,
+      "auroc_one_vs_rest": 0.9830486178398132
+    }
+  ],
+  "confusion_matrix": [
+    [
+      354,
+      0,
+      0,
+      1,
+      0,
+      3
+    ],
+    [
+      3,
+      1451,
+      6,
+      1,
+      1,
+      10
+    ],
+    [
+      0,
+      0,
+      514,
+      0,
+      0,
+      10
+    ],
+    [
+      4,
+      0,
+      1,
+      627,
+      0,
+      28
+    ],
+    [
+      1,
+      0,
+      2,
+      0,
+      641,
+      1
+    ],
+    [
+      49,
+      14,
+      159,
+      44,
+      3,
+      1343
+    ]
+  ],
+  "highest_confidence_errors": [
+    [
+      "Images/Patient01252_Plane1_1_of_17.png",
+      "other",
+      "fetal_femur",
+      0.9988417029380798
+    ],
+    [
+      "Images/Patient01653_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9985929131507874
+    ],
+    [
+      "Images/Patient01751_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9979982972145081
+    ],
+    [
+      "Images/Patient01296_Plane1_1_of_1.png",
+      "other",
+      "fetal_brain",
+      0.9977717995643616
+    ],
+    [
+      "Images/Patient01332_Plane1_1_of_12.png",
+      "other",
+      "fetal_femur",
+      0.9976358413696289
+    ],
+    [
+      "Images/Patient00648_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9965029954910278
+    ],
+    [
+      "Images/Patient00658_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9963802695274353
+    ],
+    [
+      "Images/Patient01673_Plane1_1_of_4.png",
+      "other",
+      "fetal_femur",
+      0.9943732023239136
+    ],
+    [
+      "Images/Patient01400_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9941787719726562
+    ],
+    [
+      "Images/Patient01516_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9935411214828491
+    ],
+    [
+      "Images/Patient01302_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9921777844429016
+    ],
+    [
+      "Images/Patient00654_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9920517206192017
+    ],
+    [
+      "Images/Patient01408_Plane1_1_of_15.png",
+      "other",
+      "fetal_brain",
+      0.9906225800514221
+    ],
+    [
+      "Images/Patient01347_Plane1_1_of_24.png",
+      "other",
+      "fetal_femur",
+      0.9895952343940735
+    ],
+    [
+      "Images/Patient01526_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9893336892127991
+    ],
+    [
+      "Images/Patient01646_Plane3_3_of_3.png",
+      "fetal_brain",
+      "fetal_abdomen",
+      0.9891753792762756
+    ],
+    [
+      "Images/Patient01593_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9887556433677673
+    ],
+    [
+      "Images/Patient01557_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9886566400527954
+    ],
+    [
+      "Images/Patient01391_Plane1_1_of_26.png",
+      "other",
+      "fetal_brain",
+      0.9874244332313538
+    ],
+    [
+      "Images/Patient01394_Plane1_1_of_1.png",
+      "other",
+      "fetal_abdomen",
+      0.9873536825180054
+    ],
+    [
+      "Images/Patient01523_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9872418642044067
+    ],
+    [
+      "Images/Patient01304_Plane3_4_of_6.png",
+      "fetal_brain",
+      "fetal_abdomen",
+      0.986747145652771
+    ],
+    [
+      "Images/Patient01345_Plane1_1_of_1.png",
+      "other",
+      "fetal_thorax",
+      0.9865263104438782
+    ],
+    [
+      "Images/Patient01771_Plane1_1_of_1.png",
+      "other",
+      "fetal_femur",
+      0.9860700368881226
+    ],
+    [
+      "Images/Patient00630_Plane1_1_of_1.png",
+      "other",
+      "fetal_abdomen",
+      0.9854291081428528
+    ]
+  ],
+  "checkpoint": {
+    "path": "artifacts/training/ultrasound_fetal_plane_classifier-20261114T085532Z/model.pt",
+    "sha256": "0f1e7ef110927c0dadd26319b74bc4d76f1aa844f44c16250a4e79fa482244f7"
+  },
+  "held_out_predictions": "artifacts/training/ultrasound_fetal_plane_classifier-20261114T085532Z/predictions_test.csv",
+  "training_seconds": 5318.2,
+  "config": {
+    "task_id": "fetal-planes-classification",
+    "model_id": "ultrasound_fetal_plane_classifier",
+    "display_name": "Maternal-fetal ultrasound plane, 6 classes (FETAL_PLANES_DB, research)",
+    "modality": "OBSTETRIC_ULTRASOUND",
+    "anatomy": "pregnancy",
+    "archs": "resnet18,efficientnet_b0",
+    "epochs": 8,
+    "batch_size": 32,
+    "image_size": 224,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "class_weighting": "inverse_frequency",
+    "exploratory": false,
+    "workers": 4,
+    "seed": 20261024,
+    "development_only": false,
+    "max_train_samples": 0,
+    "max_val_samples": 0
+  },
+  "reporting_context": {
+    "dataset": "FETAL_PLANES_DB: common maternal-fetal ultrasound planes",
+    "dataset_version": "a533cf8ea9436f09",
+    "split": "test",
+    "checkpoint": "sha256:0f1e7ef110927c0dadd26319b74bc4d76f1aa844f44c16250a4e79fa482244f7",
+    "reporting_status": "INTERNAL_HELD_OUT"
+  },
+  "limitations": [
+    "Training used inverse-frequency weighted cross-entropy computed from the training split only. Weighting changes optimisation but does not create rare-class evidence or correct evaluation uncertainty.",
+    "Pseudonymous patient ids come from the publisher's folders. The publisher's validation split, used as the test set, shares no patient with its training split; training patients were divided into train and validation, and the bootstrap resamples patients.",
+    "Internal held-out test from the same source distribution; no external validation.",
+    "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

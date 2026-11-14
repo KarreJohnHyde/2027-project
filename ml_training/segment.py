@@ -201,6 +201,9 @@ def main() -> int:
     dataset, task = next((d, t) for d in tasks["datasets"] for t in d["tasks"] if t["task_id"] == args.task_id)
     if not task["training_eligible"]:
         raise SystemExit(f"{args.task_id} is not training-eligible: {task['flags']}")
+    # The shared evidence-bound rights gate, as in the other trainers (added 2026-11-14; this trainer lacked it).
+    from ml_training.volumetric_manifest import enforce_training_license
+    enforce_training_license({"dataset_id": dataset["id"]}, ROOT / "dataset_registry" / "tasks.json")
     prep = task["preparation"]
     rows = read_samples(Path(prep["sample_manifest"]))
     cache = ROOT / "_derived" / "datasets" / args.task_id / "masks"

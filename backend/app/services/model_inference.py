@@ -50,7 +50,10 @@ MODALITY_LABELS = {"ENDOSCOPY": "GI endoscopy image", "ANGIOGRAPHY": "X-ray coro
                    "HEAD_CT_SERIES": "non-contrast axial head CT series in Hounsfield units (every slice of one DICOM series)",
                    "CHEST_XRAY": "frontal (PA or AP) chest radiograph",
                    "CT_CHEST_VOLUME": "thoracic CT volume in Hounsfield units",
-                   "DERMATOLOGY": "clinical photograph of one skin lesion (PAD-UFES-20 research scope; not dermoscopy or pathology)"}
+                   "DERMATOLOGY": "clinical photograph of one skin lesion (PAD-UFES-20 research scope; not dermoscopy or pathology)",
+                   "PROSTATE_MRI_T2_ADC": "prostate MRI: T2 and ADC on one grid, stacked in one 4-D NIfTI, T2 first (Decathlon Task05 format)",
+                   "BRAIN_MRI_HIPPOCAMPUS_CROP": "T1 brain MRI cropped around one hippocampus (Decathlon Task04 format)",
+                   "OBSTETRIC_ULTRASOUND": "2-D obstetric ultrasound image of a standard maternal-fetal plane (FETAL_PLANES_DB scope)"}
 UPLOAD_INPUTS = {"image_2d", "ecg_12lead", "volume_nifti", "echo_video"}
 # Models that run only on an assembled multi-file DICOM series.
 SERIES_INPUTS = {"head_ct_series"}
@@ -60,6 +63,20 @@ REFERENCE_GATED_INPUTS = {"image_2d", "echo_video", "head_ct_series"}
 HEAD_CT_MAX_TILT_DEG = 35.0
 # A series is refused when more than this share of its slices lies outside the model's applicability reference.
 HEAD_CT_MAX_REFUSED_SLICE_FRACTION = 0.5
+# A single-slice (image_2d) head CT model registered with this value may also run slice by slice over an assembled
+# axial head CT series: each slice alone, windowed with the model's declared DICOM window, exactly as its external
+# series evaluation ran it (scripts/evaluate_head_ct_cq500.py). It is an explicit registry opt-in, never inferred.
+HEAD_CT_PER_SLICE = "head_ct_per_slice"
+
+
+def head_ct_series_mode(model: dict) -> Optional[str]:
+    """How a model reads an assembled head CT series: "neighbours" (2.5-D input), "per_slice" (each slice alone) or None."""
+    kind = model.get("inference_input", "image_2d")
+    if kind == "head_ct_series":
+        return "neighbours"
+    if kind == "image_2d" and model.get("series_inference") == HEAD_CT_PER_SLICE and model.get("dicom_window"):
+        return "per_slice"
+    return None
 _load_lock = threading.Lock()
 # This workstation serves research requests on one GPU. Serialising model runs
 # bounds activation memory and prevents concurrent requests loading several
@@ -164,6 +181,18 @@ def evaluation_summary(model: dict) -> dict:
                             "fusion_minus_ecg_only_macro_auroc": paired["macro_auroc"],
                             "fusion_minus_ecg_only_95ci": [interval.get("low"), interval.get("high")], "fusion_conclusion": paired["conclusion"]})
         return summary
+    if model["task"] == "ecg_beat_classification":
+        metrics, ci, per = report["metrics"], report.get("confidence_intervals_95", {}), report["metrics"]["per_class"]
+        return {"test_n": report["test_n"], "macro_f1": metrics["macro_f1"],
+                "macro_f1_95ci": [ci.get("macro_f1", {}).get("low"), ci.get("macro_f1", {}).get("high")],
+                "s_sensitivity": per["S"]["sensitivity"], "s_ppv": per["S"]["positive_predictive_value"],
+                "v_sensitivity": per["V"]["sensitivity"], "v_ppv": per["V"]["positive_predictive_value"]}
+    if model["task"] == "tabular_classification":
+        metrics, ci = report["metrics"], report.get("confidence_intervals_95", {})
+        return {"test_n": report["test_n"], "auroc": metrics["auroc"],
+                "auroc_95ci": [ci.get("auroc", {}).get("low"), ci.get("auroc", {}).get("high")],
+                "sensitivity": metrics["sensitivity"], "specificity": metrics["specificity"], "brier": metrics["brier"],
+                "brier_prevalence_baseline": metrics["brier_prevalence_baseline"], "ece_10_bins": metrics["ece_10_bins"]}
     if model["task"] == "survival_prediction":
         metrics, ci = report["metrics"], report.get("confidence_intervals_95", {})
         return {"test_n": report["test_n"], "harrell_c": metrics["harrell_c"],
@@ -231,6 +260,8 @@ def inference_models() -> list[dict]:
             "output_status": "RESEARCH_ONLY_NOT_CLINICALLY_VALIDATED",
             # Image and volume models run from Medical Imaging, ECG models from Multimodal; tabular survival models are evaluation evidence only.
             "inference_input": model.get("inference_input", "image_2d"),
+            # "neighbours" or "per_slice" when the model also runs on an assembled head CT series (Medical Imaging, DICOM series).
+            "head_ct_series_mode": head_ct_series_mode(model),
             "run_scope": (model.get("validation_readiness") or {}).get("run_scope", "RESEARCH"),
             "demographic_inputs": model.get("demographic_inputs", []),
             "requires_clinical_features": model.get("requires_clinical_features", False),
@@ -319,18 +350,24 @@ def _load(model_id: str, checkpoint: str, sha256: str):
 def load_model(model: dict):
     bundle = model["artifact_bundle"]
     with _load_lock:
-        return _load(model["model_id"], str(_resolve_artifact_path(bundle["checkpoint_path"])), bundle["checkpoint_sha256"])
+        network, payload, device = _load(model["model_id"], str(_resolve_artifact_path(bundle["checkpoint_path"])), bundle["checkpoint_sha256"])
+    # The registry states where a checkpoint was evaluated (CPU-trained models of 2026-11-14); serving reproduces it.
+    payload["evaluation_device"] = model.get("evaluation_device")
+    return network, payload, device
 
 
-def evaluated_precision(device):
+def evaluated_precision(device, payload: Optional[dict] = None):
     """Numeric precision of the held-out evaluation, for the trainers that used autocast.
 
     ml_training.classify and ml_training.segment scored their test splits under bfloat16
     autocast on CUDA. Serving the same checkpoints in float32 changed predictions (84 of
     1,867 held-out C-NMC cells), so inference reproduces the evaluated configuration.
-    Returns (context manager, description)."""
+    A model whose registry entry declares evaluation_device "cpu" was trained and evaluated in float32 on CPU, so it is
+    served in float32 on any device. Returns (context manager, description)."""
     import torch
 
+    if payload is not None and payload.get("evaluation_device") == "cpu":
+        return torch.autocast(device.type, enabled=False), "float32, as in the held-out evaluation (trained and evaluated on CPU)"
     if device.type == "cuda":
         return torch.autocast("cuda", dtype=torch.bfloat16), "bfloat16 autocast on CUDA, as in the held-out evaluation"
     return torch.autocast("cpu", enabled=False), "float32 on CPU; differs from the evaluated bfloat16 CUDA configuration"
@@ -438,7 +475,7 @@ def image_features(network, payload: dict, device, image: Image.Image) -> list[n
         with torch.no_grad():
             if payload["kind"] == "image_classifier":
                 tensor = classifier_tensor(payload, image).to(device)
-                precision, _ = evaluated_precision(device)
+                precision, _ = evaluated_precision(device, payload)
                 with precision:
                     network(tensor)
             elif payload["kind"] == "image_multilabel_classifier":
@@ -452,7 +489,7 @@ def image_features(network, payload: dict, device, image: Image.Image) -> list[n
                 network.backbone.body(images.tensors)
             else:
                 tensor = segmenter_tensor(payload, image).to(device)
-                precision, _ = evaluated_precision(device)
+                precision, _ = evaluated_precision(device, payload)
                 with precision:
                     network(tensor)
             inputs = _input_statistics(tensor)
@@ -465,7 +502,7 @@ def image_features(network, payload: dict, device, image: Image.Image) -> list[n
 def classify(network, payload: dict, device, image: Image.Image, clinical_features: Optional[dict] = None) -> dict:
     import torch
 
-    precision, precision_note = evaluated_precision(device)
+    precision, precision_note = evaluated_precision(device, payload)
     captured = []
     hook = network.avgpool.register_forward_hook(lambda _module, _inputs, output: captured.append(output.detach().float().flatten(1))) if payload.get("frozen_linear_head") else None
     try:
@@ -550,7 +587,7 @@ def segment(network, payload: dict, device, image: Image.Image) -> dict:
     import torch
     from pycocotools import mask as coco_mask
 
-    precision, precision_note = evaluated_precision(device)
+    precision, precision_note = evaluated_precision(device, payload)
     with torch.no_grad(), precision:
         prediction = network(segmenter_tensor(payload, image).to(device)).float().argmax(1).cpu().numpy()[0].astype(np.uint8)
     source = mask_to_source(prediction, image.size)
@@ -839,15 +876,20 @@ def prepare_series(model: dict, report: dict, declared_input_type: str, options:
     """An assembled DICOM series as input for a volumetric model: the same checks as a NIfTI frame, and for the
     cardiac model the short-axis plausibility checks and the requester's attestation of view and phase."""
     kind = model.get("inference_input", "image_2d")
-    if kind != "volume_nifti" and kind not in SERIES_INPUTS:
+    mode = head_ct_series_mode(model)
+    if kind != "volume_nifti" and mode is None:
         raise InferenceNotPermitted(f"{model['display_name']} does not take volumes; only volumetric and series models run on an assembled DICOM series.")
-    if declared_input_type not in model.get("supported_modalities", []):
+    if mode == "per_slice":
+        # A single-slice head CT model reads the series slice by slice; its trained modality is one head CT slice.
+        if declared_input_type != "HEAD_CT_SERIES" or "HEAD_CT" not in model.get("supported_modalities", []):
+            raise InferenceNotPermitted(f"{model['display_name']} runs on a series only when it is declared a non-contrast axial head CT series.")
+    elif declared_input_type not in model.get("supported_modalities", []):
         supported = ", ".join(MODALITY_LABELS.get(m, m) for m in model.get("supported_modalities", []))
         raise InferenceNotPermitted(f"{model['display_name']} was trained only on: {supported}.")
     if report.get("status") != "ASSEMBLED":
         phases = f" ({report['cardiac_phases']} phases; trigger times {report.get('phase_trigger_times_ms')} ms)" if report.get("cardiac_phases") else ""
         raise InferenceNotPermitted(f"SERIES_NOT_ASSEMBLED: {', '.join(report.get('issues') or ['unknown'])}{phases}.")
-    if kind == "head_ct_series":
+    if mode is not None:
         return prepare_head_ct_series(model, report)
     envelope = _input_envelope(model)
     try:
@@ -885,7 +927,8 @@ def prepare_head_ct_series(model: dict, report: dict) -> HeadCtSeries:
         issues.append(f"NOT_AN_AXIAL_STACK (slice normal {tilt:.0f} degrees from the head-foot axis; at most {HEAD_CT_MAX_TILT_DEG:.0f} for gantry tilt)")
     slices = int(report["shape_slices_rows_columns"][0])
     if slices < 3:
-        issues.append(f"TOO_FEW_SLICES ({slices}; the model reads a slice with both neighbours)")
+        reason = "the model reads a slice with both neighbours" if head_ct_series_mode(model) == "neighbours" else "a series needs at least 3 slices"
+        issues.append(f"TOO_FEW_SLICES ({slices}; {reason})")
     if model.get("dicom_window") is None:
         issues.append("NO_DECLARED_DICOM_WINDOW")
     if issues:
@@ -912,14 +955,24 @@ def series_slice_images(hounsfield: np.ndarray, window: dict) -> list[Image.Imag
     return [Image.fromarray(np.stack([grey[max(0, k - 1)], grey[k], grey[min(count - 1, k + 1)]], axis=-1), mode="RGB") for k in range(count)]
 
 
+def series_model_images(model: dict, hounsfield: np.ndarray) -> list[Image.Image]:
+    """The model's input image for every slice: the slice with its neighbours for a 2.5-D model, or the slice alone (its
+    windowed grey values in all three channels, as the single-slice training PNGs were read) for a per-slice model."""
+    images = series_slice_images(hounsfield, model["dicom_window"])
+    if head_ct_series_mode(model) == "per_slice":
+        return [Image.fromarray(np.asarray(image)[..., 1], mode="L").convert("RGB") for image in images]
+    return images
+
+
 def run_head_ct_series(model: dict, prepared: HeadCtSeries) -> dict:
     """Per-slice haemorrhage labels for every slice of the series that passes the applicability reference."""
     reference = ood_reference(model)
     window = model["dicom_window"]
+    per_slice = head_ct_series_mode(model) == "per_slice"
     slices = []
     with _inference_lock:
         network, payload, device = load_model(model)
-        for index, image in enumerate(series_slice_images(prepared.hounsfield, window)):
+        for index, image in enumerate(series_model_images(model, prepared.hounsfield)):
             features = image_features(network, payload, device, image)
             try:
                 value = _combined_score(reference, image_ood.stage_scores(reference, [stage[None] for stage in features])[0])
@@ -947,7 +1000,31 @@ def run_head_ct_series(model: dict, prepared: HeadCtSeries) -> dict:
     top_probability, top_index, top = max(scores, key=lambda value: value[0])
     threshold = next(label["threshold"] for label in top["labels"] if label["label"] == any_label)
     complete = refused == 0
+
+    def label_of(item: dict, name: str) -> dict:
+        return next(label for label in item["labels"] if label["label"] == name)
+
+    # Per label, the highest probability over the analysed slices: the scan-level score of the external series evaluation.
+    label_maxima = []
+    for name in model["supported_classes"]:
+        best = max(analysed, key=lambda item: label_of(item, name)["probability"])
+        label = label_of(best, name)
+        label_maxima.append({"label": name, "probability": label["probability"], "threshold": label["threshold"],
+                             "at_or_above_threshold": label["probability"] >= label["threshold"], "slice_index": best["slice_index"]})
+    evaluated = None
+    if per_slice:
+        from app.services.external_evaluations import external_evaluations_for
+
+        # Only a saved evaluation of this exact checkpoint is returned (same SHA-256).
+        for item in external_evaluations_for(model):
+            overall = next((label for label in item["labels"] if label["label"] == "ICH"), None)
+            evaluated = {"dataset": item["dataset"], "scope": item["scope"], "scored_scans": item["scored"], "report_path": item["report_path"],
+                         "any_haemorrhage": overall, "clinical_validation": False}
+            break
     return {"type": "series_slice_multilabel", "slices": slices, "slices_analysed": len(analysed), "slices_refused": refused,
+            "slice_input": ("each slice alone, windowed as the single-slice training images" if per_slice
+                            else "each slice stacked with the slice below and above, windowed as the training images"),
+            "label_maxima": label_maxima, "series_pipeline_external_evaluation": evaluated,
             "series_level": {"label": any_label, "probability": top_probability, "threshold": threshold, "at_or_above_threshold": top_probability >= threshold,
                              "slice_index": top_index, "coverage": f"{len(analysed)} of {len(slices)} slices", "complete_coverage": complete,
                              "rule": ("highest probability among the analysed slices of this one series. The held-out evaluation took the highest "
@@ -1170,6 +1247,9 @@ CONTENT_CHECKS = {
     "head_ct_series": ("Series geometry checked (CT, axial within the gantry-tilt limit, at least 3 slices); every slice windowed as the "
                        "training images were (the model's declared DICOM window), stacked with its neighbours and checked against the "
                        "model's feature-space applicability reference; only slices inside it are analysed."),
+    "head_ct_per_slice": ("Series geometry checked (CT, axial within the gantry-tilt limit, at least 3 slices); every slice windowed as the "
+                          "single-slice training images were (the model's declared DICOM window), read alone and checked against the "
+                          "model's feature-space applicability reference; only slices inside it are analysed."),
     "echo_video": ("Video decoded and checked against the development videos: EchoNet format (112 x 112 pixels), frame count, frame rate "
                    "range and coloured-pixel share; then the model's feature-space applicability reference on the centre clip."),
     "ecg_12lead": "Signal read exactly (WFDB checksums or CSV time column) and checked against the trained contract: sampling rate, duration, lead set, amplitude and flatline limits.",
@@ -1196,6 +1276,10 @@ def _execute_research_inference(db: Session, file_record: UploadedFile, model_id
     model = get_model(model_id)
     bundle = model["artifact_bundle"]
     kind = model.get("inference_input", "image_2d")
+    series_mode = head_ct_series_mode(model) if series is not None else None
+    if series_mode is not None:
+        kind = "head_ct_series"  # both head CT series modes share the series checks, output and mapping status
+    check_key = "head_ct_per_slice" if series_mode == "per_slice" else kind
     prepared = None
     companion = None
     series_provenance = None
@@ -1203,6 +1287,9 @@ def _execute_research_inference(db: Session, file_record: UploadedFile, model_id
     dicom_conversion: Optional[dict] = None
     # Series outputs whose checks need the network (convention choice, per-slice applicability) are computed before the run is recorded.
     precomputed_output: Optional[dict] = None
+    # A precomputed series output ran the model already: its time counts towards the run's execution time.
+    precompute_started_at = datetime.now(timezone.utc)
+    precompute_start = time.perf_counter()
     if series is not None:
         prepared = prepare_series(model, series["report"], declared_input_type, options)
         report = series["report"]
@@ -1212,7 +1299,7 @@ def _execute_research_inference(db: Session, file_record: UploadedFile, model_id
             "spacing_mm": report["spacing_mm"], "assembly_warnings": report["warnings"], "input_warnings": getattr(prepared, "warnings", []),
             **({"cardiac_phase": report["phase"], "phase_trigger_times_ms": report["phase_trigger_times_ms"]} if "phase" in report else {}),
         }
-        content_check = {"status": "PASSED", "checks": CONTENT_CHECKS[kind], "dicom_series": series_provenance}
+        content_check = {"status": "PASSED", "checks": CONTENT_CHECKS[check_key], "dicom_series": series_provenance}
         if kind == "head_ct_series":
             content_check["series_geometry"] = prepared.checks
             precomputed_output = run_head_ct_series(model, prepared)
@@ -1233,12 +1320,14 @@ def _execute_research_inference(db: Session, file_record: UploadedFile, model_id
     else:
         companion = check_input(model, file_record, declared_input_type, options, db)
         prepared = prepare_input(model, file_record, companion, options, db)
-        content_check = {"status": "PASSED", "checks": CONTENT_CHECKS[kind]}
+        content_check = {"status": "PASSED", "checks": CONTENT_CHECKS[check_key]}
         if kind == "echo_video":
             content_check["video"] = echo_inference.check_video(prepared, bundle.get("input_envelope") or {})
             content_check["distribution"] = check_echo_distribution(model, prepared)
     started_at = datetime.now(timezone.utc)
     start = time.perf_counter()
+    if precomputed_output is not None:
+        started_at, start = precompute_started_at, precompute_start
     try:
         if precomputed_output is not None:
             output = precomputed_output  # computed with the series checks above
@@ -1277,9 +1366,9 @@ def _execute_research_inference(db: Session, file_record: UploadedFile, model_id
         applicability += (f" DICOM frame {dicom_conversion['frame_index']} converted to 8 bits ({window.get('source', 'colour, unchanged')}); "
                           "the converted frame, not the stored values, passed those checks (input_content_check.dicom_frame).")
     if kind in ("echo_video", "head_ct_series"):
-        applicability = f"Input type declared by the requesting user. {CONTENT_CHECKS[kind]} (input_content_check.distribution)."
+        applicability = f"Input type declared by the requesting user. {CONTENT_CHECKS[check_key]} (input_content_check.distribution)."
     elif kind != "image_2d":
-        applicability = f"Input type declared by the requesting user. {CONTENT_CHECKS[kind]} No out-of-distribution detector is used."
+        applicability = f"Input type declared by the requesting user. {CONTENT_CHECKS[check_key]} No out-of-distribution detector is used."
     finding = Finding(
         inference_run_id=run.id, case_id=file_record.case_id, modality=file_record.modality,
         category=f"Research model output ({model['task'].replace('_', ' ')})"[:128], label=summary_label(output),

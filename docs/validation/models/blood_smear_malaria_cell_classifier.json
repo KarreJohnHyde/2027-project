@@ -1,0 +1,356 @@
+{
+  "model_id": "blood_smear_malaria_cell_classifier",
+  "run_id": "blood_smear_malaria_cell_classifier-20261114T071802Z",
+  "task_id": "nih-malaria-cell-classification",
+  "dataset": "NIH/NLM malaria thin blood smear cell images",
+  "dataset_id": "nih-malaria-cell-images",
+  "dataset_version": "d217c6dceca42d7dd49b5b4de9ee9dae7f2fcbe6c081de3e656cd82f71173353",
+  "dataset_license": {
+    "status": "VERIFIED",
+    "name": "NLM public research release (free public use; cite the dataset paper)",
+    "source": "https://lhncbc.nlm.nih.gov/LHC-research/LHC-projects/image-processing/malaria-datasheet.html",
+    "verified_on": "2026-11-14",
+    "evidence": {
+      "page_sha256": "f948b5e49ae7fe0fb75c1338b8ba09bb859c71ac1b4cdb9dd3570987851f9393"
+    },
+    "citation": "Rajaraman S, Antani SK, Poostchi M, et al. Pre-trained convolutional neural networks as feature extractors toward improved malaria parasite detection in thin blood smear images. PeerJ 6:e4568 (2018).",
+    "authorization_status": "VERIFIED",
+    "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+    "authorized_by": "project owner (chat instruction)",
+    "authorized_on": "2026-11-14",
+    "authorization_reason": "Owner approved the download and research training on 2026-11-14; NLM public research release."
+  },
+  "split_method": "patients (slide code prefix) split 70/15/15, stratified by each patient's majority label, seed 20261024",
+  "split_counts": {
+    "train": 19156,
+    "val": 4012,
+    "test": 4390
+  },
+  "test_n": 4390,
+  "test_groups": 34,
+  "group_unit": "patient",
+  "classes": [
+    "parasitized",
+    "uninfected"
+  ],
+  "validation_readiness": {
+    "validation_ready": true,
+    "readiness": "READY_FOR_TRAINING",
+    "run_scope": "STANDARD_INTERNAL_EVALUATION",
+    "minimum_samples_per_class": 50,
+    "classes_below_minimum": [],
+    "source_flags": [
+      "TASK_SUPPORTED_BY_LABELS"
+    ],
+    "effective_flags": [
+      "TASK_SUPPORTED_BY_LABELS"
+    ]
+  },
+  "run_scope": "STANDARD_INTERNAL_EVALUATION",
+  "class_distribution": {
+    "per_split": {
+      "train": {
+        "parasitized": 9772,
+        "uninfected": 9384
+      },
+      "val": {
+        "parasitized": 1959,
+        "uninfected": 2053
+      },
+      "test": {
+        "parasitized": 2048,
+        "uninfected": 2342
+      }
+    },
+    "total": {
+      "parasitized": 13779,
+      "uninfected": 13779
+    }
+  },
+  "class_imbalance": {
+    "strategy": "inverse_frequency",
+    "enabled": true,
+    "formula": "w_c = N_train / (K * n_train,c)",
+    "computed_from": "training split only",
+    "training_counts": {
+      "parasitized": 9772,
+      "uninfected": 9384
+    },
+    "weights_by_class": {
+      "parasitized": 0.9801473598035203,
+      "uninfected": 1.0206734867860188
+    },
+    "normalization": "equal aggregate training-loss contribution per observed class"
+  },
+  "selection": {
+    "criterion": "validation macro-F1",
+    "candidates": {
+      "resnet18": {
+        "val_macro_f1": 0.9487695338498487,
+        "best_epoch": 8
+      },
+      "efficientnet_b0": {
+        "val_macro_f1": 0.9545066561796667,
+        "best_epoch": 8
+      }
+    },
+    "selected": "efficientnet_b0"
+  },
+  "calibration": {
+    "method": "temperature_scaling",
+    "fitted_on": "validation split",
+    "temperature": 1.4176756143569946
+  },
+  "metrics": {
+    "accuracy": 0.965375854214123,
+    "balanced_accuracy": 0.9639020051638556,
+    "macro_f1": 0.9651144675000132,
+    "macro_auroc_one_vs_rest": 0.9865143299102783,
+    "ece_uncalibrated": 0.01976953291404222,
+    "ece_temperature_scaled": 0.013644310214253372,
+    "brier_multiclass": 0.06162307657042629
+  },
+  "confidence_intervals_95": {
+    "accuracy": {
+      "status": "COMPUTED",
+      "low": 0.9482914536292045,
+      "high": 0.9818445608083729,
+      "resamples": 1000,
+      "unit": "patient"
+    },
+    "macro_f1": {
+      "status": "COMPUTED",
+      "low": 0.9473512839588486,
+      "high": 0.9807061174286692,
+      "resamples": 1000,
+      "unit": "patient"
+    },
+    "balanced_accuracy": {
+      "status": "COMPUTED",
+      "low": 0.9503162017096665,
+      "high": 0.9809134830719171,
+      "resamples": 1000,
+      "unit": "patient"
+    }
+  },
+  "per_class": [
+    {
+      "class": "parasitized",
+      "support": 2048,
+      "precision": 0.9831804281345565,
+      "recall": 0.94189453125,
+      "f1": 0.9620947630922694,
+      "auroc_one_vs_rest": 0.9865143299102783
+    },
+    {
+      "class": "uninfected",
+      "support": 2342,
+      "precision": 0.9509884678747941,
+      "recall": 0.9859094790777113,
+      "f1": 0.9681341719077569,
+      "auroc_one_vs_rest": 0.9865143299102783
+    }
+  ],
+  "confusion_matrix": [
+    [
+      1929,
+      119
+    ],
+    [
+      33,
+      2309
+    ]
+  ],
+  "highest_confidence_errors": [
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_171950_cell_191.png",
+      "parasitized",
+      "uninfected",
+      0.9949846267700195
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_171905_cell_178.png",
+      "parasitized",
+      "uninfected",
+      0.9942864775657654
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172524_cell_176.png",
+      "parasitized",
+      "uninfected",
+      0.9937281608581543
+    ],
+    [
+      "Uninfected/C6NThinF_IMG_20150609_122725_cell_208.png",
+      "uninfected",
+      "parasitized",
+      0.99369215965271
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172216_cell_152.png",
+      "parasitized",
+      "uninfected",
+      0.9928943514823914
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172216_cell_146.png",
+      "parasitized",
+      "uninfected",
+      0.9923093318939209
+    ],
+    [
+      "Uninfected/C69P30N_ThinF_IMG_20150819_135421_cell_157.png",
+      "uninfected",
+      "parasitized",
+      0.9922961592674255
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172216_cell_175.png",
+      "parasitized",
+      "uninfected",
+      0.9911991953849792
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_171836_cell_151.png",
+      "parasitized",
+      "uninfected",
+      0.9911728501319885
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172257_cell_150.png",
+      "parasitized",
+      "uninfected",
+      0.9899617433547974
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172759_cell_38.png",
+      "parasitized",
+      "uninfected",
+      0.9897031188011169
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172607_cell_33.png",
+      "parasitized",
+      "uninfected",
+      0.9892918467521667
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172524_cell_201.png",
+      "parasitized",
+      "uninfected",
+      0.9886788725852966
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_171950_cell_161.png",
+      "parasitized",
+      "uninfected",
+      0.9886301755905151
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_171905_cell_153.png",
+      "parasitized",
+      "uninfected",
+      0.9886122345924377
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172057_cell_167.png",
+      "parasitized",
+      "uninfected",
+      0.9884700775146484
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_171905_cell_180.png",
+      "parasitized",
+      "uninfected",
+      0.9873700141906738
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172842_cell_2.png",
+      "parasitized",
+      "uninfected",
+      0.986146867275238
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_171905_cell_139.png",
+      "parasitized",
+      "uninfected",
+      0.986126720905304
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172257_cell_153.png",
+      "parasitized",
+      "uninfected",
+      0.9861226081848145
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172759_cell_31.png",
+      "parasitized",
+      "uninfected",
+      0.9858354330062866
+    ],
+    [
+      "Parasitized/C46P7ThinF_IMG_20151130_205828_cell_152.png",
+      "parasitized",
+      "uninfected",
+      0.9841850996017456
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_172216_cell_169.png",
+      "parasitized",
+      "uninfected",
+      0.9826440215110779
+    ],
+    [
+      "Parasitized/C181P142ThinF_IMG_20151127_160650_cell_173.png",
+      "parasitized",
+      "uninfected",
+      0.9819597005844116
+    ],
+    [
+      "Parasitized/C182P143NThinF_IMG_20151201_171905_cell_176.png",
+      "parasitized",
+      "uninfected",
+      0.9817215204238892
+    ]
+  ],
+  "checkpoint": {
+    "path": "artifacts/training/blood_smear_malaria_cell_classifier-20261114T071802Z/model.pt",
+    "sha256": "aa6216e57bc92be33ad3702e06487906c624099e98567937cc02f2f6b874b085"
+  },
+  "held_out_predictions": "artifacts/training/blood_smear_malaria_cell_classifier-20261114T071802Z/predictions_test.csv",
+  "training_seconds": 5631.3,
+  "config": {
+    "task_id": "nih-malaria-cell-classification",
+    "model_id": "blood_smear_malaria_cell_classifier",
+    "display_name": "Malaria parasite in a thin-smear red blood cell (NIH/NLM, research)",
+    "modality": "MICROSCOPY",
+    "anatomy": "blood",
+    "archs": "resnet18,efficientnet_b0",
+    "epochs": 8,
+    "batch_size": 64,
+    "image_size": 128,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "class_weighting": "inverse_frequency",
+    "exploratory": false,
+    "workers": 4,
+    "seed": 20261024,
+    "development_only": false,
+    "max_train_samples": 0,
+    "max_val_samples": 0
+  },
+  "reporting_context": {
+    "dataset": "NIH/NLM malaria thin blood smear cell images",
+    "dataset_version": "d217c6dceca42d7d",
+    "split": "test",
+    "checkpoint": "sha256:aa6216e57bc92be33ad3702e06487906c624099e98567937cc02f2f6b874b085",
+    "reporting_status": "INTERNAL_HELD_OUT"
+  },
+  "limitations": [
+    "Training used inverse-frequency weighted cross-entropy computed from the training split only. Weighting changes optimisation but does not create rare-class evidence or correct evaluation uncertainty.",
+    "Pseudonymous patient ids come from the publisher's folders. The publisher's validation split, used as the test set, shares no patient with its training split; training patients were divided into train and validation, and the bootstrap resamples patients.",
+    "Internal held-out test from the same source distribution; no external validation.",
+    "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

@@ -26,6 +26,11 @@ COMMON_LIMITATIONS = [
     "Research-only output; not clinically validated and not for diagnosis or treatment decisions.",
     "Evaluation and serving use float16 autocast on CUDA with cuDNN autotuning; a rerun of training can differ slightly.",
 ]
+# Runs trained while the GPU was on hold (owner decision 2026-11-14) state their real precision instead.
+CPU_LIMITATIONS = [
+    COMMON_LIMITATIONS[0],
+    "Trained and evaluated on CPU in float32 (GPU training on hold); serving on a CUDA device uses float16 autocast and can differ slightly.",
+]
 PROFILES = {
     "kidney": {
         "model_id": "ct_kidney_tumour_segresnet",
@@ -113,6 +118,52 @@ PROFILES = {
             "Input: one abdominal CT volume in Hounsfield units (NIfTI, NRRD or MetaImage, or a DICOM series permuted and flipped into the development "
             "orientation without resampling), inside the development spacing and intensity ranges.",
             "Small lesions are segmented less reliably (lesion detection and Dice by reference volume are reported).",
+        ],
+    },
+    # Approved MSD downloads of 2026-11-14, trained on CPU while the GPU is on hold.
+    "spleen": {
+        "model_id": "ct_spleen_segresnet", "cpu_trained": True,
+        "display_name": "CT spleen segmenter, 3-D (research)",
+        "task_id": "msd-spleen-segmentation", "anatomy": "spleen",
+        "modalities": ["CT_ABDOMEN_VOLUME"],
+        "dataset_license": "CC BY-SA 4.0 (Medical Segmentation Decathlon Task09 Spleen)",
+        "task_definition": "Patient-split segmentation of the spleen on portal-venous abdominal CT.",
+        "label_source": "Medical Segmentation Decathlon Task09 labels (Memorial Sloan Kettering)",
+        "citation": "Antonelli M, Reinke A, Bakas S, et al. The Medical Segmentation Decathlon. Nat Commun 13:4128 (2022); Simpson AL et al. arXiv:1902.09063 (2019).",
+        "limitations": [
+            "Internal held-out test on 41 labelled Decathlon cases from one centre (patients treated for liver metastases); no external or clinical validation.",
+            "Input: one abdominal CT volume in Hounsfield units inside the development spacing and intensity ranges.",
+            "Spleen volume from the mask is a research measurement, not a diagnosis of splenomegaly.",
+        ],
+    },
+    "prostate": {
+        "model_id": "mri_prostate_zones_segresnet", "cpu_trained": True,
+        "display_name": "MRI prostate zone segmenter, T2 + ADC, 3-D (research)",
+        "task_id": "msd-prostate-zone-segmentation", "anatomy": "prostate",
+        "modalities": ["PROSTATE_MRI_T2_ADC"],
+        "dataset_license": "CC BY-SA 4.0 (Medical Segmentation Decathlon Task05 Prostate)",
+        "task_definition": "Patient-split segmentation of the prostate peripheral and transition zones on co-registered T2 and ADC MRI.",
+        "label_source": "Medical Segmentation Decathlon Task05 labels (Radboud University Nijmegen Medical Centre)",
+        "citation": "Antonelli M, Reinke A, Bakas S, et al. The Medical Segmentation Decathlon. Nat Commun 13:4128 (2022).",
+        "limitations": [
+            "Only 32 labelled cases from one centre, so the held-out test is very small; no external or clinical validation.",
+            "Input: T2 and ADC on one grid, stacked in one 4-D NIfTI with T2 first, as in the Decathlon release.",
+            "Zone segmentation only: it does not detect, grade or stage prostate cancer.",
+        ],
+    },
+    "hippocampus": {
+        "model_id": "mri_hippocampus_segresnet", "cpu_trained": True,
+        "display_name": "MRI hippocampus head and body segmenter, 3-D (research)",
+        "task_id": "msd-hippocampus-segmentation", "anatomy": "brain",
+        "modalities": ["BRAIN_MRI_HIPPOCAMPUS_CROP"],
+        "dataset_license": "CC BY-SA 4.0 (Medical Segmentation Decathlon Task04 Hippocampus)",
+        "task_definition": "Patient-split segmentation of the anterior (head) and posterior (body and tail) hippocampus on cropped T1 MRI.",
+        "label_source": "Medical Segmentation Decathlon Task04 labels (Vanderbilt University Medical Center)",
+        "citation": "Antonelli M, Reinke A, Bakas S, et al. The Medical Segmentation Decathlon. Nat Commun 13:4128 (2022).",
+        "limitations": [
+            "Input is a small T1 MRI crop around one hippocampus as in the Decathlon release; whole-brain scans are outside its envelope.",
+            "Cohort of healthy adults and adults with a psychotic disorder; hippocampal volume here is a research measurement, not a dementia or epilepsy diagnosis.",
+            "Internal held-out test only; no external or clinical validation.",
         ],
     },
     # LIDC-IDRI subset (approved 300-patient download, 2026-11-06; TCIA CC BY 3.0).
@@ -206,7 +257,7 @@ def card(profile: dict, report: dict, envelope: dict) -> str:
         if values.get("bias") is not None:
             lines.append(f"- {name.replace('_', ' ')} vs reference: bias {values['bias']:+.2f} mL, limits of agreement {values['limits_of_agreement'][0]:.2f} to "
                          f"{values['limits_of_agreement'][1]:.2f} mL, MAE {values['mean_absolute_error']:.2f} (n = {values['n_patients']}).")
-    lines += ["", "## Limitations", "", *[f"- {item}" for item in profile["limitations"] + COMMON_LIMITATIONS], "",
+    lines += ["", "## Limitations", "", *[f"- {item}" for item in profile["limitations"] + (CPU_LIMITATIONS if profile.get("cpu_trained") else COMMON_LIMITATIONS)], "",
               f"Full report: `docs/validation/models/{profile['model_id']}.json`; input envelope: `docs/validation/models/{profile['model_id']}_input_envelope.json`.", ""]
     return "\n".join(lines)
 
@@ -230,7 +281,7 @@ def main() -> int:
     card_path = MODEL_CARDS / f"{profile['model_id']}.md"
     envelope = trainer.build_envelope(run_dir, envelope_path)
     report = trainer.build_report(run_dir, report_path, {"task_id": profile["task_id"], "dataset_license": profile["dataset_license"],
-                                                         "limitations": profile["limitations"] + COMMON_LIMITATIONS, "citation": profile["citation"],
+                                                         "limitations": profile["limitations"] + (CPU_LIMITATIONS if profile.get("cpu_trained") else COMMON_LIMITATIONS), "citation": profile["citation"],
                                                          "research_quality_assessment": quality,
                                                          "input_envelope": relative(envelope_path)})
     card_path.write_text(card(profile, report, envelope), encoding="utf-8")
@@ -244,7 +295,7 @@ def main() -> int:
         "supported_modalities": profile["modalities"], "supported_classes": [label["name"] for label in manifest["labels"]],
         "status": "FAILED" if quality["status"] == "FAILED_DECLARED_TARGET" else "READY_UNVALIDATED",
         "validated": False, "research_inference": True, "research_quality_assessment": quality,
-        "limitations": profile["limitations"] + COMMON_LIMITATIONS,
+        "limitations": profile["limitations"] + (CPU_LIMITATIONS if profile.get("cpu_trained") else COMMON_LIMITATIONS),
         "pipeline": {"dataset_preparation": profile.get("dataset_preparation", "python scripts/prepare_brain_mri_datasets.py"), "manifest_builder": "python -m ml_training.volumetric_manifest pairs",
                      "trainer": "python -m ml_training.volumetric_multichannel train", "synthetic_smoke": "python -m ml_training.volumetric_multichannel smoke",
                      "publisher": "python scripts/publish_brain_mri_models.py", "run_id": run_dir.name, "real_data_training_executed": True,

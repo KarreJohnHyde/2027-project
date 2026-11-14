@@ -1,0 +1,108 @@
+{
+  "model_id": "tabular_parkinsons_voice_uci",
+  "run_id": "tabular_parkinsons_voice_uci-20261114T091312Z",
+  "task_id": "parkinsons-voice",
+  "task_type": "tabular_binary_classification",
+  "target": "Parkinson's disease (vs healthy) from sustained-vowel voice measurements",
+  "dataset": "UCI 174",
+  "dataset_id": "uci-parkinsons",
+  "dataset_version": "f32af9fed7d8eca702d4a5495592638f788cca04683a36bcd8320f5c610b4c2c",
+  "dataset_license": "CC BY 4.0",
+  "training_rights": {
+    "authorization_status": "VERIFIED",
+    "training_purpose": "research",
+    "license_name": "CC BY 4.0"
+  },
+  "split_method": "StratifiedGroupKFold 70/15/15 by outcome; one person's rows and every exact duplicate record stay in one part",
+  "duplicate_handling": {
+    "exact_duplicate_records": 0,
+    "rule": "identical records (all features and label) are grouped into one part"
+  },
+  "evaluation_status": "RE_EVALUATED_AFTER_TEST_EXPOSURE_NOT_INDEPENDENT_FINAL_TEST",
+  "split_counts": {
+    "train": 145,
+    "val": 25,
+    "test": 25
+  },
+  "positives": {
+    "train": 109,
+    "val": 19,
+    "test": 19
+  },
+  "features": [
+    "MDVP:Fo(Hz)",
+    "MDVP:Fhi(Hz)",
+    "MDVP:Flo(Hz)",
+    "MDVP:Jitter(%)",
+    "MDVP:Jitter(Abs)",
+    "MDVP:RAP",
+    "MDVP:PPQ",
+    "Jitter:DDP",
+    "MDVP:Shimmer",
+    "MDVP:Shimmer(dB)",
+    "Shimmer:APQ3",
+    "Shimmer:APQ5",
+    "MDVP:APQ",
+    "Shimmer:DDA",
+    "NHR",
+    "HNR",
+    "RPDE",
+    "DFA",
+    "spread1",
+    "spread2",
+    "D2",
+    "PPE"
+  ],
+  "model_selection": {
+    "validation_auroc": {
+      "logistic_C0.01": 0.5789473684210527,
+      "logistic_C0.1": 0.6228070175438596,
+      "logistic_C1.0": 0.6754385964912281,
+      "logistic_C10.0": 0.5087719298245614,
+      "gradient_boosting_depth3_lr0.05": 0.5175438596491228,
+      "gradient_boosting_depth3_lr0.1": 0.543859649122807,
+      "gradient_boosting_depthNone_lr0.05": 0.5,
+      "gradient_boosting_depthNone_lr0.1": 0.5877192982456141
+    },
+    "selected": "logistic_C1.0",
+    "rule": "highest validation AUROC; logistic regression on ties"
+  },
+  "test_n": 25,
+  "metrics": {
+    "auroc": 0.8771929824561404,
+    "auprc": 0.9686703601108033,
+    "sensitivity": 0.8947368421052632,
+    "specificity": 0.0,
+    "brier": 0.18907827083152978,
+    "brier_prevalence_baseline": 0.18246848989298453,
+    "ece_10_bins": 0.25171321767357485,
+    "threshold": 0.635218604099783,
+    "test_positive_share": 0.76,
+    "brier_skill": -0.0362242321532984
+  },
+  "confidence_intervals_95": {
+    "auroc": {
+      "status": "NOT_COMPUTED_TOO_MANY_DEGENERATE_RESAMPLES"
+    },
+    "auprc": {
+      "status": "NOT_COMPUTED_TOO_MANY_DEGENERATE_RESAMPLES"
+    }
+  },
+  "calibration": {
+    "method": "Platt scaling on the validation part",
+    "operating_threshold": "Youden's J on the validation part"
+  },
+  "checkpoint": {
+    "path": "artifacts/training/tabular_parkinsons_voice_uci-20261114T091312Z/model.joblib",
+    "sha256": "35b30eae472ff5cf38d71c62098537881cf1f55fa5770d1aa69bf98ae450667e"
+  },
+  "held_out_predictions": "artifacts/training/tabular_parkinsons_voice_uci-20261114T091312Z/predictions_test.csv",
+  "evaluated_at": "2026-11-14T09:13:18+00:00",
+  "limitations": [
+    "Population: 31 people (23 with Parkinson's disease), several recordings each; very few people in the test part. Results do not transfer to other populations without external evaluation.",
+    "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+    "Small public cohort: confidence intervals are wide.",
+    "Re-evaluated after test exposure (2026-11-14 duplicate audit): this split's test part overlaps the first run's inspected test part, so it is not an independent final test.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

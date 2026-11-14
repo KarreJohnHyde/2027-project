@@ -43,7 +43,7 @@ class ResearchInferenceRequest(BaseModel):
     # Every key of model_inference.MODALITY_LABELS (a test keeps the two in step).
     declared_input_type: Literal["ENDOSCOPY", "ANGIOGRAPHY", "CT", "MICROSCOPY", "ECG", "MRI", "XRAY", "HEAD_CT",
                                  "BRAIN_MRI_DIFFUSION", "BRAIN_MRI_MULTISEQUENCE", "ECHO", "CT_ABDOMEN_VOLUME", "HEAD_CT_SERIES", "CHEST_XRAY",
-                                 "CT_CHEST_VOLUME", "DERMATOLOGY"]
+                                 "CT_CHEST_VOLUME", "DERMATOLOGY", "PROSTATE_MRI_T2_ADC", "BRAIN_MRI_HIPPOCAMPUS_CROP", "OBSTETRIC_ULTRASOUND"]
     # WFDB records are a header plus a signal file uploaded separately; CSV records carry no amplitude unit.
     companion_upload_id: Optional[int] = Field(default=None, ge=1)
     amplitude_unit: Optional[Literal["mV", "uV"]] = None

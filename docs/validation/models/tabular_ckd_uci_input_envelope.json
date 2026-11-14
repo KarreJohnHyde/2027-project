@@ -1,0 +1,253 @@
+{
+  "model_id": "tabular_ckd_uci",
+  "target": "chronic kidney disease (the source's 'ckd' class)",
+  "source": "UCI dataset 336 (development part only, seed 20261024)",
+  "units": "as defined in the UCI dataset documentation for this table",
+  "development_rows": 285,
+  "fields": [
+    {
+      "name": "age",
+      "type": "number",
+      "min": 2.0,
+      "max": 90.0,
+      "development_missing_share": 0.014,
+      "may_be_blank": true
+    },
+    {
+      "name": "bp",
+      "type": "number",
+      "min": 50.0,
+      "max": 140.0,
+      "development_missing_share": 0.0281,
+      "may_be_blank": true,
+      "allowed_values": [
+        50.0,
+        60.0,
+        70.0,
+        80.0,
+        90.0,
+        100.0,
+        110.0,
+        120.0,
+        140.0
+      ]
+    },
+    {
+      "name": "sg",
+      "type": "number",
+      "min": 1.005,
+      "max": 1.025,
+      "development_missing_share": 0.1158,
+      "may_be_blank": true
+    },
+    {
+      "name": "al",
+      "type": "number",
+      "min": 0.0,
+      "max": 5.0,
+      "development_missing_share": 0.1123,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0
+      ]
+    },
+    {
+      "name": "su",
+      "type": "number",
+      "min": 0.0,
+      "max": 4.0,
+      "development_missing_share": 0.1228,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        4.0
+      ]
+    },
+    {
+      "name": "rbc",
+      "type": "category",
+      "categories": [
+        "abnormal",
+        "normal"
+      ],
+      "development_missing_share": 0.3754,
+      "may_be_blank": true
+    },
+    {
+      "name": "pc",
+      "type": "category",
+      "categories": [
+        "abnormal",
+        "normal"
+      ],
+      "development_missing_share": 0.1684,
+      "may_be_blank": true
+    },
+    {
+      "name": "pcc",
+      "type": "category",
+      "categories": [
+        "notpresent",
+        "present"
+      ],
+      "development_missing_share": 0.007,
+      "may_be_blank": true
+    },
+    {
+      "name": "ba",
+      "type": "category",
+      "categories": [
+        "notpresent",
+        "present"
+      ],
+      "development_missing_share": 0.007,
+      "may_be_blank": true
+    },
+    {
+      "name": "bgr",
+      "type": "number",
+      "min": 22.0,
+      "max": 463.0,
+      "development_missing_share": 0.1158,
+      "may_be_blank": true
+    },
+    {
+      "name": "bu",
+      "type": "number",
+      "min": 1.5,
+      "max": 391.0,
+      "development_missing_share": 0.0491,
+      "may_be_blank": true
+    },
+    {
+      "name": "sc",
+      "type": "number",
+      "min": 0.4,
+      "max": 76.0,
+      "development_missing_share": 0.0386,
+      "may_be_blank": true
+    },
+    {
+      "name": "sod",
+      "type": "number",
+      "min": 4.5,
+      "max": 163.0,
+      "development_missing_share": 0.2105,
+      "may_be_blank": true
+    },
+    {
+      "name": "pot",
+      "type": "number",
+      "min": 2.5,
+      "max": 47.0,
+      "development_missing_share": 0.214,
+      "may_be_blank": true
+    },
+    {
+      "name": "hemo",
+      "type": "number",
+      "min": 4.8,
+      "max": 17.8,
+      "development_missing_share": 0.1439,
+      "may_be_blank": true
+    },
+    {
+      "name": "pcv",
+      "type": "number",
+      "min": 14.0,
+      "max": 54.0,
+      "development_missing_share": 0.1895,
+      "may_be_blank": true
+    },
+    {
+      "name": "wbcc",
+      "type": "number",
+      "min": 2200.0,
+      "max": 21600.0,
+      "development_missing_share": 0.2737,
+      "may_be_blank": true
+    },
+    {
+      "name": "rbcc",
+      "type": "number",
+      "min": 2.1,
+      "max": 8.0,
+      "development_missing_share": 0.3333,
+      "may_be_blank": true
+    },
+    {
+      "name": "htn",
+      "type": "category",
+      "categories": [
+        "no",
+        "yes"
+      ],
+      "development_missing_share": 0.007,
+      "may_be_blank": true
+    },
+    {
+      "name": "dm",
+      "type": "category",
+      "categories": [
+        "no",
+        "yes"
+      ],
+      "development_missing_share": 0.007,
+      "may_be_blank": true
+    },
+    {
+      "name": "cad",
+      "type": "category",
+      "categories": [
+        "no",
+        "yes"
+      ],
+      "development_missing_share": 0.007,
+      "may_be_blank": true
+    },
+    {
+      "name": "appet",
+      "type": "category",
+      "categories": [
+        "good",
+        "poor"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "pe",
+      "type": "category",
+      "categories": [
+        "no",
+        "yes"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "ane",
+      "type": "category",
+      "categories": [
+        "no",
+        "yes"
+      ],
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    }
+  ],
+  "rules": [
+    "values outside the development range are refused",
+    "coded fields accept only their development codes",
+    "unknown categories are refused",
+    "blank values are imputed only for fields that were blank in development; more than half blank is refused"
+  ]
+}

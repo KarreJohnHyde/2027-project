@@ -1,0 +1,219 @@
+{
+  "model_id": "tabular_hepatitis_mortality_uci",
+  "target": "death (vs survival) of patients with hepatitis",
+  "source": "UCI dataset 46 (development part only, seed 20261024)",
+  "units": "as defined in the UCI dataset documentation for this table",
+  "development_rows": 111,
+  "fields": [
+    {
+      "name": "age",
+      "type": "number",
+      "min": 20.0,
+      "max": 78.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "sex",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "steroid",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "antivirals",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "fatigue",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.009,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "malaise",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.009,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "anorexia",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.009,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "liver_big",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.0541,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "liver_firm",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.0631,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "spleen_palpable",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.027,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "spiders",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.027,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "ascites",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.027,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "varices",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.027,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "bilirubin",
+      "type": "number",
+      "min": 0.4,
+      "max": 8.0,
+      "development_missing_share": 0.045,
+      "may_be_blank": true
+    },
+    {
+      "name": "alk_phosphate",
+      "type": "number",
+      "min": 30.0,
+      "max": 295.0,
+      "development_missing_share": 0.1982,
+      "may_be_blank": true
+    },
+    {
+      "name": "sgot",
+      "type": "number",
+      "min": 14.0,
+      "max": 648.0,
+      "development_missing_share": 0.036,
+      "may_be_blank": true
+    },
+    {
+      "name": "albumin",
+      "type": "number",
+      "min": 2.1,
+      "max": 6.4,
+      "development_missing_share": 0.1261,
+      "may_be_blank": true
+    },
+    {
+      "name": "protime",
+      "type": "number",
+      "min": 0.0,
+      "max": 100.0,
+      "development_missing_share": 0.4324,
+      "may_be_blank": true
+    },
+    {
+      "name": "histology",
+      "type": "number",
+      "min": 1.0,
+      "max": 2.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false,
+      "allowed_values": [
+        1.0,
+        2.0
+      ]
+    }
+  ],
+  "rules": [
+    "values outside the development range are refused",
+    "coded fields accept only their development codes",
+    "unknown categories are refused",
+    "blank values are imputed only for fields that were blank in development; more than half blank is refused"
+  ]
+}

@@ -1,0 +1,335 @@
+{
+  "model_id": "tabular_cervical_biopsy_uci",
+  "target": "positive cervical biopsy from questionnaire risk factors",
+  "source": "UCI dataset 383 (development part only, seed 20261024)",
+  "units": "as defined in the UCI dataset documentation for this table",
+  "development_rows": 612,
+  "fields": [
+    {
+      "name": "Age",
+      "type": "number",
+      "min": 13.0,
+      "max": 84.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "Number of sexual partners",
+      "type": "number",
+      "min": 1.0,
+      "max": 15.0,
+      "development_missing_share": 0.031,
+      "may_be_blank": true,
+      "allowed_values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        10.0,
+        15.0
+      ]
+    },
+    {
+      "name": "First sexual intercourse",
+      "type": "number",
+      "min": 10.0,
+      "max": 29.0,
+      "development_missing_share": 0.0082,
+      "may_be_blank": true
+    },
+    {
+      "name": "Num of pregnancies",
+      "type": "number",
+      "min": 0.0,
+      "max": 11.0,
+      "development_missing_share": 0.0703,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        11.0
+      ]
+    },
+    {
+      "name": "Smokes",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.0131,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "Smokes (years)",
+      "type": "number",
+      "min": 0.0,
+      "max": 34.0,
+      "development_missing_share": 0.0131,
+      "may_be_blank": true
+    },
+    {
+      "name": "Smokes (packs/year)",
+      "type": "number",
+      "min": 0.0,
+      "max": 22.0,
+      "development_missing_share": 0.0131,
+      "may_be_blank": true
+    },
+    {
+      "name": "Hormonal Contraceptives",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1127,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "Hormonal Contraceptives (years)",
+      "type": "number",
+      "min": 0.0,
+      "max": 22.0,
+      "development_missing_share": 0.1127,
+      "may_be_blank": true
+    },
+    {
+      "name": "IUD",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1209,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "IUD (years)",
+      "type": "number",
+      "min": 0.0,
+      "max": 19.0,
+      "development_missing_share": 0.1209,
+      "may_be_blank": true
+    },
+    {
+      "name": "STDs",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "STDs (number)",
+      "type": "number",
+      "min": 0.0,
+      "max": 4.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        4.0
+      ]
+    },
+    {
+      "name": "STDs:condylomatosis",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "STDs:cervical condylomatosis",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0
+      ]
+    },
+    {
+      "name": "STDs:vaginal condylomatosis",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "STDs:vulvo-perineal condylomatosis",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "STDs:syphilis",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "STDs:pelvic inflammatory disease",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0
+      ]
+    },
+    {
+      "name": "STDs:genital herpes",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0
+      ]
+    },
+    {
+      "name": "STDs:molluscum contagiosum",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "STDs:AIDS",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0
+      ]
+    },
+    {
+      "name": "STDs:HIV",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "STDs:Hepatitis B",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0
+      ]
+    },
+    {
+      "name": "STDs:HPV",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "development_missing_share": 0.1095,
+      "may_be_blank": true,
+      "allowed_values": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "STDs: Number of diagnosis",
+      "type": "number",
+      "min": 0.0,
+      "max": 3.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false,
+      "allowed_values": [
+        0.0,
+        1.0,
+        2.0,
+        3.0
+      ]
+    },
+    {
+      "name": "STDs: Time since first diagnosis",
+      "type": "number",
+      "min": 1.0,
+      "max": 22.0,
+      "development_missing_share": 0.9183,
+      "may_be_blank": true
+    },
+    {
+      "name": "STDs: Time since last diagnosis",
+      "type": "number",
+      "min": 1.0,
+      "max": 22.0,
+      "development_missing_share": 0.9183,
+      "may_be_blank": true
+    }
+  ],
+  "rules": [
+    "values outside the development range are refused",
+    "coded fields accept only their development codes",
+    "unknown categories are refused",
+    "blank values are imputed only for fields that were blank in development; more than half blank is refused"
+  ]
+}

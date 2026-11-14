@@ -355,9 +355,17 @@ export interface VideoMetadata {
   codec: string;
 }
 
-/** Per-slice labels of a neighbouring-slice model on an ordered DICOM series. */
+/** Per-slice labels of a head CT model (each slice alone, or with its neighbours) on an ordered DICOM series. */
 export interface SeriesSliceOutput {
   type: 'series_slice_multilabel';
+  slice_input?: string;
+  /** Per label, the highest probability over the analysed slices (the scan-level score of the external series evaluation). */
+  label_maxima?: Array<{ label: string; probability: number; threshold: number; at_or_above_threshold: boolean; slice_index: number }>;
+  /** The saved external evaluation of this exact checkpoint through this series pipeline, when one exists. */
+  series_pipeline_external_evaluation?: {
+    dataset: string; scope: string | null; scored_scans: number | null; report_path: string; clinical_validation: false;
+    any_haemorrhage: { auroc: number | null; auroc_ci95: [number, number] | null; sensitivity: number | null; specificity: number | null } | null;
+  } | null;
   slices: Array<{ slice_index: number; upload_id: number | null; applicability_score: number; status: 'ANALYSED' | 'REFUSED_OUT_OF_DISTRIBUTION';
     labels?: Array<{ label: string; probability: number; threshold: number; at_or_above_threshold: boolean }>; positive_labels?: string[] }>;
   slices_analysed: number;
@@ -642,6 +650,8 @@ export interface ResearchModel {
   validated: boolean;
   gate: { allowed: boolean; blockers: string[] };
   inference_input?: 'image_2d' | 'ecg_12lead' | 'tabular_survival' | 'volume_nifti' | 'echo_video' | 'head_ct_series';
+  /** Set when the model also runs on an assembled head CT series: each slice with its neighbours, or each slice alone. */
+  head_ct_series_mode?: 'neighbours' | 'per_slice' | null;
   run_scope?: 'RESEARCH' | 'EXPLORATORY_ONLY';
   dataset_license: string | null;
   model_card_path: string | null;
@@ -1831,6 +1841,78 @@ export interface ModelRegistryRecord {
   inference_route?: string;
   /** A narrower local check than a held-out evaluation (e.g. one organ, or attention localisation only). */
   local_evaluation?: { scope: string; dataset: string; headline: string; report_path: string };
+  /** Saved research evaluations on a public cohort the model never trained on, for the registered checkpoint only. */
+  external_evaluation?: ExternalEvaluationSummary[];
+}
+
+export interface TabularField {
+  name: string;
+  type: 'number' | 'category';
+  min?: number;
+  max?: number;
+  /** A coded numeric field accepts only these values. */
+  allowed_values?: number[];
+  categories?: string[];
+  development_missing_share: number;
+  may_be_blank: boolean;
+}
+
+export interface TabularContract {
+  model_id: string;
+  display_name: string;
+  target: string;
+  units: string;
+  source: string;
+  fields: TabularField[];
+  rules: string[];
+  run_scope: string | null;
+  runnable: boolean;
+  threshold: number | null;
+  limitations: string[];
+  output_status: string;
+}
+
+export interface TabularResult {
+  model_id: string;
+  target: string;
+  probability: number;
+  threshold: number;
+  at_or_above_threshold: boolean;
+  imputed_fields: string[];
+  probability_semantics: string;
+  threshold_rule: string;
+  checkpoint_sha256: string;
+  limitations: string[];
+  output_status: string;
+  stored: false;
+}
+
+export interface ExternalEvaluationLabel {
+  label: string;
+  positives: number | null;
+  negatives: number | null;
+  auroc: number | null;
+  auroc_ci95: [number, number] | null;
+  sensitivity: number | null;
+  specificity: number | null;
+}
+
+export interface ExternalEvaluationSummary {
+  dataset: string;
+  reference_standard: string | null;
+  scope: string | null;
+  expected_reference_scans: number | null;
+  excluded: { scan: string; reason: string | null }[];
+  series_selection: Record<string, number> | null;
+  scans: number | null;
+  scored: number | null;
+  refused: number | null;
+  labels: ExternalEvaluationLabel[];
+  threshold_policy: string | null;
+  metric_population: string | null;
+  checkpoint_sha256: string;
+  report_path: string;
+  clinical_validation: false;
 }
 
 export interface ModelRegistryResponse {
@@ -2291,6 +2373,17 @@ class ApiClient {
 
   getModels(): Promise<ModelRegistryResponse> {
     return this.request<ModelRegistryResponse>('/models');
+  }
+
+  /** Input contract (development envelope) of a tabular research model. */
+  getTabularContract(modelId: string): Promise<TabularContract> {
+    return this.request<TabularContract>(`/research-models/${encodeURIComponent(modelId)}/tabular-contract`);
+  }
+
+  /** Research probability from typed values; refused outside the model's development envelope. Nothing is stored. */
+  runTabularModel(modelId: string, values: Record<string, number | string | null>): Promise<TabularResult> {
+    return this.request<TabularResult>(`/research-models/${encodeURIComponent(modelId)}/tabular-inference`,
+      { method: 'POST', body: JSON.stringify({ values }) });
   }
 
   getResearchJobs(): Promise<{ available: boolean; observed_at: string; scope: string; notice: string;

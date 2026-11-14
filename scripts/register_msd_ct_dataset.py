@@ -38,6 +38,8 @@ def main() -> int:
     parser.add_argument("--target", required=True)
     parser.add_argument("--title", required=True)
     parser.add_argument("--identity", default="")
+    parser.add_argument("--modality", default="CT", help="Registry modality (CT for the CT tasks; MRI for prostate and hippocampus)")
+    parser.add_argument("--approved-on", default="2026-11-06", help="Date the repository owner approved this download")
     args = parser.parse_args()
     meta = json.loads((args.task_dir / "dataset.json").read_text(encoding="utf-8"))
     licence = str(meta.get("licence") or meta.get("license") or "").strip()
@@ -45,8 +47,8 @@ def main() -> int:
         raise SystemExit(f"dataset.json declares licence {licence!r}; expected the MSD CC BY-SA 4.0 licence.")
     images = [path for path in (args.task_dir / "imagesTr").glob("*.nii.gz") if not path.name.startswith("._")]
     record = {
-        "id": args.dataset_id, "archive": args.archive.name, "title": args.title, "modality": "CT", "system": args.system,
-        "identity": args.identity or f"{len(images)} labelled training CT volumes (imagesTr/labelsTr); unlabelled test volumes unused; labels {meta.get('labels')}",
+        "id": args.dataset_id, "archive": args.archive.name, "title": args.title, "modality": args.modality, "system": args.system,
+        "identity": args.identity or f"{len(images)} labelled training {args.modality} volumes (imagesTr/labelsTr); unlabelled test volumes unused; labels {meta.get('labels')}",
         "labels": "NIFTI_VOLUMES_WITH_MASKS", "official_splits": False, "patient_ids": "CASE_NUMBERS_ONLY",
         "source_archive": str(args.archive.resolve()).replace("\\", "/"), "source_sha256": sha256(args.archive),
         "files": sum(1 for _ in args.task_dir.rglob("*") if _.is_file() and not _.name.startswith("._")), "location": str(args.task_dir.resolve().parent).replace("\\", "/"),
@@ -54,15 +56,15 @@ def main() -> int:
             "status": "PUBLISHED_LICENCE_IN_ARCHIVE", "authorization_status": "VERIFIED",
             "authorization_reason": f"The archive's dataset.json declares \"licence\": \"{licence}\" ({meta.get('release') or 'MSD release'}). CC BY-SA 4.0 permits "
                                     "training and evaluation with attribution; adapted datasets must be shared alike. Trained weights are not distributed.",
-            "authorized_by": "published licence (CC BY-SA 4.0); download approved by the repository owner on 2026-11-06",
-            "authorized_on": "2026-11-06", "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
-            "name": "CC BY-SA 4.0 (Medical Segmentation Decathlon)", "source": f"{args.task_dir.name}/dataset.json inside the archive", "verified_on": "2026-11-06",
+            "authorized_by": f"published licence (CC BY-SA 4.0); download approved by the repository owner on {args.approved_on}",
+            "authorized_on": args.approved_on, "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
+            "name": "CC BY-SA 4.0 (Medical Segmentation Decathlon)", "source": f"{args.task_dir.name}/dataset.json inside the archive", "verified_on": args.approved_on,
             "citation": "Antonelli M, Reinke A, Bakas S, et al. The Medical Segmentation Decathlon. Nature Communications 13:4128 (2022); "
                         "Simpson AL, Antonelli M, Bakas S, et al. arXiv:1902.09063 (2019).",
         },
         "privacy": "PUBLISHER_DE_IDENTIFIED (case numbers only)", "exact_duplicate_overlap": {}, "notes": [],
         "tasks": [{"task_id": args.task_id, "type": "SEGMENTATION_VOLUMES", "target": args.target, "flags": ["TASK_SUPPORTED_BY_LABELS"],
-                   "training_eligible": True, "trainer": "python -m ml_training.volumetric_multichannel train --intensity ct",
+                   "training_eligible": True, "trainer": f"python -m ml_training.volumetric_multichannel train --intensity {'ct' if args.modality == 'CT' else 'mr'}",
                    "manifest_builder": "python scripts/prepare_msd_ct_datasets.py; python -m ml_training.volumetric_manifest pairs",
                    "validation_ready": True, "readiness": "READY_FOR_TRAINING"}],
     }

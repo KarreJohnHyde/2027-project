@@ -44,7 +44,8 @@ test("coverage filters declared targets, exports full versions and handles unsup
   await page.getByRole("radio", { name: "Organ / test coverage", exact: true }).click();
   const filter = page.getByLabel("Filter capability coverage");
   await expect(filter).toBeVisible();
-  await expect(page.getByText(/^\d+ of \d+ targets$/)).toBeVisible({ timeout: 60_000 });
+  // "0 of 0 targets" is the loading state before /models answers; wait for the registry itself.
+  await expect(page.getByText(/^[1-9]\d* of [1-9]\d* targets$/)).toBeVisible({ timeout: 60_000 });
   await filter.fill("kidney_stone_detector");
   await expect(page.getByText(/^1 of \d+ targets$/)).toBeVisible();
   await expect(page.getByText(/^Label: Kidney stone$/i)).toBeVisible();

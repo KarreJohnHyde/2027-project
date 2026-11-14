@@ -1,0 +1,104 @@
+{
+  "model_id": "tabular_liver_patient_uci",
+  "run_id": "tabular_liver_patient_uci-20261114T091238Z",
+  "task_id": "liver-patient",
+  "task_type": "tabular_binary_classification",
+  "target": "liver patient (the source's selector = 1) from liver function tests",
+  "dataset": "UCI 225",
+  "dataset_id": "uci-indian-liver-patient",
+  "dataset_version": "4be6a726d443a4e35bedab0f309947962a47aeffd199022d7b604ab1bc0fd446",
+  "dataset_license": "CC BY 4.0",
+  "training_rights": {
+    "authorization_status": "VERIFIED",
+    "training_purpose": "research",
+    "license_name": "CC BY 4.0"
+  },
+  "split_method": "StratifiedGroupKFold 70/15/15 by outcome; one person's rows and every exact duplicate record stay in one part",
+  "duplicate_handling": {
+    "exact_duplicate_records": 13,
+    "rule": "identical records (all features and label) are grouped into one part"
+  },
+  "evaluation_status": "RE_EVALUATED_AFTER_TEST_EXPOSURE_NOT_INDEPENDENT_FINAL_TEST",
+  "split_counts": {
+    "train": 416,
+    "val": 84,
+    "test": 83
+  },
+  "positives": {
+    "train": 297,
+    "val": 60,
+    "test": 59
+  },
+  "features": [
+    "age",
+    "gender",
+    "total_bilirubin",
+    "direct_bilirubin",
+    "alkaline_phosphatase",
+    "alt",
+    "ast",
+    "total_protein",
+    "albumin",
+    "ag_ratio"
+  ],
+  "model_selection": {
+    "validation_auroc": {
+      "logistic_C0.01": 0.6555555555555556,
+      "logistic_C0.1": 0.695138888888889,
+      "logistic_C1.0": 0.6951388888888889,
+      "logistic_C10.0": 0.6979166666666667,
+      "gradient_boosting_depth3_lr0.05": 0.6486111111111111,
+      "gradient_boosting_depth3_lr0.1": 0.6361111111111111,
+      "gradient_boosting_depthNone_lr0.05": 0.6354166666666667,
+      "gradient_boosting_depthNone_lr0.1": 0.6222222222222222
+    },
+    "selected": "logistic_C10.0",
+    "rule": "highest validation AUROC; logistic regression on ties"
+  },
+  "test_n": 83,
+  "metrics": {
+    "auroc": 0.7478813559322034,
+    "auprc": 0.8793282699661256,
+    "sensitivity": 0.4406779661016949,
+    "specificity": 0.9583333333333334,
+    "brier": 0.17307033401936245,
+    "brier_prevalence_baseline": 0.20555467524684534,
+    "ece_10_bins": 0.047865546760539175,
+    "threshold": 0.780610915914379,
+    "test_positive_share": 0.7108433734939759,
+    "brier_skill": 0.15803260708360578
+  },
+  "confidence_intervals_95": {
+    "auroc": {
+      "status": "COMPUTED",
+      "low": 0.6284137302933234,
+      "high": 0.8579904622667781,
+      "resamples": 1000,
+      "unit": "person or duplicate-record group"
+    },
+    "auprc": {
+      "status": "COMPUTED",
+      "low": 0.7823401263052233,
+      "high": 0.9506080188035235,
+      "resamples": 1000,
+      "unit": "person or duplicate-record group"
+    }
+  },
+  "calibration": {
+    "method": "Platt scaling on the validation part",
+    "operating_threshold": "Youden's J on the validation part"
+  },
+  "checkpoint": {
+    "path": "artifacts/training/tabular_liver_patient_uci-20261114T091238Z/model.joblib",
+    "sha256": "a00edd71be141945dcf07d6232155952b98f6bd9e89bf43db040d99b4f49b7b6"
+  },
+  "held_out_predictions": "artifacts/training/tabular_liver_patient_uci-20261114T091238Z/predictions_test.csv",
+  "evaluated_at": "2026-11-14T09:12:48+00:00",
+  "limitations": [
+    "Population: 583 patients from north-east Andhra Pradesh, India. Results do not transfer to other populations without external evaluation.",
+    "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+    "Small public cohort: confidence intervals are wide.",
+    "Re-evaluated after test exposure (2026-11-14 duplicate audit): this split's test part overlaps the first run's inspected test part, so it is not an independent final test.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

@@ -9,7 +9,13 @@ from tests.conftest import get_auth_headers
 REGISTRY_PATH = Path(__file__).resolve().parents[2] / "dataset_registry" / "datasets.json"
 TASK_AUDIT_PATH = Path(__file__).resolve().parents[2] / "dataset_registry" / "tasks.json"
 # Registered by their own scripts once an approved download completes (2026-11-06).
-SCRIPT_REGISTERED = {"msd-task07-pancreas", "msd-task03-liver", "nlm-tb-cxr", "lidc-idri-subset"}
+SCRIPT_REGISTERED = {"msd-task07-pancreas", "msd-task03-liver", "nlm-tb-cxr", "lidc-idri-subset",
+                     # Downloads approved by the owner on 2026-11-14 (scripts/acquire_approved_public_datasets.py), each
+                     # registered with its download receipt by ml_training/tabular.py or its own registration script.
+                     "uci-heart-disease", "uci-chronic-kidney-disease", "uci-diabetes-130-hospitals", "uci-breast-cancer-wisconsin-diagnostic",
+                     "uci-thyroid-hypothyroid", "uci-indian-liver-patient", "uci-hepatitis", "uci-parkinsons",
+                     "uci-cervical-cancer-risk-factors", "nih-malaria-cell-images", "fetal-planes-db",
+                     "msd-task09-spleen", "msd-task05-prostate", "msd-task04-hippocampus", "msd-task07-pancreas", "hc18-fetal-head"}
 
 
 def _source_registry():

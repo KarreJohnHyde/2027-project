@@ -21,3 +21,12 @@ def evidence_graph(case_id: int, db: Session = Depends(get_db), current_user: Us
 def copilot_query(case_id: int, request: CopilotQuery, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     case = verify_case_access(case_id, current_user, db, access="read")
     return query_case(case, request, db)
+
+
+@router.post("/cases/{case_id}/copilot/converse")
+def copilot_converse(case_id: int, request: CopilotQuery, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """The deterministic copilot, optionally phrased by a local model (off by default; loopback only; nothing stored)."""
+    from app.services.copilot_local_llm import converse
+
+    case = verify_case_access(case_id, current_user, db, access="read")
+    return converse(case, request, db)

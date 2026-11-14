@@ -1,7 +1,7 @@
 // Actual application screens on the isolated QA stack. Optional supplied report
 // inputs must be identity-redacted derivatives; they never enter the repository.
 import { expect, test } from "@playwright/test";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,6 +12,11 @@ test.use({ viewport: { width: 1536, height: 1024 }, launchOptions: { args: ["--u
 // scripts/prepare_e2e_ct_control.py writes to the git-ignored .cache folder. Without either the test skips.
 const PREPARED_CT_CONTROL = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../.cache/e2e-controls/public-ct-control.png");
 const NATIVE_CT_FILE = process.env.MEDTWIN_E2E_NATIVE_CT_FILE || (existsSync(PREPARED_CT_CONTROL) ? PREPARED_CT_CONTROL : "");
+// The native head CT series control: one de-identified CQ500 DICOM series written by scripts/prepare_e2e_ct_series.py to
+// the git-ignored .cache folder (CC BY-NC-SA 4.0, evaluation only). Without it the series test skips.
+const SERIES_DIR = process.env.MEDTWIN_E2E_HEAD_CT_SERIES_DIR
+  || path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../.cache/e2e-controls/cq500-head-ct-series");
+const SERIES_FILES = existsSync(SERIES_DIR) ? readdirSync(SERIES_DIR).filter((name) => name.endsWith(".dcm")).sort() : [];
 
 async function post(page, endpoint, token, data, multipart) {
   const response = await page.request.post(`/api/v1${endpoint}`, { headers: token ? { Authorization: `Bearer ${token}` } : {}, ...(multipart ? { multipart } : { data }) });
@@ -197,4 +202,30 @@ test("public digital CT control shows real checkpoint output separately", async 
   await page.goto("/multimodal");
   await expect(page.getByRole("link", { name: "Open stored model output", exact: true })).toBeVisible();
   await capture(page, folder, "02-scan-only-model-evidence");
+});
+
+test("native head CT series is analysed slice by slice", async ({ page }, testInfo) => {
+  test.skip(SERIES_FILES.length < 3, "Requires a local native head CT control series (run scripts/prepare_e2e_ct_series.py).");
+  test.setTimeout(300_000);
+  const folder = artifacts(testInfo);
+  const { token, caseId } = await session(page, "PUBLIC-DATASET-HEAD-CT-SERIES");
+  for (const name of SERIES_FILES) await upload(page, token, caseId, name, readFileSync(path.join(SERIES_DIR, name)), "application/dicom");
+  await page.goto("/imaging");
+  await page.getByRole("radio", { name: "DICOM series" }).or(page.getByRole("button", { name: "DICOM series" })).first().click();
+  await page.getByRole("button", { name: "Assemble series" }).click();
+  await expect(page.getByText("Research model on this series", { exact: true })).toBeVisible({ timeout: 60_000 });
+  // The model list loads after the card; with more than one series model a chooser appears.
+  const chooser = page.getByLabel("Series research model");
+  const perSlice = page.getByText(/read on its own \(this model never sees neighbouring slices\)/);
+  await expect(chooser.or(perSlice).first()).toBeVisible({ timeout: 30_000 });
+  if (await chooser.count()) await chooser.selectOption("brain_ct_rsna_ich_classifier");
+  await expect(page.getByText(/read on its own \(this model never sees neighbouring slices\)/)).toBeVisible();
+  await page.getByLabel("This series is a non-contrast axial head CT (every slice of one series).").check();
+  await capture(page, folder, "01-assembled-native-series");
+  await page.getByRole("button", { name: "Run model" }).click();
+  await expect(page.getByText(/^Model input: each slice alone/)).toBeVisible({ timeout: 240_000 });
+  // Every label row of the series table shows a number; the result stays a research output pending review.
+  await expect(page.getByRole("columnheader", { name: "Highest over the series", exact: true })).toBeVisible();
+  await expect(page.getByRole("cell", { name: "Any intracranial haemorrhage", exact: true })).toBeVisible();
+  await capture(page, folder, "02-series-model-output");
 });

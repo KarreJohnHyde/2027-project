@@ -594,6 +594,8 @@ def main(argv: list[str] | None = None) -> int:
         "anatomy": args.anatomy, "framework": f"torchvision {selected}", "adapter": "app.services.model_inference",
         "source_repository": "medtwin/training", "dependency_environment": ".venv", "weights_path": checkpoint_ref(checkpoint_path),
         "device": "cuda_or_cpu", "supported_inputs": ["image/jpeg", "image/png"], "supported_modalities": [args.modality], "supported_classes": classes,
+        # Serving reproduces the evaluated precision: float32 for a CPU-evaluated run (app.services.model_inference.evaluated_precision).
+        **({"evaluation_device": "cpu"} if dev.type == "cpu" else {}),
         "status": "READY_UNVALIDATED", "validated": False, "research_inference": True,
         "validation_readiness": readiness, "class_distribution": distribution, "class_imbalance": imbalance,
         "limitations": report["limitations"],

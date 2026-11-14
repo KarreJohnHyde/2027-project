@@ -1,0 +1,1132 @@
+{
+  "generated_at": "2026-11-14T08:05:43+00:00",
+  "tool": "scripts/remediation_dataset_integrity.py",
+  "byte_budget_gb": 1.5,
+  "notice": "Rights are classified from recorded terms and do not grant permission. Quarantined rows must be excluded from any evaluation that claims patient independence; source manifests are unchanged.",
+  "manifests": [
+    {
+      "manifest": "acdc-cardiac-segmentation/manifest.json",
+      "rows": 298,
+      "splits": {
+        "train": 168,
+        "val": 30,
+        "test": 100
+      },
+      "group_column": "patient_id",
+      "group_unit": "patient",
+      "groups": 149,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 298,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_VOLUMES_HASHED_BY_MANIFEST_BUILDER"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_SEPARATION_RECORDED",
+      "rights": {
+        "dataset_id": "acdc-cardiac-mri",
+        "licence": "CREATIS ACDC public research release; mandatory citation; explicit licence terms not published",
+        "licence_status": "SOURCE_AND_CITATION_VERIFIED_TERMS_NOT_FOUND",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "local non-commercial research training and evaluation; no redistribution of images or masks",
+        "usage_class": "TERMS_UNCLEAR_REVIEW_REQUIRED",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "arcade-stenosis-detection/samples.csv",
+      "rows": 1500,
+      "splits": {
+        "test": 300,
+        "train": 1000,
+        "val": 200
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 1428,
+      "groups_crossing_splits": 11,
+      "crossing_group_examples": [
+        "103",
+        "1176",
+        "345",
+        "355",
+        "456",
+        "471",
+        "555",
+        "701",
+        "785",
+        "957"
+      ],
+      "exact_hash": {
+        "files_hashed": 1500,
+        "files_deferred_budget_or_unresolved": 0,
+        "duplicate_sets_across_splits": 1,
+        "status": "COMPLETE"
+      },
+      "rows_quarantined_for_independent_evaluation": 24,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "arcade",
+        "licence": "CC0 1.0",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      },
+      "quarantine_list": "artifacts/remediation-2026-11-14/quarantine/arcade-stenosis-detection__samples.csv.csv"
+    },
+    {
+      "manifest": "arcade-syntax-segmentation/samples.csv",
+      "rows": 1500,
+      "splits": {
+        "test": 300,
+        "train": 1000,
+        "val": 200
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 1480,
+      "groups_crossing_splits": 2,
+      "crossing_group_examples": [
+        "617",
+        "664"
+      ],
+      "exact_hash": {
+        "files_hashed": 1500,
+        "files_deferred_budget_or_unresolved": 0,
+        "duplicate_sets_across_splits": 0,
+        "status": "COMPLETE"
+      },
+      "rows_quarantined_for_independent_evaluation": 3,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "arcade",
+        "licence": "CC0 1.0",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      },
+      "quarantine_list": "artifacts/remediation-2026-11-14/quarantine/arcade-syntax-segmentation__samples.csv.csv"
+    },
+    {
+      "manifest": "bone-fracture-detection/samples.csv",
+      "rows": 4148,
+      "splits": {
+        "test": 169,
+        "train": 3631,
+        "val": 348
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 3898,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 4148,
+        "files_deferred_budget_or_unresolved": 0,
+        "duplicate_sets_across_splits": 0,
+        "status": "COMPLETE"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "bone-fracture-roboflow-v4",
+        "licence": "CC BY 4.0",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "cnmc-all-vs-normal/samples.csv",
+      "rows": 11454,
+      "splits": {
+        "train": 8157,
+        "val": 1430,
+        "test": 1867
+      },
+      "group_column": "subject_id",
+      "group_unit": "subject",
+      "groups": 98,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 2647,
+        "files_deferred_budget_or_unresolved": 8807,
+        "duplicate_sets_across_splits": 0,
+        "status": "PARTIAL_DEFERRED"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_SEPARATION_RECORDED",
+      "rights": {
+        "dataset_id": "c-nmc-2019",
+        "licence": "CC BY 3.0 (TCIA Data Usage Policy; citation required)",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "echonet-ef-regression/samples.csv",
+      "rows": 10030,
+      "splits": {
+        "val": 1288,
+        "train": 7465,
+        "test": 1277
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 10030,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 10030,
+        "files_deferred_budget_or_unresolved": 0,
+        "duplicate_sets_across_splits": 0,
+        "status": "COMPLETE"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "echonet-dynamic",
+        "licence": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
+        "licence_status": "PERMISSION_UNVERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "personal, non-commercial research training and evaluation; no redistribution of videos",
+        "usage_class": "NON_COMMERCIAL_RESEARCH_ONLY",
+        "redistribution": "NOT_PERMITTED_OR_UNREVIEWED",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "gastrovision-27class/samples.csv",
+      "rows": 8000,
+      "splits": {
+        "train": 5587,
+        "test": 1225,
+        "val": 1188
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 7981,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 7340,
+        "files_deferred_budget_or_unresolved": 660,
+        "duplicate_sets_across_splits": 0,
+        "status": "PARTIAL_DEFERRED"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "gastrovision",
+        "licence": "CC BY 4.0",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "isles22-dwi-adc/manifest.json",
+      "rows": 250,
+      "splits": {
+        "train": 174,
+        "val": 38,
+        "test": 38
+      },
+      "group_column": "patient_id",
+      "group_unit": "patient",
+      "groups": 250,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 250,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_VOLUMES_HASHED_BY_MANIFEST_BUILDER"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_SEPARATION_RECORDED",
+      "rights": {
+        "dataset_id": "isles-2022",
+        "licence": "CC BY 4.0 with the ISLES'22 data usage policy",
+        "licence_status": "PUBLISHED_LICENCE_IN_ARCHIVE",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "kits19-segmentation/manifest.json",
+      "rows": 210,
+      "splits": {
+        "train": 146,
+        "test": 32,
+        "val": 32
+      },
+      "group_column": "patient_id",
+      "group_unit": "patient",
+      "groups": 210,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 210,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_VOLUMES_HASHED_BY_MANIFEST_BUILDER"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_SEPARATION_RECORDED",
+      "rights": {
+        "dataset_id": "kits19-labels",
+        "licence": "CC BY-NC-SA 4.0",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "Local non-commercial research training and evaluation; no commercial release permission inferred.",
+        "usage_class": "NON_COMMERCIAL_RESEARCH_ONLY",
+        "redistribution": "NOT_PERMITTED_OR_UNREVIEWED",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "kvasir-seg-polyp-segmentation/samples.csv",
+      "rows": 1000,
+      "splits": {
+        "train": 748,
+        "test": 120,
+        "val": 132
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 997,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 1000,
+        "files_deferred_budget_or_unresolved": 0,
+        "duplicate_sets_across_splits": 0,
+        "status": "COMPLETE"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "kvasir-seg",
+        "licence": "Kvasir-SEG terms of use: research and educational purposes only; commercial use forbidden without prior written permission; cite the dataset paper",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+        "usage_class": "NON_COMMERCIAL_RESEARCH_ONLY",
+        "redistribution": "NOT_PERMITTED_OR_UNREVIEWED",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "kvasir-v2-8class/samples.csv",
+      "rows": 8000,
+      "splits": {
+        "val": 1199,
+        "train": 5599,
+        "test": 1202
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 7971,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 4934,
+        "files_deferred_budget_or_unresolved": 3066,
+        "duplicate_sets_across_splits": 0,
+        "status": "PARTIAL_DEFERRED"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "kvasir-v2",
+        "licence": "Kvasir terms of use: research and educational purposes only; commercial use requires written permission; cite the dataset paper",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+        "usage_class": "NON_COMMERCIAL_RESEARCH_ONLY",
+        "redistribution": "NOT_PERMITTED_OR_UNREVIEWED",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "lidc-nodule-segmentation/manifest.json",
+      "rows": 299,
+      "splits": {
+        "train": 209,
+        "val": 45,
+        "test": 45
+      },
+      "group_column": "patient_id",
+      "group_unit": "patient",
+      "groups": 299,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 299,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_VOLUMES_HASHED_BY_MANIFEST_BUILDER"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_SEPARATION_RECORDED",
+      "rights": {
+        "dataset_id": "lidc-idri-subset",
+        "licence": "CC BY 3.0 (TCIA Data Usage Policy; citation required)",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "medmnist/adrenalmnist3d/samples.csv",
+      "rows": 1584,
+      "splits": {
+        "train": 1188,
+        "val": 98,
+        "test": 298
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 1584,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/bloodmnist/samples.csv",
+      "rows": 17092,
+      "splits": {
+        "train": 11959,
+        "val": 1712,
+        "test": 3421
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 17092,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/breastmnist/samples.csv",
+      "rows": 780,
+      "splits": {
+        "train": 546,
+        "val": 78,
+        "test": 156
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 780,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/chestmnist/samples.csv",
+      "rows": 112120,
+      "splits": {
+        "train": 78468,
+        "val": 11219,
+        "test": 22433
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 112120,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/dermamnist/samples.csv",
+      "rows": 10015,
+      "splits": {
+        "train": 7007,
+        "val": 1003,
+        "test": 2005
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 10015,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/fracturemnist3d/samples.csv",
+      "rows": 1370,
+      "splits": {
+        "train": 1027,
+        "val": 103,
+        "test": 240
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 1370,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/nodulemnist3d/samples.csv",
+      "rows": 1633,
+      "splits": {
+        "train": 1158,
+        "val": 165,
+        "test": 310
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 1633,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/octmnist/samples.csv",
+      "rows": 109309,
+      "splits": {
+        "train": 97477,
+        "val": 10832,
+        "test": 1000
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 109309,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/organamnist/samples.csv",
+      "rows": 58830,
+      "splits": {
+        "train": 34561,
+        "val": 6491,
+        "test": 17778
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 58830,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/organcmnist/samples.csv",
+      "rows": 23583,
+      "splits": {
+        "train": 12975,
+        "val": 2392,
+        "test": 8216
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 23583,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/organmnist3d/samples.csv",
+      "rows": 1742,
+      "splits": {
+        "train": 971,
+        "val": 161,
+        "test": 610
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 1742,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/organsmnist/samples.csv",
+      "rows": 25211,
+      "splits": {
+        "train": 13932,
+        "val": 2452,
+        "test": 8827
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 25211,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/pathmnist/samples.csv",
+      "rows": 107180,
+      "splits": {
+        "train": 89996,
+        "val": 10004,
+        "test": 7180
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 107180,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/pneumoniamnist/samples.csv",
+      "rows": 5856,
+      "splits": {
+        "train": 4708,
+        "val": 524,
+        "test": 624
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 5856,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/retinamnist/samples.csv",
+      "rows": 1600,
+      "splits": {
+        "train": 1080,
+        "val": 120,
+        "test": 400
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 1600,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/synapsemnist3d/samples.csv",
+      "rows": 1759,
+      "splits": {
+        "train": 1230,
+        "val": 177,
+        "test": 352
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 1759,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/tissuemnist/samples.csv",
+      "rows": 236386,
+      "splits": {
+        "train": 165466,
+        "val": 23640,
+        "test": 47280
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 236386,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "medmnist/vesselmnist3d/samples.csv",
+      "rows": 1908,
+      "splits": {
+        "train": 1335,
+        "val": 191,
+        "test": 382
+      },
+      "group_column": null,
+      "group_unit": "none",
+      "groups": 0,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 1908,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "msd-brain-tumour/manifest.json",
+      "rows": 484,
+      "splits": {
+        "train": 338,
+        "test": 73,
+        "val": 73
+      },
+      "group_column": "patient_id",
+      "group_unit": "patient",
+      "groups": 484,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 484,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_VOLUMES_HASHED_BY_MANIFEST_BUILDER"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_SEPARATION_RECORDED",
+      "rights": {
+        "dataset_id": "msd-task01-brain-tumour",
+        "licence": "CC BY-SA 4.0 (Medical Segmentation Decathlon)",
+        "licence_status": "PUBLISHED_LICENCE_IN_ARCHIVE",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "msd-liver/manifest.json",
+      "rows": 131,
+      "splits": {
+        "train": 91,
+        "test": 20,
+        "val": 20
+      },
+      "group_column": "patient_id",
+      "group_unit": "patient",
+      "groups": 131,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 131,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_VOLUMES_HASHED_BY_MANIFEST_BUILDER"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_SEPARATION_RECORDED",
+      "rights": {
+        "dataset_id": "msd-task03-liver",
+        "licence": "CC BY-SA 4.0 (Medical Segmentation Decathlon)",
+        "licence_status": "PUBLISHED_LICENCE_IN_ARCHIVE",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "local research training and evaluation; images and masks are not committed or redistributed",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "mura-study-abnormality/samples.csv",
+      "rows": 40005,
+      "splits": {
+        "val": 6438,
+        "train": 30370,
+        "test": 3197
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 11967,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 19148,
+        "files_deferred_budget_or_unresolved": 20857,
+        "duplicate_sets_across_splits": 0,
+        "status": "PARTIAL_DEFERRED"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "mura-v1.1",
+        "licence": "Stanford AIMI Research Use Agreement: personal, non-commercial research only; no redistribution; each user registers individually",
+        "licence_status": "PERMISSION_UNVERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "personal, non-commercial research training and evaluation; no redistribution of images",
+        "usage_class": "NON_COMMERCIAL_RESEARCH_ONLY",
+        "redistribution": "NOT_PERMITTED_OR_UNREVIEWED",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "nih-malaria-cell-classification/samples.csv",
+      "rows": 27558,
+      "splits": {
+        "test": 4390,
+        "val": 4012,
+        "train": 19156
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 200,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 27558,
+        "files_deferred_budget_or_unresolved": 0,
+        "duplicate_sets_across_splits": 0,
+        "status": "COMPLETE"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "nih-malaria-cell-images",
+        "licence": "NLM public research release (free public use; cite the dataset paper)",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+        "usage_class": "TERMS_UNCLEAR_REVIEW_REQUIRED",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "nlm-tb-cxr-classification/samples.csv",
+      "rows": 800,
+      "splits": {
+        "train": 559,
+        "test": 123,
+        "val": 118
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 800,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 318,
+        "files_deferred_budget_or_unresolved": 482,
+        "duplicate_sets_across_splits": 0,
+        "status": "PARTIAL_DEFERRED"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "nlm-tb-cxr",
+        "licence": "NLM public research release (no redistribution outside the research group; citation required)",
+        "licence_status": "PUBLISHER_TERMS_IN_README",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "local research training and evaluation; images are not committed, shared or redistributed",
+        "usage_class": "NON_COMMERCIAL_RESEARCH_ONLY",
+        "redistribution": "NOT_PERMITTED_OR_UNREVIEWED",
+        "clinical_use": "NOT_APPROVED"
+      }
+    },
+    {
+      "manifest": "pad-clinical-image/samples.csv",
+      "rows": 2298,
+      "splits": {
+        "train": 1637,
+        "test": 304,
+        "val": 357
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 1373,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 1021,
+        "files_deferred_budget_or_unresolved": 1277,
+        "duplicate_sets_across_splits": 0,
+        "status": "PARTIAL_DEFERRED"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "rcc-aid/manifest.json",
+      "rows": 142,
+      "splits": {
+        "train": 96,
+        "test": 25,
+        "val": 21
+      },
+      "group_column": "patient_id",
+      "group_unit": "patient",
+      "groups": 101,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 142,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_VOLUMES_HASHED_BY_MANIFEST_BUILDER"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_SEPARATION_RECORDED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "rsna-ich/samples.csv",
+      "rows": 753015,
+      "splits": {
+        "val": 73946,
+        "train": 604258,
+        "test": 74811
+      },
+      "group_column": "patient",
+      "group_unit": "patient",
+      "groups": 18937,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 0,
+        "files_deferred_budget_or_unresolved": 753015,
+        "duplicate_sets_across_splits": 0,
+        "status": "NOT_RUN_ARCHIVE_OR_PATHS"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_SEPARATION_RECORDED",
+      "rights": {
+        "usage_class": "NOT_IN_TASK_REGISTRY"
+      }
+    },
+    {
+      "manifest": "tez-kidney-stone-detection/samples.csv",
+      "rows": 1300,
+      "splits": {
+        "train": 909,
+        "val": 195,
+        "test": 196
+      },
+      "group_column": "group_id",
+      "group_unit": "group",
+      "groups": 225,
+      "groups_crossing_splits": 0,
+      "crossing_group_examples": [],
+      "exact_hash": {
+        "files_hashed": 1300,
+        "files_deferred_budget_or_unresolved": 0,
+        "duplicate_sets_across_splits": 0,
+        "status": "COMPLETE"
+      },
+      "rows_quarantined_for_independent_evaluation": 0,
+      "patient_independence": "PATIENT_INDEPENDENCE_UNVERIFIED_GROUPED_BY_CONTENT_ONLY",
+      "rights": {
+        "dataset_id": "tez-roi-aug-kidney-stone",
+        "licence": "CC BY 4.0",
+        "licence_status": "VERIFIED",
+        "training_authorization": "VERIFIED",
+        "authorization_scope": "NON_COMMERCIAL_RESEARCH_UNDER_RECORDED_TERMS",
+        "usage_class": "COMMERCIAL_USE_PERMITTED_BY_TERMS_WITH_ATTRIBUTION",
+        "redistribution": "PER_LICENCE_TERMS",
+        "clinical_use": "NOT_APPROVED"
+      }
+    }
+  ],
+  "totals": {
+    "manifests": 39,
+    "with_crossing_groups": 2,
+    "with_exact_duplicates_across_splits": 1,
+    "patient_independence_unverified": 30,
+    "rows_quarantined": 27
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "model_id": "tabular_breast_fna_uci",
+  "target": "malignant (vs benign) breast mass from fine-needle aspirate image features",
+  "source": "UCI dataset 17 (development part only, seed 20261024)",
+  "units": "as defined in the UCI dataset documentation for this table",
+  "development_rows": 406,
+  "fields": [
+    {
+      "name": "mean_radius",
+      "type": "number",
+      "min": 6.981,
+      "max": 28.11,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "mean_texture",
+      "type": "number",
+      "min": 9.71,
+      "max": 39.28,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "mean_perimeter",
+      "type": "number",
+      "min": 43.79,
+      "max": 188.5,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "mean_area",
+      "type": "number",
+      "min": 143.5,
+      "max": 2501.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "mean_smoothness",
+      "type": "number",
+      "min": 0.05263,
+      "max": 0.1447,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "mean_compactness",
+      "type": "number",
+      "min": 0.02344,
+      "max": 0.3454,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "mean_concavity",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.4268,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "mean_concave_points",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.2012,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "mean_symmetry",
+      "type": "number",
+      "min": 0.106,
+      "max": 0.304,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "mean_fractal_dimension",
+      "type": "number",
+      "min": 0.04996,
+      "max": 0.09575,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_radius",
+      "type": "number",
+      "min": 0.1115,
+      "max": 2.873,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_texture",
+      "type": "number",
+      "min": 0.3602,
+      "max": 4.885,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_perimeter",
+      "type": "number",
+      "min": 0.757,
+      "max": 21.98,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_area",
+      "type": "number",
+      "min": 6.802,
+      "max": 542.2,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_smoothness",
+      "type": "number",
+      "min": 0.001713,
+      "max": 0.03113,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_compactness",
+      "type": "number",
+      "min": 0.003012,
+      "max": 0.1064,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_concavity",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.396,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_concave_points",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.05279,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_symmetry",
+      "type": "number",
+      "min": 0.009539,
+      "max": 0.07895,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "se_fractal_dimension",
+      "type": "number",
+      "min": 0.0008948,
+      "max": 0.02984,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_radius",
+      "type": "number",
+      "min": 7.93,
+      "max": 36.04,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_texture",
+      "type": "number",
+      "min": 12.02,
+      "max": 47.16,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_perimeter",
+      "type": "number",
+      "min": 50.41,
+      "max": 251.2,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_area",
+      "type": "number",
+      "min": 185.2,
+      "max": 4254.0,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_smoothness",
+      "type": "number",
+      "min": 0.07117,
+      "max": 0.2226,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_compactness",
+      "type": "number",
+      "min": 0.02729,
+      "max": 1.058,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_concavity",
+      "type": "number",
+      "min": 0.0,
+      "max": 1.252,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_concave_points",
+      "type": "number",
+      "min": 0.0,
+      "max": 0.2903,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_symmetry",
+      "type": "number",
+      "min": 0.1566,
+      "max": 0.5558,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    },
+    {
+      "name": "worst_fractal_dimension",
+      "type": "number",
+      "min": 0.05521,
+      "max": 0.2075,
+      "development_missing_share": 0.0,
+      "may_be_blank": false
+    }
+  ],
+  "rules": [
+    "values outside the development range are refused",
+    "coded fields accept only their development codes",
+    "unknown categories are refused",
+    "blank values are imputed only for fields that were blank in development; more than half blank is refused"
+  ]
+}

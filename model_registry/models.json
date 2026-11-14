@@ -2398,7 +2398,8 @@
         "function": "LINEAR_EXACT",
         "rounding": "floor",
         "source": "Width 80 HU measured from the training PNGs' grey-level quantisation (79 reachable levels, truncation); level 40 HU estimated from the parenchyma and CSF peaks (docs/validation/RSNA_PNG_WINDOW_ESTIMATE.md)"
-      }
+      },
+      "series_inference": "head_ct_per_slice"
     },
     {
       "model_id": "ptbxl_ecg_demographic_fusion",
@@ -2993,6 +2994,1059 @@
         "ood_reference_path": "artifacts/training/bone_fracture_detector-20261110T020213Z/ood_reference.npz",
         "ood_reference_sha256": "45b3fc427dd33febac590859c4c11035c75b06c68259c0bb71cb2e690e8414e8"
       }
+    },
+    {
+      "model_id": "tabular_breast_fna_uci",
+      "display_name": "Malignant breast mass from aspirate image features (UCI Wisconsin Diagnostic, research)",
+      "domain": "clinical_tabular",
+      "task": "tabular_classification",
+      "anatomy": "breast",
+      "framework": "scikit-learn (logistic)",
+      "adapter": "ml_training.tabular",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/tabular_breast_fna_uci-20261114T071339Z/model.joblib",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular features: mean_radius, mean_texture, mean_perimeter, mean_area, mean_smoothness, mean_compactness, mean_concavity, mean_concave_points, mean_symmetry, mean_fractal_dimension, se_radius, se_texture, se_perimeter, se_area, se_smoothness, se_compactness, se_concavity, se_concave_points, se_symmetry, se_fractal_dimension, worst_radius, worst_texture, worst_perimeter, worst_area, worst_smoothness, worst_compactness, worst_concavity, worst_concave_points, worst_symmetry, worst_fractal_dimension"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_classification",
+      "supported_classes": [
+        "malignant (vs benign) breast mass from fine-needle aspirate image features"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: 569 breast masses sampled by fine-needle aspiration at the University of Wisconsin (1990s). Results do not transfer to other populations without external evaluation.",
+        "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+        "Small public cohort: confidence intervals are wide.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH",
+        "evidence": {
+          "auroc": 0.9856209150326797,
+          "brier_skill": 0.7586052446054009
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "698f9064cb3927973dd96ee9f3950e3103f64ff87b0e84898a09b567e792fd02",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/tabular_breast_fna_uci.json",
+        "task_definition": "malignant (vs benign) breast mass from fine-needle aspirate image features",
+        "label_definition": {
+          "positive": "malignant (vs benign) breast mass from fine-needle aspirate image features"
+        },
+        "preprocessing_version": "tabular-impute-scale-onehot-v1",
+        "checkpoint_path": "artifacts/training/tabular_breast_fna_uci-20261114T071339Z/model.joblib",
+        "checkpoint_sha256": "49fdb2adbfa5b076e176b8d6ea4a4ff298d4ad37584b9263121002964d6edd3a",
+        "calibration": {
+          "method": "Platt scaling on validation"
+        },
+        "decision_thresholds": {
+          "positive": 0.9803591068907878
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/tabular_breast_fna_uci-20261114T071339Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/tabular_breast_fna_uci.json",
+        "model_card_path": "docs/models/tabular_breast_fna_uci.md",
+        "input_envelope_path": "docs/validation/models/tabular_breast_fna_uci_input_envelope.json",
+        "input_envelope_sha256": "ef9c3939f56c191e08c105ee8281886290b1f7695232770113a9f6fdfac04b73"
+      }
+    },
+    {
+      "model_id": "tabular_ckd_uci",
+      "display_name": "Chronic kidney disease from routine tests (UCI CKD, research)",
+      "domain": "clinical_tabular",
+      "task": "tabular_classification",
+      "anatomy": "kidneys",
+      "framework": "scikit-learn (logistic)",
+      "adapter": "ml_training.tabular",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/tabular_ckd_uci-20261114T071348Z/model.joblib",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular features: age, bp, sg, al, su, rbc, pc, pcc, ba, bgr, bu, sc, sod, pot, hemo, pcv, wbcc, rbcc, htn, dm, cad, appet, pe, ane"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_classification",
+      "supported_classes": [
+        "chronic kidney disease (the source's 'ckd' class)"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: 400 hospital patients in India (2015), small and with a high disease share. Results do not transfer to other populations without external evaluation.",
+        "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+        "Small public cohort: confidence intervals are wide.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH",
+        "evidence": {
+          "auroc": 0.9973544973544973,
+          "brier_skill": 0.8583140204724224
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "95470017b260f54a913e752f200220ddd5796ddaa74c16fa8e96a0a82b0f39a9",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/tabular_ckd_uci.json",
+        "task_definition": "chronic kidney disease (the source's 'ckd' class)",
+        "label_definition": {
+          "positive": "chronic kidney disease (the source's 'ckd' class)"
+        },
+        "preprocessing_version": "tabular-impute-scale-onehot-v1",
+        "checkpoint_path": "artifacts/training/tabular_ckd_uci-20261114T071348Z/model.joblib",
+        "checkpoint_sha256": "d9b81584c5cddb88a6ba006a9a8fbd33eeb26a11d756dabbf92e4c4d249be760",
+        "calibration": {
+          "method": "Platt scaling on validation"
+        },
+        "decision_thresholds": {
+          "positive": 0.9920429741803832
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/tabular_ckd_uci-20261114T071348Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/tabular_ckd_uci.json",
+        "model_card_path": "docs/models/tabular_ckd_uci.md",
+        "input_envelope_path": "docs/validation/models/tabular_ckd_uci_input_envelope.json",
+        "input_envelope_sha256": "c4bcc55e99d15439ea913c2a20e11eed1a22169c16c7de671d88a2932cae56ec"
+      }
+    },
+    {
+      "model_id": "tabular_diabetes_readmission_uci",
+      "display_name": "30-day readmission of diabetic inpatients (UCI Diabetes 130-US hospitals, research)",
+      "domain": "clinical_tabular",
+      "task": "tabular_classification",
+      "anatomy": "endocrine",
+      "framework": "scikit-learn (gradient)",
+      "adapter": "ml_training.tabular",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/tabular_diabetes_readmission_uci-20261114T071443Z/model.joblib",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular features: race, gender, age, admission_type_id, discharge_disposition_id, admission_source_id, time_in_hospital, num_lab_procedures, num_procedures, num_medications, number_outpatient, number_emergency, number_inpatient, number_diagnoses, max_glu_serum, A1Cresult, insulin, metformin, change, diabetesMed"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_classification",
+      "supported_classes": [
+        "readmission within 30 days of discharge (diabetic inpatient encounters, 130 US hospitals)"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: Diabetic inpatient encounters in 130 US hospitals, 1999-2008. Results do not transfer to other populations without external evaluation.",
+        "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+        "Single public cohort; no external test set.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH",
+        "evidence": {
+          "auroc": 0.6680119284294235,
+          "brier_skill": 0.04942740863380135
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "5f71909d6917b28e1fd993cdc52e7c791d68f243f4f1db16af6d8afc19bdaae3",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/tabular_diabetes_readmission_uci.json",
+        "task_definition": "readmission within 30 days of discharge (diabetic inpatient encounters, 130 US hospitals)",
+        "label_definition": {
+          "positive": "readmission within 30 days of discharge (diabetic inpatient encounters, 130 US hospitals)"
+        },
+        "preprocessing_version": "tabular-impute-scale-onehot-v1",
+        "checkpoint_path": "artifacts/training/tabular_diabetes_readmission_uci-20261114T071443Z/model.joblib",
+        "checkpoint_sha256": "19bd081a0bbb6dd963d9e3fd423a3e54d56e8c255d0507ff73090bde5f94cdbb",
+        "calibration": {
+          "method": "Platt scaling on validation"
+        },
+        "decision_thresholds": {
+          "positive": 0.11436254628228255
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/tabular_diabetes_readmission_uci-20261114T071443Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/tabular_diabetes_readmission_uci.json",
+        "model_card_path": "docs/models/tabular_diabetes_readmission_uci.md",
+        "input_envelope_path": "docs/validation/models/tabular_diabetes_readmission_uci_input_envelope.json",
+        "input_envelope_sha256": "5013cf87e7c714764978a11a00f7a584b52db97d9b0125d16a7b1c967ffc35e4"
+      }
+    },
+    {
+      "model_id": "tabular_heart_disease_uci",
+      "display_name": "Coronary disease from clinical tests (UCI Heart Disease, 4 sites, research)",
+      "domain": "clinical_tabular",
+      "task": "tabular_classification",
+      "anatomy": "heart",
+      "framework": "scikit-learn (logistic)",
+      "adapter": "ml_training.tabular",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/tabular_heart_disease_uci-20261114T071519Z/model.joblib",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular features: age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_classification",
+      "supported_classes": [
+        "angiographic coronary disease (>50% narrowing; 'num' > 0)"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: Patients referred for coronary angiography at Cleveland, Budapest, Zurich/Basel and Long Beach VA (1980s). Results do not transfer to other populations without external evaluation.",
+        "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+        "Small public cohort: confidence intervals are wide.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH",
+        "evidence": {
+          "auroc": 0.8994659856048294,
+          "brier_skill": 0.4975444349473862
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "1c1dfde5e192b797bb6e721f13036b3ec502f3abf0028696341c923b48ff6626",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/tabular_heart_disease_uci.json",
+        "task_definition": "angiographic coronary disease (>50% narrowing; 'num' > 0)",
+        "label_definition": {
+          "positive": "angiographic coronary disease (>50% narrowing; 'num' > 0)"
+        },
+        "preprocessing_version": "tabular-impute-scale-onehot-v1",
+        "checkpoint_path": "artifacts/training/tabular_heart_disease_uci-20261114T071519Z/model.joblib",
+        "checkpoint_sha256": "0bd7617a0da40ff1671b9b821b77b4238d301085706a49f89982051290ee5f52",
+        "calibration": {
+          "method": "Platt scaling on validation"
+        },
+        "decision_thresholds": {
+          "positive": 0.49741319590157823
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/tabular_heart_disease_uci-20261114T071519Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/tabular_heart_disease_uci.json",
+        "model_card_path": "docs/models/tabular_heart_disease_uci.md",
+        "input_envelope_path": "docs/validation/models/tabular_heart_disease_uci_input_envelope.json",
+        "input_envelope_sha256": "7659a0c30f0a9569c820c997b96cad6e3a408fd12a40a668e7f464b178fc2c79"
+      }
+    },
+    {
+      "model_id": "tabular_hepatitis_mortality_uci",
+      "display_name": "Death among hepatitis patients (UCI Hepatitis, research)",
+      "domain": "clinical_tabular",
+      "task": "tabular_classification",
+      "anatomy": "liver",
+      "framework": "scikit-learn (logistic)",
+      "adapter": "ml_training.tabular",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/tabular_hepatitis_mortality_uci-20261114T071528Z/model.joblib",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular features: age, sex, steroid, antivirals, fatigue, malaise, anorexia, liver_big, liver_firm, spleen_palpable, spiders, ascites, varices, bilirubin, alk_phosphate, sgot, albumin, protime, histology"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_classification",
+      "supported_classes": [
+        "death (vs survival) of patients with hepatitis"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: 155 hepatitis patients (1980s); very small, so estimates are uncertain. Results do not transfer to other populations without external evaluation.",
+        "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+        "Small public cohort: confidence intervals are wide.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH",
+        "evidence": {
+          "auroc": 0.9411764705882353,
+          "brier_skill": 0.490058424261828
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "aa0373c15a0c2297ee2bae9c564cda24441c1c65cac54f971de9a5d505b02f79",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/tabular_hepatitis_mortality_uci.json",
+        "task_definition": "death (vs survival) of patients with hepatitis",
+        "label_definition": {
+          "positive": "death (vs survival) of patients with hepatitis"
+        },
+        "preprocessing_version": "tabular-impute-scale-onehot-v1",
+        "checkpoint_path": "artifacts/training/tabular_hepatitis_mortality_uci-20261114T071528Z/model.joblib",
+        "checkpoint_sha256": "f1afcc4368592a005b6ca45d37838d9c77639ae9c66ad3318f53a1d7a7c8317e",
+        "calibration": {
+          "method": "Platt scaling on validation"
+        },
+        "decision_thresholds": {
+          "positive": 0.19146062628917943
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/tabular_hepatitis_mortality_uci-20261114T071528Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/tabular_hepatitis_mortality_uci.json",
+        "model_card_path": "docs/models/tabular_hepatitis_mortality_uci.md",
+        "input_envelope_path": "docs/validation/models/tabular_hepatitis_mortality_uci_input_envelope.json",
+        "input_envelope_sha256": "3d9ba6c6b6a1ddf8b10097958fc379dfcf3f3882bd47632b609a4238cbaefaa4"
+      }
+    },
+    {
+      "model_id": "tabular_hypothyroid_uci",
+      "display_name": "Hypothyroidism from thyroid tests (UCI Thyroid, research)",
+      "domain": "clinical_tabular",
+      "task": "tabular_classification",
+      "anatomy": "endocrine",
+      "framework": "scikit-learn (gradient)",
+      "adapter": "ml_training.tabular",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/tabular_hypothyroid_uci-20261114T071535Z/model.joblib",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular features: age, sex, on_thyroxine, query_on_thyroxine, on_antithyroid_medication, thyroid_surgery, query_hypothyroid, query_hyperthyroid, pregnant, sick, tumor, lithium, goitre, TSH, T3, TT4, T4U, FTI, TBG"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_classification",
+      "supported_classes": [
+        "hypothyroidism (Garvan Institute referrals; the source's 'hypothyroid' class)"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: Thyroid referrals to the Garvan Institute, Sydney (1980s). Results do not transfer to other populations without external evaluation.",
+        "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+        "Single public cohort; no external test set.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "INTERNAL_HELD_OUT_ONLY",
+        "run_scope": "RESEARCH",
+        "evidence": {
+          "auroc": 0.9966173361522199,
+          "brier_skill": 0.8570158549687839
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "f040f2ae73b4515ba31378d0539a814ed0da9aec4f5cc4d6af69605448905b1d",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/tabular_hypothyroid_uci.json",
+        "task_definition": "hypothyroidism (Garvan Institute referrals; the source's 'hypothyroid' class)",
+        "label_definition": {
+          "positive": "hypothyroidism (Garvan Institute referrals; the source's 'hypothyroid' class)"
+        },
+        "preprocessing_version": "tabular-impute-scale-onehot-v1",
+        "checkpoint_path": "artifacts/training/tabular_hypothyroid_uci-20261114T071535Z/model.joblib",
+        "checkpoint_sha256": "3307517d37747acafc8cbcb40071b501f1ad4cdde98dbf9bcda9eb8f390bdf54",
+        "calibration": {
+          "method": "Platt scaling on validation"
+        },
+        "decision_thresholds": {
+          "positive": 0.4094511863012621
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/tabular_hypothyroid_uci-20261114T071535Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/tabular_hypothyroid_uci.json",
+        "model_card_path": "docs/models/tabular_hypothyroid_uci.md",
+        "input_envelope_path": "docs/validation/models/tabular_hypothyroid_uci_input_envelope.json",
+        "input_envelope_sha256": "5f9945ad548f680e9112e8859d90fd4d75dcad91be5cb205555d00b3b7135d19"
+      }
+    },
+    {
+      "model_id": "blood_smear_malaria_cell_classifier",
+      "display_name": "Malaria parasite in a thin-smear red blood cell (NIH/NLM, research)",
+      "domain": "medical_imaging",
+      "task": "image_classification",
+      "anatomy": "blood",
+      "framework": "torchvision efficientnet_b0",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/blood_smear_malaria_cell_classifier-20261114T071802Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/jpeg",
+        "image/png"
+      ],
+      "supported_modalities": [
+        "MICROSCOPY"
+      ],
+      "supported_classes": [
+        "parasitized",
+        "uninfected"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "validation_readiness": {
+        "validation_ready": true,
+        "readiness": "READY_FOR_TRAINING",
+        "run_scope": "STANDARD_INTERNAL_EVALUATION",
+        "minimum_samples_per_class": 50,
+        "classes_below_minimum": [],
+        "source_flags": [
+          "TASK_SUPPORTED_BY_LABELS"
+        ],
+        "effective_flags": [
+          "TASK_SUPPORTED_BY_LABELS"
+        ]
+      },
+      "class_distribution": {
+        "per_split": {
+          "train": {
+            "parasitized": 9772,
+            "uninfected": 9384
+          },
+          "val": {
+            "parasitized": 1959,
+            "uninfected": 2053
+          },
+          "test": {
+            "parasitized": 2048,
+            "uninfected": 2342
+          }
+        },
+        "total": {
+          "parasitized": 13779,
+          "uninfected": 13779
+        }
+      },
+      "class_imbalance": {
+        "strategy": "inverse_frequency",
+        "enabled": true,
+        "formula": "w_c = N_train / (K * n_train,c)",
+        "computed_from": "training split only",
+        "training_counts": {
+          "parasitized": 9772,
+          "uninfected": 9384
+        },
+        "weights_by_class": {
+          "parasitized": 0.9801473598035203,
+          "uninfected": 1.0206734867860188
+        },
+        "normalization": "equal aggregate training-loss contribution per observed class"
+      },
+      "limitations": [
+        "Training used inverse-frequency weighted cross-entropy computed from the training split only. Weighting changes optimisation but does not create rare-class evidence or correct evaluation uncertainty.",
+        "Pseudonymous patient ids come from the publisher's folders. The publisher's validation split, used as the test set, shares no patient with its training split; training patients were divided into train and validation, and the bootstrap resamples patients.",
+        "Internal held-out test from the same source distribution; no external validation.",
+        "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "d217c6dceca42d7dd49b5b4de9ee9dae7f2fcbe6c081de3e656cd82f71173353",
+        "dataset_license": "NLM public research release (free public use; cite the dataset paper)",
+        "split_manifest_path": "_derived/datasets/nih-malaria-cell-classification/samples.csv",
+        "task_definition": "parasitized vs uninfected red blood cell",
+        "label_definition": {
+          "source": "publisher class folders",
+          "classes": [
+            "parasitized",
+            "uninfected"
+          ]
+        },
+        "preprocessing_version": "rgb-resize114-centercrop-imagenetnorm-v1",
+        "checkpoint_path": "artifacts/training/blood_smear_malaria_cell_classifier-20261114T071802Z/model.pt",
+        "checkpoint_sha256": "aa6216e57bc92be33ad3702e06487906c624099e98567937cc02f2f6b874b085",
+        "calibration": {
+          "method": "temperature_scaling",
+          "parameters": {
+            "temperature": 1.4176756143569946
+          }
+        },
+        "decision_thresholds": {
+          "rule": "argmax over temperature-scaled softmax"
+        },
+        "abstention_thresholds": null,
+        "validation_readiness": {
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "run_scope": "STANDARD_INTERNAL_EVALUATION",
+          "minimum_samples_per_class": 50,
+          "classes_below_minimum": [],
+          "source_flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "effective_flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ]
+        },
+        "class_distribution": {
+          "per_split": {
+            "train": {
+              "parasitized": 9772,
+              "uninfected": 9384
+            },
+            "val": {
+              "parasitized": 1959,
+              "uninfected": 2053
+            },
+            "test": {
+              "parasitized": 2048,
+              "uninfected": 2342
+            }
+          },
+          "total": {
+            "parasitized": 13779,
+            "uninfected": 13779
+          }
+        },
+        "class_imbalance": {
+          "strategy": "inverse_frequency",
+          "enabled": true,
+          "formula": "w_c = N_train / (K * n_train,c)",
+          "computed_from": "training split only",
+          "training_counts": {
+            "parasitized": 9772,
+            "uninfected": 9384
+          },
+          "weights_by_class": {
+            "parasitized": 0.9801473598035203,
+            "uninfected": 1.0206734867860188
+          },
+          "normalization": "equal aggregate training-loss contribution per observed class"
+        },
+        "held_out_predictions_path": "artifacts/training/blood_smear_malaria_cell_classifier-20261114T071802Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/blood_smear_malaria_cell_classifier.json",
+        "model_card_path": "docs/models/blood_smear_malaria_cell_classifier.md",
+        "ood_reference_path": "artifacts/training/blood_smear_malaria_cell_classifier-20261114T071802Z/ood_reference.npz",
+        "ood_reference_sha256": "b4fef6fcdf4daa72c7304af2cb201c5953605f62c34a299ff5b95dad044503c7"
+      },
+      "evaluation_device": "cpu"
+    },
+    {
+      "model_id": "tabular_liver_patient_uci",
+      "display_name": "Liver patient from liver function tests (UCI ILPD, research)",
+      "domain": "clinical_tabular",
+      "task": "tabular_classification",
+      "anatomy": "liver",
+      "framework": "scikit-learn (logistic)",
+      "adapter": "ml_training.tabular",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/tabular_liver_patient_uci-20261114T091238Z/model.joblib",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular features: age, gender, total_bilirubin, direct_bilirubin, alkaline_phosphatase, alt, ast, total_protein, albumin, ag_ratio"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_classification",
+      "supported_classes": [
+        "liver patient (the source's selector = 1) from liver function tests"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: 583 patients from north-east Andhra Pradesh, India. Results do not transfer to other populations without external evaluation.",
+        "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+        "Small public cohort: confidence intervals are wide.",
+        "Re-evaluated after test exposure (2026-11-14 duplicate audit): this split's test part overlaps the first run's inspected test part, so it is not an independent final test.",
+        "Kept exploratory: the first evaluation (2026-11-14) showed no skill over the prevalence baseline; a re-split after that test was inspected cannot promote it. An independent final test is required.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "NO_HELD_OUT_BRIER_SKILL_OVER_PREVALENCE",
+        "run_scope": "EXPLORATORY_ONLY",
+        "evidence": {
+          "auroc": 0.7478813559322034,
+          "brier_skill": 0.15803260708360578
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "4be6a726d443a4e35bedab0f309947962a47aeffd199022d7b604ab1bc0fd446",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/tabular_liver_patient_uci.json",
+        "task_definition": "liver patient (the source's selector = 1) from liver function tests",
+        "label_definition": {
+          "positive": "liver patient (the source's selector = 1) from liver function tests"
+        },
+        "preprocessing_version": "tabular-impute-scale-onehot-v1",
+        "checkpoint_path": "artifacts/training/tabular_liver_patient_uci-20261114T091238Z/model.joblib",
+        "checkpoint_sha256": "a00edd71be141945dcf07d6232155952b98f6bd9e89bf43db040d99b4f49b7b6",
+        "calibration": {
+          "method": "Platt scaling on validation"
+        },
+        "decision_thresholds": {
+          "positive": 0.780610915914379
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/tabular_liver_patient_uci-20261114T091238Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/tabular_liver_patient_uci.json",
+        "model_card_path": "docs/models/tabular_liver_patient_uci.md",
+        "input_envelope_path": "docs/validation/models/tabular_liver_patient_uci_input_envelope.json",
+        "input_envelope_sha256": "800c1c84f4c6f55321d38bf32490b5b61159307d6cdd5a4955ef21da49c0fbe1"
+      }
+    },
+    {
+      "model_id": "tabular_cervical_biopsy_uci",
+      "display_name": "Positive cervical biopsy from risk factors (UCI Cervical Cancer, research)",
+      "domain": "clinical_tabular",
+      "task": "tabular_classification",
+      "anatomy": "reproductive",
+      "framework": "scikit-learn (logistic)",
+      "adapter": "ml_training.tabular",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/tabular_cervical_biopsy_uci-20261114T091254Z/model.joblib",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular features: Age, Number of sexual partners, First sexual intercourse, Num of pregnancies, Smokes, Smokes (years), Smokes (packs/year), Hormonal Contraceptives, Hormonal Contraceptives (years), IUD, IUD (years), STDs, STDs (number), STDs:condylomatosis, STDs:cervical condylomatosis, STDs:vaginal condylomatosis, STDs:vulvo-perineal condylomatosis, STDs:syphilis, STDs:pelvic inflammatory disease, STDs:genital herpes, STDs:molluscum contagiosum, STDs:AIDS, STDs:HIV, STDs:Hepatitis B, STDs:HPV, STDs: Number of diagnosis, STDs: Time since first diagnosis, STDs: Time since last diagnosis"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_classification",
+      "supported_classes": [
+        "positive cervical biopsy from questionnaire risk factors"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: 858 patients at Hospital Universitario de Caracas, Venezuela; few positive biopsies. Results do not transfer to other populations without external evaluation.",
+        "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+        "Small public cohort: confidence intervals are wide.",
+        "Re-evaluated after test exposure (2026-11-14 duplicate audit): this split's test part overlaps the first run's inspected test part, so it is not an independent final test.",
+        "Kept exploratory: the first evaluation (2026-11-14) showed no skill over the prevalence baseline; a re-split after that test was inspected cannot promote it. An independent final test is required.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "NO_HELD_OUT_BRIER_SKILL_OVER_PREVALENCE",
+        "run_scope": "EXPLORATORY_ONLY",
+        "evidence": {
+          "auroc": 0.6869565217391304,
+          "brier_skill": -0.0028070416859060643
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "ff46cce0121de03eddae755349e2af38c4bd126db29ca03daa3194e57cf35781",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/tabular_cervical_biopsy_uci.json",
+        "task_definition": "positive cervical biopsy from questionnaire risk factors",
+        "label_definition": {
+          "positive": "positive cervical biopsy from questionnaire risk factors"
+        },
+        "preprocessing_version": "tabular-impute-scale-onehot-v1",
+        "checkpoint_path": "artifacts/training/tabular_cervical_biopsy_uci-20261114T091254Z/model.joblib",
+        "checkpoint_sha256": "6f0cb2f124c97bbe2571540282ebf49b187342d88c39b8100661f7fb079e1b7a",
+        "calibration": {
+          "method": "Platt scaling on validation"
+        },
+        "decision_thresholds": {
+          "positive": 0.06697660604247203
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/tabular_cervical_biopsy_uci-20261114T091254Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/tabular_cervical_biopsy_uci.json",
+        "model_card_path": "docs/models/tabular_cervical_biopsy_uci.md",
+        "input_envelope_path": "docs/validation/models/tabular_cervical_biopsy_uci_input_envelope.json",
+        "input_envelope_sha256": "723d0ea2c8be0bc4457d1a01d2117e330673ae519e0fd7f1c839eb376a2971dc"
+      }
+    },
+    {
+      "model_id": "tabular_parkinsons_voice_uci",
+      "display_name": "Parkinson's disease from voice measurements (UCI Parkinsons, research)",
+      "domain": "clinical_tabular",
+      "task": "tabular_classification",
+      "anatomy": "brain",
+      "framework": "scikit-learn (logistic)",
+      "adapter": "ml_training.tabular",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/tabular_parkinsons_voice_uci-20261114T091312Z/model.joblib",
+      "device": "cpu",
+      "supported_inputs": [
+        "tabular features: MDVP:Fo(Hz), MDVP:Fhi(Hz), MDVP:Flo(Hz), MDVP:Jitter(%), MDVP:Jitter(Abs), MDVP:RAP, MDVP:PPQ, Jitter:DDP, MDVP:Shimmer, MDVP:Shimmer(dB), Shimmer:APQ3, Shimmer:APQ5, MDVP:APQ, Shimmer:DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE"
+      ],
+      "supported_modalities": [
+        "CLINICAL_TABULAR"
+      ],
+      "inference_input": "tabular_classification",
+      "supported_classes": [
+        "Parkinson's disease (vs healthy) from sustained-vowel voice measurements"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Population: 31 people (23 with Parkinson's disease), several recordings each; very few people in the test part. Results do not transfer to other populations without external evaluation.",
+        "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+        "Small public cohort: confidence intervals are wide.",
+        "Re-evaluated after test exposure (2026-11-14 duplicate audit): this split's test part overlaps the first run's inspected test part, so it is not an independent final test.",
+        "Kept exploratory: the first evaluation (2026-11-14) showed no skill over the prevalence baseline; a re-split after that test was inspected cannot promote it. An independent final test is required.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "NO_HELD_OUT_BRIER_SKILL_OVER_PREVALENCE",
+        "run_scope": "EXPLORATORY_ONLY",
+        "evidence": {
+          "auroc": 0.8771929824561404,
+          "brier_skill": -0.0362242321532984
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "f32af9fed7d8eca702d4a5495592638f788cca04683a36bcd8320f5c610b4c2c",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "docs/validation/models/tabular_parkinsons_voice_uci.json",
+        "task_definition": "Parkinson's disease (vs healthy) from sustained-vowel voice measurements",
+        "label_definition": {
+          "positive": "Parkinson's disease (vs healthy) from sustained-vowel voice measurements"
+        },
+        "preprocessing_version": "tabular-impute-scale-onehot-v1",
+        "checkpoint_path": "artifacts/training/tabular_parkinsons_voice_uci-20261114T091312Z/model.joblib",
+        "checkpoint_sha256": "35b30eae472ff5cf38d71c62098537881cf1f55fa5770d1aa69bf98ae450667e",
+        "calibration": {
+          "method": "Platt scaling on validation"
+        },
+        "decision_thresholds": {
+          "positive": 0.635218604099783
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/tabular_parkinsons_voice_uci-20261114T091312Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/tabular_parkinsons_voice_uci.json",
+        "model_card_path": "docs/models/tabular_parkinsons_voice_uci.md",
+        "input_envelope_path": "docs/validation/models/tabular_parkinsons_voice_uci_input_envelope.json",
+        "input_envelope_sha256": "7bcc302b5e1cbd43c2c4094d1b2ab35ac59aef2c98941ff2adc89f65a4fff141"
+      }
+    },
+    {
+      "model_id": "ecg_mitbih_beat_classifier",
+      "display_name": "Heartbeat class on single-lead ECG (MIT-BIH, inter-patient, research)",
+      "domain": "physiological_signals",
+      "task": "ecg_beat_classification",
+      "anatomy": "heart",
+      "framework": "PyTorch 1-D CNN + RR features",
+      "adapter": "ml_training.mitbih",
+      "source_repository": "medtwin",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/ecg_mitbih_beat_classifier-20261114T091730Z/model.pt",
+      "device": "cpu",
+      "supported_inputs": [
+        "WFDB format 212, lead MLII, 360 Hz, with reference beat positions"
+      ],
+      "supported_modalities": [
+        "ECG_HOLTER"
+      ],
+      "inference_input": "ecg_beat_annotated",
+      "supported_classes": [
+        "N",
+        "S",
+        "V",
+        "F"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "processor_only": false,
+      "research_inference": true,
+      "limitations": [
+        "Beat positions are the reference annotations; a deployed system needs its own beat detector, whose errors are not part of this evaluation.",
+        "MIT-BIH holds 48 half-hour two-lead Holter records from 47 people (Boston, 1975-1979); the test part is 22 people.",
+        "Single lead (MLII), 360 Hz only; other leads, sampling rates and devices are outside this model's evidence.",
+        "Inter-patient supraventricular (S) beat detection is known to be hard; see the per-class sensitivity and its interval.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "validation_readiness": {
+        "validation_ready": false,
+        "readiness": "CLASS_NOT_DETECTED_ON_UNSEEN_PATIENTS",
+        "run_scope": "EXPLORATORY_ONLY",
+        "evidence": {
+          "macro_f1": 0.4230350894138346,
+          "s_sensitivity": 0.01252723311546841,
+          "v_sensitivity": 0.7297297297297297
+        }
+      },
+      "artifact_bundle": {
+        "dataset_version": "47b26926927c11bd9174154d367c811afc1b186f650f8a205931ca8c520f0a87",
+        "dataset_license": "Open Data Commons Attribution License v1.0",
+        "split_manifest_path": "docs/validation/models/ecg_mitbih_beat_classifier.json",
+        "task_definition": "AAMI EC57 beat class (N, S, V, F) at each reference beat",
+        "label_definition": {
+          "classes": [
+            "N",
+            "S",
+            "V",
+            "F"
+          ],
+          "source": "MIT-BIH reference annotations"
+        },
+        "preprocessing_version": "mitbih-mlii-360hz-256win-rr3-v1",
+        "checkpoint_path": "artifacts/training/ecg_mitbih_beat_classifier-20261114T091730Z/model.pt",
+        "checkpoint_sha256": "767badf89063eb685346cb80c48f8fbb0b3e4d08b847516d8ff30f3ef743a195",
+        "calibration": null,
+        "decision_thresholds": {
+          "rule": "argmax"
+        },
+        "abstention_thresholds": null,
+        "held_out_predictions_path": "artifacts/training/ecg_mitbih_beat_classifier-20261114T091730Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/ecg_mitbih_beat_classifier.json",
+        "model_card_path": "docs/models/ecg_mitbih_beat_classifier.md"
+      }
+    },
+    {
+      "model_id": "ultrasound_fetal_plane_classifier",
+      "display_name": "Maternal-fetal ultrasound plane, 6 classes (FETAL_PLANES_DB, research)",
+      "domain": "medical_imaging",
+      "task": "image_classification",
+      "anatomy": "pregnancy",
+      "framework": "torchvision efficientnet_b0",
+      "adapter": "app.services.model_inference",
+      "source_repository": "medtwin/training",
+      "dependency_environment": ".venv",
+      "weights_path": "artifacts/training/ultrasound_fetal_plane_classifier-20261114T085532Z/model.pt",
+      "device": "cuda_or_cpu",
+      "supported_inputs": [
+        "image/jpeg",
+        "image/png"
+      ],
+      "supported_modalities": [
+        "OBSTETRIC_ULTRASOUND"
+      ],
+      "supported_classes": [
+        "fetal_abdomen",
+        "fetal_brain",
+        "fetal_femur",
+        "fetal_thorax",
+        "maternal_cervix",
+        "other"
+      ],
+      "status": "READY_UNVALIDATED",
+      "validated": false,
+      "research_inference": true,
+      "validation_readiness": {
+        "validation_ready": true,
+        "readiness": "READY_FOR_TRAINING",
+        "run_scope": "STANDARD_INTERNAL_EVALUATION",
+        "minimum_samples_per_class": 50,
+        "classes_below_minimum": [],
+        "source_flags": [
+          "TASK_SUPPORTED_BY_LABELS"
+        ],
+        "effective_flags": [
+          "TASK_SUPPORTED_BY_LABELS"
+        ]
+      },
+      "class_distribution": {
+        "per_split": {
+          "train": {
+            "fetal_abdomen": 295,
+            "fetal_brain": 1384,
+            "fetal_femur": 448,
+            "fetal_thorax": 888,
+            "maternal_cervix": 811,
+            "other": 2147
+          },
+          "val": {
+            "fetal_abdomen": 58,
+            "fetal_brain": 236,
+            "fetal_femur": 68,
+            "fetal_thorax": 170,
+            "maternal_cervix": 170,
+            "other": 454
+          },
+          "test": {
+            "fetal_abdomen": 358,
+            "fetal_brain": 1472,
+            "fetal_femur": 524,
+            "fetal_thorax": 660,
+            "maternal_cervix": 645,
+            "other": 1612
+          }
+        },
+        "total": {
+          "fetal_abdomen": 711,
+          "fetal_brain": 3092,
+          "fetal_femur": 1040,
+          "fetal_thorax": 1718,
+          "maternal_cervix": 1626,
+          "other": 4213
+        }
+      },
+      "class_imbalance": {
+        "strategy": "inverse_frequency",
+        "enabled": true,
+        "formula": "w_c = N_train / (K * n_train,c)",
+        "computed_from": "training split only",
+        "training_counts": {
+          "fetal_abdomen": 295,
+          "fetal_brain": 1384,
+          "fetal_femur": 448,
+          "fetal_thorax": 888,
+          "maternal_cervix": 811,
+          "other": 2147
+        },
+        "weights_by_class": {
+          "fetal_abdomen": 3.3745762711864407,
+          "fetal_brain": 0.7192919075144508,
+          "fetal_femur": 2.2220982142857144,
+          "fetal_thorax": 1.1210585585585586,
+          "maternal_cervix": 1.2274969173859434,
+          "other": 0.46367023754075454
+        },
+        "normalization": "equal aggregate training-loss contribution per observed class"
+      },
+      "limitations": [
+        "Training used inverse-frequency weighted cross-entropy computed from the training split only. Weighting changes optimisation but does not create rare-class evidence or correct evaluation uncertainty.",
+        "Pseudonymous patient ids come from the publisher's folders. The publisher's validation split, used as the test set, shares no patient with its training split; training patients were divided into train and validation, and the bootstrap resamples patients.",
+        "Internal held-out test from the same source distribution; no external validation.",
+        "Temperature scaling was fitted on the internal validation split; probabilities are not calibrated for any clinical population.",
+        "Research-only output; not validated for clinical use."
+      ],
+      "artifact_bundle": {
+        "dataset_version": "a533cf8ea9436f096b94affa3d7cd22776f4f53688fe9366bd43f45c4d49047b",
+        "dataset_license": "CC BY 4.0",
+        "split_manifest_path": "_derived/datasets/fetal-planes-classification/samples.csv",
+        "task_definition": "standard maternal-fetal ultrasound plane (6 classes)",
+        "label_definition": {
+          "source": "publisher class folders",
+          "classes": [
+            "fetal_abdomen",
+            "fetal_brain",
+            "fetal_femur",
+            "fetal_thorax",
+            "maternal_cervix",
+            "other"
+          ]
+        },
+        "preprocessing_version": "rgb-resize114-centercrop-imagenetnorm-v1",
+        "checkpoint_path": "artifacts/training/ultrasound_fetal_plane_classifier-20261114T085532Z/model.pt",
+        "checkpoint_sha256": "0f1e7ef110927c0dadd26319b74bc4d76f1aa844f44c16250a4e79fa482244f7",
+        "calibration": {
+          "method": "temperature_scaling",
+          "parameters": {
+            "temperature": 1.2758618593215942
+          }
+        },
+        "decision_thresholds": {
+          "rule": "argmax over temperature-scaled softmax"
+        },
+        "abstention_thresholds": null,
+        "validation_readiness": {
+          "validation_ready": true,
+          "readiness": "READY_FOR_TRAINING",
+          "run_scope": "STANDARD_INTERNAL_EVALUATION",
+          "minimum_samples_per_class": 50,
+          "classes_below_minimum": [],
+          "source_flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ],
+          "effective_flags": [
+            "TASK_SUPPORTED_BY_LABELS"
+          ]
+        },
+        "class_distribution": {
+          "per_split": {
+            "train": {
+              "fetal_abdomen": 295,
+              "fetal_brain": 1384,
+              "fetal_femur": 448,
+              "fetal_thorax": 888,
+              "maternal_cervix": 811,
+              "other": 2147
+            },
+            "val": {
+              "fetal_abdomen": 58,
+              "fetal_brain": 236,
+              "fetal_femur": 68,
+              "fetal_thorax": 170,
+              "maternal_cervix": 170,
+              "other": 454
+            },
+            "test": {
+              "fetal_abdomen": 358,
+              "fetal_brain": 1472,
+              "fetal_femur": 524,
+              "fetal_thorax": 660,
+              "maternal_cervix": 645,
+              "other": 1612
+            }
+          },
+          "total": {
+            "fetal_abdomen": 711,
+            "fetal_brain": 3092,
+            "fetal_femur": 1040,
+            "fetal_thorax": 1718,
+            "maternal_cervix": 1626,
+            "other": 4213
+          }
+        },
+        "class_imbalance": {
+          "strategy": "inverse_frequency",
+          "enabled": true,
+          "formula": "w_c = N_train / (K * n_train,c)",
+          "computed_from": "training split only",
+          "training_counts": {
+            "fetal_abdomen": 295,
+            "fetal_brain": 1384,
+            "fetal_femur": 448,
+            "fetal_thorax": 888,
+            "maternal_cervix": 811,
+            "other": 2147
+          },
+          "weights_by_class": {
+            "fetal_abdomen": 3.3745762711864407,
+            "fetal_brain": 0.7192919075144508,
+            "fetal_femur": 2.2220982142857144,
+            "fetal_thorax": 1.1210585585585586,
+            "maternal_cervix": 1.2274969173859434,
+            "other": 0.46367023754075454
+          },
+          "normalization": "equal aggregate training-loss contribution per observed class"
+        },
+        "held_out_predictions_path": "artifacts/training/ultrasound_fetal_plane_classifier-20261114T085532Z/predictions_test.csv",
+        "evaluation_report_path": "docs/validation/models/ultrasound_fetal_plane_classifier.json",
+        "model_card_path": "docs/models/ultrasound_fetal_plane_classifier.md",
+        "ood_reference_path": "artifacts/training/ultrasound_fetal_plane_classifier-20261114T085532Z/ood_reference.npz",
+        "ood_reference_sha256": "405317307748804a8258f910a2c41e53d7f361b257f17945f354208adcb6ea78"
+      },
+      "evaluation_device": "cpu"
     }
   ]
 }

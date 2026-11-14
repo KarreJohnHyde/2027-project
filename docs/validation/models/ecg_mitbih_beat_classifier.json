@@ -1,0 +1,182 @@
+{
+  "model_id": "ecg_mitbih_beat_classifier",
+  "run_id": "ecg_mitbih_beat_classifier-20261114T091730Z",
+  "task_id": "mitbih-aami-beats",
+  "task_type": "ecg_beat_classification",
+  "dataset": "MIT-BIH Arrhythmia Database 1.0.0 (PhysioNet)",
+  "dataset_id": "mitbih-arrhythmia-1.0.0",
+  "dataset_version": "47b26926927c11bd9174154d367c811afc1b186f650f8a205931ca8c520f0a87",
+  "dataset_license": "Open Data Commons Attribution License v1.0",
+  "split_method": "inter-patient DS1/DS2 (de Chazal 2004); 4 DS1 records for validation (seeded); paced records excluded",
+  "records": {
+    "train": [
+      101,
+      106,
+      109,
+      112,
+      115,
+      116,
+      118,
+      122,
+      124,
+      201,
+      203,
+      205,
+      207,
+      208,
+      209,
+      220,
+      223,
+      230
+    ],
+    "val": [
+      108,
+      114,
+      119,
+      215
+    ],
+    "test": [
+      100,
+      103,
+      105,
+      111,
+      113,
+      117,
+      121,
+      123,
+      200,
+      202,
+      210,
+      212,
+      213,
+      214,
+      219,
+      221,
+      222,
+      228,
+      231,
+      232,
+      233,
+      234
+    ]
+  },
+  "split_counts": {
+    "train": {
+      "N": 37534,
+      "S": 924,
+      "V": 3120,
+      "F": 407
+    },
+    "val": {
+      "N": 8290,
+      "S": 19,
+      "V": 668,
+      "F": 7
+    },
+    "test": {
+      "N": 44218,
+      "S": 1836,
+      "V": 3219,
+      "F": 388
+    }
+  },
+  "test_n": 49661,
+  "metrics": {
+    "per_class": {
+      "N": {
+        "support": 44218,
+        "sensitivity": 0.991338368990004,
+        "positive_predictive_value": 0.9518380995809176,
+        "f1": 0.97118675986751
+      },
+      "S": {
+        "support": 1836,
+        "sensitivity": 0.01252723311546841,
+        "positive_predictive_value": 0.26436781609195403,
+        "f1": 0.02392095683827353
+      },
+      "V": {
+        "support": 3219,
+        "sensitivity": 0.7297297297297297,
+        "positive_predictive_value": 0.6671400170406134,
+        "f1": 0.6970326409495549
+      },
+      "F": {
+        "support": 388,
+        "sensitivity": 0.0,
+        "positive_predictive_value": null,
+        "f1": 0.0
+      }
+    },
+    "macro_f1": 0.4230350894138346,
+    "accuracy": 0.9304484404260889,
+    "confusion_matrix": [
+      [
+        43835,
+        60,
+        323,
+        0
+      ],
+      [
+        966,
+        23,
+        847,
+        0
+      ],
+      [
+        866,
+        4,
+        2349,
+        0
+      ],
+      [
+        386,
+        0,
+        2,
+        0
+      ]
+    ]
+  },
+  "confidence_intervals_95": {
+    "macro_f1": {
+      "status": "COMPUTED",
+      "low": 0.3502706968286764,
+      "high": 0.4755353956174623,
+      "resamples": 1000,
+      "unit": "patient record"
+    },
+    "S_sensitivity": {
+      "status": "COMPUTED",
+      "low": 0.0006524420200802122,
+      "high": 0.06786251003039635,
+      "resamples": 1000,
+      "unit": "patient record"
+    },
+    "V_sensitivity": {
+      "status": "COMPUTED",
+      "low": 0.5729353356971818,
+      "high": 0.8880064703967527,
+      "resamples": 1000,
+      "unit": "patient record"
+    }
+  },
+  "validation_macro_f1": 0.46538950785417565,
+  "class_weights": [
+    0.27964645624160767,
+    11.359578132629395,
+    3.364182710647583,
+    25.7893123626709
+  ],
+  "checkpoint": {
+    "path": "artifacts/training/ecg_mitbih_beat_classifier-20261114T091730Z/model.pt",
+    "sha256": "767badf89063eb685346cb80c48f8fbb0b3e4d08b847516d8ff30f3ef743a195"
+  },
+  "held_out_predictions": "artifacts/training/ecg_mitbih_beat_classifier-20261114T091730Z/predictions_test.csv",
+  "limitations": [
+    "Beat positions are the reference annotations; a deployed system needs its own beat detector, whose errors are not part of this evaluation.",
+    "MIT-BIH holds 48 half-hour two-lead Holter records from 47 people (Boston, 1975-1979); the test part is 22 people.",
+    "Single lead (MLII), 360 Hz only; other leads, sampling rates and devices are outside this model's evidence.",
+    "Inter-patient supraventricular (S) beat detection is known to be hard; see the per-class sensitivity and its interval.",
+    "Research-only output; not validated for clinical use."
+  ]
+}

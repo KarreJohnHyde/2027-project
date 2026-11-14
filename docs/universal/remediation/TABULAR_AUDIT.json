@@ -1,0 +1,484 @@
+{
+  "tool": "scripts/remediation_tabular_audit.py",
+  "models": [
+    {
+      "metrics_full_precision_rescoring": {
+        "auroc": 0.8272579521708846,
+        "sensitivity": 0.7808219178082192,
+        "specificity": 0.7457627118644068
+      },
+      "full_precision_metrics_match_report": true,
+      "test_metrics_without_development_duplicates": {
+        "test_n": 132,
+        "auroc": 0.8272579521708846,
+        "sensitivity": 0.7808219178082192,
+        "specificity": 0.7457627118644068
+      },
+      "stored_prediction_precision": "6 decimals (rounding up to 5e-7; ties can change AUROC when recomputed from the CSV)",
+      "model_id": "tabular_heart_disease_uci",
+      "dataset_id": "uci-heart-disease",
+      "split_counts_rebuilt": {
+        "train": 656,
+        "val": 132,
+        "test": 132
+      },
+      "split_counts_reported": {
+        "train": 656,
+        "val": 132,
+        "test": 132
+      },
+      "split_matches_report": true,
+      "persons_crossing_splits": 0,
+      "exact_duplicate_records_shared_with_development": {
+        "val": 0,
+        "test": 0
+      },
+      "possible_label_proxies_dev_auroc_ge_0_98": {},
+      "positive_share": {
+        "train": 0.5534,
+        "val": 0.553,
+        "test": 0.553
+      },
+      "imputer_fitted_on_development_rows_only": true,
+      "metrics_recomputed": {
+        "test_n": 132,
+        "auroc": 0.8272579521708846,
+        "sensitivity": 0.7808219178082192,
+        "specificity": 0.7457627118644068
+      },
+      "metrics_match_report": true,
+      "checkpoint_rescoring_max_abs_difference": 0.0,
+      "test_used_for_model_selection": false,
+      "model_selection_evidence": "report.model_selection uses validation AUROC only (highest validation AUROC; logistic regression on ties)",
+      "findings": [
+        "NONE"
+      ]
+    },
+    {
+      "metrics_full_precision_rescoring": {
+        "auroc": 0.9973544973544973,
+        "sensitivity": 1.0,
+        "specificity": 0.9523809523809523
+      },
+      "full_precision_metrics_match_report": true,
+      "test_metrics_without_development_duplicates": {
+        "test_n": 57,
+        "auroc": 0.9973544973544973,
+        "sensitivity": 1.0,
+        "specificity": 0.9523809523809523
+      },
+      "stored_prediction_precision": "6 decimals (rounding up to 5e-7; ties can change AUROC when recomputed from the CSV)",
+      "model_id": "tabular_ckd_uci",
+      "dataset_id": "uci-chronic-kidney-disease",
+      "split_counts_rebuilt": {
+        "train": 285,
+        "val": 58,
+        "test": 57
+      },
+      "split_counts_reported": {
+        "train": 285,
+        "val": 58,
+        "test": 57
+      },
+      "split_matches_report": true,
+      "persons_crossing_splits": 0,
+      "exact_duplicate_records_shared_with_development": {
+        "val": 0,
+        "test": 0
+      },
+      "possible_label_proxies_dev_auroc_ge_0_98": {},
+      "positive_share": {
+        "train": 0.6246,
+        "val": 0.6207,
+        "test": 0.6316
+      },
+      "imputer_fitted_on_development_rows_only": true,
+      "metrics_recomputed": {
+        "test_n": 57,
+        "auroc": 0.9973544973544973,
+        "sensitivity": 1.0,
+        "specificity": 0.9523809523809523
+      },
+      "metrics_match_report": true,
+      "checkpoint_rescoring_max_abs_difference": 0.0,
+      "test_used_for_model_selection": false,
+      "model_selection_evidence": "report.model_selection uses validation AUROC only (highest validation AUROC; logistic regression on ties)",
+      "findings": [
+        "NONE"
+      ]
+    },
+    {
+      "metrics_full_precision_rescoring": {
+        "auroc": 0.658618840026894,
+        "sensitivity": 0.6293316831683168,
+        "specificity": 0.6030534351145038
+      },
+      "full_precision_metrics_match_report": true,
+      "test_metrics_without_development_duplicates": {
+        "test_n": 14192,
+        "auroc": 0.658618840026894,
+        "sensitivity": 0.6293316831683168,
+        "specificity": 0.6030534351145038
+      },
+      "stored_prediction_precision": "6 decimals (rounding up to 5e-7; ties can change AUROC when recomputed from the CSV)",
+      "model_id": "tabular_diabetes_readmission_uci",
+      "dataset_id": "uci-diabetes-130-hospitals",
+      "split_counts_rebuilt": {
+        "train": 70961,
+        "val": 14190,
+        "test": 14192
+      },
+      "split_counts_reported": {
+        "train": 70961,
+        "val": 14190,
+        "test": 14192
+      },
+      "split_matches_report": true,
+      "persons_crossing_splits": 0,
+      "exact_duplicate_records_shared_with_development": {
+        "val": 0,
+        "test": 0
+      },
+      "possible_label_proxies_dev_auroc_ge_0_98": {},
+      "positive_share": {
+        "train": 0.1139,
+        "val": 0.114,
+        "test": 0.1139
+      },
+      "imputer_fitted_on_development_rows_only": true,
+      "metrics_recomputed": {
+        "test_n": 14192,
+        "auroc": 0.658618840026894,
+        "sensitivity": 0.6293316831683168,
+        "specificity": 0.6030534351145038
+      },
+      "metrics_match_report": true,
+      "checkpoint_rescoring_max_abs_difference": 0.0,
+      "test_used_for_model_selection": false,
+      "model_selection_evidence": "report.model_selection uses validation AUROC only (highest validation AUROC; logistic regression on ties)",
+      "findings": [
+        "NONE"
+      ]
+    },
+    {
+      "metrics_full_precision_rescoring": {
+        "auroc": 0.9856209150326797,
+        "sensitivity": 0.9333333333333333,
+        "specificity": 0.9607843137254902
+      },
+      "full_precision_metrics_match_report": true,
+      "test_metrics_without_development_duplicates": {
+        "test_n": 81,
+        "auroc": 0.9856209150326797,
+        "sensitivity": 0.9333333333333333,
+        "specificity": 0.9607843137254902
+      },
+      "stored_prediction_precision": "6 decimals (rounding up to 5e-7; ties can change AUROC when recomputed from the CSV)",
+      "model_id": "tabular_breast_fna_uci",
+      "dataset_id": "uci-breast-cancer-wisconsin-diagnostic",
+      "split_counts_rebuilt": {
+        "train": 406,
+        "val": 82,
+        "test": 81
+      },
+      "split_counts_reported": {
+        "train": 406,
+        "val": 82,
+        "test": 81
+      },
+      "split_matches_report": true,
+      "persons_crossing_splits": 0,
+      "exact_duplicate_records_shared_with_development": {
+        "val": 0,
+        "test": 0
+      },
+      "possible_label_proxies_dev_auroc_ge_0_98": {},
+      "positive_share": {
+        "train": 0.3719,
+        "val": 0.378,
+        "test": 0.3704
+      },
+      "imputer_fitted_on_development_rows_only": true,
+      "metrics_recomputed": {
+        "test_n": 81,
+        "auroc": 0.9856209150326797,
+        "sensitivity": 0.9333333333333333,
+        "specificity": 0.9607843137254902
+      },
+      "metrics_match_report": true,
+      "checkpoint_rescoring_max_abs_difference": 0.0,
+      "test_used_for_model_selection": false,
+      "model_selection_evidence": "report.model_selection uses validation AUROC only (highest validation AUROC; logistic regression on ties)",
+      "findings": [
+        "NONE"
+      ]
+    },
+    {
+      "metrics_full_precision_rescoring": {
+        "auroc": 0.9689217758985201,
+        "sensitivity": 0.8181818181818182,
+        "specificity": 0.9906976744186047
+      },
+      "full_precision_metrics_match_report": true,
+      "test_metrics_without_development_duplicates": {
+        "test_n": 452,
+        "auroc": 0.9689217758985201,
+        "sensitivity": 0.8181818181818182,
+        "specificity": 0.9906976744186047
+      },
+      "stored_prediction_precision": "6 decimals (rounding up to 5e-7; ties can change AUROC when recomputed from the CSV)",
+      "model_id": "tabular_hypothyroid_uci",
+      "dataset_id": "uci-thyroid-hypothyroid",
+      "split_counts_rebuilt": {
+        "train": 2259,
+        "val": 452,
+        "test": 452
+      },
+      "split_counts_reported": {
+        "train": 2259,
+        "val": 452,
+        "test": 452
+      },
+      "split_matches_report": true,
+      "persons_crossing_splits": 0,
+      "exact_duplicate_records_shared_with_development": {
+        "val": 0,
+        "test": 0
+      },
+      "possible_label_proxies_dev_auroc_ge_0_98": {
+        "FTI": 0.9842
+      },
+      "positive_share": {
+        "train": 0.0474,
+        "val": 0.0487,
+        "test": 0.0487
+      },
+      "imputer_fitted_on_development_rows_only": true,
+      "metrics_recomputed": {
+        "test_n": 452,
+        "auroc": 0.9689217758985201,
+        "sensitivity": 0.8181818181818182,
+        "specificity": 0.9906976744186047
+      },
+      "metrics_match_report": true,
+      "checkpoint_rescoring_max_abs_difference": 0.0,
+      "test_used_for_model_selection": false,
+      "model_selection_evidence": "report.model_selection uses validation AUROC only (highest validation AUROC; logistic regression on ties)",
+      "findings": [
+        "REVIEW_POSSIBLE_LABEL_PROXY"
+      ]
+    },
+    {
+      "metrics_full_precision_rescoring": {
+        "auroc": 0.7478813559322034,
+        "sensitivity": 0.4406779661016949,
+        "specificity": 0.9583333333333334
+      },
+      "full_precision_metrics_match_report": true,
+      "test_metrics_without_development_duplicates": {
+        "test_n": 83,
+        "auroc": 0.7478813559322034,
+        "sensitivity": 0.4406779661016949,
+        "specificity": 0.9583333333333334
+      },
+      "stored_prediction_precision": "6 decimals (rounding up to 5e-7; ties can change AUROC when recomputed from the CSV)",
+      "model_id": "tabular_liver_patient_uci",
+      "dataset_id": "uci-indian-liver-patient",
+      "split_counts_rebuilt": {
+        "train": 416,
+        "val": 84,
+        "test": 83
+      },
+      "split_counts_reported": {
+        "train": 416,
+        "val": 84,
+        "test": 83
+      },
+      "split_matches_report": true,
+      "persons_crossing_splits": 0,
+      "exact_duplicate_records_shared_with_development": {
+        "val": 0,
+        "test": 0
+      },
+      "possible_label_proxies_dev_auroc_ge_0_98": {},
+      "positive_share": {
+        "train": 0.7139,
+        "val": 0.7143,
+        "test": 0.7108
+      },
+      "imputer_fitted_on_development_rows_only": true,
+      "metrics_recomputed": {
+        "test_n": 83,
+        "auroc": 0.7478813559322034,
+        "sensitivity": 0.4406779661016949,
+        "specificity": 0.9583333333333334
+      },
+      "metrics_match_report": true,
+      "checkpoint_rescoring_max_abs_difference": 0.0,
+      "test_used_for_model_selection": false,
+      "model_selection_evidence": "report.model_selection uses validation AUROC only (highest validation AUROC; logistic regression on ties)",
+      "findings": [
+        "NONE"
+      ]
+    },
+    {
+      "metrics_full_precision_rescoring": {
+        "auroc": 0.9411764705882353,
+        "sensitivity": 0.8,
+        "specificity": 0.8235294117647058
+      },
+      "full_precision_metrics_match_report": true,
+      "test_metrics_without_development_duplicates": {
+        "test_n": 22,
+        "auroc": 0.9411764705882353,
+        "sensitivity": 0.8,
+        "specificity": 0.8235294117647058
+      },
+      "stored_prediction_precision": "6 decimals (rounding up to 5e-7; ties can change AUROC when recomputed from the CSV)",
+      "model_id": "tabular_hepatitis_mortality_uci",
+      "dataset_id": "uci-hepatitis",
+      "split_counts_rebuilt": {
+        "train": 111,
+        "val": 22,
+        "test": 22
+      },
+      "split_counts_reported": {
+        "train": 111,
+        "val": 22,
+        "test": 22
+      },
+      "split_matches_report": true,
+      "persons_crossing_splits": 0,
+      "exact_duplicate_records_shared_with_development": {
+        "val": 0,
+        "test": 0
+      },
+      "possible_label_proxies_dev_auroc_ge_0_98": {},
+      "positive_share": {
+        "train": 0.2072,
+        "val": 0.1818,
+        "test": 0.2273
+      },
+      "imputer_fitted_on_development_rows_only": true,
+      "metrics_recomputed": {
+        "test_n": 22,
+        "auroc": 0.9411764705882353,
+        "sensitivity": 0.8,
+        "specificity": 0.8235294117647058
+      },
+      "metrics_match_report": true,
+      "checkpoint_rescoring_max_abs_difference": 0.0,
+      "test_used_for_model_selection": false,
+      "model_selection_evidence": "report.model_selection uses validation AUROC only (highest validation AUROC; logistic regression on ties)",
+      "findings": [
+        "NONE"
+      ]
+    },
+    {
+      "metrics_full_precision_rescoring": {
+        "auroc": 0.8771929824561404,
+        "sensitivity": 0.8947368421052632,
+        "specificity": 0.0
+      },
+      "full_precision_metrics_match_report": true,
+      "test_metrics_without_development_duplicates": {
+        "test_n": 25,
+        "auroc": 0.8771929824561404,
+        "sensitivity": 0.8947368421052632,
+        "specificity": 0.0
+      },
+      "stored_prediction_precision": "6 decimals (rounding up to 5e-7; ties can change AUROC when recomputed from the CSV)",
+      "model_id": "tabular_parkinsons_voice_uci",
+      "dataset_id": "uci-parkinsons",
+      "split_counts_rebuilt": {
+        "train": 145,
+        "val": 25,
+        "test": 25
+      },
+      "split_counts_reported": {
+        "train": 145,
+        "val": 25,
+        "test": 25
+      },
+      "split_matches_report": true,
+      "persons_crossing_splits": 0,
+      "exact_duplicate_records_shared_with_development": {
+        "val": 0,
+        "test": 0
+      },
+      "possible_label_proxies_dev_auroc_ge_0_98": {},
+      "positive_share": {
+        "train": 0.7517,
+        "val": 0.76,
+        "test": 0.76
+      },
+      "imputer_fitted_on_development_rows_only": true,
+      "metrics_recomputed": {
+        "test_n": 25,
+        "auroc": 0.8771929824561404,
+        "sensitivity": 0.8947368421052632,
+        "specificity": 0.0
+      },
+      "metrics_match_report": true,
+      "checkpoint_rescoring_max_abs_difference": 0.0,
+      "test_used_for_model_selection": false,
+      "model_selection_evidence": "report.model_selection uses validation AUROC only (highest validation AUROC; logistic regression on ties)",
+      "findings": [
+        "NONE"
+      ]
+    },
+    {
+      "metrics_full_precision_rescoring": {
+        "auroc": 0.6869565217391304,
+        "sensitivity": 0.5,
+        "specificity": 0.7478260869565218
+      },
+      "full_precision_metrics_match_report": true,
+      "test_metrics_without_development_duplicates": {
+        "test_n": 123,
+        "auroc": 0.6869565217391304,
+        "sensitivity": 0.5,
+        "specificity": 0.7478260869565218
+      },
+      "stored_prediction_precision": "6 decimals (rounding up to 5e-7; ties can change AUROC when recomputed from the CSV)",
+      "model_id": "tabular_cervical_biopsy_uci",
+      "dataset_id": "uci-cervical-cancer-risk-factors",
+      "split_counts_rebuilt": {
+        "train": 612,
+        "val": 123,
+        "test": 123
+      },
+      "split_counts_reported": {
+        "train": 612,
+        "val": 123,
+        "test": 123
+      },
+      "split_matches_report": true,
+      "persons_crossing_splits": 0,
+      "exact_duplicate_records_shared_with_development": {
+        "val": 0,
+        "test": 0
+      },
+      "possible_label_proxies_dev_auroc_ge_0_98": {},
+      "positive_share": {
+        "train": 0.0637,
+        "val": 0.065,
+        "test": 0.065
+      },
+      "imputer_fitted_on_development_rows_only": true,
+      "metrics_recomputed": {
+        "test_n": 123,
+        "auroc": 0.6869565217391304,
+        "sensitivity": 0.5,
+        "specificity": 0.7478260869565218
+      },
+      "metrics_match_report": true,
+      "checkpoint_rescoring_max_abs_difference": 0.0,
+      "test_used_for_model_selection": false,
+      "model_selection_evidence": "report.model_selection uses validation AUROC only (highest validation AUROC; logistic regression on ties)",
+      "findings": [
+        "NONE"
+      ]
+    }
+  ]
+}

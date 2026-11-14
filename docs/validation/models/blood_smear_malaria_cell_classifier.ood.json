@@ -1,0 +1,163 @@
+{
+  "model_id": "blood_smear_malaria_cell_classifier",
+  "family": "Malaria thin-smear microscopy",
+  "reference_path": "artifacts/training/blood_smear_malaria_cell_classifier-20261114T071802Z/ood_reference.npz",
+  "reference_sha256": "b4fef6fcdf4daa72c7304af2cb201c5953605f62c34a299ff5b95dad044503c7",
+  "threshold": 2.91,
+  "metadata": {
+    "model_id": "blood_smear_malaria_cell_classifier",
+    "checkpoint_sha256": "aa6216e57bc92be33ad3702e06487906c624099e98567937cc02f2f6b874b085",
+    "feature_version": "input-statistics+network-stages-v1",
+    "feature_source": "every backbone stage, spatial mean",
+    "fit_split": "train",
+    "calibration_split": "val",
+    "evaluation_split": "test",
+    "seed": 20261028,
+    "dataset_version": "d217c6dceca42d7dd49b5b4de9ee9dae7f2fcbe6c081de3e656cd82f71173353",
+    "score_version": "multistage-ppca-mahalanobis-v2",
+    "stage_dimensions": [
+      15,
+      16,
+      24,
+      40,
+      80,
+      112,
+      192,
+      320,
+      1280
+    ],
+    "stage_components": [
+      14,
+      15,
+      23,
+      39,
+      64,
+      64,
+      64,
+      64,
+      64
+    ],
+    "fit_n": 3000,
+    "calibration_n": 1500,
+    "calibration_quantile": 0.99,
+    "stage_combination": "mean"
+  },
+  "evaluation": {
+    "in_distribution_test": {
+      "n": 1500,
+      "refused": 12,
+      "refusal_rate": 0.008,
+      "refusal_rate_95ci_wilson": [
+        0.0046,
+        0.0139
+      ],
+      "distance_quantiles": {
+        "0.05": 0.63,
+        "0.5": 0.97,
+        "0.95": 1.93
+      }
+    },
+    "cross_domain": {
+      "GI endoscopy": {
+        "n": 300,
+        "refused": 300,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9874,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 8.53,
+          "0.5": 38.06,
+          "0.95": 4147.78
+        }
+      },
+      "Coronary angiography": {
+        "n": 300,
+        "refused": 300,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9874,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 9.97,
+          "0.5": 12.95,
+          "0.95": 17.81
+        }
+      },
+      "CT": {
+        "n": 196,
+        "refused": 196,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9808,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 14.42,
+          "0.5": 580632.63,
+          "0.95": 15225698.02
+        }
+      },
+      "Blood-cell microscopy": {
+        "n": 300,
+        "refused": 300,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9874,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 18.56,
+          "0.5": 26.58,
+          "0.95": 28.99
+        }
+      },
+      "Musculoskeletal radiograph": {
+        "n": 300,
+        "refused": 300,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9874,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 12.9,
+          "0.5": 17.24,
+          "0.95": 29.41
+        }
+      },
+      "Head CT": {
+        "n": 300,
+        "refused": 300,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9874,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 3495.66,
+          "0.5": 10568832.19,
+          "0.95": 62272267.73
+        }
+      },
+      "Clinical skin photograph": {
+        "n": 300,
+        "refused": 300,
+        "refusal_rate": 1.0,
+        "refusal_rate_95ci_wilson": [
+          0.9874,
+          1.0
+        ],
+        "distance_quantiles": {
+          "0.05": 9.35,
+          "0.5": 22.72,
+          "0.95": 146.1
+        }
+      }
+    }
+  },
+  "runtime_seconds": 285.3,
+  "interpretation": "Refusal of in-distribution test images is the gate's false-refusal rate; refusal of other families' images is its cross-domain catch rate. Neither is a clinical performance measure."
+}

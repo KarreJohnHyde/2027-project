@@ -1,0 +1,122 @@
+{
+  "model_id": "tabular_cervical_biopsy_uci",
+  "run_id": "tabular_cervical_biopsy_uci-20261114T091254Z",
+  "task_id": "cervical-biopsy",
+  "task_type": "tabular_binary_classification",
+  "target": "positive cervical biopsy from questionnaire risk factors",
+  "dataset": "UCI 383",
+  "dataset_id": "uci-cervical-cancer-risk-factors",
+  "dataset_version": "ff46cce0121de03eddae755349e2af38c4bd126db29ca03daa3194e57cf35781",
+  "dataset_license": "CC BY 4.0",
+  "training_rights": {
+    "authorization_status": "VERIFIED",
+    "training_purpose": "research",
+    "license_name": "CC BY 4.0"
+  },
+  "split_method": "StratifiedGroupKFold 70/15/15 by outcome; one person's rows and every exact duplicate record stay in one part",
+  "duplicate_handling": {
+    "exact_duplicate_records": 26,
+    "rule": "identical records (all features and label) are grouped into one part"
+  },
+  "evaluation_status": "RE_EVALUATED_AFTER_TEST_EXPOSURE_NOT_INDEPENDENT_FINAL_TEST",
+  "split_counts": {
+    "train": 612,
+    "val": 123,
+    "test": 123
+  },
+  "positives": {
+    "train": 39,
+    "val": 8,
+    "test": 8
+  },
+  "features": [
+    "Age",
+    "Number of sexual partners",
+    "First sexual intercourse",
+    "Num of pregnancies",
+    "Smokes",
+    "Smokes (years)",
+    "Smokes (packs/year)",
+    "Hormonal Contraceptives",
+    "Hormonal Contraceptives (years)",
+    "IUD",
+    "IUD (years)",
+    "STDs",
+    "STDs (number)",
+    "STDs:condylomatosis",
+    "STDs:cervical condylomatosis",
+    "STDs:vaginal condylomatosis",
+    "STDs:vulvo-perineal condylomatosis",
+    "STDs:syphilis",
+    "STDs:pelvic inflammatory disease",
+    "STDs:genital herpes",
+    "STDs:molluscum contagiosum",
+    "STDs:AIDS",
+    "STDs:HIV",
+    "STDs:Hepatitis B",
+    "STDs:HPV",
+    "STDs: Number of diagnosis",
+    "STDs: Time since first diagnosis",
+    "STDs: Time since last diagnosis"
+  ],
+  "model_selection": {
+    "validation_auroc": {
+      "logistic_C0.01": 0.7608695652173914,
+      "logistic_C0.1": 0.6630434782608695,
+      "logistic_C1.0": 0.5304347826086956,
+      "logistic_C10.0": 0.508695652173913,
+      "gradient_boosting_depth3_lr0.05": 0.6902173913043478,
+      "gradient_boosting_depth3_lr0.1": 0.6663043478260869,
+      "gradient_boosting_depthNone_lr0.05": 0.7010869565217391,
+      "gradient_boosting_depthNone_lr0.1": 0.7282608695652174
+    },
+    "selected": "logistic_C0.01",
+    "rule": "highest validation AUROC; logistic regression on ties"
+  },
+  "test_n": 123,
+  "metrics": {
+    "auroc": 0.6869565217391304,
+    "auprc": 0.16850402661064426,
+    "sensitivity": 0.5,
+    "specificity": 0.7478260869565218,
+    "brier": 0.060982795930019464,
+    "brier_prevalence_baseline": 0.06081209384758207,
+    "ece_10_bins": 0.039623729298141945,
+    "threshold": 0.06697660604247203,
+    "test_positive_share": 0.06504065040650407,
+    "brier_skill": -0.0028070416859060643
+  },
+  "confidence_intervals_95": {
+    "auroc": {
+      "status": "COMPUTED",
+      "low": 0.4760584415584415,
+      "high": 0.8911637352309346,
+      "resamples": 1000,
+      "unit": "person or duplicate-record group"
+    },
+    "auprc": {
+      "status": "COMPUTED",
+      "low": 0.06321082028009273,
+      "high": 0.4576582146654164,
+      "resamples": 1000,
+      "unit": "person or duplicate-record group"
+    }
+  },
+  "calibration": {
+    "method": "Platt scaling on the validation part",
+    "operating_threshold": "Youden's J on the validation part"
+  },
+  "checkpoint": {
+    "path": "artifacts/training/tabular_cervical_biopsy_uci-20261114T091254Z/model.joblib",
+    "sha256": "6f0cb2f124c97bbe2571540282ebf49b187342d88c39b8100661f7fb079e1b7a"
+  },
+  "held_out_predictions": "artifacts/training/tabular_cervical_biopsy_uci-20261114T091254Z/predictions_test.csv",
+  "evaluated_at": "2026-11-14T09:13:08+00:00",
+  "limitations": [
+    "Population: 858 patients at Hospital Universitario de Caracas, Venezuela; few positive biopsies. Results do not transfer to other populations without external evaluation.",
+    "Probabilities are Platt-calibrated on the validation part of this cohort only; they are not calibrated for any clinical population.",
+    "Small public cohort: confidence intervals are wide.",
+    "Re-evaluated after test exposure (2026-11-14 duplicate audit): this split's test part overlaps the first run's inspected test part, so it is not an independent final test.",
+    "Research-only output; not validated for clinical use."
+  ]
+}
