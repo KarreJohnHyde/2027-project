@@ -23,9 +23,17 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-import pandas as pd
 
 from app.services.model_inference import InferenceNotPermitted, evaluation_summary, get_model
+
+
+def _pandas():
+    """pandas (with scikit-learn and joblib) is needed only to run a tabular model; the app starts without it."""
+    try:
+        import pandas
+    except ImportError as exc:
+        raise InferenceNotPermitted("TABULAR_RUNTIME_UNAVAILABLE: pandas and scikit-learn are not installed on this server.") from exc
+    return pandas
 from app.services.model_registry import _resolve_artifact_path
 
 
@@ -73,7 +81,7 @@ def _logit(p: np.ndarray) -> np.ndarray:
     return np.log(p / (1 - p))
 
 
-def score_frame(checkpoint: dict, frame: pd.DataFrame) -> np.ndarray:
+def score_frame(checkpoint: dict, frame) -> np.ndarray:
     """Calibrated probabilities for rows with the training feature columns (the same steps as training and evaluation)."""
     raw = checkpoint["pipeline"].predict_proba(frame[checkpoint["features"]])[:, 1]
     return checkpoint["platt"].predict_proba(_logit(raw).reshape(-1, 1))[:, 1]
@@ -134,6 +142,7 @@ def predict(model_id: str, values: dict[str, Any]) -> dict:
     if len(blank) * 2 > len(fields):
         raise InferenceNotPermitted(f"TOO_MANY_BLANK_FIELDS: {len(blank)} of {len(fields)} fields are blank; at most half may be imputed.")
     checkpoint = _load(model)
+    pd = _pandas()
     frame = pd.DataFrame([row], columns=checkpoint["features"])
     for name, field in fields.items():
         frame[name] = frame[name].astype(float) if field["type"] == "number" else frame[name].astype(object)
